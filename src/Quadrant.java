@@ -1,7 +1,7 @@
 import java.util.*;
 public class Quadrant{
-//	private ArrayList<PhysXObject> statics;
-//	private ArrayList<PhysXObject> ships;
+	private ArrayList<PhysXObject> statics;
+	private ArrayList<PhysXObject> ships;
 	private boolean isActive;
 	private QuadrantID QUID;
 	

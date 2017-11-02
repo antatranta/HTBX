@@ -43,14 +43,28 @@ public class PhysX {
 		return quads;
 	}
 
-	//	private void updateQuadrantStates()
+	private void updateQuadrantStates() {
+		
+		// since PhysX controls when the next phys step
+		// will happen we don't need to worry about 
+		// any weird issues deriving from deactivating
+		// a quadrant and then reactivating it.
+		for (Quadrant quad : Quadrants) {
+			quad.Deactivate();
+		}
+		for (Quadrant quad : getNearbyQuadrants(ActiveQuadrant)) {
+			quad.Activate();
+		}
+	}
 	
 	private void setActiveQuadrant(QuadrantID newQUID) {
 		//TODO: Add validation
 		this.ActiveQuadrant = newQUID;
 	}
 	
-//	private ArrayList<PhysXObject> getNearbyPhysXObjects()
+	private ArrayList<PhysXObject> getNearbyPhysXObjects(){
+		return new ArrayList<PhysXObject>();
+	}
 	
 	// The quadrants will always be read in order
 	// so there is no need to verify placement
