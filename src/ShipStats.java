@@ -1,4 +1,13 @@
 public class ShipStats {
+	
+	public ShipStats(int speed, int shield_max, int health_max, int damage) {
+		super();
+		this.speed = speed;
+		this.shield_max = shield_max;
+		this.health_max = health_max;
+		this.damage = damage;
+	}
+	
 	private int speed;
 	private int shield_max;
 	private int health_max;
