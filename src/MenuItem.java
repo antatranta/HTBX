@@ -23,6 +23,7 @@ public class MenuItem extends HBox {
 	public MenuItem(String menuName) {
 		super(15);
 		setAlignment(Pos.CENTER);
+		setMaxWidth(0);
 		text = new Text(menuName);
 		text.setFont(font);
 		
