@@ -23,15 +23,12 @@ public class CircleCollider {
 		return center;
 	}
 
+	/*
 	public void changeRadius(float newRadius) {
 		this.radius = newRadius;
 	}
 	public void moveCenter(Vector2 newCenter) {
 		this.center = newCenter;
 	}
-	
-	public boolean isCollision() {
-		// TODO: implement
-		return false;
-	}
+	*/
 }

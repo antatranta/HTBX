@@ -1,7 +1,7 @@
 import java.util.*;
 public class Quadrant{
 	private ArrayList<PhysXObject> statics;
-	private ArrayList<PhysXObject> ships;
+//	private ArrayList<Ship> ships;
 	private boolean isActive;
 	private QuadrantID QUID;
 	
@@ -19,9 +19,28 @@ public class Quadrant{
 		return QUID;
 	}
 	
+	/*
 	public void checkForCollisions() {
-		// TODO: implement
+		for(Ship A : ships) {
+			for(PhysXObject B : statics) {
+				if(PhysXLibrary.areObjectsInCollisionRange(A,B)) {
+					if(PhysXLibrary.isCollision(A, B)) {
+//						A.sendMessage()
+					}
+				}
+			}
+			for(PhysXObject C : ships) {
+				if(PhysXLibrary.areObjectsInCollisionRange(A, C)) {
+					if(PhysXLibrary.isCollision(A, C)) {
+//						A.sendMessage()
+//						B.sendMessage()
+					}
+
+				}
+			}
+		}
 	}
+	*/
 	
 	public void Activate() {
 		this.isActive = true;

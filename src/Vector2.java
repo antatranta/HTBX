@@ -24,6 +24,10 @@ public class Vector2 {
 		this.y = y;
 	}
 	
+	public Vector2 add(Vector2 vectorB) {
+		return new Vector2(this.x + vectorB.getX(), this.y + vectorB.getY());
+	}
+	
 	public static Vector2 Zero() {
 		return new Vector2(0,0);
 	}
