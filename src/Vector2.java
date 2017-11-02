@@ -6,6 +6,11 @@ public class Vector2 {
 		this.y = y;
 	}
 	
+	public Vector2(Vector2 toCopy) {
+		this.x = toCopy.getX();
+		this.y = toCopy.getY();
+	}
+	
 	public float getX() {
 		return x;
 	}
