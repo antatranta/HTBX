@@ -9,6 +9,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 // The Main Menu of HTBX
+// Credit goes to Almas Baimagambetov for the base code
 public class MainMenu extends Application {
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
@@ -45,22 +46,23 @@ public class MainMenu extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		Scene scene = new Scene(createContent());
+		
 		scene.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.W) {
-                if (currentOption > 0) {
+			if(event.getCode() == KeyCode.W) {
+                if(currentOption > 0) {
                     getMenuItem(currentOption).setActive(false);
                     getMenuItem(--currentOption).setActive(true);
                 }
             }
 
-            if (event.getCode() == KeyCode.S) {
-                if (currentOption < menuOptions.getChildren().size() - 1) {
+            if(event.getCode() == KeyCode.S) {
+                if(currentOption < menuOptions.getChildren().size() - 1) {
                     getMenuItem(currentOption).setActive(false);
                     getMenuItem(++currentOption).setActive(true);
                 }
             }
 
-            if (event.getCode() == KeyCode.ENTER) {
+            if(event.getCode() == KeyCode.ENTER) {
                 getMenuItem(currentOption).activate();
             }
 		});
