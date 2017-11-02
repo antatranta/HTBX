@@ -3,6 +3,30 @@ public class PhysXObject {
 	private QuadrantID QUID;
 	private Vector2 position;
 	
+	public PhysXObject() {
+		this.colliders = new CircleCollider[0];
+		this.QUID = new QuadrantID();
+		this.position = Vector2.Zero();
+	}
+	
+	public PhysXObject(QuadrantID QUID) {
+		this.colliders = new CircleCollider[0];
+		this.QUID = new QuadrantID(QUID);
+		this.position = Vector2.Zero();
+	}
+	
+	public PhysXObject(QuadrantID QUID, Vector2 position) {
+		this.colliders = new CircleCollider[0];
+		this.QUID = new QuadrantID(QUID);
+		this.position = new Vector2(position);
+	}
+	
+	public PhysXObject(PhysXObject toCopy) {
+		this.colliders = toCopy.getColliders();
+		this.QUID = toCopy.getQUID();
+		this.position = toCopy.getPosition();
+	}
+	
 	public Vector2 getPosition() {
 		return new Vector2(position);
 	}

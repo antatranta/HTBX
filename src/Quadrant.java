@@ -1,7 +1,7 @@
 import java.util.*;
 public class Quadrant{
-	private ArrayList<PhysXObject> statics;
-//	private ArrayList<Ship> ships;
+	private ArrayList<Asteroid> asteroids;
+	private ArrayList<Ship> ships;
 	private boolean isActive;
 	private QuadrantID QUID;
 	
@@ -19,28 +19,28 @@ public class Quadrant{
 		return QUID;
 	}
 	
-	/*
+	
 	public void checkForCollisions() {
 		for(Ship A : ships) {
-			for(PhysXObject B : statics) {
-				if(PhysXLibrary.areObjectsInCollisionRange(A,B)) {
-					if(PhysXLibrary.isCollision(A, B)) {
-//						A.sendMessage()
+			for(Asteroid B : asteroids) {
+				if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(),B.getPhysObj())) {
+					if(PhysXLibrary.isCollision(A.getPhysObj(), B.getPhysObj())) {
+						A.sendCollisionMessage(B.getCollisionData());
 					}
 				}
 			}
-			for(PhysXObject C : ships) {
-				if(PhysXLibrary.areObjectsInCollisionRange(A, C)) {
-					if(PhysXLibrary.isCollision(A, C)) {
-//						A.sendMessage()
-//						B.sendMessage()
+			for(Ship C : ships) {
+				if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(), C.getPhysObj())) {
+					if(PhysXLibrary.isCollision(A.getPhysObj(), C.getPhysObj())) {
+						A.sendCollisionMessage(C.getCollisionData());
+						C.sendCollisionMessage(A.getCollisionData());
 					}
 
 				}
 			}
 		}
 	}
-	*/
+	
 	
 	public void Activate() {
 		this.isActive = true;

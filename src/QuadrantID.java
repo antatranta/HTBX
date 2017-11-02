@@ -1,5 +1,11 @@
 public class QuadrantID {
 	private int x,y,order;
+	
+	public QuadrantID() {
+		this.x = -99;
+		this.y = -99;
+		this.order = -99;
+	}
 	public QuadrantID(int x, int y, int order) {
 		this.x = x;
 		this.y = y;
