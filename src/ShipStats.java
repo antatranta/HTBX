@@ -37,4 +37,16 @@ public class ShipStats {
 	public void setDamage(int damage) {
 		this.damage = damage;
 	}
+	public void incSpeed(int update) {
+		this.speed += update;
+	}
+	public void incShield_max(int update) {
+		this.shield_max += update;
+	}
+	public void incHealth_max(int update) {
+		this.health_max += update;
+	}
+	public void incDamage(int update) {
+		this.damage += update;
+	}
 }
