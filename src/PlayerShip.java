@@ -1,8 +1,8 @@
 public class PlayerShip extends Ship{
 	private int current_shield;
 	
-	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, int x, int y) {
-		super(physObj, current_health, stats, x, y);
+	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats) {
+		super(physObj, current_health, stats);
 		this.current_shield = current_shield;
 	}
 
@@ -10,6 +10,16 @@ public class PlayerShip extends Ship{
 		
 	}
 	
+	@Override
+	public void sendCollisionMessage(CollisionData data) {
+		int damage = data.getDamage();
+		if (data.getType() == CollisionType.asteroid)
+			damage = getCurrent_health();
+		takeDamage(damage);
+		
+	}
+	
+	@Override
 	public void takeDamage(int amount) {
 		current_shield= current_shield - amount;
 		if(current_shield<=0){
