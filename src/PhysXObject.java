@@ -31,6 +31,10 @@ public class PhysXObject {
 		return new Vector2(position);
 	}
 	
+	public void setPosition(Vector2 position) {
+		this.position = position;
+	}
+	
 	public QuadrantID getQUID()
 	{
 		return new QuadrantID(QUID);
