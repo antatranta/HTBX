@@ -4,6 +4,7 @@ public class Bullet {
 	private BulletType bulletType;
 	private float bulletDuration;
 	private PhysXObject physObj;
+	private CollisionData collisionData;
 	
 	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj) {
 		bulletDamage = dmg;
@@ -11,6 +12,7 @@ public class Bullet {
 		bulletType = bullet;
 		bulletDuration = time;
 		physObj = obj;
+		collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
 	}
 	
 	public void setBulletDamage(int dmg) {

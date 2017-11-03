@@ -21,6 +21,9 @@ public class Quadrant{
 	
 	
 	public void checkForCollisions() {
+		if (!isActive) {
+			return;
+		}
 		for(Ship A : ships) {
 			for(Asteroid B : asteroids) {
 				if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(),B.getPhysObj())) {

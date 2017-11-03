@@ -2,7 +2,6 @@ public class CollisionData {
 	private int damage;
 	private CollisionType type;
 	
-	
 	public CollisionData() {
 		this.damage = 0;
 		this.type = CollisionType.enemyShip;
