@@ -15,20 +15,23 @@ public class GameConsole extends GraphicsProgram{
     public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
+        
+       //if (key == KeyEvent.VK_ESCAPE) 
+        //if (key == KeyEvent.VK_ENTER) 
+        	
+        if (key == KeyEvent.VK_A) {
             player.setDx(-1);
         }
 
-        if (key == KeyEvent.VK_RIGHT) {
+        if (key == KeyEvent.VK_D) {
         	player.setDx(1);
         }
 
-        if (key == KeyEvent.VK_UP) {
+        if (key == KeyEvent.VK_W) {
         	player.setDy(-1);
         }
 
-        if (key == KeyEvent.VK_DOWN) {
+        if (key == KeyEvent.VK_S) {
         	player.setDy(1);
         }
     }
@@ -36,20 +39,21 @@ public class GameConsole extends GraphicsProgram{
     public void keyReleased(KeyEvent e) {
         
         int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
+        //if (key == KeyEvent.VK_ESCAPE) 
+        //if (key == KeyEvent.VK_ENTER) 
+        if (key == KeyEvent.VK_A) {
         	player.setDx(0);
         }
 
-        if (key == KeyEvent.VK_RIGHT) {
+        if (key == KeyEvent.VK_D) {
         	player.setDx(0);
         }
 
-        if (key == KeyEvent.VK_UP) {
+        if (key == KeyEvent.VK_W) {
         	player.setDy(0);
         }
 
-        if (key == KeyEvent.VK_DOWN) {
+        if (key == KeyEvent.VK_S) {
         	player.setDy(0);
         }
     }
