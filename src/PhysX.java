@@ -58,8 +58,10 @@ public class PhysX {
 	}
 	
 	private void setActiveQuadrant(QuadrantID newQUID) {
-		//TODO: Add validation
-		this.ActiveQuadrant = newQUID;
+		if (newQUID.getX() > 0 && newQUID.getX() <= MAP_WIDTH
+				&& newQUID.getY() > 0 && newQUID.getY() <= MAP_HEIGHT) {
+			this.ActiveQuadrant = newQUID;
+		}
 	}
 	
 	private ArrayList<PhysXObject> getNearbyPhysXObjects(){
