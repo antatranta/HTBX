@@ -9,9 +9,11 @@ import acm.graphics.GObject;
 
 public class MenuPane extends GraphicsPane {
 	private static final Font font = new Font("", Font.BOLD, 20);	
+	
+	private double yPos = 600 / 2; // used for keeping a yPos for main menu and incrementing for other options in the main menu
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
-	private double yPos = 600 / 2;
+	// TODO possible constant of xPos
 	
 	public MenuPane(MainApplication app) {
 		program = app;
@@ -47,7 +49,8 @@ public class MenuPane extends GraphicsPane {
 			program.remove(menu);
 		}
 	}
-
+	
+	// Main menu options switches panels and/or quits - Anthony
 	@Override
 	public void mousePressed(MouseEvent e) {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
@@ -69,6 +72,7 @@ public class MenuPane extends GraphicsPane {
 		}
 	}
 	
+	// When you hover the mouse over the text it highlights :D - Anthony
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
