@@ -6,10 +6,12 @@ import acm.program.GraphicsProgram;
 public class GameConsole extends GraphicsProgram{
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
 	private PlayerShip player;
+	private PhysX physx;
+	private int skillPoints;
 	
-	
-	
-	
+	public GameConsole() {
+		
+	}
 	
 	//
     public void keyPressed(KeyEvent e) {
@@ -21,6 +23,7 @@ public class GameConsole extends GraphicsProgram{
         	
         if (key == KeyEvent.VK_A) {
             player.setDx(-1);
+            System.out.println("Pressed A");
         }
 
         if (key == KeyEvent.VK_D) {

@@ -64,8 +64,10 @@ public class PhysX {
 		}
 	}
 	
-	private ArrayList<PhysXObject> getNearbyPhysXObjects(PhysXObject objectThingy){
+	private ArrayList<PhysXObject> getNearbyPhysXObjects(PhysXObject obj){
 		// Get Thingy's QUID
+		QuadrantID quid = obj.getQUID();
+		
 		// Look at the elements in the surrounding QUIDs
 		// Do a distance calc to see if in camera range
 		// Draw everything that returns
