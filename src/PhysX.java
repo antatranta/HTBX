@@ -1,15 +1,26 @@
 // PhysX Class
 import java.util.*;
 public class PhysX {
-	public static float	QUADRANT_HEIGHT;
-	public static float	QUADRANT_WIDTH;
-	public static int 	MAP_WIDTH;
-	public static int 	MAP_HEIGHT;
+	
+	private float	QUADRANT_HEIGHT;
+	private float	QUADRANT_WIDTH;
+	private int 		MAP_WIDTH;
+	private int 		MAP_HEIGHT;
 	
 	private ArrayList<Quadrant> Quadrants;
 	private QuadrantID ActiveQuadrant;
 	
 	public PhysX() {
+		Quadrants = new ArrayList<Quadrant>();
+		ActiveQuadrant = new QuadrantID(0,0,0);
+	}
+	
+	public PhysX(float QUADRANT_HEIGHT, float QUADRANT_WIDTH, int MAP_WIDTH, int MAP_HEIGHT) {
+		this.QUADRANT_HEIGHT = QUADRANT_HEIGHT;
+		this.QUADRANT_WIDTH = QUADRANT_WIDTH;
+		this.MAP_WIDTH = MAP_WIDTH;
+		this.MAP_HEIGHT = MAP_HEIGHT;
+		
 		Quadrants = new ArrayList<Quadrant>();
 		ActiveQuadrant = new QuadrantID(0,0,0);
 	}
@@ -71,9 +82,8 @@ public class PhysX {
 	
 	private ArrayList<PhysXObject> getNearbyPhysXObjects(PhysXObject obj){
 		// Get Thingy's QUID
-		QuadrantID quid = obj.getQUID();
-		
 		// Look at the elements in the surrounding QUIDs
+		ArrayList<Quadrant> quads = getNearbyQuadrants(obj.getQUID());
 		// Do a distance calc to see if in camera range
 		// Draw everything that returns
 		// Update what is and what is not to be displayed
