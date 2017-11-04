@@ -64,8 +64,15 @@ public class PhysX {
 		}
 	}
 	
-	private ArrayList<PhysXObject> getNearbyPhysXObjects(){
+	private ArrayList<PhysXObject> getNearbyPhysXObjects(PhysXObject objectThingy){
+		// Get Thingy's QUID
+		// Look at the elements in the surrounding QUIDs
+		// Do a distance calc to see if in camera range
+		// Draw everything that returns
+		// Update what is and what is not to be displayed
+		// Create an offset so that the camera will be centered
 		return new ArrayList<PhysXObject>();
+		
 	}
 	
 	// The quadrants will always be read in order

@@ -19,7 +19,6 @@ public class Quadrant{
 		return QUID;
 	}
 	
-	
 	public void checkForCollisions() {
 		if (!isActive) {
 			return;
@@ -43,8 +42,7 @@ public class Quadrant{
 			}
 		}
 	}
-	
-	
+
 	public void Activate() {
 		this.isActive = true;
 	}
