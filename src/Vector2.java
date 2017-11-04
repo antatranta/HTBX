@@ -35,4 +35,9 @@ public class Vector2 {
 	public static Vector2 One() {
 		return new Vector2(1,1);
 	}
+	
+	public float distance(Vector2 from, Vector2 to) {
+		return (float)Math.sqrt(Math.pow(to.getX() - from.getX(), 2) + Math.pow(to.getY() - from.getY(), 2));
+	}
+	
 }
