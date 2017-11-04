@@ -14,7 +14,16 @@ public class GameConsole extends GraphicsProgram{
 		physx = new PhysX();
 		Quadrant h = new Quadrant(new QuadrantID(0,0,0));
 		physx.addQuadrant(h);
+		player = new PlayerShip(new PhysXObject(new QuadrantID(0,0,0)), 1, new ShipStats(1,1,1,1));
 		// Create the universe. For now, only a single quadrant
+	}
+	
+	public PhysX physx() {
+		return physx;
+	}
+	
+	public PlayerShip getPlayer() {
+		return player;
 	}
 	
 	//

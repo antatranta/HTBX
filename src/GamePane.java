@@ -18,6 +18,10 @@ public class GamePane extends GraphicsPane implements ActionListener {
 		console = program.getGameConsole();
 		player = new GImage("PlayerShip_Placeholder.png", 100, 100);
 		auto_fire = new Timer(250, this);
+		if (console.getPlayer() != null) {
+			System.out.println("GamePane reads GameConsole Player ship");
+		}
+		
 	}
 	
 	@Override
