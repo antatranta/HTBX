@@ -32,7 +32,7 @@ public class PhysXLibrary{
 		return false;
 	}
 	
-	/*
+	
 	public static QuadrantPlacement getPositionInQuadrant(PhysXObject a) {
 		
 		// First we offset the position of the object
@@ -64,7 +64,15 @@ public class PhysXLibrary{
 				return QuadrantPlacement.bottom_right;
 		}
 	}
-	*/
+	
+	public static boolean areObjectsInXRange(PhysXObject a, PhysXObject b, float range) {
+		if(Math.abs(a.getPosition().getX() - b.getPosition().getX()) < range
+				&& Math.abs(a.getPosition().getY() - b.getPosition().getY()) < range) {
+			return true;
+		}
+		return false;
+	}
+	
 	public static boolean areObjectsInCollisionRange(PhysXObject a, PhysXObject b) {
 		/*
 		QuadrantPlacement aPlacement = getPositionInQuadrant(a);
@@ -83,10 +91,6 @@ public class PhysXLibrary{
 			return false;
 		}
 		*/
-		if(Math.abs(a.getPosition().getX() - b.getPosition().getX()) < COLLISION_CONSTANT
-				&& Math.abs(a.getPosition().getY() - b.getPosition().getY()) < COLLISION_CONSTANT) {
-			return true;
-		}
-		return false;
+		return areObjectsInXRange(a, b, COLLISION_CONSTANT);
 	}
 }
