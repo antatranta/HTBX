@@ -8,10 +8,10 @@ import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
 public class MenuPane extends GraphicsPane {
-	private static final Font font = new Font("", Font.BOLD, 24);	
+	private static final Font font = new Font("", Font.BOLD, 20);	
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
-	private GLabel play;
-	private ArrayList<GLabel> mainMenu;
+	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
+	private double yPos = 600 / 2;
 	
 	public MenuPane(MainApplication app) {
 		program = app;
@@ -27,7 +27,10 @@ public class MenuPane extends GraphicsPane {
 		mainMenu.add(quit);
 		
 		for(GLabel menu:mainMenu) {
-			
+			menu.setFont(font);
+			menu.setLocation(800 / 2, yPos);
+			menu.setColor(Color.white);
+			yPos = 50 + yPos;
 		}
 	}
 	
@@ -48,20 +51,34 @@ public class MenuPane extends GraphicsPane {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
-		
-		if(obj == play) {
-			program.switchToSome();
+		for(GLabel menu:mainMenu) {
+			if(obj == menu) {
+				switch(menu.getLabel()) {
+					case "PLAY":
+						program.switchToSome();
+						break;
+						
+					case "QUIT":
+						System.exit(0);
+						break;
+						
+					default:
+						break;
+				}
+			}
 		}
 	}
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == play) {
-			play.setColor(Color.white);
-		}
-		else {
-			play.setColor(Color.gray);
+		for(GLabel menu:mainMenu) {
+			if(obj == menu) {
+				menu.setColor(Color.white);
+			}
+			else {
+				menu.setColor(Color.gray);
+			}
 		}
 	}
 }

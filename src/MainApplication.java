@@ -9,22 +9,17 @@ public class MainApplication extends GraphicsApplication {
 	
 	private SomePane somePane;
 	private MenuPane menu;
-	private GRect bg;
 	private int count = 0;
 	
 	public void init() {
 		setTitle("HTBX");
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		setBackground(Color.black);
 	}
 	
 	public void run() {
 		somePane = new SomePane(this);
 		menu = new MenuPane(this);
-		bg = new GRect(WINDOW_WIDTH, WINDOW_HEIGHT);
-		bg.setFillColor(Color.black);
-		bg.setFilled(true);
-		add(bg);
-		
 		switchToMenu();
 	}
 	
