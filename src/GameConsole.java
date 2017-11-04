@@ -6,11 +6,15 @@ import acm.program.GraphicsProgram;
 public class GameConsole extends GraphicsProgram{
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
 	private PlayerShip player;
-	private PhysX physx;
+	private PhysX physx; // The controller for all things
 	private int skillPoints;
 	
 	public GameConsole() {
-		
+		System.out.println("Made a new game console");
+		physx = new PhysX();
+		Quadrant h = new Quadrant(new QuadrantID(0,0,0));
+		physx.addQuadrant(h);
+		// Create the universe. For now, only a single quadrant
 	}
 	
 	//

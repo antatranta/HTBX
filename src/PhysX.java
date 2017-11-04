@@ -9,6 +9,11 @@ public class PhysX {
 	private ArrayList<Quadrant> Quadrants;
 	private QuadrantID ActiveQuadrant;
 	
+	public PhysX() {
+		Quadrants = new ArrayList<Quadrant>();
+		ActiveQuadrant = new QuadrantID(0,0,0);
+	}
+	
 	public static QuadrantID assignQuadrant(Vector2 a) {
 		return new QuadrantID(0,0,0);
 	}
