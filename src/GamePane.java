@@ -24,12 +24,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private int track_amount = 0;
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
-	// Anthony: For now a timer is fine but later on when we are going into the big picture of things game loops are going to be
-	// a big thing and I will do the game loop coding, if you want to help then google game loops
-	// the reasoning for this is because game loops are more akin to the usage of games while timers
-	// can easily hinder frames if there are alot of objects on screen plus usage of game loops is easier :P
-	// https://stackoverflow.com/questions/17440555/using-timer-and-game-loop
-	// http://gameprogrammingpatterns.com/game-loop.html
+	// Nevermind, scratch the idea of game loops we cannot use it here
+	// if we do everything becomes really buggy so timers are okay
+	// but if you still want to study game loops feel free to
+	// just lets get this game working with what we got w/ ACM
 	public GamePane(MainApplication app) {
 		this.program = app;
 		cursor_dots = new ArrayList <GOval>();
@@ -137,23 +135,19 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         
        //if (key == KeyEvent.VK_ESCAPE) 
         //if (key == KeyEvent.VK_ENTER)  
-        	
+        
         if (key == KeyEvent.VK_A) {
             player.setDx(-1);
             player_img.move(-1, 0);
-            
         }
-
         if (key == KeyEvent.VK_D) {
         	player.setDx(1);
         	player_img.move(1, 0);
         }
-
         if (key == KeyEvent.VK_W) {
         	player.setDy(-1);
         	player_img.move(0, -1);
         }
-
         if (key == KeyEvent.VK_S) {
         	player.setDy(1);
         	player_img.move(0, 1);
@@ -169,15 +163,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         if (key == KeyEvent.VK_A) {
         	player.setDx(0);
         }
-
         if (key == KeyEvent.VK_D) {
         	player.setDx(0);
         }
-
         if (key == KeyEvent.VK_W) {
         	player.setDy(0);
         }
-
         if (key == KeyEvent.VK_S) {
         	player.setDy(0);
         }

@@ -6,7 +6,6 @@ import java.awt.Font;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import javafx.geometry.Pos;
 
 public class MenuPane extends GraphicsPane {
 	private static final Font font = new Font("", Font.BOLD, 20);	
@@ -60,6 +59,17 @@ public class MenuPane extends GraphicsPane {
 				switch(menu.getLabel()) {
 					case "PLAY":
 						program.switchToSome();
+						break;
+						
+					case "SETTINGS":
+						System.out.println("SETTINGS accessed");
+						break;
+						
+					case "SCORES":
+						System.out.println("SCORES accesssed");
+						break;
+					case "CONTROLS":
+						System.out.println("CONTROLS accessed");
 						break;
 						
 					case "QUIT":
