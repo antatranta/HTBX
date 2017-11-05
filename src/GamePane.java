@@ -13,6 +13,12 @@ public class GamePane extends GraphicsPane implements ActionListener {
 	private GImage player;
 	private Timer auto_fire;
 	
+	// Anthony: For now a timer is fine but later on when we are going into the big picture of things game loops are going to be
+	// a big thing and I will do the game loop coding, if you want to help then google game loops
+	// the reasoning for this is because game loops are more akin to the usage of games while timers
+	// can easily hinder frames if there are alot of objects on screen
+	// https://stackoverflow.com/questions/17440555/using-timer-and-game-loop
+	// http://gameprogrammingpatterns.com/game-loop.html
 	public GamePane(MainApplication app) {
 		this.program = app;
 		console = program.getGameConsole();
