@@ -36,7 +36,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img = new GImage("PlayerShip_Placeholder.png", 0, 0);
 		auto_fire = new Timer(250, this);
 		if (console.getPlayer() != null && player != null) {
-			System.out.println("GamePane reads GameConsole Player ship");
+			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
 		centerPlayer();
 	}
@@ -84,7 +84,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
 	public void alignReticle(double x, double y) {
-		Vector2 root = player.getPhysObj().getPosition();
+		//Vector2 root = player.getPhysObj().getPosition();
 		Vector2 visual_root = new Vector2((float)(player_img.getX() + (player_img.getWidth()/2)), (float)(player_img.getY() + (player_img.getHeight()/2)));
 		int distance = (int)Math.floor(PhysXLibrary.distance(visual_root, new Vector2((float)x, (float)y)));
 		int dots = (distance / CURSOR_DIST) + 1;
@@ -104,13 +104,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		// Align them properly
-		double off_x = x - visual_root.getX();
-		double off_y = y - visual_root.getY();
+		double off_x = (x - visual_root.getX());
+		double off_y = (y - visual_root.getY());
 		cursor_dots.get(0).setLocation(x - (CURSOR_SIZE / 2), y - (CURSOR_SIZE / 2));
 		for (int i = 1; i < cursor_dots.size(); i++) {
 			cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + ((off_x / cursor_dots.size()) * i), visual_root.getY() - (CURSOR_SIZE / 2) + ((off_y / cursor_dots.size()) * i));
 		}
-		System.out.println("Distance: " + distance + ", Drawn: " + dots);
+		//System.out.println("Distance: " + distance + ", Drawn: " + dots);
 	}
 	
 
