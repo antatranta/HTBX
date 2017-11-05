@@ -1,3 +1,4 @@
+import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
@@ -10,12 +11,12 @@ public class GameConsole extends GraphicsProgram{
 	private int skillPoints;
 	
 	public GameConsole() {
+		// Create the universe. For now, only a single quadrant
 		System.out.println("Made a new game console");
 		physx = new PhysX();
 		Quadrant h = new Quadrant(new QuadrantID(0,0,0));
 		physx.addQuadrant(h);
-		player = new PlayerShip(new PhysXObject(new QuadrantID(0,0,0)), 1, new ShipStats(1,1,1,1));
-		// Create the universe. For now, only a single quadrant
+		player = new PlayerShip(new PhysXObject(new QuadrantID(0,0,0), new Vector2(100, 100)), 1, new ShipStats(1,1,1,1));
 	}
 	
 	public PhysX physx() {
@@ -26,9 +27,9 @@ public class GameConsole extends GraphicsProgram{
 		return player;
 	}
 	
-	//
+	@Override
     public void keyPressed(KeyEvent e) {
-
+    	System.out.println("Key Read");
         int key = e.getKeyCode();
         
        //if (key == KeyEvent.VK_ESCAPE) 
@@ -36,7 +37,6 @@ public class GameConsole extends GraphicsProgram{
         	
         if (key == KeyEvent.VK_A) {
             player.setDx(-1);
-            System.out.println("Pressed A");
         }
 
         if (key == KeyEvent.VK_D) {
@@ -52,6 +52,7 @@ public class GameConsole extends GraphicsProgram{
         }
     }
 
+	@Override
     public void keyReleased(KeyEvent e) {
         
         int key = e.getKeyCode();

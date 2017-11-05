@@ -2,6 +2,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PlayerShip extends Ship implements ActionListener{
+	private Ship ship;
 	private int current_shield;
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats) {
