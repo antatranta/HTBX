@@ -37,18 +37,22 @@ public class GameConsole extends GraphicsProgram{
         	
         if (key == KeyEvent.VK_A) {
             player.setDx(-1);
+            System.out.println("A");
         }
 
         if (key == KeyEvent.VK_D) {
         	player.setDx(1);
+        	System.out.println("D");
         }
 
         if (key == KeyEvent.VK_W) {
         	player.setDy(-1);
+        	System.out.println("W");
         }
 
         if (key == KeyEvent.VK_S) {
         	player.setDy(1);
+        	System.out.println("S");
         }
     }
 
