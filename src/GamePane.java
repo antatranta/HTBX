@@ -11,7 +11,7 @@ import javax.swing.Timer;
 import acm.graphics.*;
 
 public class GamePane extends GraphicsPane implements ActionListener, KeyListener {
-	private static final int CURSOR_DIST = 100;
+	private static final int CURSOR_DIST = 50;
 	private static final int CURSOR_SIZE = 10;
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
@@ -106,9 +106,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Align them properly
 		double off_x = (x - visual_root.getX());
 		double off_y = (y - visual_root.getY());
+		double theta_rad = Math.atan2(off_y, off_x);
 		cursor_dots.get(0).setLocation(x - (CURSOR_SIZE / 2), y - (CURSOR_SIZE / 2));
 		for (int i = 1; i < cursor_dots.size(); i++) {
-			cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + ((off_x / cursor_dots.size()) * i), visual_root.getY() - (CURSOR_SIZE / 2) + ((off_y / cursor_dots.size()) * i));
+			cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + ((Math.cos(theta_rad) * CURSOR_DIST) * i), visual_root.getY() - (CURSOR_SIZE / 2) + ((Math.sin(theta_rad) * CURSOR_DIST) * i));
+			//cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + ((off_x / cursor_dots.size()) * i), visual_root.getY() - (CURSOR_SIZE / 2) + ((off_y / cursor_dots.size()) * i));
 		}
 		//System.out.println("Distance: " + distance + ", Drawn: " + dots);
 	}
