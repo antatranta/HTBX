@@ -136,7 +136,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         int key = e.getKeyCode();
         
        //if (key == KeyEvent.VK_ESCAPE) 
-        //if (key == KeyEvent.VK_ENTER) 
+        //if (key == KeyEvent.VK_ENTER)  
         	
         if (key == KeyEvent.VK_A) {
             player.setDx(-1);
