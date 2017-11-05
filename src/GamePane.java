@@ -4,6 +4,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
@@ -138,18 +140,23 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         	
         if (key == KeyEvent.VK_A) {
             player.setDx(-1);
+            player_img.move(-1, 0);
+            
         }
 
         if (key == KeyEvent.VK_D) {
         	player.setDx(1);
+        	player_img.move(1, 0);
         }
 
         if (key == KeyEvent.VK_W) {
         	player.setDy(-1);
+        	player_img.move(0, -1);
         }
 
         if (key == KeyEvent.VK_S) {
         	player.setDy(1);
+        	player_img.move(0, 1);
         }
     }
 
