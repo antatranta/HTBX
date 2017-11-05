@@ -22,6 +22,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private int track_amount = 0;
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
+	// Anthony: For now a timer is fine but later on when we are going into the big picture of things game loops are going to be
+	// a big thing and I will do the game loop coding, if you want to help then google game loops
+	// the reasoning for this is because game loops are more akin to the usage of games while timers
+	// can easily hinder frames if there are alot of objects on screen plus usage of game loops is easier :P
+	// https://stackoverflow.com/questions/17440555/using-timer-and-game-loop
+	// http://gameprogrammingpatterns.com/game-loop.html
 	public GamePane(MainApplication app) {
 		this.program = app;
 		cursor_dots = new ArrayList <GOval>();

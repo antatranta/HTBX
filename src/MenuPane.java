@@ -6,11 +6,12 @@ import java.awt.Font;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import javafx.geometry.Pos;
 
 public class MenuPane extends GraphicsPane {
 	private static final Font font = new Font("", Font.BOLD, 20);	
 	
-	private double yPos = MainApplication.WINDOW_HEIGHT / 2; // used for keeping a yPos for main menu and incrementing for other options in the main menu
+	private double yPos = 225; // used for keeping a yPos for main menu and incrementing for other options in the main menu
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
 	// TODO possible constant of xPos
@@ -30,8 +31,8 @@ public class MenuPane extends GraphicsPane {
 		
 		for(GLabel menu:mainMenu) {
 			menu.setFont(font);
-			menu.setLocation(MainApplication.WINDOW_WIDTH / 2, yPos);
-			menu.setColor(Color.white);
+			menu.setLocation(345, yPos);
+			menu.setColor(Color.gray);
 			yPos = 50 + yPos;
 		}
 	}
