@@ -103,7 +103,7 @@ public class PhysX {
 		// Draw everything that returns
 		// Update what is and what is not to be displayed
 		// Create an offset so that the camera will be centered
-		return new objects;
+		return objects;
 		
 	}
 	

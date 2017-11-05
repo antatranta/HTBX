@@ -1,24 +1,30 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.Timer;
 
-import acm.graphics.GImage;
-import acm.graphics.GObject;
+import acm.graphics.*;
 
 public class GamePane extends GraphicsPane implements ActionListener, KeyListener {
+	private static final int CURSOR_DIST = 100;
+	private static final int CURSOR_SIZE = 10;
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
 	private GImage player_img;
 	private PlayerShip player;
 	private Timer auto_fire;
+	private ArrayList <GOval> cursor_dots;
+	private int track_amount = 0;
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
 	public GamePane(MainApplication app) {
 		this.program = app;
+		cursor_dots = new ArrayList <GOval>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
 		player_img = new GImage("PlayerShip_Placeholder.png", 0, 0);
@@ -40,6 +46,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	@Override
 	public void hideContents() {
+		auto_fire.stop();	
 		program.remove(player_img);
 	}
 	
@@ -69,6 +76,49 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 	}
 	
+	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
+	public void alignReticle(double x, double y) {
+		Vector2 root = player.getPhysObj().getPosition();
+		Vector2 visual_root = new Vector2((float)(player_img.getX() + (player_img.getWidth()/2)), (float)(player_img.getY() + (player_img.getHeight()/2)));
+		int distance = (int)Math.floor(PhysXLibrary.distance(visual_root, new Vector2((float)x, (float)y)));
+		int dots = (distance / CURSOR_DIST) + 1;
+		if (cursor_dots.size() < dots) {
+			for (int i = 0; i < dots - cursor_dots.size(); i++) {
+				GOval dot = new GOval(10, 10, CURSOR_SIZE, CURSOR_SIZE);
+				dot.setColor(Color.WHITE);
+				cursor_dots.add(dot);
+				program.add(dot);
+			}
+		}
+		if (cursor_dots.size() > dots) {
+			for (int i = 0; i < cursor_dots.size() - dots; i++) {
+				program.remove(cursor_dots.get(0));
+				cursor_dots.remove(0);
+			}
+		}
+		
+		// Align them properly
+		double off_x = x - visual_root.getX();
+		double off_y = y - visual_root.getY();
+		cursor_dots.get(0).setLocation(x - (CURSOR_SIZE / 2), y - (CURSOR_SIZE / 2));
+		for (int i = 1; i < cursor_dots.size(); i++) {
+			cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + ((off_x / cursor_dots.size()) * i), visual_root.getY() - (CURSOR_SIZE / 2) + ((off_y / cursor_dots.size()) * i));
+		}
+		System.out.println("Distance: " + distance + ", Drawn: " + dots);
+	}
+	
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		alignReticle(e.getX(), e.getY());
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		alignReticle(e.getX(), e.getY());
+	}
+	
+	// Key Presses work; the println statements were removed to prevent clutter in the console as I test
 	@Override
     public void keyPressed(KeyEvent e) {
     	
@@ -78,22 +128,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         //if (key == KeyEvent.VK_ENTER) 
         	
         if (key == KeyEvent.VK_A) {
-        	System.out.println("v A Key Pressed");
             player.setDx(-1);
         }
 
         if (key == KeyEvent.VK_D) {
-        	System.out.println("v D Key Pressed");
         	player.setDx(1);
         }
 
         if (key == KeyEvent.VK_W) {
-        	System.out.println("v W Key Pressed");
         	player.setDy(-1);
         }
 
         if (key == KeyEvent.VK_S) {
-        	System.out.println("v S Key Pressed");
         	player.setDy(1);
         }
     }
@@ -105,22 +151,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         //if (key == KeyEvent.VK_ESCAPE) 
         //if (key == KeyEvent.VK_ENTER) 
         if (key == KeyEvent.VK_A) {
-        	System.out.println("^ A Key Released");
         	player.setDx(0);
         }
 
         if (key == KeyEvent.VK_D) {
-        	System.out.println("^ D Key Released");
         	player.setDx(0);
         }
 
         if (key == KeyEvent.VK_W) {
-        	System.out.println("^ W Key Released");
         	player.setDy(0);
         }
 
         if (key == KeyEvent.VK_S) {
-        	System.out.println("^ S Key Released");
         	player.setDy(0);
         }
     }
