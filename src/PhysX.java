@@ -1,15 +1,26 @@
 // PhysX Class
 import java.util.*;
 public class PhysX {
-	public static float	QUADRANT_HEIGHT;
-	public static float	QUADRANT_WIDTH;
-	public static int 	MAP_WIDTH;
-	public static int 	MAP_HEIGHT;
+	
+	private float	QUADRANT_HEIGHT;
+	private float	QUADRANT_WIDTH;
+	private int 		MAP_WIDTH;
+	private int 		MAP_HEIGHT;
 	
 	private ArrayList<Quadrant> Quadrants;
 	private QuadrantID ActiveQuadrant;
 	
 	public PhysX() {
+		Quadrants = new ArrayList<Quadrant>();
+		ActiveQuadrant = new QuadrantID(0,0,0);
+	}
+	
+	public PhysX(float QUADRANT_HEIGHT, float QUADRANT_WIDTH, int MAP_WIDTH, int MAP_HEIGHT) {
+		this.QUADRANT_HEIGHT = QUADRANT_HEIGHT;
+		this.QUADRANT_WIDTH = QUADRANT_WIDTH;
+		this.MAP_WIDTH = MAP_WIDTH;
+		this.MAP_HEIGHT = MAP_HEIGHT;
+		
 		Quadrants = new ArrayList<Quadrant>();
 		ActiveQuadrant = new QuadrantID(0,0,0);
 	}
@@ -69,16 +80,30 @@ public class PhysX {
 		}
 	}
 	
-	private ArrayList<PhysXObject> getNearbyPhysXObjects(PhysXObject obj){
+	private ArrayList<PhysXObject> getNearbyPhysXObjects(PhysXObject obj, float range){
 		// Get Thingy's QUID
-		QuadrantID quid = obj.getQUID();
-		
 		// Look at the elements in the surrounding QUIDs
+		ArrayList<Quadrant> quads = getNearbyQuadrants(obj.getQUID());
+		ArrayList<PhysXObject> objects = new ArrayList<PhysXObject>();
+		
+		for(Quadrant quad : quads) {
+			for(Ship ship : quad.getShips()) {
+				if(PhysXLibrary.areObjectsInXRange(obj, ship.getPhysObj(), range)) {
+					objects.add(ship.getPhysObj());
+				}
+			}
+			for (Asteroid asteroid : quad.getStatics()) {
+				if(PhysXLibrary.areObjectsInXRange(obj, asteroid.getPhysObj(), range)) {
+					objects.add(asteroid.getPhysObj());
+				}
+			}
+		}
+		
 		// Do a distance calc to see if in camera range
 		// Draw everything that returns
 		// Update what is and what is not to be displayed
 		// Create an offset so that the camera will be centered
-		return new ArrayList<PhysXObject>();
+		return new objects;
 		
 	}
 	

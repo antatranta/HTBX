@@ -50,4 +50,12 @@ public class Quadrant{
 	public void Deactivate() {
 		this.isActive = false;
 	}
+	
+	public ArrayList<Asteroid> getStatics(){
+		return asteroids;
+	}
+	
+	public ArrayList<Ship> getShips(){
+		return ships;
+	}
 }
