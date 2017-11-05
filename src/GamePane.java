@@ -107,11 +107,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		double off_x = (x - visual_root.getX());
 		double off_y = (y - visual_root.getY());
 		double theta_rad = Math.atan2(off_y, off_x);
-		double unit_x = visual_root.getX() - (CURSOR_SIZE / 2) + (Math.cos(theta_rad) * CURSOR_DIST);
-		double unit_y = visual_root.getY() - (CURSOR_SIZE / 2) + (Math.sin(theta_rad) * CURSOR_DIST);
+		double unit_x = (Math.cos(theta_rad) * CURSOR_DIST);
+		double unit_y = (Math.sin(theta_rad) * CURSOR_DIST);
 		cursor_dots.get(0).setLocation(x - (CURSOR_SIZE / 2), y - (CURSOR_SIZE / 2));
 		for (int i = 1; i < cursor_dots.size(); i++) {
-			cursor_dots.get(i).setLocation(unit_x * i, unit_y * i);
+			cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + (unit_x * i), visual_root.getY() - (CURSOR_SIZE / 2) + (unit_y * i));
 		}
 		//System.out.println("Distance: " + distance + ", Drawn: " + dots);
 	}
