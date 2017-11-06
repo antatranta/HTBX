@@ -137,20 +137,20 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         //if (key == KeyEvent.VK_ENTER)  
         
         if (key == KeyEvent.VK_A) {
-            player.setDx(-1);
-            player_img.move(-1, 0);
+            player.setDx(-5);
+            player_img.move(-5, 0);
         }
         if (key == KeyEvent.VK_D) {
-        	player.setDx(1);
-        	player_img.move(1, 0);
+        	player.setDx(5);
+        	player_img.move(5, 0);
         }
         if (key == KeyEvent.VK_W) {
-        	player.setDy(-1);
-        	player_img.move(0, -1);
+        	player.setDy(-5);
+        	player_img.move(0, -5);
         }
         if (key == KeyEvent.VK_S) {
-        	player.setDy(1);
-        	player_img.move(0, 1);
+        	player.setDy(5);
+        	player_img.move(0, 5);
         }
     }
 
