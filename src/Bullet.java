@@ -5,13 +5,15 @@ public class Bullet {
 	private float bulletDuration;
 	private PhysXObject physObj;
 	private CollisionData collisionData;
+	private Vector2 movementVector;
 	
-	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj) {
-		bulletDamage = dmg;
-		bulletSpeed = spd;
-		bulletType = bullet;
-		bulletDuration = time;
-		physObj = obj;
+	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+		this.bulletDamage = dmg;
+		this.bulletSpeed = spd;
+		this.bulletType = bullet;
+		this.bulletDuration = time;
+		this.physObj = obj;
+		this.movementVector = movementVector;
 		collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
 	}
 	
@@ -53,5 +55,9 @@ public class Bullet {
 	
 	public PhysXObject getPhysObj() {
 		return physObj;
+	}
+	
+	public void addMovement() {
+		this.physObj.setPosition(this.physObj.getPosition().add(movementVector));
 	}
 }
