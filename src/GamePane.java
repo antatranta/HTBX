@@ -20,6 +20,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GImage player_img;
 	private PlayerShip player;
 	private Timer auto_fire;
+	
+	private GameTimer gameTimer;
+	private int TIMER_INTERVAL;
+	private int INITIAL_DELAY;
+	
 	private ArrayList <GOval> cursor_dots;
 	private int track_amount = 0;
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
@@ -30,6 +35,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	// just lets get this game working with what we got w/ ACM
 	public GamePane(MainApplication app) {
 		this.program = app;
+		
+		gameTimer = new GameTimer();
+		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
+		
 		cursor_dots = new ArrayList <GOval>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
