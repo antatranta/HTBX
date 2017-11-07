@@ -100,7 +100,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		if (cursor_dots.size() < dots) {
 			for (int i = 0; i < dots - cursor_dots.size(); i++) {
 				GOval dot = new GOval(10, 10, CURSOR_SIZE, CURSOR_SIZE);
-				dot.setColor(Color.WHITE);
+				dot.setColor(Color.black);
 				cursor_dots.add(dot);
 				program.add(dot);
 			}
