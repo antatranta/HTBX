@@ -7,10 +7,11 @@ public class MainApplication extends GraphicsApplication {
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
 	
-	private GamePane game_pane;
+	private GamePane game;
 	private MenuPane menu;
+	private SettingsPane settings;
 	private GameConsole console;
-	private int count = 0;
+	//private int count = 0;
 	
 	
 	public void init() {
@@ -21,8 +22,9 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void run() {
-		game_pane = new GamePane(this);
+		game = new GamePane(this);
 		menu = new MenuPane(this);
+		settings = new SettingsPane(this);
 		switchToMenu();
 	}
 	
@@ -32,17 +34,21 @@ public class MainApplication extends GraphicsApplication {
 			case 0: audio.stopSound("sounds", "r2d2.mp3"); break;
 			case 1: audio.stopSound("sounds", "somethinlikethis.mp3"); break;
 		}*/
-		count++;
+		//count++;
 		switchToScreen(menu);
 	}
 	
-	public void switchToSome() {
+	public void switchToGame() {
 		AudioPlayer audio = AudioPlayer.getInstance();
 		/*switch(count % 2) {
 			case 0: audio.playSound("sounds", "r2d2.mp3"); break;
 			case 1: audio.playSound("sounds", "somethinlikethis.mp3"); break;
 		}*/
-		switchToScreen(game_pane);
+		switchToScreen(game);
+	}
+	
+	public void switchToSettings() {
+		switchToScreen(settings);
 	}
 	
 	public GameConsole getGameConsole() {
