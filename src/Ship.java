@@ -4,6 +4,7 @@ public class Ship {
 	private CollisionData collisionData;
 	private int current_health;
 	private ShipStats stats;
+	private double dir = 90;
 	
 	private int dx = 0;// 1 to right, -1 to left.
 	private int dy = 0;// 1 to up, -1 to down.
@@ -13,6 +14,14 @@ public class Ship {
 		this.physObj = new PhysXObject();
 		this.setCurrent_health(current_health);
 		this.stats = new ShipStats(1, 1, 1, 1);//speed, shield_max, health_max, damage
+	}
+	
+	public double getAngle() {
+		return dir;
+	}
+	
+	public void adjustAngle(double degree) {
+		dir += degree;
 	}
 	
 	public PhysXObject getPhysObj() {

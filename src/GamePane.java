@@ -21,12 +21,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GameImage player_img;
 	private PlayerShip player;
 	private Timer auto_fire;
+	private Vector2 last_mouse_loc;
 	
 	private GameTimer gameTimer;
 	private int TIMER_INTERVAL;
 	private int INITIAL_DELAY;
 	
 	private ArrayList <GOval> cursor_dots;
+	private ArrayList <Character> pressed_keys;
 	private int track_amount = 0;
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
@@ -37,10 +39,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public GamePane(MainApplication app) {
 		this.program = app;
 		
+		last_mouse_loc = new Vector2(0,0);
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
 		
 		cursor_dots = new ArrayList <GOval>();
+		pressed_keys = new ArrayList <Character>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
 		player_img = new GameImage("PlayerShip_Placeholder.png", 0, 0);
@@ -93,10 +97,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
-	public void alignReticle(double x, double y) {
+	public void alignReticle(Vector2 coord) {
 		//Vector2 root = player.getPhysObj().getPosition();
 		Vector2 visual_root = new Vector2((float)(player_img.getX() + (player_img.getWidth()/2)), (float)(player_img.getY() + (player_img.getHeight()/2)));
-		int distance = (int)Math.floor(PhysXLibrary.distance(visual_root, new Vector2((float)x, (float)y)));
+		int distance = (int)Math.floor(PhysXLibrary.distance(visual_root, new Vector2(coord.getX(), coord.getY())));
 		int dots = (distance / CURSOR_DIST) + 1;
 		if (cursor_dots.size() < dots) {
 			for (int i = 0; i < dots - cursor_dots.size(); i++) {
@@ -114,12 +118,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		// Align them properly
-		double off_x = (x - visual_root.getX());
-		double off_y = (y - visual_root.getY());
+		double off_x = (coord.getX() - visual_root.getX());
+		double off_y = (coord.getY() - visual_root.getY());
 		double theta_rad = Math.atan2(off_y, off_x);
 		double unit_x = (Math.cos(theta_rad) * CURSOR_DIST);
 		double unit_y = (Math.sin(theta_rad) * CURSOR_DIST);
-		cursor_dots.get(0).setLocation(x - (CURSOR_SIZE / 2), y - (CURSOR_SIZE / 2));
+		cursor_dots.get(0).setLocation(coord.getX() - (CURSOR_SIZE / 2), coord.getY() - (CURSOR_SIZE / 2));
 		for (int i = 1; i < cursor_dots.size(); i++) {
 			cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + (unit_x * i), visual_root.getY() - (CURSOR_SIZE / 2) + (unit_y * i));
 		}
@@ -129,12 +133,22 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		alignReticle(e.getX(), e.getY());
+		last_mouse_loc.setXY(e.getX(), e.getY()); 
+		alignReticle(last_mouse_loc);
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		alignReticle(e.getX(), e.getY());
+		last_mouse_loc.setXY(e.getX(), e.getY()); 
+		alignReticle(last_mouse_loc);
+	}
+	
+	private void removeKey(char key) {
+		for (int i = 0; i < pressed_keys.size(); i++) {
+			if (pressed_keys.get(i) == key) {
+				pressed_keys.remove(i);
+			}
+		}
 	}
 	
 	// Key Presses work; the println statements were removed to prevent clutter in the console as I test
@@ -142,27 +156,57 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
     public void keyPressed(KeyEvent e) {
     	
         int key = e.getKeyCode();
-        
+        String out = "Pressed keys: ";
+        for (int i = 0; i < pressed_keys.size(); i++) {
+        	out = out + pressed_keys.get(i) + " ";
+        }
+        System.out.println(out);
        //if (key == KeyEvent.VK_ESCAPE) 
         //if (key == KeyEvent.VK_ENTER)  
         
         if (key == KeyEvent.VK_A) {
+        	if (!pressed_keys.contains((char)KeyEvent.VK_A)) {
+        		pressed_keys.add((char)key);
+        	}
             player.setDx(-5);
-            player_img.rotate(-5);
-            //player_img.move(-5, 0);
+            
         }
         if (key == KeyEvent.VK_D) {
+        	if (!pressed_keys.contains((char)KeyEvent.VK_D)) {
+        		pressed_keys.add((char)key);
+        	}
         	player.setDx(5);
-        	//player_img.move(5, 0);
         }
         if (key == KeyEvent.VK_W) {
+        	if (!pressed_keys.contains((char)KeyEvent.VK_W)) {
+        		pressed_keys.add((char)key);
+        	}
         	player.setDy(-5);
-        	//player_img.move(0, -5);
         }
         if (key == KeyEvent.VK_S) {
         	player.setDy(5);
-        	//player_img.move(0, 5);
         }
+        
+
+        for (int i = 0; i < pressed_keys.size(); i++) {
+        	switch(pressed_keys.get(i)) {
+        	case 'W':
+        		double angle = -Math.toRadians(player.getAngle());
+        		player_img.move(Math.cos(angle), Math.sin(angle));
+        		break;
+        	case 'A':
+        		player.adjustAngle(5);
+        		player_img.rotate(-5);
+        		break;
+        	case 'S':
+        		break;
+        	case 'D':
+        		player.adjustAngle(-5);
+        		player_img.rotate(5);
+        		break;
+        	}
+        }
+        alignReticle(last_mouse_loc);
     }
 
 	@Override
@@ -172,15 +216,19 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         //if (key == KeyEvent.VK_ESCAPE) 
         //if (key == KeyEvent.VK_ENTER) 
         if (key == KeyEvent.VK_A) {
+        	removeKey((char)KeyEvent.VK_A);
         	player.setDx(0);
         }
         if (key == KeyEvent.VK_D) {
+        	removeKey((char)KeyEvent.VK_D);
         	player.setDx(0);
         }
         if (key == KeyEvent.VK_W) {
+        	removeKey((char)KeyEvent.VK_W);
         	player.setDy(0);
         }
         if (key == KeyEvent.VK_S) {
+        	removeKey((char)KeyEvent.VK_S);
         	player.setDy(0);
         }
     }
