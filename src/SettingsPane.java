@@ -19,21 +19,14 @@ public class SettingsPane extends GraphicsPane {
 	public SettingsPane(MainApplication app) {
 		this.program = app;
 		
-		GLabel musicSettingOn = new GLabel("MUSIC ON");
-		GLabel musicSettingOff = new GLabel("MUSIC OFF");
-		GLabel sfxSettingOn = new GLabel("SFX     ON", 0, 50);
-		GLabel sfxSettingOff = new GLabel("SFX     OFF", 0, 50);
+		GLabel musicSetting = new GLabel("MUSIC ON");
+		GLabel sfxSetting = new GLabel("SFX     ON", 0, 50);
 		GLabel back = new GLabel("BACK", 0, 200);
 		
-		musicSettingOff.setVisible(false);
-		sfxSettingOff.setVisible(false);
-		settings.add(musicSettingOff);
-		settings.add(musicSettingOn);
-		settings.add(sfxSettingOff);
-		settings.add(sfxSettingOn);
+		settings.add(musicSetting);
+		settings.add(sfxSetting);
 		settings.add(back);		
 		
-		//double yPos = CENTER_HEIGHT - (musicSettingOn.getHeight() / 2);
 		for(GLabel setting:settings) {
 			setting.setFont(font);
 			setting.setColor(Color.black);
@@ -58,32 +51,23 @@ public class SettingsPane extends GraphicsPane {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		System.out.println(obj);
 		for(GLabel setting:settings) {
 			if(obj == setting) {
 				switch(setting.getLabel()) {
 					case "MUSIC ON":
-						setting.setVisible(false);
-						setting.sendToBack();
-						for(GLabel musicToggle:settings) {
-							if(musicToggle.getLabel() == "MUSIC OFF") {
-								musicToggle.setVisible(true);
-								musicToggle.sendToFront();
-							}
-						}
+						setting.setLabel("MUSIC OFF");
 						break;
 					
 					case "MUSIC OFF":
-						setting.setVisible(false);
-						setting.sendToBack();
-						for(GLabel musicToggle:settings) {
-							if(musicToggle.getLabel() == "MUSIC ON") {
-								musicToggle.setVisible(true);
-								musicToggle.sendToFront();
-							}
-						}
+						setting.setLabel("MUSIC ON");
+						break;
 						
-					case "SFX":
+					case "SFX     ON":
+						setting.setLabel("SFX     OFF");
+						break;
+						
+					case "SFX     OFF":
+						setting.setLabel("SFX     ON");
 						break;
 						
 					case "BACK":
