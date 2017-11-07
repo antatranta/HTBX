@@ -15,6 +15,7 @@ public class MenuPane extends GraphicsPane {
 	
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
+	private ArrayList<GImage> selection = new ArrayList<GImage>();
 	private GImage title;
 	private GObject obj;
 	// TODO possible constant of xPos
