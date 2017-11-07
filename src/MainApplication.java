@@ -9,7 +9,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	private GamePane game;
 	private MenuPane menu;
-	private SettingsPane settings;
+	private SettingsPane setting;
 	private GameConsole console;
 	//private int count = 0;
 	
@@ -18,13 +18,13 @@ public class MainApplication extends GraphicsApplication {
 		console = new GameConsole();
 		setTitle("HTBX");
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		setBackground(Color.black);
+		setBackground(Color.white);
 	}
 	
 	public void run() {
 		game = new GamePane(this);
 		menu = new MenuPane(this);
-		settings = new SettingsPane(this);
+		setting = new SettingsPane(this);
 		switchToMenu();
 	}
 	
@@ -48,7 +48,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToSettings() {
-		switchToScreen(settings);
+		switchToScreen(setting);
 	}
 	
 	public GameConsole getGameConsole() {
