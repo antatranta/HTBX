@@ -9,35 +9,35 @@ import acm.graphics.GObject;
 
 public class SettingsPane extends GraphicsPane {
 	private static final Font font = new Font("", Font.BOLD, 20);
-	private static double yPos = 225;
-	private static double xPos = 345;
+	private static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
+	private static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
 	
 	private MainApplication program;
 	private ArrayList<GLabel> settings = new ArrayList<GLabel>();
-	private ArrayList<GLabel> onOff = new ArrayList<GLabel>();
 	private GObject obj;
 	
 	public SettingsPane(MainApplication app) {
 		this.program = app;
 		
-		GLabel musicSetting = new GLabel("MUSIC", xPos, yPos);
-		GLabel sfxSetting = new GLabel("SFX", xPos, yPos + 50);
-		GLabel back = new GLabel("BACK", xPos, yPos + 150);
-		GLabel off = new GLabel("OFF", xPos + 100, yPos);
-		GLabel on = new GLabel("ON", xPos + 100, yPos);
-		GLabel off2 = new GLabel("OFF", xPos + 100, yPos + 50);
-		GLabel on2 = new GLabel("ON", xPos + 100, yPos + 50);
+		GLabel musicSettingOn = new GLabel("MUSIC ON");
+		GLabel musicSettingOff = new GLabel("MUSIC OFF");
+		GLabel sfxSettingOn = new GLabel("SFX     ON", 0, 50);
+		GLabel sfxSettingOff = new GLabel("SFX     OFF", 0, 50);
+		GLabel back = new GLabel("BACK", 0, 200);
 		
-		settings.add(musicSetting);
-		settings.add(sfxSetting);
+		musicSettingOff.setVisible(false);
+		sfxSettingOff.setVisible(false);
+		settings.add(musicSettingOff);
+		settings.add(musicSettingOn);
+		settings.add(sfxSettingOff);
+		settings.add(sfxSettingOn);
 		settings.add(back);		
-		onOff.add(off);
-		onOff.add(on);
-		onOff.add(off2);
-		onOff.add(on2);
+		
+		//double yPos = CENTER_HEIGHT - (musicSettingOn.getHeight() / 2);
 		for(GLabel setting:settings) {
 			setting.setFont(font);
 			setting.setColor(Color.black);
+			setting.move(CENTER_WIDTH - (setting.getWidth() / 2), CENTER_HEIGHT - (setting.getHeight() / 2));
 		}
 	}
 	
@@ -45,9 +45,6 @@ public class SettingsPane extends GraphicsPane {
 	public void showContents() {
 		for(GLabel setting:settings) {
 			program.add(setting);
-		}
-		for(GLabel toggle:onOff) {
-			program.add(toggle);
 		}
 	}
 
@@ -61,12 +58,30 @@ public class SettingsPane extends GraphicsPane {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
+		System.out.println(obj);
 		for(GLabel setting:settings) {
 			if(obj == setting) {
 				switch(setting.getLabel()) {
-					case "MUSIC":
-						
+					case "MUSIC ON":
+						setting.setVisible(false);
+						setting.sendToBack();
+						for(GLabel musicToggle:settings) {
+							if(musicToggle.getLabel() == "MUSIC OFF") {
+								musicToggle.setVisible(true);
+								musicToggle.sendToFront();
+							}
+						}
 						break;
+					
+					case "MUSIC OFF":
+						setting.setVisible(false);
+						setting.sendToBack();
+						for(GLabel musicToggle:settings) {
+							if(musicToggle.getLabel() == "MUSIC ON") {
+								musicToggle.setVisible(true);
+								musicToggle.sendToFront();
+							}
+						}
 						
 					case "SFX":
 						break;
