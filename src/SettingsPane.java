@@ -9,11 +9,13 @@ import acm.graphics.GObject;
 
 public class SettingsPane extends GraphicsPane {
 	private static final Font font = new Font("", Font.BOLD, 20);
-	
 	private static double yPos = 225;
 	private static double xPos = 345;
+	
 	private MainApplication program;
 	private ArrayList<GLabel> settings = new ArrayList<GLabel>();
+	private ArrayList<GLabel> onOff = new ArrayList<GLabel>();
+	private GObject obj;
 	
 	public SettingsPane(MainApplication app) {
 		this.program = app;
@@ -29,16 +31,13 @@ public class SettingsPane extends GraphicsPane {
 		settings.add(musicSetting);
 		settings.add(sfxSetting);
 		settings.add(back);		
-		settings.add(off);
-		settings.add(on);
-		settings.add(off2);
-		settings.add(on2);
+		onOff.add(off);
+		onOff.add(on);
+		onOff.add(off2);
+		onOff.add(on2);
 		for(GLabel setting:settings) {
 			setting.setFont(font);
 			setting.setColor(Color.black);
-			if(setting.getLabel() == "OFF") {
-				setting.setColor(Color.white);
-			}
 		}
 	}
 	
@@ -46,6 +45,9 @@ public class SettingsPane extends GraphicsPane {
 	public void showContents() {
 		for(GLabel setting:settings) {
 			program.add(setting);
+		}
+		for(GLabel toggle:onOff) {
+			program.add(toggle);
 		}
 	}
 
@@ -58,7 +60,26 @@ public class SettingsPane extends GraphicsPane {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		return;
+		obj = program.getElementAt(e.getX(), e.getY());
+		for(GLabel setting:settings) {
+			if(obj == setting) {
+				switch(setting.getLabel()) {
+					case "MUSIC":
+						
+						break;
+						
+					case "SFX":
+						break;
+						
+					case "BACK":
+						program.switchToMenu();
+						break;
+					
+					default:
+						break;
+				}
+			}
+		}
 	}
 	
 	@Override
