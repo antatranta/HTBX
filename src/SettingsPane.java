@@ -10,22 +10,36 @@ import acm.graphics.GObject;
 public class SettingsPane extends GraphicsPane {
 	private static final Font font = new Font("", Font.BOLD, 20);
 	
+	private static double yPos = 225;
+	private static double xPos = 345;
 	private MainApplication program;
-	private GLabel musicSetting;
-	private GLabel sfxSetting;
-	private GLabel back;
-	private GLabel on;
-	private GLabel off;
-	private ArrayList<GLabel> settings;
+	private ArrayList<GLabel> settings = new ArrayList<GLabel>();
 	
 	public SettingsPane(MainApplication app) {
-		program = app;
+		this.program = app;
 		
-		musicSetting = new GLabel("MUSIC");
-		sfxSetting = new GLabel("SFX");
-		back = new GLabel("BACK");
-		on = new GLabel("ON");
-		off = new GLabel("OFF");
+		GLabel musicSetting = new GLabel("MUSIC", xPos, yPos);
+		GLabel sfxSetting = new GLabel("SFX", xPos, yPos + 50);
+		GLabel back = new GLabel("BACK", xPos, yPos + 150);
+		GLabel off = new GLabel("OFF", xPos + 100, yPos);
+		GLabel on = new GLabel("ON", xPos + 100, yPos);
+		GLabel off2 = new GLabel("OFF", xPos + 100, yPos + 50);
+		GLabel on2 = new GLabel("ON", xPos + 100, yPos + 50);
+		
+		settings.add(musicSetting);
+		settings.add(sfxSetting);
+		settings.add(back);		
+		settings.add(off);
+		settings.add(on);
+		settings.add(off2);
+		settings.add(on2);
+		for(GLabel setting:settings) {
+			setting.setFont(font);
+			setting.setColor(Color.black);
+			if(setting.getLabel() == "OFF") {
+				setting.setColor(Color.white);
+			}
+		}
 	}
 	
 	@Override
@@ -40,5 +54,15 @@ public class SettingsPane extends GraphicsPane {
 		for(GLabel setting:settings) {
 			program.remove(setting);
 		}
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		return;
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		return;
 	}
 }
