@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import acm.graphics.*;
+import rotations.GameImage;
 
 public class GamePane extends GraphicsPane implements ActionListener, KeyListener {
 	private static final int CURSOR_DIST = 50;
 	private static final int CURSOR_SIZE = 10;
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
-	private GImage player_img;
+	private GameImage player_img;
 	private PlayerShip player;
 	private Timer auto_fire;
 	
@@ -42,7 +43,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		cursor_dots = new ArrayList <GOval>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
-		player_img = new GImage("PlayerShip_Placeholder.png", 0, 0);
+		player_img = new GameImage("PlayerShip_Placeholder.png", 0, 0);
 		auto_fire = new Timer(250, this);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
@@ -147,19 +148,19 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         
         if (key == KeyEvent.VK_A) {
             player.setDx(-5);
-            player_img.move(-5, 0);
+            //player_img.move(-5, 0);
         }
         if (key == KeyEvent.VK_D) {
         	player.setDx(5);
-        	player_img.move(5, 0);
+        	//player_img.move(5, 0);
         }
         if (key == KeyEvent.VK_W) {
         	player.setDy(-5);
-        	player_img.move(0, -5);
+        	//player_img.move(0, -5);
         }
         if (key == KeyEvent.VK_S) {
         	player.setDy(5);
-        	player_img.move(0, 5);
+        	//player_img.move(0, 5);
         }
     }
 
