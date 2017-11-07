@@ -10,6 +10,8 @@ public class MainApplication extends GraphicsApplication {
 	private GamePane game;
 	private MenuPane menu;
 	private SettingsPane setting;
+	private ScoresPane score;
+	private ControlsPane control;
 	private GameConsole console;
 	//private int count = 0;
 	
@@ -49,6 +51,14 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToSettings() {
 		switchToScreen(setting);
+	}
+	
+	public void switchToScores() {
+		switchToScreen(score);
+	}
+	
+	public void switchToControls() {
+		switchToScreen(control);
 	}
 	
 	public GameConsole getGameConsole() {

@@ -76,10 +76,11 @@ public class MenuPane extends GraphicsPane {
 						break;
 						
 					case "SCORES":
-						System.out.println("SCORES accesssed");
+						program.switchToScores();
 						break;
+						
 					case "CONTROLS":
-						System.out.println("CONTROLS accessed");
+						program.switchToControls();
 						break;
 						
 					case "QUIT":
