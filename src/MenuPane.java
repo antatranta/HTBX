@@ -6,17 +6,21 @@ import java.awt.Font;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GImage;
 
 public class MenuPane extends GraphicsPane {
 	private static final Font font = new Font("", Font.BOLD, 20);	
 	
-	private double yPos = 225; // used for keeping a yPos for main menu and incrementing for other options in the main menu
+	private static double yPos = 225; // used for keeping a yPos for main menu and incrementing for other options in the main menu
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
+	private GImage title;
 	// TODO possible constant of xPos
 	
 	public MenuPane(MainApplication app) {
 		program = app;
+		title = new GImage("HTBX_Title.png", MainApplication.WINDOW_WIDTH / 4.5, 0);
+		double yPosChange = yPos;
 		
 		GLabel play = new GLabel("PLAY");
 		GLabel settings = new GLabel("SETTINGS");
@@ -32,9 +36,9 @@ public class MenuPane extends GraphicsPane {
 		
 		for(GLabel menu:mainMenu) {
 			menu.setFont(font);
-			menu.setLocation(345, yPos);
-			menu.setColor(Color.gray);
-			yPos = 50 + yPos;
+			menu.setLocation(345, yPosChange);
+			menu.setColor(Color.black);
+			yPosChange += 50;
 		}
 	}
 	
@@ -43,6 +47,7 @@ public class MenuPane extends GraphicsPane {
 		for(GLabel menu:mainMenu) {
 			program.add(menu);
 		}
+		program.add(title);
 	}
 
 	@Override
@@ -50,6 +55,7 @@ public class MenuPane extends GraphicsPane {
 		for(GLabel menu:mainMenu) {
 			program.remove(menu);
 		}
+		program.remove(title);
 	}
 	
 	// Main menu options switches panels and/or quits - Anthony
@@ -91,10 +97,10 @@ public class MenuPane extends GraphicsPane {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel menu:mainMenu) {
 			if(obj == menu) {
-				menu.setColor(Color.white);
+				menu.setColor(Color.gray);
 			}
 			else {
-				menu.setColor(Color.gray);
+				menu.setColor(Color.black);
 			}
 		}
 	}
