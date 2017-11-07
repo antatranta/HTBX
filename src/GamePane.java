@@ -148,6 +148,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         
         if (key == KeyEvent.VK_A) {
             player.setDx(-5);
+            player_img.rotate(-5);
             //player_img.move(-5, 0);
         }
         if (key == KeyEvent.VK_D) {
