@@ -17,11 +17,13 @@ public class MenuPane extends GraphicsPane {
 	
 	public MenuPane(MainApplication app) {
 		program = app;
+		
 		GLabel play = new GLabel("PLAY");
 		GLabel settings = new GLabel("SETTINGS");
 		GLabel scores = new GLabel("SCORES");
 		GLabel controls = new GLabel("CONTROLS");
 		GLabel quit = new GLabel("QUIT");
+		
 		mainMenu.add(play);
 		mainMenu.add(settings);
 		mainMenu.add(scores);
@@ -58,11 +60,11 @@ public class MenuPane extends GraphicsPane {
 			if(obj == menu) {
 				switch(menu.getLabel()) {
 					case "PLAY":
-						program.switchToSome();
+						program.switchToGame();
 						break;
 						
 					case "SETTINGS":
-						System.out.println("SETTINGS accessed");
+						program.switchToSettings();
 						break;
 						
 					case "SCORES":
