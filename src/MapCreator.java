@@ -28,13 +28,29 @@ public class MapCreator{
 		Physics = new PhysX(600, 600, 1800, 1800);//QUADRANT_HEIGHT, QUADRANT_WIDTH, MAP_WIDTH, MAP_HEIGHT
 		max_quad = Calculate_Quad_Amount(Physics.getQUADRANT_HEIGHT(),Physics.getMAP_HEIGHT());
 		System.out.println("quad_amount: "+max_quad);
+		
 		//Quad_list = new ArrayList<Quadrant>();
 		Quad_list = createMap();
+		spawn_playerNboss();
 	}
 	
 	public void run() {
 
 		
+	}
+	
+	public void spawn_playerNboss() {
+		int player_quad=0;
+		int boss_quad=0;
+		player_quad= rand.nextInt(max_quad);
+		boss_quad = rand.nextInt(max_quad);
+		while(player_quad==boss_quad) {
+			player_quad= rand.nextInt(max_quad);
+			boss_quad = rand.nextInt(max_quad);
+		}
+		System.out.println("Player spawn at: "+player_quad+"Boss spawn at: "+boss_quad);
+		player_spawn_quad=player_quad;
+		boss_spawn_quad=boss_quad;
 	}
 	
 	public int Calculate_Quad_Amount(float quadrant_height,int map_height) {
