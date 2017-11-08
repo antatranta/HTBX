@@ -20,12 +20,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
 	private GameImage player_img;
 	private PlayerShip player;
-//	private Timer auto_fire;
 	private Vector2 last_mouse_loc;
 	
+
 //	private GameTimer gameTimer;
 	private Timer gameTimer;
 	private int TIMER_INTERVAL = 100;
+
 	private int INITIAL_DELAY;
 	
 	private boolean CAN_MOVE = false;
@@ -44,15 +45,20 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		CAN_MOVE = false;
 		
 		last_mouse_loc = new Vector2(0,0);
-		setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
-		gameTimer.start();
+
+//		gameTimer = new GameTimer();
+//		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
+		
+
 		cursor_dots = new ArrayList <GOval>();
 		pressed_keys = new ArrayList <Integer>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
+
 		Vector2 pos = player.getPhysObj().getPosition();
 		player_img = new GameImage("PlayerShip_Placeholder.png", pos.getX(), pos.getY());
 //		auto_fire = new Timer(250, this);
+
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
@@ -78,15 +84,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	@Override
 	public void hideContents() {
-//		auto_fire.stop();	
 		program.remove(player_img);
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// Timer should start here
-//		auto_fire.setInitialDelay(0);
-//		auto_fire.start();
+
+		//auto_fire.setInitialDelay(0);
+		//auto_fire.start();
+
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == player_img) {
 			program.switchToMenu();
@@ -209,31 +216,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         		System.out.print("ed : W");
         		pressed_keys.add(key);
         }
+
         if (key == KeyEvent.VK_S && !pressed_keys.contains((Integer)KeyEvent.VK_S)) {
         		System.out.print("ed : S");
         		pressed_keys.add(key);
         }
+//        	player.setDy(5);
         System.out.println("");
-/*
-        for (int i = 0; i < pressed_keys.size(); i++) {
-        	switch(pressed_keys.get(i)) {
-        	case 'W':
-        		double angle = -Math.toRadians(player.getAngle());
-        		player_img.move(Math.cos(angle), Math.sin(angle));
-        		break;
-        	case 'A':
-        		player.adjustAngle(5);
-        		player_img.rotate(-5);
-        		break;
-        	case 'S':
-        		break;
-        	case 'D':
-        		player.adjustAngle(-5);
-        		player_img.rotate(5);
-        		break;
-        	}
-        }
-*/
         alignReticle(last_mouse_loc);
     }
 
@@ -264,5 +253,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
     			pressed_keys.remove((Integer)key);
         }
     }
-
+	
+	
 }

@@ -25,6 +25,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void run() {
 		game = new GamePane(this);
+		console.getClock().addListener(game);
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
 		switchToMenu();

@@ -7,6 +7,8 @@ public class GameTimer implements ActionListener{
 	private boolean callEvents = false;
 	
 	public GameTimer() {
+		setupTimer(16, 0);
+		startTimer();
 	}
 	
 	public void setupTimer(int interval, int initialDelay) {
@@ -37,7 +39,7 @@ public class GameTimer implements ActionListener{
 		}
 	}
 	
-	@Override
+	//@Override
 	public void actionPerformed(ActionEvent e) {
 		if (callEvents) {
 			
