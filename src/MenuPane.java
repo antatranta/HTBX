@@ -15,6 +15,7 @@ public class MenuPane extends GraphicsPane {
 	
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
+	private GLabel selection;
 	private GImage title;
 	private GObject obj;
 	// TODO possible constant of xPos
@@ -22,7 +23,10 @@ public class MenuPane extends GraphicsPane {
 	public MenuPane(MainApplication app) {
 		program = app;
 		title = new GImage("HTBX_Title.png");
+		selection = new GLabel(">");
 		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
+		selection.setFont(font);
+		selection.setColor(Color.white);
 		
 		GLabel play = new GLabel("PLAY");
 		GLabel settings = new GLabel("SETTINGS");
@@ -50,14 +54,12 @@ public class MenuPane extends GraphicsPane {
 			program.add(menu);
 		}
 		program.add(title);
+		program.add(selection);
 	}
 
 	@Override
 	public void hideContents() {
-		for(GLabel menu:mainMenu) {
-			program.remove(menu);
-		}
-		program.remove(title);
+		program.removeAll();
 	}
 	
 	// Main menu options switches panels and/or quits - Anthony
@@ -67,23 +69,23 @@ public class MenuPane extends GraphicsPane {
 		for(GLabel menu:mainMenu) {
 			if(obj == menu) {
 				switch(menu.getLabel()) {
-					case ">PLAY":
+					case "PLAY":
 						program.switchToGame();
 						break;
 						
-					case ">SETTINGS":
+					case "SETTINGS":
 						program.switchToSettings();
 						break;
 						
-					case ">SCORES":
+					case "SCORES":
 						program.switchToScores();
 						break;
 						
-					case ">CONTROLS":
+					case "CONTROLS":
 						program.switchToControls();
 						break;
 						
-					case ">QUIT":
+					case "QUIT":
 						System.exit(0);
 						break;
 						
@@ -100,56 +102,34 @@ public class MenuPane extends GraphicsPane {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel menu:mainMenu) {
 			if(obj == menu) {
+				selection.setColor(Color.black);
 				switch(menu.getLabel()) {
 					case "PLAY":
-						menu.setLabel(">PLAY");
+						selection.setLocation(menu.getX() - 25, menu.getY());
 						break;
 						
 					case "SETTINGS":
-						menu.setLabel(">SETTINGS");
+						selection.setLocation(menu.getX() - 25, menu.getY());
 						break;
 						
 					case "SCORES":
-						menu.setLabel(">SCORES");
+						selection.setLocation(menu.getX() - 25, menu.getY());
 						break;
 						
 					case "CONTROLS":
-						menu.setLabel(">CONTROLS");
+						selection.setLocation(menu.getX() - 25, menu.getY());
 						break;
 					
 					case "QUIT":
-						menu.setLabel(">QUIT");
+						selection.setLocation(menu.getX() - 25, menu.getY());
 						break;
 						
 					default:
 						break;
 				}
 			}
-			else {
-				switch(menu.getLabel()) {
-					case ">PLAY":
-						menu.setLabel("PLAY");
-						break;
-						
-					case ">SETTINGS":
-						menu.setLabel("SETTINGS");
-						break;
-						
-					case ">SCORES":
-						menu.setLabel("SCORES");
-						break;
-						
-					case ">CONTROLS":
-						menu.setLabel("CONTROLS");
-						break;
-						
-					case ">QUIT":
-						menu.setLabel("QUIT");
-						break;
-						
-					default:
-						break;
-				}
+			else if(obj == null) {
+				selection.setColor(Color.white);
 			}
 		}
 	}
