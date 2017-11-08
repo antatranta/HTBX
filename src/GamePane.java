@@ -97,7 +97,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         	switch(pressed_keys.get(i)) {
         	case 'W':
         		double angle = -Math.toRadians(player.getAngle());
-        		player_img.move(Math.cos(angle), Math.sin(angle));
+        		float cos = (float) Math.cos(angle);
+        		float sin = (float) Math.sin(angle);
+        		player_img.move(cos, sin);
+        		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
         		break;
         	case 'A':
         		player.adjustAngle(5);
