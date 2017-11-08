@@ -17,7 +17,10 @@ public class GameConsole extends GraphicsProgram{
 		physx = new PhysX();
 		Quadrant h = new Quadrant(new QuadrantID(0,0,0));
 		physx.addQuadrant(h);
-		player = new PlayerShip(new PhysXObject(new QuadrantID(0,0,0), new Vector2(100, 100)), 1, new ShipStats(1,1,1,1));
+		
+		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 1);
+		PhysXObject playerPhysXobj = new PhysXObject(h.getQUID(), new Vector2(100,100), playerCollider);
+		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1));
 	}
 	
 	public PhysX physx() {
