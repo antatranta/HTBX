@@ -113,4 +113,28 @@ public class PhysX {
 	public void addQuadrant(Quadrant quad) {
 		Quadrants.add(quad);
 	}
+
+	public float getQUADRANT_HEIGHT() {
+		return QUADRANT_HEIGHT;
+	}
+
+	public float getQUADRANT_WIDTH() {
+		return QUADRANT_WIDTH;
+	}
+
+	public int getMAP_WIDTH() {
+		return MAP_WIDTH;
+	}
+
+	public int getMAP_HEIGHT() {
+		return MAP_HEIGHT;
+	}
+
+	public ArrayList<Quadrant> getQuadrants() {
+		return Quadrants;
+	}
+
+	public void setQuadrants(ArrayList<Quadrant> quadrants) {
+		Quadrants = quadrants;
+	}
 }
