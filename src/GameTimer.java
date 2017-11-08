@@ -7,7 +7,7 @@ public class GameTimer implements ActionListener{
 	private boolean callEvents = false;
 	
 	public GameTimer() {
-		setupTimer(16, 0);
+		setupTimer(15, 0);
 		startTimer();
 	}
 	
