@@ -65,19 +65,7 @@ public class Bullet {
 		return movementVector;
 	}
 	
-	public void addMovement() {
+	public void move() {
 		this.physObj.setPosition(this.physObj.getPosition().add(movementVector));
-	}
-	
-	public void normalize() {
-		float x = movementVector.getX();
-		float y = movementVector.getY();
-		double length = Math.sqrt((x * x) + (y * y));
-		
-		if(length > 0) {
-			x /= length;
-			y /= length;
-		}
-		movementVector.setXY(x, y);
 	}
 }
