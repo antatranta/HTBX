@@ -20,15 +20,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
 	private GameImage player_img;
 	private PlayerShip player;
-	private Timer auto_fire;
+//	private Timer auto_fire;
 	private Vector2 last_mouse_loc;
 	
-	private GameTimer gameTimer;
-	private int TIMER_INTERVAL;
+//	private GameTimer gameTimer;
+	private Timer gameTimer;
+	private int TIMER_INTERVAL = 100;
 	private int INITIAL_DELAY;
 	
+	private boolean CAN_MOVE = false;
+	
 	private ArrayList <GOval> cursor_dots;
-	private ArrayList <Character> pressed_keys;
+	private ArrayList <Integer> pressed_keys;
 	private int track_amount = 0;
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
@@ -38,22 +41,31 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	// just lets get this game working with what we got w/ ACM
 	public GamePane(MainApplication app) {
 		this.program = app;
+		CAN_MOVE = false;
 		
 		last_mouse_loc = new Vector2(0,0);
-		gameTimer = new GameTimer();
-		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
-		
+		setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
+		gameTimer.start();
 		cursor_dots = new ArrayList <GOval>();
-		pressed_keys = new ArrayList <Character>();
+		pressed_keys = new ArrayList <Integer>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
-		player_img = new GameImage("PlayerShip_Placeholder.png", 0, 0);
-		auto_fire = new Timer(250, this);
+		Vector2 pos = player.getPhysObj().getPosition();
+		player_img = new GameImage("PlayerShip_Placeholder.png", pos.getX(), pos.getY());
+//		auto_fire = new Timer(250, this);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
 		centerPlayer();
+		player.setDxDy(Vector2.Zero());
+		CAN_MOVE = true;
 	}
+	
+	private void setupTimer(int interval, int initialDelay) {
+		gameTimer = new Timer(interval, this);
+		gameTimer.setInitialDelay(initialDelay);
+	}
+	
 	
 	public void centerPlayer() {
 		player_img.setLocation((MainApplication.WINDOW_WIDTH / 2) - (player_img.getWidth() / 2), (MainApplication.WINDOW_HEIGHT / 2) - (player_img.getHeight() /2));
@@ -66,15 +78,15 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	@Override
 	public void hideContents() {
-		auto_fire.stop();	
+//		auto_fire.stop();	
 		program.remove(player_img);
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// Timer should start here
-		auto_fire.setInitialDelay(0);
-		auto_fire.start();
+//		auto_fire.setInitialDelay(0);
+//		auto_fire.start();
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == player_img) {
 			program.switchToMenu();
@@ -86,14 +98,42 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		auto_fire.stop();
+//		auto_fire.stop();
 		System.out.println("Stopped shooting");
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) { // Player shoot every tick
-		System.out.println("Fired");
-		
+	public void actionPerformed(ActionEvent e) {
+		// Player shoot every tick
+//		System.out.println("Fired");
+		movementLoop();
+	}
+	
+	private void movementLoop() {
+		if(!CAN_MOVE) {
+			return;
+		}
+		for(int key : pressed_keys) {
+			switch(key) {
+			case KeyEvent.VK_A:
+				player.setDx(-5);
+				break;
+			case KeyEvent.VK_D:
+				player.setDx(5);
+				break;
+			case KeyEvent.VK_W:
+				player.setDy(-5);
+				break;
+			case KeyEvent.VK_S:
+				player.setDy(5);
+				break;
+			}
+		}
+		player.Move();
+		Vector2 pos = player.getPhysObj().getPosition();
+		player_img.setLocation(pos.getX(), pos.getY());
+		double angle = -Math.toRadians(player.getAngle());
+		player_img.move(Math.cos(angle), Math.sin(angle));
 	}
 	
 	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
@@ -154,40 +194,27 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	// Key Presses work; the println statements were removed to prevent clutter in the console as I test
 	@Override
     public void keyPressed(KeyEvent e) {
-    	
+		System.out.print("Press");
         int key = e.getKeyCode();
-        String out = "Pressed keys: ";
-        for (int i = 0; i < pressed_keys.size(); i++) {
-        	out = out + pressed_keys.get(i) + " ";
-        }
-        System.out.println(out);
-       //if (key == KeyEvent.VK_ESCAPE) 
-        //if (key == KeyEvent.VK_ENTER)  
         
-        if (key == KeyEvent.VK_A) {
-        	if (!pressed_keys.contains((char)KeyEvent.VK_A)) {
-        		pressed_keys.add((char)key);
-        	}
-            player.setDx(-5);
-            
+        if (key == KeyEvent.VK_A && !pressed_keys.contains((Integer)KeyEvent.VK_A)) {
+        		System.out.print("ed : A");
+        		pressed_keys.add(key);
         }
-        if (key == KeyEvent.VK_D) {
-        	if (!pressed_keys.contains((char)KeyEvent.VK_D)) {
-        		pressed_keys.add((char)key);
-        	}
-        	player.setDx(5);
+        if (key == KeyEvent.VK_D && !pressed_keys.contains((Integer)KeyEvent.VK_D)) {
+        		System.out.print("ed : D");
+        		pressed_keys.add(key);
         }
-        if (key == KeyEvent.VK_W) {
-        	if (!pressed_keys.contains((char)KeyEvent.VK_W)) {
-        		pressed_keys.add((char)key);
-        	}
-        	player.setDy(-5);
+        if (key == KeyEvent.VK_W && !pressed_keys.contains((Integer)KeyEvent.VK_W)) {
+        		System.out.print("ed : W");
+        		pressed_keys.add(key);
         }
-        if (key == KeyEvent.VK_S) {
-        	player.setDy(5);
+        if (key == KeyEvent.VK_S && !pressed_keys.contains((Integer)KeyEvent.VK_S)) {
+        		System.out.print("ed : S");
+        		pressed_keys.add(key);
         }
-        
-
+        System.out.println("");
+/*
         for (int i = 0; i < pressed_keys.size(); i++) {
         	switch(pressed_keys.get(i)) {
         	case 'W':
@@ -206,30 +233,35 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         		break;
         	}
         }
+*/
         alignReticle(last_mouse_loc);
     }
 
 	@Override
     public void keyReleased(KeyEvent e) {
-        
-        int key = e.getKeyCode();
-        //if (key == KeyEvent.VK_ESCAPE) 
-        //if (key == KeyEvent.VK_ENTER) 
-        if (key == KeyEvent.VK_A) {
-        	removeKey((char)KeyEvent.VK_A);
-        	player.setDx(0);
-        }
-        if (key == KeyEvent.VK_D) {
-        	removeKey((char)KeyEvent.VK_D);
-        	player.setDx(0);
-        }
-        if (key == KeyEvent.VK_W) {
-        	removeKey((char)KeyEvent.VK_W);
-        	player.setDy(0);
-        }
-        if (key == KeyEvent.VK_S) {
-        	removeKey((char)KeyEvent.VK_S);
-        	player.setDy(0);
+		System.out.print("Release");
+		int key = e.getKeyCode();
+		switch(key) {
+			case KeyEvent.VK_A:
+				player.setDx(0);
+				System.out.print("d: A");
+				break;
+			case KeyEvent.VK_D:
+				player.setDx(0);
+				System.out.print("d: D");
+				break;
+			case KeyEvent.VK_W:
+				player.setDy(0);
+				System.out.print("d: W");
+				break;
+			case KeyEvent.VK_S:
+				player.setDy(0);
+				System.out.print("d: S");
+				break;
+		}
+		System.out.println("");
+        if(pressed_keys.contains(key)) {
+    			pressed_keys.remove((Integer)key);
         }
     }
 
