@@ -25,14 +25,19 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 //	private GameTimer gameTimer;
 	private Timer gameTimer;
-	private int TIMER_INTERVAL = 100;
 
-	private int INITIAL_DELAY;
 	
 	private boolean CAN_MOVE = false;
+	private boolean MOVEMENT_LOCK = false;
+	private float MOVEMENT_CONSTANT = .0000001f;
+	
+	private boolean CAN_ALIGN = true;
+	private boolean ALIGNMENT_LOCK = false;
 	
 	private ArrayList <GOval> cursor_dots;
-	private ArrayList <Integer> pressed_keys;
+//	private ArrayList <Integer> pressed_keys;
+	private float xAxis = 0;
+	private float yAxis = 0;
 	private int track_amount = 0;
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
@@ -48,10 +53,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 //		gameTimer = new GameTimer();
 //		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
-		
 
 		cursor_dots = new ArrayList <GOval>();
-		pressed_keys = new ArrayList <Integer>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
 
@@ -113,45 +116,86 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void actionPerformed(ActionEvent e) {
 		// Player shoot every tick
 //		System.out.println("Fired");
-		movementLoop();
+		if (CAN_ALIGN && !ALIGNMENT_LOCK) {
+			ALIGNMENT_LOCK = true;
+			alignReticle(last_mouse_loc);
+		}
+		
+		if(CAN_MOVE) {
+			
+			movementLoop();
+		}
+		
 	}
 	
 	private void movementLoop() {
-		alignReticle(last_mouse_loc);
-		for (int i = 0; i < pressed_keys.size(); i++) {
-        	switch(pressed_keys.get(i)) {
-        	case (int) 'W':
-        		double angle = -Math.toRadians(player.getAngle());
-        		float speed = (float) player.getStats().getSpeed() * 5;
-        		float cos = (float) Math.cos(angle) * speed;
-        		float sin = (float) Math.sin(angle) * speed;
-        		
-        		player_img.move(cos, sin);
-        		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
-        		break;
-        	case (int) 'A':
-        		player.adjustAngle(TURN_POWER);
-        		player_img.rotate(-TURN_POWER);
-        		break;
-        	case (int) 'S':
-        		// TODO: Make this not janky hardcode. Kek
-        		double angle2 = -Math.toRadians(player.getAngle());
-    			float speed2 = (float) player.getStats().getSpeed() * -5;
-    			float cos2 = (float) Math.cos(angle2) * speed2;
-    			float sin2 = (float) Math.sin(angle2) * speed2;
-    		
-    			player_img.move(cos2, sin2);
-    			player.getPhysObj().getPosition().add(new Vector2(cos2, sin2));
-        		break;
-        	case (int) 'D':
-        		player.adjustAngle(-TURN_POWER);
-        		player_img.rotate(TURN_POWER);
-        		break;
-        	}
-        }
-		if(!CAN_MOVE) {
+		
+		if(MOVEMENT_LOCK)
 			return;
+		
+		MOVEMENT_LOCK = true;
+		
+		if (yAxis > 0 + MOVEMENT_CONSTANT) {
+			double angle = -Math.toRadians(player.getAngle());
+			float speed = (float) player.getStats().getSpeed() * 5;
+			float cos = (float) Math.cos(angle) * speed;
+			float sin = (float) Math.sin(angle) * speed;
+			
+			player_img.move(cos, sin);
+			player.getPhysObj().getPosition().add(new Vector2(cos, sin));
+		} else if (yAxis < 0 - MOVEMENT_CONSTANT) {
+    			double angle2 = -Math.toRadians(player.getAngle());
+			float speed2 = (float) player.getStats().getSpeed() * -5;
+			float cos2 = (float) Math.cos(angle2) * speed2;
+			float sin2 = (float) Math.sin(angle2) * speed2;
+		
+			player_img.move(cos2, sin2);
+			player.getPhysObj().getPosition().add(new Vector2(cos2, sin2));
 		}
+		
+		
+		if (xAxis > 0 + MOVEMENT_CONSTANT) {
+    			player.adjustAngle(-TURN_POWER);
+    			player_img.rotate(TURN_POWER);
+
+		} else if (xAxis < 0 - MOVEMENT_CONSTANT) {
+			player.adjustAngle(TURN_POWER);
+			player_img.rotate(-TURN_POWER);
+		}
+
+		/*
+		for (int key : pressed_keys) {
+	        	switch(key) {
+	        	case (int) 'W':
+	        		break;
+	        	case (int) 'A':
+	        		player.adjustAngle(TURN_POWER);
+	        		player_img.rotate(-TURN_POWER);
+	        		break;
+	        	case (int) 'S':
+	        		/*
+	        		// TODO: Make this not janky hardcode. Kek
+	        		double angle2 = -Math.toRadians(player.getAngle());
+	    			float speed2 = (float) player.getStats().getSpeed() * -5;
+	    			float cos2 = (float) Math.cos(angle2) * speed2;
+	    			float sin2 = (float) Math.sin(angle2) * speed2;
+	    		
+	    			player_img.move(cos2, sin2);
+	    			player.getPhysObj().getPosition().add(new Vector2(cos2, sin2));
+	    			*/
+		/*
+	        		break;
+	        	case (int) 'D':
+	        		player.adjustAngle(-TURN_POWER);
+	        		player_img.rotate(TURN_POWER);
+	        		break;
+	        	}
+        }
+*/
+		
+		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
+		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
+		/*
 		for(int key : pressed_keys) {
 			switch(key) {
 			case KeyEvent.VK_A:
@@ -168,11 +212,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				break;
 			}
 		}
+		*/
 		player.Move();
-		Vector2 pos = player.getPhysObj().getPosition();
-		//player_img.setLocation(pos.getX(), pos.getY());
-		//double angle = -Math.toRadians(player.getAngle());
-		//player_img.move(Math.cos(angle), Math.sin(angle));
+		
+		// this has to be the last call!
+		MOVEMENT_LOCK = false;
 	}
 	
 	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
@@ -207,82 +251,92 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + (unit_x * i), visual_root.getY() - (CURSOR_SIZE / 2) + (unit_y * i));
 		}
 		//System.out.println("Distance: " + distance + ", Drawn: " + dots);
+		ALIGNMENT_LOCK = false;
 	}
 	
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		last_mouse_loc.setXY(e.getX(), e.getY()); 
-		alignReticle(last_mouse_loc);
+//		alignReticle(last_mouse_loc);
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		last_mouse_loc.setXY(e.getX(), e.getY()); 
-		alignReticle(last_mouse_loc);
+//		alignReticle(last_mouse_loc);
 	}
 	
-	private void removeKey(char key) {
-		for (int i = 0; i < pressed_keys.size(); i++) {
-			if (pressed_keys.get(i) == key) {
-				pressed_keys.remove(i);
-			}
-		}
-	}
+
 	
 	// Key Presses work; the println statements were removed to prevent clutter in the console as I test
 	@Override
     public void keyPressed(KeyEvent e) {
-		//System.out.print("Press");
+		System.out.print("Press");
         int key = e.getKeyCode();
-        
-        if (key == KeyEvent.VK_A && !pressed_keys.contains((Integer)KeyEvent.VK_A)) {
-        		//System.out.print("ed : A");
-        		pressed_keys.add(key);
+        switch(key) {
+        case KeyEvent.VK_A:
+    			System.out.print("ed : A");
+    			xAxis = -(1 + MOVEMENT_CONSTANT);
+    			break;
+        case KeyEvent.VK_D:
+        		System.out.print("ed : D");
+        		xAxis = (1 + MOVEMENT_CONSTANT);
+        		break;
+        case KeyEvent.VK_W:
+        		System.out.print("ed : W");
+        		yAxis = (1 + MOVEMENT_CONSTANT);
+        		break;
+        case KeyEvent.VK_S:
+    			System.out.print("ed : S");
+    			yAxis = -(1 + MOVEMENT_CONSTANT);
+    			break;
+    		default:
+    			System.out.print("ed : NONE");
+    			break;
         }
-        if (key == KeyEvent.VK_D && !pressed_keys.contains((Integer)KeyEvent.VK_D)) {
-        		//System.out.print("ed : D");
-        		pressed_keys.add(key);
-        }
-        if (key == KeyEvent.VK_W && !pressed_keys.contains((Integer)KeyEvent.VK_W)) {
-        		//System.out.print("ed : W");
-        		pressed_keys.add(key);
-        }
-        if (key == KeyEvent.VK_S && !pressed_keys.contains((Integer)KeyEvent.VK_S)) {
-        		//System.out.print("ed : S");
-        		pressed_keys.add(key);
-        }
-//        	player.setDy(5);
-        //System.out.println("");
-        alignReticle(last_mouse_loc);
+        System.out.println("");
     }
 
 	@Override
     public void keyReleased(KeyEvent e) {
-		//System.out.print("Release");
+		System.out.print("Release");
 		int key = e.getKeyCode();
 		switch(key) {
 			case KeyEvent.VK_A:
-				player.setDx(0);
-				//System.out.print("d: A");
+//				player.setDx(0);
+				System.out.print("d: A");
+				
+				if (xAxis + MOVEMENT_CONSTANT < 0) {
+					xAxis = 0;
+				}
 				break;
 			case KeyEvent.VK_D:
-				player.setDx(0);
-				//System.out.print("d: D");
+//				player.setDx(0);
+				System.out.print("d: D");
+				if (xAxis + MOVEMENT_CONSTANT > 0) {
+					xAxis = 0;
+				}
 				break;
 			case KeyEvent.VK_W:
-				player.setDy(0);
-				//System.out.print("d: W");
+//				player.setDy(0);
+				System.out.print("d: W");
+				if (yAxis + MOVEMENT_CONSTANT > 0) {
+					yAxis = 0;
+				}
 				break;
 			case KeyEvent.VK_S:
-				player.setDy(0);
-				//System.out.print("d: S");
+//				player.setDy(0);
+				System.out.print("d: S");
+				if (yAxis + MOVEMENT_CONSTANT < 0) {
+					yAxis = 0;
+				}
+				break;
+			default:
+				System.out.print("d: NONE");
 				break;
 		}
-		//System.out.println("");
-        if(pressed_keys.contains(key)) {
-    			pressed_keys.remove((Integer)key);
-        }
+		System.out.println("");
     }
 	
 	

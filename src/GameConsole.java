@@ -9,7 +9,7 @@ public class GameConsole extends GraphicsProgram{
 	private PlayerShip player;
 	private PhysX physx; // The controller for all things
 	private int skillPoints;
-	private GameTimer clock = new GameTimer();
+//	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
 		// Create the universe. For now, only a single quadrant
@@ -31,10 +31,10 @@ public class GameConsole extends GraphicsProgram{
 		return player;
 	}
 	
-	public GameTimer getClock() {
-		return clock;
-	}
-	
+//	public GameTimer getClock() {
+//		return clock;
+//	}
+	/*
 	@Override
     public void keyPressed(KeyEvent e) {
     	System.out.println("Key Read");
@@ -86,6 +86,7 @@ public class GameConsole extends GraphicsProgram{
         	player.setDy(0);
         }
     }
+    */
 }
 
 
