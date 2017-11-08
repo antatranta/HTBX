@@ -20,10 +20,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
 	private GameImage player_img;
 	private PlayerShip player;
-	private Timer auto_fire;
+	//private Timer auto_fire;
 	private Vector2 last_mouse_loc;
 	
-	private GameTimer gameTimer;
+	//private GameTimer gameTimer;
 	private int TIMER_INTERVAL;
 	private int INITIAL_DELAY;
 	
@@ -40,15 +40,15 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		this.program = app;
 		
 		last_mouse_loc = new Vector2(0,0);
-		gameTimer = new GameTimer();
-		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
+//		gameTimer = new GameTimer();
+//		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
 		
 		cursor_dots = new ArrayList <GOval>();
 		pressed_keys = new ArrayList <Character>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
 		player_img = new GameImage("PlayerShip_Placeholder.png", 0, 0);
-		auto_fire = new Timer(250, this);
+		//auto_fire = new Timer(250, this);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
@@ -66,15 +66,15 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	@Override
 	public void hideContents() {
-		auto_fire.stop();	
+		//auto_fire.stop();	
 		program.remove(player_img);
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// Timer should start here
-		auto_fire.setInitialDelay(0);
-		auto_fire.start();
+		//auto_fire.setInitialDelay(0);
+		//auto_fire.start();
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == player_img) {
 			program.switchToMenu();
@@ -86,14 +86,31 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		auto_fire.stop();
+		//auto_fire.stop();
 		System.out.println("Stopped shooting");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) { // Player shoot every tick
-		System.out.println("Fired");
-		
+		//System.out.println("Fired");
+		for (int i = 0; i < pressed_keys.size(); i++) {
+        	switch(pressed_keys.get(i)) {
+        	case 'W':
+        		double angle = -Math.toRadians(player.getAngle());
+        		player_img.move(Math.cos(angle), Math.sin(angle));
+        		break;
+        	case 'A':
+        		player.adjustAngle(5);
+        		player_img.rotate(-5);
+        		break;
+        	case 'S':
+        		break;
+        	case 'D':
+        		player.adjustAngle(-5);
+        		player_img.rotate(5);
+        		break;
+        	}
+        }
 	}
 	
 	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
@@ -156,11 +173,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
     public void keyPressed(KeyEvent e) {
     	
         int key = e.getKeyCode();
-        String out = "Pressed keys: ";
-        for (int i = 0; i < pressed_keys.size(); i++) {
-        	out = out + pressed_keys.get(i) + " ";
-        }
-        System.out.println(out);
+
        //if (key == KeyEvent.VK_ESCAPE) 
         //if (key == KeyEvent.VK_ENTER)  
         
@@ -184,11 +197,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         	player.setDy(-5);
         }
         if (key == KeyEvent.VK_S) {
+        	if (!pressed_keys.contains((char)KeyEvent.VK_S)) {
+        		pressed_keys.add((char)key);
+        	}
         	player.setDy(5);
         }
         
-
+        String out = "Pressed keys: ";
         for (int i = 0; i < pressed_keys.size(); i++) {
+        	out = out + pressed_keys.get(i) + " ";
+        }
+        System.out.println(out);
+        /*for (int i = 0; i < pressed_keys.size(); i++) {
         	switch(pressed_keys.get(i)) {
         	case 'W':
         		double angle = -Math.toRadians(player.getAngle());
@@ -205,7 +225,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         		player_img.rotate(5);
         		break;
         	}
-        }
+        }*/
         alignReticle(last_mouse_loc);
     }
 
@@ -232,5 +252,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         	player.setDy(0);
         }
     }
-
+	
+	
 }

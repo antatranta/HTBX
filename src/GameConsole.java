@@ -9,6 +9,7 @@ public class GameConsole extends GraphicsProgram{
 	private PlayerShip player;
 	private PhysX physx; // The controller for all things
 	private int skillPoints;
+	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
 		// Create the universe. For now, only a single quadrant
@@ -25,6 +26,10 @@ public class GameConsole extends GraphicsProgram{
 	
 	public PlayerShip getPlayer() {
 		return player;
+	}
+	
+	public GameTimer getClock() {
+		return clock;
 	}
 	
 	@Override
