@@ -57,7 +57,27 @@ public class Bullet {
 		return physObj;
 	}
 	
+	public CollisionData getCollisionData() {
+		return collisionData;
+	}
+	
+	public Vector2 getMovementVector() {
+		return movementVector;
+	}
+	
 	public void addMovement() {
 		this.physObj.setPosition(this.physObj.getPosition().add(movementVector));
+	}
+	
+	public void normalize() {
+		float x = movementVector.getX();
+		float y = movementVector.getY();
+		double length = Math.sqrt((x * x) + (y * y));
+		
+		if(length > 0) {
+			x /= length;
+			y /= length;
+		}
+		movementVector.setXY(x, y);
 	}
 }
