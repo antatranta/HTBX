@@ -8,8 +8,8 @@ public class Ship {
 	private int weapon_cd;
 	private int cd_cap;
 	
-	private int dx = 0;// 1 to right, -1 to left.
-	private int dy = 0;// 1 to up, -1 to down.
+	private float dx = 0;// 1 to right, -1 to left.
+	private float dy = 0;// 1 to up, -1 to down.
 
 	
 	public Ship(PhysXObject physObj,int current_health, ShipStats stats, int weapon) {
@@ -59,23 +59,32 @@ public class Ship {
 	}
 	
 	public void Move() {
-		while(getCurrent_health()>0) {
+		if(getCurrent_health()>0) {
 			Vector2 currentPosition = physObj.getPosition();
 			physObj.setPosition(currentPosition.add(new Vector2(dx, dy)));
 		}
 	}
 	
-	public int getDx() {
+	public float getDx() {
 		return dx;
 	}
-	public void setDx(int dx) {
+	public void setDx(float dx) {
 		this.dx = dx;
 	}
-	public int getDy() {
+	public float getDy() {
 		return dy;
 	}
-	public void setDy(int dy) {
+	public void setDy(float dy) {
 		this.dy = dy;
+	}
+	
+	public void setDxDy(Vector2 DXDY) {
+		this.dx = DXDY.getX();
+		this.dy = DXDY.getY();
+	}
+	
+	public ShipStats getStats() {
+		return stats;
 	}
 	/*
 	public int getX() {
