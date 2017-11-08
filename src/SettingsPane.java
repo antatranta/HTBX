@@ -43,9 +43,7 @@ public class SettingsPane extends GraphicsPane {
 
 	@Override
 	public void hideContents() {
-		for(GLabel setting:settings) {
-			program.remove(setting);
-		}
+		program.removeAll();
 	}
 	
 	@Override
