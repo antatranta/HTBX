@@ -58,4 +58,20 @@ public class Quadrant{
 	public ArrayList<Ship> getShips(){
 		return ships;
 	}
+
+	public ArrayList<Asteroid> getAsteroids() {
+		return asteroids;
+	}
+
+	public void setAsteroids(ArrayList<Asteroid> asteroids) {
+		this.asteroids = asteroids;
+	}
+
+	public void setShips(ArrayList<Ship> ships) {
+		this.ships = ships;
+	}
+
+	public void setQUID(QuadrantID qUID) {
+		QUID = qUID;
+	}
 }
