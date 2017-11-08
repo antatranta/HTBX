@@ -18,20 +18,26 @@ public class SettingsPane extends GraphicsPane {
 	private GLabel toggle2;
 	private GLabel selection;
 	private GObject obj;
-	private int count;
+	private int count1;
+	private int count2;
 	
 	public SettingsPane(MainApplication app) {
 		this.program = app;
-		count = 0;
+		count1 = 0;
+		count2 = 0;
 		selection = new GLabel(">");
 		selection.setFont(font);
 		selection.setColor(Color.white);
 		
-		GLabel musicSetting = new GLabel("MUSIC ON");
-		GLabel sfxSetting = new GLabel("SFX     ON", 0, 50);
+		GLabel musicSetting = new GLabel("MUSIC");
+		GLabel sfxSetting = new GLabel("SFX", 0, 50);
 		GLabel back = new GLabel("BACK", 0, 200);
-		toggle1 = new GLabel("ON", 50, 0);
-		toggle2 = new GLabel("ON", 50, 0);
+		toggle1 = new GLabel("ON", 100, 0);
+		toggle2 = new GLabel("ON", 0, 50);
+		toggle1.setFont(font);
+		toggle2.setFont(font);
+		toggle1.setColor(Color.black);
+		toggle2.setColor(Color.black);
 		
 		settings.add(musicSetting);
 		settings.add(sfxSetting);
@@ -41,6 +47,15 @@ public class SettingsPane extends GraphicsPane {
 			setting.setFont(font);
 			setting.setColor(Color.black);
 			setting.move(CENTER_WIDTH - (setting.getWidth() / 2), CENTER_HEIGHT - (setting.getHeight() / 2));
+			switch(setting.getLabel()) {
+				case "MUSIC":
+					toggle1.move(CENTER_WIDTH - (setting.getWidth() / 2), CENTER_HEIGHT - (setting.getHeight() / 2));
+					break;
+				case "SFX":
+					setting.move(-12.5, 0);
+					toggle2.move(toggle1.getX(), CENTER_HEIGHT - (setting.getHeight() / 2));
+					break;
+			}
 		}
 	}
 	
@@ -66,19 +81,27 @@ public class SettingsPane extends GraphicsPane {
 			if(obj == setting) {
 				switch(setting.getLabel()) {
 					case "MUSIC":
-						setting.setLabel("MUSIC OFF");
-						break;
-					
-					case "MUSIC OFF":
-						setting.setLabel("MUSIC ON");
+						count1++;
+						switch(count1 % 2) {
+							case 0:
+								toggle1.setLabel("ON");
+								break;
+							case 1:
+								toggle1.setLabel("OFF");
+								break;
+						}
 						break;
 						
-					case "SFX     ON":
-						setting.setLabel("SFX     OFF");
-						break;
-						
-					case "SFX     OFF":
-						setting.setLabel("SFX     ON");
+					case "SFX":
+						count2++;
+						switch(count2 % 2) {
+							case 0:
+								toggle2.setLabel("ON");
+								break;
+							case 1:
+								toggle2.setLabel("OFF");
+								break;
+						}
 						break;
 						
 					case "BACK":
@@ -99,11 +122,11 @@ public class SettingsPane extends GraphicsPane {
 			if(obj == setting) {
 				selection.setColor(Color.black);
 				switch(setting.getLabel()) {
-					case "PLAY":
+					case "MUSIC":
 						selection.setLocation(setting.getX() - 25, setting.getY());
 						break;
 						
-					case "SETTINGS":
+					case "SFX":
 						selection.setLocation(setting.getX() - 25, setting.getY());
 						break;
 						
