@@ -14,18 +14,28 @@ public class SettingsPane extends GraphicsPane {
 	
 	private MainApplication program;
 	private ArrayList<GLabel> settings = new ArrayList<GLabel>();
+	private GLabel toggle1;
+	private GLabel toggle2;
+	private GLabel selection;
 	private GObject obj;
+	private int count;
 	
 	public SettingsPane(MainApplication app) {
 		this.program = app;
+		count = 0;
+		selection = new GLabel(">");
+		selection.setFont(font);
+		selection.setColor(Color.white);
 		
 		GLabel musicSetting = new GLabel("MUSIC ON");
 		GLabel sfxSetting = new GLabel("SFX     ON", 0, 50);
 		GLabel back = new GLabel("BACK", 0, 200);
+		toggle1 = new GLabel("ON", 50, 0);
+		toggle2 = new GLabel("ON", 50, 0);
 		
 		settings.add(musicSetting);
 		settings.add(sfxSetting);
-		settings.add(back);		
+		settings.add(back);
 		
 		for(GLabel setting:settings) {
 			setting.setFont(font);
@@ -39,6 +49,9 @@ public class SettingsPane extends GraphicsPane {
 		for(GLabel setting:settings) {
 			program.add(setting);
 		}
+		program.add(toggle1);
+		program.add(toggle2);
+		program.add(selection);
 	}
 
 	@Override
@@ -52,7 +65,7 @@ public class SettingsPane extends GraphicsPane {
 		for(GLabel setting:settings) {
 			if(obj == setting) {
 				switch(setting.getLabel()) {
-					case "MUSIC ON":
+					case "MUSIC":
 						setting.setLabel("MUSIC OFF");
 						break;
 					
@@ -81,6 +94,30 @@ public class SettingsPane extends GraphicsPane {
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		return;
+		obj = program.getElementAt(e.getX(), e.getY());
+		for(GLabel setting:settings) {
+			if(obj == setting) {
+				selection.setColor(Color.black);
+				switch(setting.getLabel()) {
+					case "PLAY":
+						selection.setLocation(setting.getX() - 25, setting.getY());
+						break;
+						
+					case "SETTINGS":
+						selection.setLocation(setting.getX() - 25, setting.getY());
+						break;
+						
+					case "BACK":
+						selection.setLocation(setting.getX() - 25, setting.getY());
+						break;
+						
+					default:
+						break;
+				}
+			}
+			else if(obj == null) {
+				selection.setColor(Color.white);
+			}
+		}
 	}
 }
