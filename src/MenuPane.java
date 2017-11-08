@@ -15,7 +15,6 @@ public class MenuPane extends GraphicsPane {
 	
 	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
-	private ArrayList<GImage> selection = new ArrayList<GImage>();
 	private GImage title;
 	private GObject obj;
 	// TODO possible constant of xPos
@@ -68,23 +67,23 @@ public class MenuPane extends GraphicsPane {
 		for(GLabel menu:mainMenu) {
 			if(obj == menu) {
 				switch(menu.getLabel()) {
-					case "PLAY":
+					case ">PLAY":
 						program.switchToGame();
 						break;
 						
-					case "SETTINGS":
+					case ">SETTINGS":
 						program.switchToSettings();
 						break;
 						
-					case "SCORES":
+					case ">SCORES":
 						program.switchToScores();
 						break;
 						
-					case "CONTROLS":
+					case ">CONTROLS":
 						program.switchToControls();
 						break;
 						
-					case "QUIT":
+					case ">QUIT":
 						System.exit(0);
 						break;
 						
@@ -101,10 +100,56 @@ public class MenuPane extends GraphicsPane {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel menu:mainMenu) {
 			if(obj == menu) {
-				menu.setColor(Color.gray);
+				switch(menu.getLabel()) {
+					case "PLAY":
+						menu.setLabel(">PLAY");
+						break;
+						
+					case "SETTINGS":
+						menu.setLabel(">SETTINGS");
+						break;
+						
+					case "SCORES":
+						menu.setLabel(">SCORES");
+						break;
+						
+					case "CONTROLS":
+						menu.setLabel(">CONTROLS");
+						break;
+					
+					case "QUIT":
+						menu.setLabel(">QUIT");
+						break;
+						
+					default:
+						break;
+				}
 			}
 			else {
-				menu.setColor(Color.black);
+				switch(menu.getLabel()) {
+					case ">PLAY":
+						menu.setLabel("PLAY");
+						break;
+						
+					case ">SETTINGS":
+						menu.setLabel("SETTINGS");
+						break;
+						
+					case ">SCORES":
+						menu.setLabel("SCORES");
+						break;
+						
+					case ">CONTROLS":
+						menu.setLabel("CONTROLS");
+						break;
+						
+					case ">QUIT":
+						menu.setLabel("QUIT");
+						break;
+						
+					default:
+						break;
+				}
 			}
 		}
 	}
