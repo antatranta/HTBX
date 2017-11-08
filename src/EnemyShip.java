@@ -6,8 +6,9 @@ public class EnemyShip extends Ship implements ActionListener{
 	protected static EnemyType type;
 	
 	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats, EnemyType ty) {
-		super(physObj, current_health, stats);
+		super(physObj, current_health, stats,0);
 		EnemyShip.type = ty;
+
 		// TODO Auto-generated constructor stub
 	}
 

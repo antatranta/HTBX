@@ -57,7 +57,15 @@ public class Bullet {
 		return physObj;
 	}
 	
-	public void addMovement() {
+	public CollisionData getCollisionData() {
+		return collisionData;
+	}
+	
+	public Vector2 getMovementVector() {
+		return movementVector;
+	}
+	
+	public void move() {
 		this.physObj.setPosition(this.physObj.getPosition().add(movementVector));
 	}
 }

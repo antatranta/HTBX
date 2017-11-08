@@ -35,4 +35,35 @@ public class Vector2 {
 	public static Vector2 One() {
 		return new Vector2(1,1);
 	}	
+	
+	public static Vector2 normalize(Vector2 vectorB) {
+		float bX = vectorB.getX();
+		float bY = vectorB.getY();
+		double length = Math.sqrt((bX * bX) + (bY * bY));
+		
+		if(length > 0) {
+			bX /= length;
+			bY /= length;
+		}
+		
+		return new Vector2(bX, bY);
+	}
+	
+	public Vector2 normalize() {
+		double length = Math.sqrt((x * x) + (y * y));
+		
+		if(length > 0) {
+			x /= length;
+			y /= length;
+		}
+		
+		return new Vector2(x, y);
+	}
+	
+	public Vector2 minus(Vector2 vectorB) {
+		float bX = vectorB.getX() - this.getX();
+		float bY = vectorB.getY() - this.getY();
+		
+		return new Vector2(bX, bY);
+	}
 }
