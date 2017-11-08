@@ -2,7 +2,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PlayerShip extends Ship implements ActionListener{
-	private Ship ship;
+	//private Ship ship;
 	private int current_shield;
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats) {
@@ -11,9 +11,11 @@ public class PlayerShip extends Ship implements ActionListener{
 	}
 
 	public void ChargeShield() {
-		current_shield += 1;
+		//if(this.current_shield< this.getStats().getShield_max()) {
+			current_shield += 1;
+		//}
 	}
-	
+
 	@Override
 	public void sendCollisionMessage(CollisionData data) {
 		int damage = data.getDamage();
@@ -41,8 +43,8 @@ public class PlayerShip extends Ship implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		ChargeShield();
 		// TODO: Charges the shield. Use a timer to check for hits before charge, and when charging starts
-		
 	}
 	
 }
