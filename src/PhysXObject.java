@@ -8,7 +8,7 @@ public class PhysXObject {
 		this.QUID = new QuadrantID();
 		this.position = Vector2.Zero();
 	}
-	
+
 	public PhysXObject(QuadrantID QUID) {
 		this.colliders = new CircleCollider[0];
 		this.QUID = new QuadrantID(QUID);
@@ -17,6 +17,12 @@ public class PhysXObject {
 	
 	public PhysXObject(QuadrantID QUID, Vector2 position) {
 		this.colliders = new CircleCollider[0];
+		this.QUID = new QuadrantID(QUID);
+		this.position = new Vector2(position);
+	}
+	
+	public PhysXObject(QuadrantID QUID, Vector2 position, CircleCollider[] colliders) {
+		this.colliders = colliders;
 		this.QUID = new QuadrantID(QUID);
 		this.position = new Vector2(position);
 	}
