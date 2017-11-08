@@ -33,6 +33,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToMenu() {
 		AudioPlayer audio = AudioPlayer.getInstance();
+		audio.playSound("sounds", "Pretty Yellow Lights.mp3");
 		/*switch(count % 2) {
 			case 0: audio.stopSound("sounds", "r2d2.mp3"); break;
 			case 1: audio.stopSound("sounds", "somethinlikethis.mp3"); break;
