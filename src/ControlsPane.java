@@ -5,29 +5,21 @@ import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GImage;
 
-//TODO: Implement ControlsPane
 public class ControlsPane extends GraphicsPane {
-	private static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
-	private static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
-	
 	private MainApplication program;
 	private GLabel back;
 	private GLabel selection;
-	private GImage title;
 	
 	public ControlsPane(MainApplication app) {
 		program = app;
 		
-		title = new GImage("HTBX_Title.png");
-		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
-		
 		back = new GLabel("BACK");
-		back.setFont(font());
+		back.setFont(font);
 		back.setColor(Color.black);
 		back.setLocation(CENTER_WIDTH - (back.getWidth() / 2), CENTER_HEIGHT - (back.getHeight() / 2) + 205);
 		
 		selection = new GLabel(">");
-		selection.setFont(font());
+		selection.setFont(font);
 		selection.setColor(Color.black);
 		selection.setVisible(false);
 		selection.setLocation(back.getX() - 25, back.getY());
@@ -35,7 +27,7 @@ public class ControlsPane extends GraphicsPane {
 	
 	@Override
 	public void showContents() {
-		program.add(title);
+		program.add(title());
 		program.add(back);
 		program.add(selection);
 	}

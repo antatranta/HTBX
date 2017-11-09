@@ -1,23 +1,19 @@
-/* File: GraphicsPane.java
- * -----------------------
- * Like you did with your own graphics programs, simply
- * extend from GraphicsPane and implement
- * as little or as much of the mouse listeners that you need
- * for your own programs.  Notice however that in this situation
- * There is no access to the GraphicsProgram window.
- * Make sure to distinguish between your constructor
- * and using showContents and hideContents
- */
-
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import acm.graphics.GImage;
+
 public abstract class GraphicsPane implements Interfaceable {
-	private static final Font font = new Font("", Font.BOLD, 20);
+	public static final Font font = new Font("", Font.BOLD, 20);
+	public static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
+	public static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
 	
-	public static final Font font() {
-		return font;
+	public GImage title = new GImage("HTBX_Title.png");
+	
+	public GImage title() {
+		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
+		return title;
 	}
 	
 	@Override

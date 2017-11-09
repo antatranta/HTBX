@@ -5,26 +5,18 @@ import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import acm.graphics.GImage;
 
 public class MenuPane extends GraphicsPane {
-	private static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
-	private static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
-	
 	private MainApplication program;
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
 	private GLabel selection;
-	private GImage title;
 	private GObject obj;
 	
 	public MenuPane(MainApplication app) {
 		program = app;
 		
-		title = new GImage("HTBX_Title.png");
-		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
-		
 		selection = new GLabel(">");
-		selection.setFont(font());
+		selection.setFont(font);
 		selection.setColor(Color.white);
 		
 		GLabel play = new GLabel("PLAY");
@@ -40,8 +32,8 @@ public class MenuPane extends GraphicsPane {
 		
 		double yPos = CENTER_HEIGHT - (play.getHeight() / 2);
 		for(GLabel menu:mainMenu) {
-			menu.setFont(font());
-			menu.setLocation((MainApplication.WINDOW_WIDTH / 2) - (menu.getWidth() / 2), yPos);
+			menu.setFont(font);
+			menu.setLocation((CENTER_WIDTH) - (menu.getWidth() / 2), yPos);
 			menu.setColor(Color.black);
 			yPos += 50;
 		}
@@ -52,7 +44,7 @@ public class MenuPane extends GraphicsPane {
 		for(GLabel menu:mainMenu) {
 			program.add(menu);
 		}
-		program.add(title);
+		program.add(title());
 		program.add(selection);
 	}
 

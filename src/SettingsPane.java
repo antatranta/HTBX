@@ -5,18 +5,13 @@ import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import acm.graphics.GImage;
 
 public class SettingsPane extends GraphicsPane {
-	private static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
-	private static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
-	
 	private MainApplication program;
 	private ArrayList<GLabel> settings = new ArrayList<GLabel>();
 	private GLabel toggle1;
 	private GLabel toggle2;
 	private GLabel selection;
-	private GImage title;
 	private GObject obj;
 	private int count1;
 	private int count2;
@@ -26,17 +21,14 @@ public class SettingsPane extends GraphicsPane {
 		count1 = 0;
 		count2 = 0;
 		
-		title = new GImage("HTBX_Title.png");
-		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
-		
 		selection = new GLabel(">");
-		selection.setFont(font());
+		selection.setFont(font);
 		selection.setColor(Color.white);
 		
 		toggle1 = new GLabel("ON", 100, 0);
 		toggle2 = new GLabel("ON", 0, 50);
-		toggle1.setFont(font());
-		toggle2.setFont(font());
+		toggle1.setFont(font);
+		toggle2.setFont(font);
 		toggle1.setColor(Color.black);
 		toggle2.setColor(Color.black);
 		
@@ -49,7 +41,7 @@ public class SettingsPane extends GraphicsPane {
 		settings.add(back);
 		
 		for(GLabel setting:settings) {
-			setting.setFont(font());
+			setting.setFont(font);
 			setting.setColor(Color.black);
 			setting.move(CENTER_WIDTH - (setting.getWidth() / 2), CENTER_HEIGHT - (setting.getHeight() / 2));
 			switch(setting.getLabel()) {
@@ -72,7 +64,7 @@ public class SettingsPane extends GraphicsPane {
 		program.add(toggle1);
 		program.add(toggle2);
 		program.add(selection);
-		program.add(title);
+		program.add(title());
 	}
 
 	@Override
