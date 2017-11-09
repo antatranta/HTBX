@@ -9,10 +9,17 @@
  * and using showContents and hideContents
  */
 
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public abstract class GraphicsPane implements Interfaceable {
+	private static final Font font = new Font("", Font.BOLD, 20);
+	
+	public static final Font font() {
+		return font;
+	}
+	
 	@Override
 	public abstract void showContents();
 

@@ -33,10 +33,12 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void run() {
 		game = new GamePane(this);
-		gameTimer.addListener(game);
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
+		control = new ControlsPane(this);
+		score = new ScoresPane(this);
 		audio = AudioPlayer.getInstance();
+		gameTimer.addListener(game);
 		musicToggle = true;
 		sfxToggle = true;
 		
