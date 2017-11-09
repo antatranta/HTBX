@@ -10,15 +10,15 @@ import java.awt.*;
 
 
 
-public class MapCreator extends GraphicsApplication{
+public class MapCreator {
 	//get width in physx
 	//500 for each. 250.
-	private float seed;
+	private float SEED;
 	private int max_enemies=1;
 	private int max_asteroid=1;
-	private PhysX Physics;
+//	private PhysX Physics; // MapCreator should not create, or store a physX instance
 	private int max_quad=0;
-	private static Random rand = new Random();
+	private static Random rand;
 	ArrayList<Quadrant> Quad_list;
 	private int player_spawn_quad;
 	private int boss_spawn_quad;
@@ -33,10 +33,11 @@ public class MapCreator extends GraphicsApplication{
 	}*/
 	
 	public void init() {
-		Physics = new PhysX(600, 600, 1800, 1800);//QUADRANT_HEIGHT, QUADRANT_WIDTH, MAP_WIDTH, MAP_HEIGHT
-		max_quad = Calculate_Quad_Amount(Physics.getQUADRANT_HEIGHT(),Physics.getMAP_HEIGHT());
+		rand = new Random((long) SEED);
+		//Physics = new PhysX(600, 600, 1800, 1800);//QUADRANT_HEIGHT, QUADRANT_WIDTH, MAP_WIDTH, MAP_HEIGHT
+		max_quad = Calculate_Quad_Amount(PhysXLibrary.MAP_WIDTH ,PhysXLibrary.MAP_HEIGHT);
 		System.out.println("quad_amount: "+max_quad);
-		setSize(600, 600);
+//		setSize(600, 600);
 
 	}
 	
@@ -124,7 +125,9 @@ public class MapCreator extends GraphicsApplication{
 	}
 	public void placeEnemies(Quadrant quad,EnemyShip enemy) {
 		ArrayList<Ship> ships = new ArrayList<Ship>();
-		//random x y for enemy.
+		//random x y (WITHIN THE CURRENT QUAD) for enemy.
+		// VERIFY SHIP IS "PhysXLibrary.COLLISION_CONSTANT * x" distance from any other 
+		// objects!!!!
 		ships.add(enemy);
 		quad.setShips(ships);
 	}
