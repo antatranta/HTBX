@@ -90,11 +90,11 @@ public class SettingsPane extends GraphicsPane {
 						switch(count1 % 2) {
 							case 0:
 								toggle1.setLabel("ON");
-								program.toggleMusic(true);
+								program.musicToggle(true);
 								break;
 							case 1:
 								toggle1.setLabel("OFF");
-								program.toggleMusic(false);
+								program.musicToggle(false);
 								break;
 						}
 						break;
@@ -104,9 +104,11 @@ public class SettingsPane extends GraphicsPane {
 						switch(count2 % 2) {
 							case 0:
 								toggle2.setLabel("ON");
+								program.sfxToggle(true);
 								break;
 							case 1:
 								toggle2.setLabel("OFF");
+								program.sfxToggle(false);
 								break;
 						}
 						break;

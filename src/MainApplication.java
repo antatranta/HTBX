@@ -18,6 +18,7 @@ public class MainApplication extends GraphicsApplication {
 	private int INITIAL_DELAY = 0;
 	private AudioPlayer audio;
 	private boolean musicToggle;
+	private boolean sfxToggle;
 	//private int count = 0;
 	
 	
@@ -37,8 +38,17 @@ public class MainApplication extends GraphicsApplication {
 		setting = new SettingsPane(this);
 		audio = AudioPlayer.getInstance();
 		musicToggle = true;
+		sfxToggle = true;
 		
 		switchToMenu();
+	}
+	
+	public void sfxToggle(boolean toggle) {
+		sfxToggle = toggle;
+	}
+	
+	public boolean getSfxToggle() {
+		return sfxToggle;
 	}
 	
 	public void switchToMenu() {
@@ -82,7 +92,7 @@ public class MainApplication extends GraphicsApplication {
 		return console;
 	}
 	
-	public void toggleMusic(boolean toggle) {
+	public void musicToggle(boolean toggle) {
 		musicToggle = toggle;
 		
 		if(musicToggle) {
