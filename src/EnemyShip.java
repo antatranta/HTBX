@@ -2,16 +2,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class EnemyShip extends Ship implements ActionListener{
+	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats, int weapon) {
+		super(physObj, current_health, stats, weapon);
+		// TODO Auto-generated constructor stub
+		
+	}
+
 	//private Ship ship;
 	protected static EnemyType type;
 	
-	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats, EnemyType ty) {
-		super(physObj, current_health, stats,0);
-		EnemyShip.type = ty;
-
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub

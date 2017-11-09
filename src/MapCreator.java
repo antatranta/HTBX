@@ -43,7 +43,7 @@ public class MapCreator extends GraphicsApplication{
 	public void run() {
 		//Quad_list = new ArrayList<Quadrant>();
 		Quad_list = createMap();
-		spawn_playerNboss();
+		
 	}
 	
 	public void spawn_playerNboss() {
@@ -101,8 +101,6 @@ public class MapCreator extends GraphicsApplication{
 		
 	}
 	public Quadrant createQuadrants(int x,int y, int order) {
-
-		
 		Quadrant quad = new Quadrant(new QuadrantID(x,y,order));
 		System.out.println("x:"+x+" y: "+y+" order: "+order);
 		fillQuadrants(quad,max_enemies,max_asteroid);
@@ -110,6 +108,8 @@ public class MapCreator extends GraphicsApplication{
 		return quad;
 	}
 	public void fillQuadrants(Quadrant quad,int max_enemies,int max_asteroid) {
+		spawn_playerNboss();
+		//EnemyShip enemy = new EnemyShip(physObj, current_health, stats, ty);//physObj, current_health, stats, ty
 		//EnemyShip enemy = new EnemyShip()
 		//Boss boss = new boss()
 		//playership = new player();

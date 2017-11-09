@@ -2,13 +2,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Boss extends EnemyShip implements ActionListener{
+	public Boss(PhysXObject physObj, int current_health, ShipStats stats, int weapon) {
+		super(physObj, current_health, stats, weapon);
+		// TODO Auto-generated constructor stub
+	}
+
 	private int currentStage = 0;
 	private static final int Stage2Health = 10;
 	
-	public Boss(PhysXObject physObj, int current_health, ShipStats stats) {
-		super(physObj, current_health, stats, type);
-		// TODO Auto-generated constructor stub
-	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
