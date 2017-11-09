@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
@@ -9,7 +8,6 @@ import acm.graphics.GObject;
 import acm.graphics.GImage;
 
 public class SettingsPane extends GraphicsPane {
-	private static final Font font = new Font("", Font.BOLD, 20);
 	private static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
 	private static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
 	
@@ -27,28 +25,31 @@ public class SettingsPane extends GraphicsPane {
 		this.program = app;
 		count1 = 0;
 		count2 = 0;
+		
 		title = new GImage("HTBX_Title.png");
+		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
+		
 		selection = new GLabel(">");
+		selection.setFont(font());
+		selection.setColor(Color.white);
+		
 		toggle1 = new GLabel("ON", 100, 0);
 		toggle2 = new GLabel("ON", 0, 50);
-		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
-		selection.setFont(font);
-		selection.setColor(Color.white);
-		toggle1.setFont(font);
-		toggle2.setFont(font);
+		toggle1.setFont(font());
+		toggle2.setFont(font());
 		toggle1.setColor(Color.black);
 		toggle2.setColor(Color.black);
 		
 		GLabel musicSetting = new GLabel("MUSIC");
 		GLabel sfxSetting = new GLabel("SFX", 0, 50);
-		GLabel back = new GLabel("BACK", 0, 200);
+		GLabel back = new GLabel("BACK", 0, 205);
 		
 		settings.add(musicSetting);
 		settings.add(sfxSetting);
 		settings.add(back);
 		
 		for(GLabel setting:settings) {
-			setting.setFont(font);
+			setting.setFont(font());
 			setting.setColor(Color.black);
 			setting.move(CENTER_WIDTH - (setting.getWidth() / 2), CENTER_HEIGHT - (setting.getHeight() / 2));
 			switch(setting.getLabel()) {
