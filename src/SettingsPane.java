@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GImage;
 
 public class SettingsPane extends GraphicsPane {
 	private static final Font font = new Font("", Font.BOLD, 20);
@@ -17,6 +18,7 @@ public class SettingsPane extends GraphicsPane {
 	private GLabel toggle1;
 	private GLabel toggle2;
 	private GLabel selection;
+	private GImage title;
 	private GObject obj;
 	private int count1;
 	private int count2;
@@ -25,19 +27,21 @@ public class SettingsPane extends GraphicsPane {
 		this.program = app;
 		count1 = 0;
 		count2 = 0;
+		title = new GImage("HTBX_Title.png");
 		selection = new GLabel(">");
-		selection.setFont(font);
-		selection.setColor(Color.white);
-		
-		GLabel musicSetting = new GLabel("MUSIC");
-		GLabel sfxSetting = new GLabel("SFX", 0, 50);
-		GLabel back = new GLabel("BACK", 0, 200);
 		toggle1 = new GLabel("ON", 100, 0);
 		toggle2 = new GLabel("ON", 0, 50);
+		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
+		selection.setFont(font);
+		selection.setColor(Color.white);
 		toggle1.setFont(font);
 		toggle2.setFont(font);
 		toggle1.setColor(Color.black);
 		toggle2.setColor(Color.black);
+		
+		GLabel musicSetting = new GLabel("MUSIC");
+		GLabel sfxSetting = new GLabel("SFX", 0, 50);
+		GLabel back = new GLabel("BACK", 0, 200);
 		
 		settings.add(musicSetting);
 		settings.add(sfxSetting);
@@ -67,6 +71,7 @@ public class SettingsPane extends GraphicsPane {
 		program.add(toggle1);
 		program.add(toggle2);
 		program.add(selection);
+		program.add(title);
 	}
 
 	@Override
@@ -85,9 +90,11 @@ public class SettingsPane extends GraphicsPane {
 						switch(count1 % 2) {
 							case 0:
 								toggle1.setLabel("ON");
+								program.toggleMusic(true);
 								break;
 							case 1:
 								toggle1.setLabel("OFF");
+								program.toggleMusic(false);
 								break;
 						}
 						break;

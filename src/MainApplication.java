@@ -16,6 +16,8 @@ public class MainApplication extends GraphicsApplication {
 	private GameTimer gameTimer;
 	private int TIMER_INTERVAL = 20;
 	private int INITIAL_DELAY = 0;
+	private AudioPlayer audio;
+	private boolean musicToggle;
 	//private int count = 0;
 	
 	
@@ -33,14 +35,16 @@ public class MainApplication extends GraphicsApplication {
 		gameTimer.addListener(game);
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
-		
+		audio = AudioPlayer.getInstance();
+		musicToggle = true;
 		
 		switchToMenu();
 	}
 	
 	public void switchToMenu() {
-		AudioPlayer audio = AudioPlayer.getInstance();
-		audio.playSound("sounds", "Pretty Yellow Lights.mp3");
+		if(musicToggle) {
+			audio.playSound("sounds", "Pretty Yellow Lights.mp3", true);
+		}
 		/*switch(count % 2) {
 			case 0: audio.stopSound("sounds", "r2d2.mp3"); break;
 			case 1: audio.stopSound("sounds", "somethinlikethis.mp3"); break;
@@ -50,9 +54,10 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToGame() {
-		AudioPlayer audio = AudioPlayer.getInstance();
-		audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
-		audio.playSound("sounds", "01 Misconection_1.mp3");
+		if(musicToggle) {
+			audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
+			audio.playSound("sounds", "01 Misconection_1.mp3", true);
+		}
 		/*switch(count % 2) {
 			case 0: audio.playSound("sounds", "r2d2.mp3"); break;
 			case 1: audio.playSound("sounds", "somethinlikethis.mp3"); break;
@@ -75,5 +80,14 @@ public class MainApplication extends GraphicsApplication {
 	
 	public GameConsole getGameConsole() {
 		return console;
+	}
+	
+	public void toggleMusic(boolean toggle) {
+		musicToggle = toggle;
+		
+		if(musicToggle) {
+			audio.playSound("sounds", "Pretty Yellow Lights.mp3", true);
+		}
+		audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
 	}
 }
