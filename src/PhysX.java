@@ -114,7 +114,9 @@ public class PhysX {
 	public void addQuadrant(Quadrant quad) {
 		Quadrants.add(quad);
 	}
-
+	
+	/* These variables are meant to be private
+	 * get their values from PhsXLibrary instead
 	public float getQUADRANT_HEIGHT() {
 		return QUADRANT_HEIGHT;
 	}
@@ -130,6 +132,7 @@ public class PhysX {
 	public int getMAP_HEIGHT() {
 		return MAP_HEIGHT;
 	}
+	*/
 
 	public ArrayList<Quadrant> getQuadrants() {
 		return Quadrants;
