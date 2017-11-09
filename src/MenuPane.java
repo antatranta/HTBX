@@ -2,30 +2,29 @@ import java.util.ArrayList;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.awt.Font;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GImage;
 
 public class MenuPane extends GraphicsPane {
-	private static final Font font = new Font("", Font.BOLD, 20);
 	private static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
 	private static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
 	
-	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
+	private MainApplication program;
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
 	private GLabel selection;
 	private GImage title;
 	private GObject obj;
-	// TODO possible constant of xPos
 	
 	public MenuPane(MainApplication app) {
 		program = app;
+		
 		title = new GImage("HTBX_Title.png");
-		selection = new GLabel(">");
 		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
-		selection.setFont(font);
+		
+		selection = new GLabel(">");
+		selection.setFont(font());
 		selection.setColor(Color.white);
 		
 		GLabel play = new GLabel("PLAY");
@@ -41,7 +40,7 @@ public class MenuPane extends GraphicsPane {
 		
 		double yPos = CENTER_HEIGHT - (play.getHeight() / 2);
 		for(GLabel menu:mainMenu) {
-			menu.setFont(font);
+			menu.setFont(font());
 			menu.setLocation((MainApplication.WINDOW_WIDTH / 2) - (menu.getWidth() / 2), yPos);
 			menu.setColor(Color.black);
 			yPos += 50;
