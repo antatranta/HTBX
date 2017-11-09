@@ -79,6 +79,10 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToSettings() {
+		if(musicToggle) {
+			audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
+			audio.playSound("sounds", "Credits.mp3", true);
+		}
 		switchToScreen(setting);
 	}
 	
