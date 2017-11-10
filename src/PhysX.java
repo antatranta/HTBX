@@ -108,6 +108,9 @@ public class PhysX {
 		
 	}
 	
+	public void addQuadrants(ArrayList<Quadrant> quads) {
+		this.Quadrants = quads;
+	}
 	// The quadrants will always be read in order
 	// so there is no need to verify placement
 	// or order.
