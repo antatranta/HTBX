@@ -7,7 +7,8 @@ import acm.program.GraphicsProgram;
 public class GameConsole extends GraphicsProgram{
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
 	//private PlayerShip player;
-	private static PlayerShip player;
+	private PlayerShip player;
+	private MapCreator mapCreator;
 	private PhysX physx; // The controller for all things
 	private int skillPoints;
 //	private GameTimer clock = new GameTimer();
@@ -16,78 +17,28 @@ public class GameConsole extends GraphicsProgram{
 		// Create the universe. For now, only a single quadrant
 		System.out.println("Made a new game console");
 		physx = new PhysX();
-		Quadrant h = new Quadrant(new QuadrantID(0,0,0));
-		physx.addQuadrant(h);
+		mapCreator = new MapCreator();
+		physx.addQuadrants(mapCreator.createMap());
+		
+		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
+		float pos_x = (playerSpawn.getQUID().getX() * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
+		float pos_y = (playerSpawn.getQUID().getY() * PhysXLibrary.QUADRANT_HEIGHT) -  (PhysXLibrary.QUADRANT_HEIGHT / 2);
+		Vector2 pos = new Vector2(pos_x, pos_y);
 		
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 1);
-		PhysXObject playerPhysXobj = new PhysXObject(h.getQUID(), new Vector2(100,100), playerCollider);
+		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
 		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1));
 	}
+	
+	
 	
 	public PhysX physx() {
 		return physx;
 	}
 	
-	public static PlayerShip getPlayer() {
-		return player;
+	public PlayerShip getPlayer() {
+		return this.player;
 	}
-	
-//	public GameTimer getClock() {
-//		return clock;
-//	}
-	/*
-	@Override
-    public void keyPressed(KeyEvent e) {
-    	System.out.println("Key Read");
-        int key = e.getKeyCode();
-        
-       //if (key == KeyEvent.VK_ESCAPE) 
-        //if (key == KeyEvent.VK_ENTER) 
-        	
-        if (key == KeyEvent.VK_A) {
-            player.setDx(-1);
-            System.out.println("A");
-        }
-
-        if (key == KeyEvent.VK_D) {
-        	player.setDx(1);
-        	System.out.println("D");
-        }
-
-        if (key == KeyEvent.VK_W) {
-        	player.setDy(-1);
-        	System.out.println("W");
-        }
-
-        if (key == KeyEvent.VK_S) {
-        	player.setDy(1);
-        	System.out.println("S");
-        }
-    }
-
-	@Override
-    public void keyReleased(KeyEvent e) {
-        
-        int key = e.getKeyCode();
-        //if (key == KeyEvent.VK_ESCAPE) 
-        //if (key == KeyEvent.VK_ENTER) 
-        if (key == KeyEvent.VK_A) {
-        	player.setDx(0);
-        }
-
-        if (key == KeyEvent.VK_D) {
-        	player.setDx(0);
-        }
-
-        if (key == KeyEvent.VK_W) {
-        	player.setDy(0);
-        }
-
-        if (key == KeyEvent.VK_S) {
-        	player.setDy(0);
-        }
-    }
-    */
 }
 
 
