@@ -1,19 +1,29 @@
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GImage;
+import acm.graphics.GLabel;
 
 public abstract class GraphicsPane implements Interfaceable {
 	public static final Font font = new Font("", Font.BOLD, 20);
 	public static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
 	public static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
+	public static final GLabel selection = new GLabel(">");
 	
-	public GImage title = new GImage("HTBX_Title.png");
+	private static final GImage title = new GImage("HTBX_Title.png");
 	
 	public GImage title() {
 		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
 		return title;
+	}
+	
+	public GLabel selection() {
+		selection.setFont(font);
+		selection.setColor(Color.black);
+		selection.setVisible(false);
+		return selection;
 	}
 	
 	@Override
