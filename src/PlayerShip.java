@@ -6,7 +6,7 @@ public class PlayerShip extends Ship implements ActionListener{
 	private int current_shield;
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats) {
-		super(physObj, current_health, stats, 0);
+		super(physObj, current_health, stats);
 		this.current_shield = current_shield;
 	}
 
