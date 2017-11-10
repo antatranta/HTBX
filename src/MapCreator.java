@@ -149,6 +149,8 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 	}
 	
 	private int randomNumber(int max, int min) {
+		//I need something like truly random by current time, not by program running time.
+		//otherwise I always got same numbers.
 		Random newrand = new Random(rand.nextInt(9));
 		int randomNum = newrand.nextInt((max - min) + 1) + min;
 		//float random = rand.nextFloat() * (max - min) + min;
@@ -164,8 +166,15 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
             	if(k!=i) {
 	            	float compare = objects.get(k);
 	            	float different = Math.abs(object - compare);
-	            	if(different!=0 && different<=range) {
+	            	if(different==0 || different<=range) {
 	            		System.out.println("Interrupt!!!!"); 
+	            		rand = new Random();
+	            		try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 	            		return true;
 	            	}
             	}
