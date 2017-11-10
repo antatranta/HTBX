@@ -5,18 +5,16 @@ public class Ship {
 	private int current_health;
 	private ShipStats stats;
 	private double dir = 90;
-	private int weapon_cd;
-	private int cd_cap;
+
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
 
 	
-	public Ship(PhysXObject physObj,int current_health, ShipStats stats, int weapon) {
+	public Ship(PhysXObject physObj,int current_health, ShipStats stats) {
 		this.physObj = new PhysXObject();
 		this.setCurrent_health(current_health);
 		this.stats = new ShipStats(1, 1, 1, 1);//speed, shield_max, health_max, damage
-		weapon_cd = cd_cap = weapon;
 	}
 	
 	public double getAngle() {

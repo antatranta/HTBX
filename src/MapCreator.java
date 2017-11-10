@@ -10,110 +10,109 @@ import java.awt.*;
 
 
 
-public class MapCreator extends GameConsole{//I extends with gameconsole to get player and physXobject just for testing--Wenrui
-	//get width in physx
+public class MapCreator {
 	//500 for each. 250.
 	private float SEED;
-	private static int max_enemies=10;
-	private static int max_asteroid=10;
+	private final int MAX_ENEMIES_IN_QUAD = 2;
+	private final int MAX_ASTEROIDS_IN_QUAD = 4;
+	private final float BORDER_X = 10f;
+	private final float BORDER_Y = 10f;
 	private int max_quad=0;
 	private Random rand;
-	private static ArrayList<Quadrant> Quad_list;
-	private int player_spawn_quad;
-	private int boss_spawn_quad;
+//	private static ArrayList<Quadrant> Quad_list;
+	private Quadrant player_spawn_quad;
+	private Quadrant boss_spawn_quad;
+	private int player_spawn_quad_order;
+	private int boss_spawn_quad_order;
 	
-	private int []Ex = new int[max_enemies];
-	private int []Ey = new int[max_enemies];
-	private int []Ax = new int[max_asteroid];
-	private int []Ay = new int[max_asteroid];
 	
 	public void init() {
-		//rand = new Random((long) SEED);
-		rand = new Random();
-		System.out.println("Seed: "+SEED);
-		/*
-		//set the random number range same as the quadrant edge.
-		setSeed(PhysXLibrary.QUADRANT_HEIGHT);
-		//setSeed(600);
-		*/
-		//Calculated max number of quadrant by (map_height/quad_height)^2.--wenrui
-		max_quad = Calculate_Quad_Amount(PhysXLibrary.QUADRANT_HEIGHT ,PhysXLibrary.MAP_HEIGHT);
-		System.out.println("quad_amount: "+max_quad);
-		setSize((int) Math.round(PhysXLibrary.QUADRANT_WIDTH), (int) Math.round(PhysXLibrary.QUADRANT_HEIGHT));
+		rand = new Random((long) SEED);
+		System.out.println("Creating MAP using seed: "+SEED);
+//		max_quad = Calculate_Quad_Amount(PhysXLibrary.QUADRANT_HEIGHT ,PhysXLibrary.MAP_HEIGHT);
+//		System.out.println("quad_amount: "+max_quad);
 	}
 	
 	public void run() {
-		Quad_list = new ArrayList<Quadrant>();
-		Quad_list = createMap();
+//		Quad_list = new ArrayList<Quadrant>();
+//		Quad_list = createMap();
 		
 	}
-	public void spawn_playerNboss() {
-		int player_quad=0;
-		int boss_quad=0;
-		player_quad= rand.nextInt(max_quad);
-		boss_quad = rand.nextInt(max_quad);
+	public void setPlayerAndBossQuadPositions() {
+		int totalQuads = PhysXLibrary.MAP_HEIGHT * PhysXLibrary.MAP_WIDTH;
+		int player_quad = randomNumber(0, totalQuads);
+		int boss_quad = randomNumber(0, totalQuads);
 		while(player_quad==boss_quad) {
-			player_quad= rand.nextInt(max_quad);
-			boss_quad = rand.nextInt(max_quad);
+			player_quad = randomNumber(0, totalQuads);
+			boss_quad   = randomNumber(0, totalQuads);
 		}
-		player_spawn_quad=player_quad;
-		boss_spawn_quad=boss_quad;
-		System.out.println("Player spawn at: "+player_spawn_quad+". Boss spawn at: "+boss_spawn_quad);
+		this.player_spawn_quad_order = player_quad;
+		this.boss_spawn_quad_order = boss_quad;
+		System.out.println("Player spawn at: "+player_spawn_quad+" | Boss spawn at: "+boss_spawn_quad);
 	}
-	
+	/*
 	public int Calculate_Quad_Amount(float quadrant_height,int map_height) {
 		int height_int = (int)quadrant_height;
 		int amount = map_height/height_int;
 		amount = amount*amount;
 		return amount;
 	}
+	
 	public void createNoiseMap() {
 		//use perlin noise.
 		//https://stackoverflow.com/questions/17440865/using-perlin-noise-to-generate-a-2d-tile-map
 	}
+	*/
 	
 	public ArrayList<Quadrant> createMap(){
+		
+		// Create a new array to hold the quads
 		ArrayList<Quadrant> Quadrants = new ArrayList<Quadrant>();
-		spawn_playerNboss();
-		int counter = (int) Math.sqrt(max_quad);
+		setPlayerAndBossQuadPositions();
+		
+		// Store the current position in the Array
 		int order = 0;
-		System.out.println("Counter: "+ counter);
-		for(int a = 0; a < counter;a ++) {
-			for(int b = 0; b<counter;b++) {
-				int quad_width = (int) Math.round(b*PhysXLibrary.QUADRANT_WIDTH);
-				int quad_height = (int) Math.round(a*PhysXLibrary.QUADRANT_HEIGHT);
-				Quadrant quad = createQuadrants(quad_width,quad_height,order);
-				fillQuadrants(quad,quad_width,quad_height);
-				Quadrants.add(quad);
+	
+//		int totalQuads = PhysXLibrary.MAP_HEIGHT * PhysXLibrary.MAP_WIDTH;
+		for(int a = 0; a < PhysXLibrary.MAP_HEIGHT; ++a) {
+			for(int b = 0; b < PhysXLibrary.MAP_WIDTH; ++b) {
+				
+//				int quad_width = (int) Math.round(b*PhysXLibrary.QUADRANT_WIDTH);
+//				int quad_height = (int) Math.round(a*PhysXLibrary.QUADRANT_HEIGHT);
+				Quadrant quad = createQuadrant(a,b,order);
+				
+				if(order != player_spawn_quad_order && order != boss_spawn_quad_order) {
+					fillQuadrant(quad);
+					Quadrants.add(quad);
+				} else if (order == player_spawn_quad_order) {
+					this.player_spawn_quad = quad;
+				} else if (order == boss_spawn_quad_order) {
+					this.boss_spawn_quad = quad;
+				}
 				order++;
 			}
 		}
 		return Quadrants;
 		
 	}
-	public Quadrant createQuadrants(int x,int y, int order) {
-		Quadrant quad = new Quadrant(new QuadrantID(x,y,order));
-		System.out.println("x:"+x+" y: "+y+" order: "+order);
-		return quad;
+	public Quadrant createQuadrant(int x,int y, int order) {
+//		Quadrant quad = new Quadrant(new QuadrantID(x,y,order));
+//		System.out.println("x:"+x+" y: "+y+" order: "+order);
+		return new Quadrant(new QuadrantID(x,y,order));
 	}
-	public void fillQuadrants(Quadrant quad,int current_quad_x_startPoint,int current_quad_y_startPoint) {
-		checkInterrupt(current_quad_x_startPoint, PhysXLibrary.QUADRANT_WIDTH, 'x');
-		checkInterrupt(current_quad_y_startPoint, PhysXLibrary.QUADRANT_HEIGHT,'y');
-		if(!(quad.getQUID().Order()==player_spawn_quad)&&!(quad.getQUID().Order()==boss_spawn_quad)){
-			for(int i = 0; i < max_enemies;i++) {
-				placeEnemies(quad,Ex[i],Ey[i]);
-			}
-			for(int i = 0; i < max_asteroid;i++) {
-				placeAsteroid(quad,Ax[i],Ay[i]);
-			}
-		}else if(quad.getQUID().Order()==player_spawn_quad){
-			
-			placePlayer(quad,getPlayer());
-		}else if(quad.getQUID().Order()==boss_spawn_quad){
-			//placeBoss (quad,boss);
-		}
+	public void fillQuadrant(Quadrant quad) {
+//		checkInterrupt(current_quad_x_startPoint, PhysXLibrary.QUADRANT_WIDTH, 'x');
+//		checkInterrupt(current_quad_y_startPoint, PhysXLibrary.QUADRANT_HEIGHT,'y');
+		int numberOfEnemies = randomNumber(0, MAX_ENEMIES_IN_QUAD);
+		int numberOfAsteroids = randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
+		
+		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
+		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
+		quad.setAsteroids(Asteroids);
+		quad.setShips(EnemyShips);
 	}
 	
+	/*
 	public void checkInterrupt(int start, float edge, char type) {
 		boolean interrupt = true;
 		ArrayList<Integer> objects;
@@ -150,16 +149,16 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 			interrupt=interrrupt_occurred(objects,PhysXLibrary.COLLISION_CONSTANT);
 		}
 	}
+	*/
 	
-	private int randomNumber(int max, int min) {
-		//I need something like truly random by current time, not by program running time.
-		//otherwise I always got same numbers.
-		//Random newrand = new Random(rand.nextInt(9));
-		int randomNum = rand.nextInt((max - min) + 1) + min;
-		//float random = rand.nextFloat() * (max - min) + min;
-		return randomNum;
+	private int randomNumber(int min, int max) {		
+		if (min >= max) {
+			throw new IllegalArgumentException("max must be greater than min");
+		}
+		return rand.nextInt((max - min) + 1) + min;
 	}
 
+	/*
 	public boolean interrrupt_occurred(ArrayList<Integer> objects,float range) {
 		// VERIFY SHIP IS "PhysXLibrary.COLLISION_CONSTANT * x" distance from any other 
 		// objects!!!!
@@ -178,29 +177,49 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
         }
         return false;
 	}
+	*/
 	
-	public void placeEnemies(Quadrant quad,int enemy_x, int enemy_y) {
-		ArrayList<Ship> ships = new ArrayList<Ship>();
-		System.out.println("Enemy x: "+ enemy_x + " y: "+enemy_y);
-		PhysXObject EnemiesPhysXobj = new PhysXObject(quad.getQUID(), new Vector2(enemy_x,enemy_y));		
-		//EnemyShip enemy = new EnemyShip(EnemiesPhysXobj, current_health, stats, weapon);
-
-		//ships.add(enemy);
-		quad.setShips(ships);
+	public PhysXObject createPhysXObjectInQuad (QuadrantID quad) {
+		float startingX = (quad.getX() * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
+		float startingY = (quad.getY() * PhysXLibrary.QUADRANT_HEIGHT) -  (PhysXLibrary.QUADRANT_HEIGHT / 2);
+		
+		float randomMultiplierX = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
+		float randomMultiplierY = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
+		float x_pos = randomMultiplierX * ((PhysXLibrary.QUADRANT_WIDTH - BORDER_X) / 2);
+		float y_pos = randomMultiplierY * ((PhysXLibrary.QUADRANT_HEIGHT - BORDER_Y) / 2);
+		return new PhysXObject(quad, new Vector2(startingX + x_pos, startingY + y_pos));
 	}
+	
+	public ArrayList<EnemyShip> placeEnemies(QuadrantID quad, int numToCreate) {
+		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
+		for(int i =0; i < numToCreate; ++i) {
+			PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
+			EnemyShips.add(new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01()));
+		}
+		return EnemyShips;
+	}
+	
+	public ArrayList<Asteroid> placeAsteroids(QuadrantID quad, int numToCreate) {
+		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
+		for(int i =0; i < numToCreate; ++i) {
+			PhysXObject newAsteroid = createPhysXObjectInQuad(quad);
+			Asteroids.add(new Asteroid(newAsteroid));
+		}
+		return Asteroids;
+	}
+	
 	public void placeBoss(Quadrant quad, Boss boss) {
 		System.out.println(boss);
+	}
+	
+	public Quadrant getPlayerSpawn() {
+		return this.player_spawn_quad;
+	}
+	public Quadrant getBossSpawn() {
+		return this.boss_spawn_quad;
 	}
 	public void placePlayer(Quadrant quad, PlayerShip player) {
 		System.out.println(player);
 		//quad.setShips(player);
-	}
-	public void placeAsteroid(Quadrant quad,int asteroid_x, int asteroid_y) {
-		System.out.println("Asteroid x: "+ asteroid_x + " y: "+asteroid_y);
-		ArrayList<Asteroid> ast_list = new ArrayList<Asteroid>();
-		PhysXObject AsteroidPhysXobj = new PhysXObject(quad.getQUID());	
-		Asteroid ast = new Asteroid(AsteroidPhysXobj);
-		ast_list.add(ast);
-		quad.setAsteroids(ast_list);
 	}
 }

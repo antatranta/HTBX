@@ -1,17 +1,20 @@
 public class ShipStats {
 	
+	private int speed;
+	private int shield_max;
+	private int health_max;
+	private int damage;
+	
 	public ShipStats(int speed, int shield_max, int health_max, int damage) {
-		super();
 		this.speed = speed;
 		this.shield_max = shield_max;
 		this.health_max = health_max;
 		this.damage = damage;
 	}
 	
-	private static int speed;
-	private static int shield_max;
-	private static int health_max;
-	private static int damage;
+	public static ShipStats EnemyStats_01() {
+		return new ShipStats(1, 0, 50, 1);
+	}
 	
 	public int getSpeed() {
 		return speed;
