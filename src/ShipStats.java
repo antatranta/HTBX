@@ -8,10 +8,10 @@ public class ShipStats {
 		this.damage = damage;
 	}
 	
-	private int speed;
-	private int shield_max;
-	private int health_max;
-	private int damage;
+	private static int speed;
+	private static int shield_max;
+	private static int health_max;
+	private static int damage;
 	
 	public int getSpeed() {
 		return speed;

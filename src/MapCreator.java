@@ -10,7 +10,7 @@ import java.awt.*;
 
 
 
-public class MapCreator {
+public class MapCreator extends GraphicsApplication{//I extends with graphics just for testing--Wenrui
 	//get width in physx
 	//500 for each. 250.
 	private float SEED;
@@ -34,11 +34,13 @@ public class MapCreator {
 	
 	public void init() {
 		rand = new Random((long) SEED);
-		//Physics = new PhysX(600, 600, 1800, 1800);//QUADRANT_HEIGHT, QUADRANT_WIDTH, MAP_WIDTH, MAP_HEIGHT
-		max_quad = Calculate_Quad_Amount(PhysXLibrary.MAP_WIDTH ,PhysXLibrary.MAP_HEIGHT);
+		System.out.println("Seed: "+SEED);
+		//Calculated max number of quadrant by (map_height/quad_height)^2.--wenrui
+		//max_quad = Calculate_Quad_Amount(PhysXLibrary.QUADRANT_HEIGHT ,PhysXLibrary.MAP_HEIGHT);
+		max_quad = Calculate_Quad_Amount(600,1800);
 		System.out.println("quad_amount: "+max_quad);
-//		setSize(600, 600);
-
+		//setSize((int) Math.round(PhysXLibrary.QUADRANT_WIDTH), (int) Math.round(PhysXLibrary.QUADRANT_HEIGHT));
+		setSize(600,600);//Assume quad height and width are 600, for testing.
 	}
 	
 	public void run() {
@@ -70,7 +72,6 @@ public class MapCreator {
 	public void createNoiseMap() {
 		//use perlin noise.
 		//https://stackoverflow.com/questions/17440865/using-perlin-noise-to-generate-a-2d-tile-map
-	}
 	
 	//random number of ships, asteroid for each quad.
 	//x and y in quad.
@@ -81,6 +82,8 @@ public class MapCreator {
 		//for each ship and each asteroid
 			//get a random x and y for placement
 			//run a check thruough physX to make sure they won't touch
+	}
+	
 	public ArrayList<Quadrant> createMap(){
 		ArrayList<Quadrant> Quadrants = new ArrayList<Quadrant>();
 		int counter = (int) Math.sqrt(max_quad);
@@ -98,6 +101,7 @@ public class MapCreator {
 				order++;
 			}
 		}
+		spawn_playerNboss();
 		return Quadrants;
 		
 	}
@@ -109,7 +113,7 @@ public class MapCreator {
 		return quad;
 	}
 	public void fillQuadrants(Quadrant quad,int max_enemies,int max_asteroid) {
-		spawn_playerNboss();
+		
 		//EnemyShip enemy = new EnemyShip(physObj, current_health, stats, ty);//physObj, current_health, stats, ty
 		//EnemyShip enemy = new EnemyShip()
 		//Boss boss = new boss()

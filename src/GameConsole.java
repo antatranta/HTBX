@@ -6,7 +6,8 @@ import acm.program.GraphicsProgram;
 
 public class GameConsole extends GraphicsProgram{
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
-	private PlayerShip player;
+	//private PlayerShip player;
+	private static PlayerShip player;
 	private PhysX physx; // The controller for all things
 	private int skillPoints;
 //	private GameTimer clock = new GameTimer();
@@ -27,7 +28,7 @@ public class GameConsole extends GraphicsProgram{
 		return physx;
 	}
 	
-	public PlayerShip getPlayer() {
+	public static PlayerShip getPlayer() {
 		return player;
 	}
 	
