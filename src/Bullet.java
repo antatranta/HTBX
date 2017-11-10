@@ -6,6 +6,8 @@ public class Bullet {
 	private PhysXObject physObj;
 	private CollisionData collisionData;
 	private Vector2 movementVector;
+	private float bulletDX;
+	private float bulletDY;
 	
 	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		this.bulletDamage = dmg;
@@ -65,7 +67,19 @@ public class Bullet {
 		return movementVector;
 	}
 	
+	public float getBulletDX() {
+		Vector2 movement = this.physObj.getPosition().add(movementVector);
+		bulletDX = movement.normalize().getX();
+		return bulletDX * bulletSpeed;
+	}
+	
+	public float getBulletDY() {
+		Vector2 movement = this.physObj.getPosition().add(movementVector);
+		bulletDY = movement.normalize().getY();
+		return bulletDY * bulletSpeed;
+	}
+	
 	public void move() {
-		this.physObj.setPosition(this.physObj.getPosition().add(movementVector));
+		physObj.getPosition().setXY(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
 	}
 }

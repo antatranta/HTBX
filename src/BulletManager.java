@@ -7,32 +7,18 @@ public class BulletManager {
 		bullets = new ArrayList<Bullet>();
 	}
 	
+	public ArrayList<Bullet> getBullets() {
+		return bullets;
+	}
+	
 	public void onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
-		//TODO
 		Bullet bulletShoot = new Bullet(dmg, spd, bullet, time, obj, movementVector);
 		bullets.add(bulletShoot);
 	}
 	
-	public void onDeathEvent(Ship ship, int points) {
-		//TODO
-		
-	}
-	
-	public void subscribeToShip(Ship ship) {
-		//TODO
-		for(Bullet bullet:bullets) {
-			switch(bullet.getBulletType()) {
-				case PLAYER_BULLET:
-					//TODO
-					break;
-					
-				case ENEMY_BULLET:
-					//TODO
-					break;
-					
-				default:
-					break;
-			}
+	public void moveBullets() {
+		for(Bullet shoot:bullets) {
+			shoot.move();
 		}
 	}
 }
