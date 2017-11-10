@@ -102,8 +102,10 @@ public class MainApplication extends GraphicsApplication {
 		musicToggle = toggle;
 		
 		if(musicToggle) {
-			audio.playSound("sounds", "Pretty Yellow Lights.mp3", true);
+			audio.playSound("sounds", "Credits.mp3", true);
 		}
-		audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
+		else {
+			audio.stopSound("sounds", "Credits.mp3");
+		}
 	}
 }

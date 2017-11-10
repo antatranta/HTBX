@@ -9,15 +9,10 @@ import acm.graphics.GObject;
 public class MenuPane extends GraphicsPane {
 	private MainApplication program;
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
-	private GLabel selection;
 	private GObject obj;
 	
 	public MenuPane(MainApplication app) {
 		program = app;
-		
-		selection = new GLabel(">");
-		selection.setFont(font);
-		selection.setColor(Color.white);
 		
 		GLabel play = new GLabel("PLAY");
 		GLabel settings = new GLabel("SETTINGS");
@@ -45,7 +40,7 @@ public class MenuPane extends GraphicsPane {
 			program.add(menu);
 		}
 		program.add(title());
-		program.add(selection);
+		program.add(selection());
 	}
 
 	@Override
@@ -93,7 +88,7 @@ public class MenuPane extends GraphicsPane {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel menu:mainMenu) {
 			if(obj == menu) {
-				selection.setColor(Color.black);
+				selection.setVisible(true);
 				switch(menu.getLabel()) {
 					case "PLAY":
 						selection.setLocation(menu.getX() - 25, menu.getY());
@@ -120,7 +115,7 @@ public class MenuPane extends GraphicsPane {
 				}
 			}
 			else if(obj == null) {
-				selection.setColor(Color.white);
+				selection.setVisible(false);
 			}
 		}
 	}

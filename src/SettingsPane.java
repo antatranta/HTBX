@@ -11,7 +11,6 @@ public class SettingsPane extends GraphicsPane {
 	private ArrayList<GLabel> settings = new ArrayList<GLabel>();
 	private GLabel toggle1;
 	private GLabel toggle2;
-	private GLabel selection;
 	private GObject obj;
 	private int count1;
 	private int count2;
@@ -20,10 +19,6 @@ public class SettingsPane extends GraphicsPane {
 		this.program = app;
 		count1 = 0;
 		count2 = 0;
-		
-		selection = new GLabel(">");
-		selection.setFont(font);
-		selection.setColor(Color.white);
 		
 		toggle1 = new GLabel("ON", 100, 0);
 		toggle2 = new GLabel("ON", 0, 50);
@@ -63,7 +58,7 @@ public class SettingsPane extends GraphicsPane {
 		}
 		program.add(toggle1);
 		program.add(toggle2);
-		program.add(selection);
+		program.add(selection());
 		program.add(title());
 	}
 
@@ -122,7 +117,7 @@ public class SettingsPane extends GraphicsPane {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel setting:settings) {
 			if(obj == setting) {
-				selection.setColor(Color.black);
+				selection.setVisible(true);
 				switch(setting.getLabel()) {
 					case "MUSIC":
 						selection.setLocation(setting.getX() - 25, setting.getY());
@@ -141,7 +136,7 @@ public class SettingsPane extends GraphicsPane {
 				}
 			}
 			else if(obj == null) {
-				selection.setColor(Color.white);
+				selection.setVisible(false);
 			}
 		}
 	}
