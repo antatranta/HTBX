@@ -1,7 +1,7 @@
 import java.util.*;
 public class Quadrant{
 	private ArrayList<Asteroid> asteroids;
-	private ArrayList<Ship> ships;
+	private ArrayList<EnemyShip> ships;
 	private boolean isActive;
 	private QuadrantID QUID;
 	
@@ -55,7 +55,7 @@ public class Quadrant{
 		return asteroids;
 	}
 	
-	public ArrayList<Ship> getShips(){
+	public ArrayList<EnemyShip> getShips(){
 		return ships;
 	}
 
@@ -67,7 +67,7 @@ public class Quadrant{
 		this.asteroids = asteroids;
 	}
 
-	public void setShips(ArrayList<Ship> ships) {
+	public void setShips(ArrayList<EnemyShip> ships) {
 		this.ships = ships;
 	}
 
