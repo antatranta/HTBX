@@ -4,10 +4,10 @@ import java.awt.event.MouseEvent;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
-//TODO: Implement ScoresPane
 public class ScoresPane extends GraphicsPane{
 	private MainApplication program;
 	private GLabel back;
+	private GObject obj;
 	
 	public ScoresPane(MainApplication app) {
 		program = app;
@@ -33,7 +33,7 @@ public class ScoresPane extends GraphicsPane{
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		GObject obj = program.getElementAt(e.getX(), e.getY());
+		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {
 			program.switchToMenu();
 		}
@@ -41,7 +41,7 @@ public class ScoresPane extends GraphicsPane{
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		GObject obj = program.getElementAt(e.getX(), e.getY());
+		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {
 			selection.setVisible(true);
 		}
