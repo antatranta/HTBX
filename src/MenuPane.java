@@ -28,10 +28,14 @@ public class MenuPane extends GraphicsPane {
 		double yPos = CENTER_HEIGHT - (play.getHeight() / 2);
 		for(GLabel menu:mainMenu) {
 			menu.setFont(font);
-			menu.setLocation((CENTER_WIDTH) - (menu.getWidth() / 2), yPos);
 			menu.setColor(Color.black);
+			menu.setLocation((CENTER_WIDTH) - (menu.getWidth() / 2), yPos);
 			yPos += 50;
 		}
+	}
+	
+	public ArrayList<GLabel> getMainMenu() {
+		return mainMenu;
 	}
 	
 	@Override
@@ -48,7 +52,6 @@ public class MenuPane extends GraphicsPane {
 		program.removeAll();
 	}
 	
-	// Main menu options switches panels and/or quits - Anthony
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
@@ -82,7 +85,6 @@ public class MenuPane extends GraphicsPane {
 		}
 	}
 	
-	// When you hover the mouse over the text it highlights :D - Anthony
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());

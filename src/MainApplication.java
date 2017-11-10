@@ -12,6 +12,7 @@ public class MainApplication extends GraphicsApplication {
 	private SettingsPane setting;
 	private ScoresPane score;
 	private ControlsPane control;
+	private PausePane pause;
 	private GameConsole console;
 	private GameTimer gameTimer;
 	private int TIMER_INTERVAL = 20;
@@ -92,6 +93,10 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToControls() {
 		switchToScreen(control);
+	}
+	
+	public void switchToPause() {
+		switchToScreen(pause);
 	}
 	
 	public GameConsole getGameConsole() {
