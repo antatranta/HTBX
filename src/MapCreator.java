@@ -112,6 +112,9 @@ public class MapCreator {
 		
 		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
+		
+		
+		
 		quad.setAsteroids(Asteroids);
 		quad.setShips(EnemyShips);
 	}
@@ -204,6 +207,10 @@ public class MapCreator {
 		return EnemyShips;
 	}
 	
+	public EnemyShip placeEnemy (QuadrantID quad) {
+		return new EnemyShip();
+	}
+	
 	public ArrayList<Asteroid> placeAsteroids(QuadrantID quad, int numToCreate) {
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		for(int i =0; i < numToCreate; ++i) {
@@ -212,6 +219,11 @@ public class MapCreator {
 		}
 		return Asteroids;
 	}
+	
+	public Asteroid placeAsteroid (QuadrantID quad) {
+		return new Asteroid();
+	}
+	
 	
 	public void placeBoss(Quadrant quad, Boss boss) {
 		System.out.println(boss);
