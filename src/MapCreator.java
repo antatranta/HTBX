@@ -14,8 +14,8 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 	//get width in physx
 	//500 for each. 250.
 	private float SEED;
-	private static int max_enemies=2;
-	private static int max_asteroid=1;
+	private static int max_enemies=10;
+	private static int max_asteroid=10;
 	private int max_quad=0;
 	private Random rand;
 	private static ArrayList<Quadrant> Quad_list;
@@ -116,9 +116,10 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 	
 	public void checkInterrupt(int start, float edge, char type) {
 		boolean interrupt = true;
-		ArrayList<Integer> objects = new ArrayList<Integer>();
+		ArrayList<Integer> objects;
 		int end = (int) Math.round(start+edge);
 		while(interrupt) {
+			objects = new ArrayList<Integer>();
 			if(type == 'x') {
 				Ex = new int[max_enemies];
 				Ax = new int[max_asteroid];
@@ -129,6 +130,7 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 			for(int i=0;i<max_enemies;i++) {
 				int enemy_rand = randomNumber(end, start);
 				objects.add(enemy_rand);
+				//System.out.println("Erand: "+enemy_rand);
 				if(type == 'x') {
 					Ex[i] = enemy_rand;
 				}else if (type == 'y') {
@@ -138,6 +140,7 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 			for(int j=0;j<max_asteroid;j++) {
 				int asteroid_rand = randomNumber(end, start);
 				objects.add(asteroid_rand);
+				//System.out.println("Arand: "+asteroid_rand);
 				if(type == 'x') {
 					Ax[j] = asteroid_rand;
 				}else if (type == 'y') {
@@ -151,8 +154,8 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 	private int randomNumber(int max, int min) {
 		//I need something like truly random by current time, not by program running time.
 		//otherwise I always got same numbers.
-		Random newrand = new Random(rand.nextInt(9));
-		int randomNum = newrand.nextInt((max - min) + 1) + min;
+		//Random newrand = new Random(rand.nextInt(9));
+		int randomNum = rand.nextInt((max - min) + 1) + min;
 		//float random = rand.nextFloat() * (max - min) + min;
 		return randomNum;
 	}
@@ -167,14 +170,7 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 	            	float compare = objects.get(k);
 	            	float different = Math.abs(object - compare);
 	            	if(different==0 || different<=range) {
-	            		System.out.println("Interrupt!!!!"); 
-	            		rand = new Random();
-	            		try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+	            		//System.out.println("Interrupt!!!!"); 
 	            		return true;
 	            	}
             	}
