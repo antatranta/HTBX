@@ -149,7 +149,8 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 	}
 	
 	private int randomNumber(int max, int min) {
-		int randomNum = rand.nextInt((max - min) + 1) + min;
+		Random newrand = new Random(rand.nextInt(9));
+		int randomNum = newrand.nextInt((max - min) + 1) + min;
 		//float random = rand.nextFloat() * (max - min) + min;
 		return randomNum;
 	}
@@ -160,11 +161,13 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
         for (int i = 0; i <objects.size(); i++) {
             float object = objects.get(i);
             for (int k = 0; k <objects.size(); k++) {
-            	float compare = objects.get(k);
-            	float different = Math.abs(object - compare);
-            	if(different!=0 && different<=range) {
-            		System.out.println("Interrupt!!!!"); 
-            		return true;
+            	if(k!=i) {
+	            	float compare = objects.get(k);
+	            	float different = Math.abs(object - compare);
+	            	if(different!=0 && different<=range) {
+	            		System.out.println("Interrupt!!!!"); 
+	            		return true;
+	            	}
             	}
             }
         }
