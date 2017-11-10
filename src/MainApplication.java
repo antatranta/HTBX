@@ -67,7 +67,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToGame() {
 		if(musicToggle) {
-			audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
+			audio.stopSound("sounds", "3A1W - Menu.wav");
 			audio.playSound("sounds", "01 Misconection_1.mp3", true);
 		}
 		/*switch(count % 2) {
@@ -80,7 +80,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToSettings() {
 		if(musicToggle) {
-			audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
+			audio.stopSound("sounds", "3A1W - Menu.wav");
 			audio.playSound("sounds", "Credits.mp3", true);
 		}
 		switchToScreen(setting);

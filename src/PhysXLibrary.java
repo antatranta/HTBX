@@ -6,10 +6,10 @@ public class PhysXLibrary{
 	public static int 	MAP_HEIGHT;
 	*/
 	//For testing the map.--wenrui
-	public static float	QUADRANT_HEIGHT=600.0f;
-	public static float	QUADRANT_WIDTH=600.0f;
-	public static int 	MAP_WIDTH=1800;
-	public static int 	MAP_HEIGHT=1800;
+	public static float	QUADRANT_HEIGHT = 250f;
+	public static float	QUADRANT_WIDTH = 500f;
+	public static int 	MAP_WIDTH=10;
+	public static int 	MAP_HEIGHT=10;
 	
 	public static final float COLLISION_CONSTANT = 10f;
 	

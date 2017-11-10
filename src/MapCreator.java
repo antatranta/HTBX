@@ -26,6 +26,10 @@ public class MapCreator {
 	private int boss_spawn_quad_order;
 	
 	
+	public MapCreator () {
+		init();
+	}
+	
 	public void init() {
 		rand = new Random((long) SEED);
 		System.out.println("Creating MAP using seed: "+SEED);
@@ -155,7 +159,8 @@ public class MapCreator {
 		if (min >= max) {
 			throw new IllegalArgumentException("max must be greater than min");
 		}
-		return rand.nextInt((max - min) + 1) + min;
+		int rtrn = rand.nextInt((max - min) + 1) + min;
+		return rtrn;
 	}
 
 	/*
