@@ -2,8 +2,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Boss extends EnemyShip implements ActionListener{
-	public Boss(PhysXObject physObj, int current_health, ShipStats stats, int weapon) {
-		super(physObj, current_health, stats, weapon);
+	public Boss(PhysXObject physObj, int current_health, ShipStats stats) {
+		super(physObj, current_health, stats);
 		// TODO Auto-generated constructor stub
 	}
 
