@@ -1,8 +1,8 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import acm.graphics.*;
 import acm.program.*;
 import acm.util.*;
@@ -14,26 +14,22 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 	//get width in physx
 	//500 for each. 250.
 	private float SEED;
-	private int max_enemies=1;
-	private int max_asteroid=1;
-//	private PhysX Physics; // MapCreator should not create, or store a physX instance
+	private static int max_enemies=2;
+	private static int max_asteroid=1;
 	private int max_quad=0;
-	private static Random rand;
-	ArrayList<Quadrant> Quad_list;
+	private Random rand;
+	private static ArrayList<Quadrant> Quad_list;
 	private int player_spawn_quad;
 	private int boss_spawn_quad;
-	//random number of ships, asteroid for each quad.
-	/*
-	public MapCreator(float seed) {
-		super();
-		this.seed = seed;
-		this.max_enemies=1;
-		this.max_asteroid=1;
-		this.max_quad=0;
-	}*/
+	
+	private int []Ex = new int[max_enemies];
+	private int []Ey = new int[max_enemies];
+	private int []Ax = new int[max_asteroid];
+	private int []Ay = new int[max_asteroid];
 	
 	public void init() {
-		rand = new Random((long) SEED);
+		//rand = new Random((long) SEED);
+		rand = new Random();
 		System.out.println("Seed: "+SEED);
 		/*
 		//set the random number range same as the quadrant edge.
@@ -42,14 +38,12 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 		*/
 		//Calculated max number of quadrant by (map_height/quad_height)^2.--wenrui
 		max_quad = Calculate_Quad_Amount(PhysXLibrary.QUADRANT_HEIGHT ,PhysXLibrary.MAP_HEIGHT);
-		//max_quad = Calculate_Quad_Amount(600,1800);
 		System.out.println("quad_amount: "+max_quad);
 		setSize((int) Math.round(PhysXLibrary.QUADRANT_WIDTH), (int) Math.round(PhysXLibrary.QUADRANT_HEIGHT));
-		//setSize(600,600);//Assume quad height and width are 600, for testing.
 	}
 	
 	public void run() {
-		//Quad_list = new ArrayList<Quadrant>();
+		Quad_list = new ArrayList<Quadrant>();
 		Quad_list = createMap();
 		
 	}
@@ -76,16 +70,6 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 	public void createNoiseMap() {
 		//use perlin noise.
 		//https://stackoverflow.com/questions/17440865/using-perlin-noise-to-generate-a-2d-tile-map
-	
-	//random number of ships, asteroid for each quad.
-	//x and y in quad.
-	//max ship in quad,etc.
-	//012
-	//345
-	//678
-		//for each ship and each asteroid
-			//get a random x and y for placement
-			//run a check thruough physX to make sure they won't touch
 	}
 	
 	public ArrayList<Quadrant> createMap(){
@@ -113,51 +97,85 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 		return quad;
 	}
 	public void fillQuadrants(Quadrant quad,int current_quad_x_startPoint,int current_quad_y_startPoint) {
-		//System.out.println("current_quad_width: "+ current_quad_x_startPoint);
-		//System.out.println("current_quad_height: "+ current_quad_y_startPoint);
-		int x_endpoint= (int) Math.round(current_quad_x_startPoint+PhysXLibrary.QUADRANT_WIDTH);
-		int y_endpoint= (int) Math.round(current_quad_y_startPoint+PhysXLibrary.QUADRANT_HEIGHT);
-		System.out.print("x_endpoint: "+ x_endpoint);
-		System.out.println("   y_endpoint: "+ y_endpoint);
-		//System.out.println("player quad: "+ player_spawn_quad);
-		PlayerShip player = GameConsole.getPlayer();
+		checkInterrupt(current_quad_x_startPoint, PhysXLibrary.QUADRANT_WIDTH, 'x');
+		checkInterrupt(current_quad_y_startPoint, PhysXLibrary.QUADRANT_HEIGHT,'y');
 		if(!(quad.getQUID().Order()==player_spawn_quad)&&!(quad.getQUID().Order()==boss_spawn_quad)){
-			//while(checkSpace())
-			//quad.getShips()
-			//quad.getStatics()
-			for(int i=0;i<max_enemies;i++) {
-				//int randomNum = rand.nextInt((max - min) + 1) + min;
-				int rand_x = rand.nextInt((x_endpoint-current_quad_x_startPoint)+1)+current_quad_x_startPoint;
-				int rand_y = rand.nextInt((y_endpoint-current_quad_y_startPoint)+1)+current_quad_y_startPoint;
-				placeEnemies(quad,rand_x,rand_y);
+			for(int i = 0; i < max_enemies;i++) {
+				placeEnemies(quad,Ex[i],Ey[i]);
 			}
-			for(int i=0;i<max_asteroid;i++) {
-				int rand_x = rand.nextInt((x_endpoint-current_quad_x_startPoint)+1)+current_quad_x_startPoint;
-				int rand_y = rand.nextInt((y_endpoint-current_quad_y_startPoint)+1)+current_quad_y_startPoint;
-				placeAsteroid(quad,rand_x,rand_y);
+			for(int i = 0; i < max_asteroid;i++) {
+				placeAsteroid(quad,Ax[i],Ay[i]);
 			}
 		}else if(quad.getQUID().Order()==player_spawn_quad){
-			placePlayer(quad,player);
+			
+			placePlayer(quad,getPlayer());
 		}else if(quad.getQUID().Order()==boss_spawn_quad){
 			//placeBoss (quad,boss);
 		}
 	}
 	
-	public boolean CheckSpace() {
+	public void checkInterrupt(int start, float edge, char type) {
+		boolean interrupt = true;
+		ArrayList<Integer> objects = new ArrayList<Integer>();
+		int end = (int) Math.round(start+edge);
+		while(interrupt) {
+			if(type == 'x') {
+				Ex = new int[max_enemies];
+				Ax = new int[max_asteroid];
+			}else if (type == 'y') {
+				Ey = new int[max_enemies];
+				Ay = new int[max_asteroid];
+			}
+			for(int i=0;i<max_enemies;i++) {
+				int enemy_rand = randomNumber(end, start);
+				objects.add(enemy_rand);
+				if(type == 'x') {
+					Ex[i] = enemy_rand;
+				}else if (type == 'y') {
+					Ey[i] = enemy_rand;					
+				}
+			}
+			for(int j=0;j<max_asteroid;j++) {
+				int asteroid_rand = randomNumber(end, start);
+				objects.add(asteroid_rand);
+				if(type == 'x') {
+					Ax[j] = asteroid_rand;
+				}else if (type == 'y') {
+					Ay[j] = asteroid_rand;					
+				}
+			}
+			interrupt=interrrupt_occurred(objects,PhysXLibrary.COLLISION_CONSTANT);
+		}
+	}
+	
+	private int randomNumber(int max, int min) {
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+		//float random = rand.nextFloat() * (max - min) + min;
+		return randomNum;
+	}
+
+	public boolean interrrupt_occurred(ArrayList<Integer> objects,float range) {
 		// VERIFY SHIP IS "PhysXLibrary.COLLISION_CONSTANT * x" distance from any other 
 		// objects!!!!
-		
-		return false;
+        for (int i = 0; i <objects.size(); i++) {
+            float object = objects.get(i);
+            for (int k = 0; k <objects.size(); k++) {
+            	float compare = objects.get(k);
+            	float different = Math.abs(object - compare);
+            	if(different!=0 && different<=range) {
+            		System.out.println("Interrupt!!!!"); 
+            		return true;
+            	}
+            }
+        }
+        return false;
 	}
 	
 	public void placeEnemies(Quadrant quad,int enemy_x, int enemy_y) {
-		//System.out.println("At quad: "+ quad.getQUID().Order());
 		ArrayList<Ship> ships = new ArrayList<Ship>();
 		System.out.println("Enemy x: "+ enemy_x + " y: "+enemy_y);
-		//System.out.println("quad order number: "+quad.getQUID().Order());
 		PhysXObject EnemiesPhysXobj = new PhysXObject(quad.getQUID(), new Vector2(enemy_x,enemy_y));		
 		//EnemyShip enemy = new EnemyShip(EnemiesPhysXobj, current_health, stats, weapon);
-		//random x y (WITHIN THE CURRENT QUAD) for enemy.
 
 		//ships.add(enemy);
 		quad.setShips(ships);
@@ -170,6 +188,7 @@ public class MapCreator extends GameConsole{//I extends with gameconsole to get 
 		//quad.setShips(player);
 	}
 	public void placeAsteroid(Quadrant quad,int asteroid_x, int asteroid_y) {
+		System.out.println("Asteroid x: "+ asteroid_x + " y: "+asteroid_y);
 		ArrayList<Asteroid> ast_list = new ArrayList<Asteroid>();
 		PhysXObject AsteroidPhysXobj = new PhysXObject(quad.getQUID());	
 		Asteroid ast = new Asteroid(AsteroidPhysXobj);
