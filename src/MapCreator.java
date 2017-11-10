@@ -26,6 +26,10 @@ public class MapCreator {
 	private int boss_spawn_quad_order;
 	
 	
+	public MapCreator () {
+		init();
+	}
+	
 	public void init() {
 		rand = new Random((long) SEED);
 		System.out.println("Creating MAP using seed: "+SEED);
@@ -108,6 +112,9 @@ public class MapCreator {
 		
 		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
+		
+		
+		
 		quad.setAsteroids(Asteroids);
 		quad.setShips(EnemyShips);
 	}
@@ -155,7 +162,8 @@ public class MapCreator {
 		if (min >= max) {
 			throw new IllegalArgumentException("max must be greater than min");
 		}
-		return rand.nextInt((max - min) + 1) + min;
+		int rtrn = rand.nextInt((max - min) + 1) + min;
+		return rtrn;
 	}
 
 	/*
@@ -199,6 +207,10 @@ public class MapCreator {
 		return EnemyShips;
 	}
 	
+	public EnemyShip placeEnemy (QuadrantID quad) {
+		return new EnemyShip();
+	}
+	
 	public ArrayList<Asteroid> placeAsteroids(QuadrantID quad, int numToCreate) {
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		for(int i =0; i < numToCreate; ++i) {
@@ -207,6 +219,11 @@ public class MapCreator {
 		}
 		return Asteroids;
 	}
+	
+	public Asteroid placeAsteroid (QuadrantID quad) {
+		return new Asteroid();
+	}
+	
 	
 	public void placeBoss(Quadrant quad, Boss boss) {
 		System.out.println(boss);

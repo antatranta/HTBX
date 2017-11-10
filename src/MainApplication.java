@@ -56,7 +56,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToMenu() {
 		if(musicToggle) {
-			audio.playSound("sounds", "Pretty Yellow Lights.mp3", true);
+			audio.playSound("sounds", "3A1W - Menu.wav", true);
 		}
 		/*switch(count % 2) {
 			case 0: audio.stopSound("sounds", "r2d2.mp3"); break;
@@ -68,7 +68,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToGame() {
 		if(musicToggle) {
-			audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
+			audio.stopSound("sounds", "3A1W - Menu.wav");
 			audio.playSound("sounds", "01 Misconection_1.mp3", true);
 		}
 		/*switch(count % 2) {
@@ -81,7 +81,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToSettings() {
 		if(musicToggle) {
-			audio.stopSound("sounds", "Pretty Yellow Lights.mp3");
+			audio.stopSound("sounds", "3A1W - Menu.wav");
 			audio.playSound("sounds", "Credits.mp3", true);
 		}
 		switchToScreen(setting);

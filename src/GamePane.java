@@ -22,10 +22,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GameImage player_img;
 	private PlayerShip player;
 	private Vector2 last_mouse_loc;
-
-//	private GameTimer gameTimer;
-	private Timer gameTimer;
-
 	
 	private boolean CAN_MOVE = false;
 	private boolean MOVEMENT_LOCK = false;
@@ -35,33 +31,22 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private boolean ALIGNMENT_LOCK = false;
 	
 	private ArrayList <GOval> cursor_dots;
-//	private ArrayList <Integer> pressed_keys;
 	private float xAxis = 0;
 	private float yAxis = 0;
 	private int track_amount = 0;
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
-	// Nevermind, scratch the idea of game loops we cannot use it here
-	// if we do everything becomes really buggy so timers are okay
-	// but if you still want to study game loops feel free to
-	// just lets get this game working with what we got w/ ACM
 	public GamePane(MainApplication app) {
 		this.program = app;
 		CAN_MOVE = false;
 		
 		last_mouse_loc = new Vector2(0,0);
-
-//		gameTimer = new GameTimer();
-//		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
-
 		cursor_dots = new ArrayList <GOval>();
 		console = program.getGameConsole();
 		player = console.getPlayer();
 
 		Vector2 pos = player.getPhysObj().getPosition();
 		player_img = new GameImage("PlayerShip_Placeholder.png", pos.getX(), pos.getY());
-//		auto_fire = new Timer(250, this);
-
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
@@ -69,12 +54,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.setDxDy(Vector2.Zero());
 		CAN_MOVE = true;
 	}
-	
-	private void setupTimer(int interval, int initialDelay) {
-		gameTimer = new Timer(interval, this);
-		gameTimer.setInitialDelay(initialDelay);
-	}
-	
 	
 	public void centerPlayer() {
 		player_img.setLocation((MainApplication.WINDOW_WIDTH / 2) - (player_img.getWidth() / 2), (MainApplication.WINDOW_HEIGHT / 2) - (player_img.getHeight() /2));
@@ -122,7 +101,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		if(CAN_MOVE) {
-			
 			movementLoop();
 		}
 		
@@ -163,56 +141,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			player_img.rotate(-TURN_POWER);
 		}
 
-		/*
-		for (int key : pressed_keys) {
-	        	switch(key) {
-	        	case (int) 'W':
-	        		break;
-	        	case (int) 'A':
-	        		player.adjustAngle(TURN_POWER);
-	        		player_img.rotate(-TURN_POWER);
-	        		break;
-	        	case (int) 'S':
-	        		/*
-	        		// TODO: Make this not janky hardcode. Kek
-	        		double angle2 = -Math.toRadians(player.getAngle());
-	    			float speed2 = (float) player.getStats().getSpeed() * -5;
-	    			float cos2 = (float) Math.cos(angle2) * speed2;
-	    			float sin2 = (float) Math.sin(angle2) * speed2;
-	    		
-	    			player_img.move(cos2, sin2);
-	    			player.getPhysObj().getPosition().add(new Vector2(cos2, sin2));
-	    			*/
-		/*
-	        		break;
-	        	case (int) 'D':
-	        		player.adjustAngle(-TURN_POWER);
-	        		player_img.rotate(TURN_POWER);
-	        		break;
-	        	}
-        }
-*/
 		
 		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
 		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
-		/*
-		for(int key : pressed_keys) {
-			switch(key) {
-			case KeyEvent.VK_A:
-				player.setDx(-5);
-				break;
-			case KeyEvent.VK_D:
-				player.setDx(5);
-				break;
-			case KeyEvent.VK_W:
-				player.setDy(-5);
-				break;
-			case KeyEvent.VK_S:
-				player.setDy(5);
-				break;
-			}
-		}
-		*/
 		player.Move();
 		
 		// this has to be the last call!
@@ -258,13 +189,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		last_mouse_loc.setXY(e.getX(), e.getY()); 
-//		alignReticle(last_mouse_loc);
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		last_mouse_loc.setXY(e.getX(), e.getY()); 
-//		alignReticle(last_mouse_loc);
 	}
 	
 
