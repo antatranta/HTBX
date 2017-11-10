@@ -55,7 +55,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToMenu() {
 		if(musicToggle) {
-			audio.playSound("sounds", "Pretty Yellow Lights.mp3", true);
+			audio.playSound("sounds", "3A1W - Menu.wav", true);
 		}
 		/*switch(count % 2) {
 			case 0: audio.stopSound("sounds", "r2d2.mp3"); break;
