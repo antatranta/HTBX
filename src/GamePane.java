@@ -58,10 +58,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	public GamePane(MainApplication app) {
 		this.program = app;
+		init();
+	}
+	
+	public void init() {
 		CAN_MOVE = false;
-
 		last_mouse_loc = new Vector2(0,0);
-		
 		cursor_dots = new ArrayList <GOval>();
 		pressed_keys = new ArrayList <Integer>();
 		drawn_rocks = new ArrayList <Asteroid>();
@@ -69,16 +71,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		console = program.getGameConsole();
 		player = console.getPlayer();
-
+		
 		Vector2 pos = player.getPhysObj().getPosition();
 		player_img = new GameImage("PlayerShip_Placeholder.png", pos.getX(), pos.getY());
+		
 		setSpriteLayer(player_img, PLAYER_LAYER);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
 		centerPlayer();
 		System.out.println("Player spawning at: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
-		
+		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
+		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		
 		CAN_MOVE = true;
 	}
@@ -134,6 +138,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		// TESTING!!! NOT FINAL
+		drawAsteroids(console.getActiveAsteroids());
+		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
 			if (quads.get(i).getAsteroids().size() > 0) {
@@ -147,6 +153,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				drawAsteroids(quads.get(i).getAsteroids());
 			}
 		}
+		*/
 		
 		
 	}
@@ -191,6 +198,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.adjustAngle(TURN_POWER * -final_turn);
 		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
 		player.moveVector2(new Vector2(cos, sin));
+		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		
 		if (xAxis > 0 + MOVEMENT_CONSTANT) {
 			player.adjustAngle(-TURN_POWER);
@@ -202,6 +210,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
 		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
+		
+		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		
 		MOVEMENT_LOCK = false;
 		
