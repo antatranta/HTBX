@@ -48,6 +48,10 @@ public class PhysXObject {
 		return new QuadrantID(QUID);
 	}
 	
+	public void setQUID(QuadrantID QUID) {
+		this.QUID = QUID;
+	}
+	
 	public CircleCollider[] getColliders() {
 		return colliders;
 	}
