@@ -114,6 +114,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		if(CAN_MOVE) {
 			movementLoop();
 		}
+		
+		// TESTING!!! NOT FINAL
 		PhysX phys = console.physx();
 		ArrayList <Quadrant> quads = phys.getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
