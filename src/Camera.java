@@ -1,7 +1,9 @@
 
 public class Camera {
-	private static float FORWARD_RATIO;
-	private static float BACKWARD_RATIO;
+	// @LJ: These weren't being set, and since we don't generate a Camera, 
+	//		calling Camera.backendToFrontend uses 0 as the forward/backward ratio parameters
+	private static float FORWARD_RATIO = 1;
+	private static float BACKWARD_RATIO = 1;
 	
 	public void init() {
 		

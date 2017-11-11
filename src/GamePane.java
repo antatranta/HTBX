@@ -14,10 +14,26 @@ import acm.graphics.*;
 import rotations.GameImage;
 
 public class GamePane extends GraphicsPane implements ActionListener, KeyListener {
+	// LAYER DATA: 0 Is the front, above 0 puts things behind
+	// TODO: private static final int GUI_LAYER = 0;
+	private static final int CURSOR_LAYER = 1;
+	private static final int PLAYER_LAYER = 3;
+	// TODO: 
+	//private static final int BOSS_LAYER = 4;
+	// TODO: 
+	//private static final int ENEMY_LAYER = 5;
+	private static final int ROCK_LAYER = 6;
+//	private static final int BG_LAYER1 = 7;
+//	private static final int BG_LAYER2 = 8;
+//	private static final int BG_LAYER3 = 9;
+	
+	// =============================================================================
+	
 	private static final int CURSOR_DIST = 50;
 	private static final int CURSOR_SIZE = 10;
 	private static final int TURN_POWER = 6;
-	private MainApplication program; //you will use program to get access to all of the GraphicsProgram calls
+	
+	private MainApplication program; // You will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
 	private GameImage player_img;
 	private PlayerShip player;
@@ -56,6 +72,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		Vector2 pos = player.getPhysObj().getPosition();
 		player_img = new GameImage("PlayerShip_Placeholder.png", pos.getX(), pos.getY());
+		setSpriteLayer(player_img, PLAYER_LAYER);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
@@ -132,6 +149,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		
+	}
+	
+	// Logic is backwards because .acm is weird. Sprites must be sent to front before sending back to layer appropriately
+	private void setSpriteLayer(GObject sprite, int layer) {
+		sprite.sendToFront();
+		for(int i = 0; i < layer; i++) {
+			sprite.sendBackward();
+		}
 	}
 	
 	private void movementLoop() {
@@ -229,14 +254,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			if (!drawn_rocks.contains(rock)) {
 				drawn_rocks.add(rock);
 				program.add(rock.getSprite());
+				setSpriteLayer(rock.getSprite(), ROCK_LAYER);
 			}
 			
 			// Set its location according to the offset
 			if (drawn_rocks.contains(rock)) {
-				rock.getSprite().setLocation(offset_x, offset_y);
+				rock.getSprite().setLocation(final_off.getX(), final_off.getY());
 			}
-			
-			//drawn_rocks.get(i).setLocation(final_off.getX(), final_off.getY());
 			
 		}
 	}
@@ -253,6 +277,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				dot.setColor(Color.black);
 				cursor_dots.add(dot);
 				program.add(dot);
+				setSpriteLayer(dot, CURSOR_LAYER);
 			}
 		}
 		if (cursor_dots.size() > dots) {
