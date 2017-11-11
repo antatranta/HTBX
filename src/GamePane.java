@@ -131,6 +131,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		else if (!pressed_keys.contains(KeyEvent.VK_W) && pressed_keys.contains(KeyEvent.VK_S)) {
 			final_forward = -1;
 		}
+		
 		double angle = -Math.toRadians(player.getAngle());
 		float speed = (float) player.getStats().getSpeed() * 5 * final_forward;
 		float cos = (float) Math.cos(angle) * speed;
@@ -152,7 +153,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
 		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
 		MOVEMENT_LOCK = false;
-		System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY());
+		System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY() + " | Angle: " + player.getAngle() + "*");
 		// Someone changed the code, so I commented it out if we want to retain any information from it.
 		/*
 		if (yAxis > 0 + MOVEMENT_CONSTANT) {

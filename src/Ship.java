@@ -23,6 +23,12 @@ public class Ship {
 	
 	public void adjustAngle(double degree) {
 		dir += degree;
+		if (dir > 360) {
+			dir -= 360;
+		}
+		else if (dir < 0) {
+			dir += 360;
+		}
 	}
 	
 	public PhysXObject getPhysObj() {
