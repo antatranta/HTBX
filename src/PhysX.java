@@ -53,7 +53,9 @@ public class PhysX {
 			
 			// Test if the quad is Above or Below
 			if(Math.abs(testQUID.getY() - QUID.getY()) < 2) {
-				quads.add(Quadrants.get(testQUID.Order()));
+				if (Quadrants.size() < testQUID.Order()) {
+					quads.add(Quadrants.get(testQUID.Order()));
+				}
 				
 				// Doesn't work for corner cases!
 //				quads.add(Quadrants.get(testQUID.Order() - 1));
@@ -62,7 +64,9 @@ public class PhysX {
 			
 			// Test if the quad is Left or Right
 			if(Math.abs(testQUID.getX() - QUID.getX()) < 2) {
-				quads.add(Quadrants.get(testQUID.Order()));
+				if (Quadrants.size() < testQUID.Order()) {
+					quads.add(Quadrants.get(testQUID.Order()));
+				}
 				
 				// Doesn't work for corner cases!
 //				quads.add(Quadrants.get(testQUID.Order() - 1));
