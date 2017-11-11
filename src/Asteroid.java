@@ -8,11 +8,13 @@ public class Asteroid {
 	public Asteroid() {
 		this.physObj = new PhysXObject();
 		this.collisionData = new CollisionData(0, CollisionType.asteroid);
+		this.sprite = new GameImage("robot head.jpg", 0, 0);
 	}
 	
 	public Asteroid(PhysXObject physObj) {
 		this.physObj = new PhysXObject(physObj);
 		this.collisionData = new CollisionData(0, CollisionType.asteroid);
+		this.sprite = new GameImage("robot head.jpg", 0, 0);
 	}
 	
 	public PhysXObject getPhysObj() {

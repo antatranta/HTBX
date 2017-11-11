@@ -114,6 +114,21 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		if(CAN_MOVE) {
 			movementLoop();
 		}
+		PhysX phys = console.physx();
+		ArrayList <Quadrant> quads = phys.getQuadrants();
+		for (int i = 0; i < quads.size(); i++) {
+			if (quads.get(i).getAsteroids().size() > 0) {
+//				System.out.println(quads.get(i));
+//				for (Asteroid rock : quads.get(i).getAsteroids()) {
+//					System.out.println(rock);
+//					if (rock.getSprite() == null) {
+//						System.out.println("No sprite!");
+//					}
+//				}
+				drawAsteroids(quads.get(i).getAsteroids());
+			}
+		}
+		
 		
 	}
 	
@@ -160,8 +175,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
 		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
+		
 		MOVEMENT_LOCK = false;
-		System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY() + " | Angle: " + player.getAngle() + "*");
+		
+//		System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY() + " | Angle: " + player.getAngle() + "*");
 		// Someone changed the code, so I commented it out if we want to retain any information from it.
 		/*
 		if (yAxis > 0 + MOVEMENT_CONSTANT) {
