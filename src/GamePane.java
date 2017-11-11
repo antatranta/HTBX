@@ -249,29 +249,35 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	}
 	
-	private void drawAsteroids(ArrayList<Asteroid> rocks) {
-		
-		for (int i = 0; i < rocks.size(); i++) {
+	private void drawAsteroids(ArrayList<Asteroid> asteroids) {
+		for (int i = 0; i < asteroids.size(); i++) {
 			// Get the offset
-			Asteroid rock = rocks.get(i);
-			float offset_x = rock.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
-			float offset_y = rock.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
+			Asteroid asteroid = asteroids.get(i);
+			float offset_x = asteroid.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
+			float offset_y = asteroid.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
 			
 			// Make a proper vector2 location according to the camera zoom scale
 			Vector2 final_off = Camera.backendToFrontend(new Vector2(offset_x, offset_y));
 
 			// Are we already drawing that rock?
-			if (!drawn_rocks.contains(rock)) {
-				drawn_rocks.add(rock);
-				program.add(rock.getSprite());
-				setSpriteLayer(rock.getSprite(), ROCK_LAYER);
+			if (!drawn_rocks.contains(asteroid)) {
+				drawn_rocks.add(asteroid);
+				program.add(asteroid.getSprite());
+				setSpriteLayer(asteroid.getSprite(), ROCK_LAYER);
 			}
 			
 			// Set its location according to the offset
-			if (drawn_rocks.contains(rock)) {
-				rock.getSprite().setLocation(final_off.getX(), final_off.getY());
+			if (drawn_rocks.contains(asteroid)) {
+				asteroid.getSprite().setLocation(final_off.getX(), final_off.getY());
 			}
 			
+		}
+		
+		// Remove asteroids
+		for (Asteroid asteroid : drawn_rocks) {
+			if (!asteroids.contains(asteroid)) {
+				program.remove(asteroid.getSprite());
+			}
 		}
 	}
 	
@@ -338,6 +344,29 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         	if (!containsKey(key)) {
         		pressed_keys.add(key);
         	}
+        }
+        
+        if(key == KeyEvent.VK_L) {
+        		console.startDebugView();
+        }
+        
+        if(key == KeyEvent.VK_K) {
+    			console.endDebugView();
+        }
+        
+        if(console.IS_DEBUGGING) {
+        		if(key == KeyEvent.VK_P && Camera.getBackwardRatio() != 2) {
+        			console.changeGraphicsRatio(1, 2);
+        		}
+        		if(key == KeyEvent.VK_O && Camera.getForwardRatio() != 2) {
+        			console.changeGraphicsRatio(2, 1);
+        		}
+        		if(key == KeyEvent.VK_I && Camera.getBackwardRatio() != 2 && Camera.getForwardRatio() != 2) {
+        			console.changeGraphicsRatio(2, 2);
+        		}
+        		if(key == KeyEvent.VK_U && Camera.getBackwardRatio() != 1 && Camera.getForwardRatio() != 1) {
+        			console.changeGraphicsRatio(1, 1);
+        		}
         }
 
         
