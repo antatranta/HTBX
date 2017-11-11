@@ -180,7 +180,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		MOVEMENT_LOCK = false;
 		
-		System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY() + " | Angle: " + player.getAngle() + "*");
+		//System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY() + " | Angle: " + player.getAngle() + "*");
 		// Someone changed the code, so I commented it out if we want to retain any information from it.
 		/*
 		if (yAxis > 0 + MOVEMENT_CONSTANT) {
@@ -221,13 +221,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			Asteroid rock = rocks.get(i);
 			float offset_x = rock.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
 			float offset_y = rock.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
-			if (i == 0) {
-				//System.out.println(rocks.get(i) + " | Offset: " + offset_x + ", " + offset_y);
-			}
 			
 			// Make a proper vector2 location according to the camera zoom scale
 			Vector2 final_off = Camera.backendToFrontend(new Vector2(offset_x, offset_y));
-			
+
 			// Are we already drawing that rock?
 			if (!drawn_rocks.contains(rock)) {
 				drawn_rocks.add(rock);
@@ -235,7 +232,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			}
 			
 			// Set its location according to the offset
-			drawn_rocks.get(i).getSprite().setLocation(final_off.getX(), final_off.getY());
+			if (drawn_rocks.contains(rock)) {
+				rock.getSprite().setLocation(offset_x, offset_y);
+			}
+			
 			//drawn_rocks.get(i).setLocation(final_off.getX(), final_off.getY());
 			
 		}
