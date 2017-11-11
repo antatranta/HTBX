@@ -26,8 +26,21 @@ public class PhysX {
 		ActiveQuadrant = new QuadrantID(0,0,0);
 	}
 	
-	public static QuadrantID assignQuadrant(Vector2 a) {
-		return new QuadrantID(0,0,0);
+	public QuadrantID assignQuadrant(Vector2 assign) {
+		int y_pos = (int)(assign.getY() / PhysXLibrary.QUADRANT_HEIGHT);
+		int x_pos = (int)(assign.getX() / PhysXLibrary.QUADRANT_WIDTH);
+		for (Quadrant quad : Quadrants) {
+			if (quad.getQUID().getX() == x_pos && quad.getQUID().getY() == y_pos) {
+				return quad.getQUID();
+			}
+		}
+		
+		// -45 is an error code
+		return new QuadrantID (0,0,-45);
+	}
+	
+	public ArrayList<Quadrant> getActiveQuadrants(){
+		return getNearbyQuadrants(ActiveQuadrant);
 	}
 	
 	public ArrayList<Quadrant> getNearbyQuadrants(QuadrantID QUID){
@@ -43,8 +56,8 @@ public class PhysX {
 				quads.add(Quadrants.get(testQUID.Order()));
 				
 				// Doesn't work for corner cases!
-				quads.add(Quadrants.get(testQUID.Order() - 1));
-				quads.add(Quadrants.get(testQUID.Order() + 1));
+//				quads.add(Quadrants.get(testQUID.Order() - 1));
+//				quads.add(Quadrants.get(testQUID.Order() + 1));
 			}
 			
 			// Test if the quad is Left or Right
@@ -52,8 +65,8 @@ public class PhysX {
 				quads.add(Quadrants.get(testQUID.Order()));
 				
 				// Doesn't work for corner cases!
-				quads.add(Quadrants.get(testQUID.Order() - 1));
-				quads.add(Quadrants.get(testQUID.Order() + 1));
+//				quads.add(Quadrants.get(testQUID.Order() - 1));
+//				quads.add(Quadrants.get(testQUID.Order() + 1));
 			}
 		}
 		
@@ -69,16 +82,20 @@ public class PhysX {
 		for (Quadrant quad : Quadrants) {
 			quad.Deactivate();
 		}
-		for (Quadrant quad : getNearbyQuadrants(ActiveQuadrant)) {
+		for (Quadrant quad : getNearbyQuadrants(this.ActiveQuadrant)) {
 			quad.Activate();
 		}
 	}
 	
-	private void setActiveQuadrant(QuadrantID newQUID) {
+	public void setActiveQuadrant(QuadrantID newQUID) {
+		this.ActiveQuadrant = newQUID;
+		/*
 		if (newQUID.getX() > 0 && newQUID.getX() <= MAP_WIDTH
 				&& newQUID.getY() > 0 && newQUID.getY() <= MAP_HEIGHT) {
 			this.ActiveQuadrant = newQUID;
 		}
+		*/
+		updateQuadrantStates();
 	}
 	
 	private ArrayList<PhysXObject> getNearbyPhysXObjects(PhysXObject obj, float range){

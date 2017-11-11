@@ -5,6 +5,9 @@ import java.util.*;
 import acm.program.GraphicsProgram;
 
 public class GameConsole extends GraphicsProgram{
+	
+	public static boolean IS_DEBUGGING;
+	
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
 	//private PlayerShip player;
 	private PlayerShip player;
@@ -14,9 +17,11 @@ public class GameConsole extends GraphicsProgram{
 //	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
+		endDebugView();
+		
 		// Create the universe. For now, only a single quadrant
 		System.out.println("Made a new game console");
-		physx = new PhysX();
+		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
 		mapCreator = new MapCreator();
 		physx.addQuadrants(mapCreator.createMap());
 		
@@ -34,9 +39,34 @@ public class GameConsole extends GraphicsProgram{
 	}
 	
 	
+	public void startDebugView() {
+		IS_DEBUGGING = true;
+	}
+	
+	public void endDebugView() {
+		IS_DEBUGGING = false;
+	}
 	
 	public PhysX physx() {
 		return physx;
+	}
+	
+	public ArrayList<Asteroid> getActiveAsteroids() {
+		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
+		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
+		for (Quadrant quad : quads) {
+			Asteroids.addAll(quad.getAsteroids());
+		}
+		return Asteroids;
+	}
+	
+	public ArrayList<EnemyShip> getActiveShips() {
+		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
+		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
+		for (Quadrant quad : quads) {
+			EnemyShips.addAll(quad.getShips());
+		}
+		return EnemyShips;
 	}
 	
 	public PlayerShip getPlayer() {
