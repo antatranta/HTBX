@@ -63,6 +63,13 @@ public class Ship {
 		}
 	}
 	
+	public void moveVector2(Vector2 dir) {
+		if(getCurrent_health()>0) {
+			Vector2 currentPosition = physObj.getPosition();
+			physObj.setPosition(currentPosition.add(dir));
+		}
+	}
+	
 	public float getDx() {
 		return dx;
 	}

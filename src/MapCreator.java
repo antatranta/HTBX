@@ -208,7 +208,7 @@ public class MapCreator {
 	}
 	
 	public EnemyShip placeEnemy (QuadrantID quad) {
-		return new EnemyShip();
+		return null; // Temporary
 	}
 	
 	public ArrayList<Asteroid> placeAsteroids(QuadrantID quad, int numToCreate) {

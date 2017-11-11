@@ -31,6 +31,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private boolean ALIGNMENT_LOCK = false;
 	
 	private ArrayList <GOval> cursor_dots;
+	private ArrayList <Integer> pressed_keys;
 	private float xAxis = 0;
 	private float yAxis = 0;
 	private int track_amount = 0;
@@ -40,6 +41,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		this.program = app;
 		CAN_MOVE = false;
 		
+		pressed_keys = new ArrayList<Integer>();
 		last_mouse_loc = new Vector2(0,0);
 		cursor_dots = new ArrayList <GOval>();
 		console = program.getGameConsole();
@@ -91,6 +93,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		System.out.println("Stopped shooting");
 	}
 
+	// Every tick of the global game clock calls all visual drawing necessary
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Player shoot every tick
@@ -112,7 +115,46 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			return;
 		
 		MOVEMENT_LOCK = true;
+		int final_turn = 0;
+		int final_forward = 0;
+		// Set rotation
+		if (pressed_keys.contains(KeyEvent.VK_A) && !pressed_keys.contains(KeyEvent.VK_D)) {
+			final_turn = -1;
+		}
+		else if (!pressed_keys.contains(KeyEvent.VK_A) && pressed_keys.contains(KeyEvent.VK_D)) {
+			final_turn = 1;
+		}
 		
+		if (pressed_keys.contains(KeyEvent.VK_W) && !pressed_keys.contains(KeyEvent.VK_S)) {
+			final_forward = 1;
+		}
+		else if (!pressed_keys.contains(KeyEvent.VK_W) && pressed_keys.contains(KeyEvent.VK_S)) {
+			final_forward = -1;
+		}
+		double angle = -Math.toRadians(player.getAngle());
+		float speed = (float) player.getStats().getSpeed() * 5 * final_forward;
+		float cos = (float) Math.cos(angle) * speed;
+		float sin = (float) Math.sin(angle) * speed;
+		
+		player_img.rotate(TURN_POWER * final_turn);
+		player.adjustAngle(TURN_POWER * final_turn);
+		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
+		player.moveVector2(new Vector2(cos, sin));
+		
+		if (xAxis > 0 + MOVEMENT_CONSTANT) {
+			player.adjustAngle(-TURN_POWER);
+			player_img.rotate(TURN_POWER);
+		} else if (xAxis < 0 - MOVEMENT_CONSTANT) {
+			player.adjustAngle(TURN_POWER);
+			player_img.rotate(-TURN_POWER);
+		}
+		
+		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
+		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
+		MOVEMENT_LOCK = false;
+		System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY());
+		// Someone changed the code, so I commented it out if we want to retain any information from it.
+		/*
 		if (yAxis > 0 + MOVEMENT_CONSTANT) {
 			double angle = -Math.toRadians(player.getAngle());
 			float speed = (float) player.getStats().getSpeed() * 5;
@@ -121,8 +163,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			
 			player_img.move(cos, sin);
 			player.getPhysObj().getPosition().add(new Vector2(cos, sin));
-		} else if (yAxis < 0 - MOVEMENT_CONSTANT) {
-    			double angle2 = -Math.toRadians(player.getAngle());
+		}
+		else if (yAxis < 0 - MOVEMENT_CONSTANT) {
+    		double angle2 = -Math.toRadians(player.getAngle());
 			float speed2 = (float) player.getStats().getSpeed() * -5;
 			float cos2 = (float) Math.cos(angle2) * speed2;
 			float sin2 = (float) Math.sin(angle2) * speed2;
@@ -130,24 +173,24 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			player_img.move(cos2, sin2);
 			player.getPhysObj().getPosition().add(new Vector2(cos2, sin2));
 		}
+		*/
 		
-		
-		if (xAxis > 0 + MOVEMENT_CONSTANT) {
-    			player.adjustAngle(-TURN_POWER);
-    			player_img.rotate(TURN_POWER);
+//        String pressed = "Pressed keys: ";
+//        for (int i = 0; i < pressed_keys.size(); i++) {
+//        	pressed += String.format("%X", pressed_keys.get(i)) + " ";
+//        }
+//		System.out.println(pressed);
 
-		} else if (xAxis < 0 - MOVEMENT_CONSTANT) {
-			player.adjustAngle(TURN_POWER);
-			player_img.rotate(-TURN_POWER);
-		}
-
-		
-		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
-		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
-		player.Move();
-		
+//		System.out.println("\tImage Pos: " + (int)player_img.getX() + ", " + (int)player_img.getY());
 		// this has to be the last call!
-		MOVEMENT_LOCK = false;
+
+	}
+	
+	private void drawAsteroids(ArrayList<Asteroid> rocks) {
+		for (int i = 0; i < rocks.size(); i++) {
+			
+			Camera.backendToFrontend(rocks.get(i).getPhysObj().getPosition());
+		}
 	}
 	
 	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
@@ -185,6 +228,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		ALIGNMENT_LOCK = false;
 	}
 	
+	
+	private boolean containsKey(int key) {
+		if (!pressed_keys.contains(key)) {
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
@@ -196,45 +246,62 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		last_mouse_loc.setXY(e.getX(), e.getY()); 
 	}
 	
-
-	
 	// Key Presses work; the println statements were removed to prevent clutter in the console as I test
 	@Override
     public void keyPressed(KeyEvent e) {
-		System.out.print("Press");
+//		System.out.print("Press");
         int key = e.getKeyCode();
+        if (key == KeyEvent.VK_A || key == KeyEvent.VK_D || key == KeyEvent.VK_S || key == KeyEvent.VK_W) {
+        	if (!containsKey(key)) {
+        		pressed_keys.add(key);
+        	}
+        }
+
+        
+        
+        /*
         switch(key) {
         case KeyEvent.VK_A:
-    			System.out.print("ed : A");
+//    			System.out.print("ed : A");
     			xAxis = -(1 + MOVEMENT_CONSTANT);
     			break;
         case KeyEvent.VK_D:
-        		System.out.print("ed : D");
+//        		System.out.print("ed : D");
         		xAxis = (1 + MOVEMENT_CONSTANT);
         		break;
         case KeyEvent.VK_W:
-        		System.out.print("ed : W");
+//        		System.out.print("ed : W");
         		yAxis = (1 + MOVEMENT_CONSTANT);
         		break;
         case KeyEvent.VK_S:
-    			System.out.print("ed : S");
+//    			System.out.print("ed : S");
     			yAxis = -(1 + MOVEMENT_CONSTANT);
     			break;
     		default:
-    			System.out.print("ed : NONE");
+//    			System.out.print("ed : NONE");
     			break;
-        }
-        System.out.println("");
+        */
+//        System.out.println("");
     }
 
 	@Override
     public void keyReleased(KeyEvent e) {
-		System.out.print("Release");
+//		System.out.print("Release");
 		int key = e.getKeyCode();
+        if (key == KeyEvent.VK_A || key == KeyEvent.VK_D || key == KeyEvent.VK_S || key == KeyEvent.VK_W) {
+        	if (containsKey(key)) {
+        		for (int i = 0; i < pressed_keys.size(); i++) {
+        			if (pressed_keys.get(i) == key) {
+        				pressed_keys.remove(i);
+        			}
+        		}
+        	}
+        }
+		/*
 		switch(key) {
 			case KeyEvent.VK_A:
 //				player.setDx(0);
-				System.out.print("d: A");
+//				System.out.print("d: A");
 				
 				if (xAxis + MOVEMENT_CONSTANT < 0) {
 					xAxis = 0;
@@ -242,30 +309,31 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				break;
 			case KeyEvent.VK_D:
 //				player.setDx(0);
-				System.out.print("d: D");
+//				System.out.print("d: D");
 				if (xAxis + MOVEMENT_CONSTANT > 0) {
 					xAxis = 0;
 				}
 				break;
 			case KeyEvent.VK_W:
 //				player.setDy(0);
-				System.out.print("d: W");
+//				System.out.print("d: W");
 				if (yAxis + MOVEMENT_CONSTANT > 0) {
 					yAxis = 0;
 				}
 				break;
 			case KeyEvent.VK_S:
 //				player.setDy(0);
-				System.out.print("d: S");
+//				System.out.print("d: S");
 				if (yAxis + MOVEMENT_CONSTANT < 0) {
 					yAxis = 0;
 				}
 				break;
 			default:
-				System.out.print("d: NONE");
+//				System.out.print("d: NONE");
 				break;
 		}
-		System.out.println("");
+		*/
+//		System.out.println("");
     }
 	
 	
