@@ -11,8 +11,8 @@ public class Ship {
 	private float dy = 0;// 1 to up, -1 to down.
 
 	
-	public Ship(PhysXObject physObj,int current_health, ShipStats stats) {
-		this.physObj = new PhysXObject();
+	public Ship(PhysXObject physObj, int current_health, ShipStats stats) {
+		this.physObj = physObj;
 		this.setCurrent_health(current_health);
 		this.stats = new ShipStats(1, 1, 1, 1);//speed, shield_max, health_max, damage
 	}
@@ -23,6 +23,12 @@ public class Ship {
 	
 	public void adjustAngle(double degree) {
 		dir += degree;
+		if (dir > 360) {
+			dir -= 360;
+		}
+		else if (dir < 0) {
+			dir += 360;
+		}
 	}
 	
 	public PhysXObject getPhysObj() {
@@ -59,7 +65,17 @@ public class Ship {
 	public void Move() {
 		if(getCurrent_health()>0) {
 			Vector2 currentPosition = physObj.getPosition();
-			physObj.setPosition(currentPosition.add(new Vector2(dx, dy)));
+			Vector2 newPosition = currentPosition.add(new Vector2(dx, dy));
+			physObj.setPosition(newPosition);
+		}
+		
+		
+	}
+	
+	public void moveVector2(Vector2 dir) {
+		if(getCurrent_health()>0) {
+			Vector2 currentPosition = physObj.getPosition();
+			physObj.setPosition(currentPosition.add(dir));
 		}
 	}
 	

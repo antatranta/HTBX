@@ -43,16 +43,16 @@ public class MapCreator {
 		
 	}
 	public void setPlayerAndBossQuadPositions() {
-		int totalQuads = PhysXLibrary.MAP_HEIGHT * PhysXLibrary.MAP_WIDTH;
+		int totalQuads = PhysXLibrary.MAP_WIDTH * PhysXLibrary.MAP_HEIGHT;
+		max_quad = totalQuads;
 		int player_quad = randomNumber(0, totalQuads);
 		int boss_quad = randomNumber(0, totalQuads);
-		while(player_quad==boss_quad) {
+		while(player_quad == boss_quad) {
 			player_quad = randomNumber(0, totalQuads);
 			boss_quad   = randomNumber(0, totalQuads);
 		}
 		this.player_spawn_quad_order = player_quad;
 		this.boss_spawn_quad_order = boss_quad;
-		System.out.println("Player spawn at: "+player_spawn_quad+" | Boss spawn at: "+boss_spawn_quad);
 	}
 	/*
 	public int Calculate_Quad_Amount(float quadrant_height,int map_height) {
@@ -96,6 +96,8 @@ public class MapCreator {
 				order++;
 			}
 		}
+		System.out.println("Player spawn at: "+ player_spawn_quad.getQUID().getX() + ", " + player_spawn_quad.getQUID().getY());
+		System.out.println("Boss spawn at: "+ boss_spawn_quad.getQUID().getX() + ", " + boss_spawn_quad.getQUID().getY());
 		return Quadrants;
 		
 	}
@@ -208,7 +210,7 @@ public class MapCreator {
 	}
 	
 	public EnemyShip placeEnemy (QuadrantID quad) {
-		return new EnemyShip();
+		return null; // Temporary
 	}
 	
 	public ArrayList<Asteroid> placeAsteroids(QuadrantID quad, int numToCreate) {

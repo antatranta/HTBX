@@ -79,6 +79,14 @@ public class GameImage extends GImage {
 		rotate(0);
 	}
 	
+	public double getDegrees() {
+		return rotation;
+	}
+	
+	public double getRadians() {
+		return Math.toRadians(rotation);
+	}
+	
 	/**
 	 * Rotates the image around the center which may cause the width and
 	 * height of the image to change as well as its location
