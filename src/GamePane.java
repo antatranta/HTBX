@@ -29,13 +29,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	// =============================================================================
 	
-	private static final int CURSOR_DIST = 50;
+	private static final int CURSOR_DIST = 75;
 	private static final int CURSOR_SIZE = 10;
 	private static final int TURN_POWER = 6;
 	
 	private MainApplication program; // You will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
-	private GameImage player_img;
+
 	private PlayerShip player;
 	private Vector2 last_mouse_loc;
 	
@@ -46,14 +46,20 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private boolean CAN_ALIGN = true;
 	private boolean ALIGNMENT_LOCK = false;
 	
-	private ArrayList <GOval> cursor_dots;
+	// THINGS TO BE DRAWN
+	private GameImage player_img;
+	private GameImage aiming_head;
+	private GameImage aiming_edge;
+	private ArrayList <GameImage> cursor_dots;
 	private ArrayList <Integer> pressed_keys;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <GameImage> drawn_ships;
 	private float xAxis = 0;
 	private float yAxis = 0;
 	private int track_amount = 0;
-
+	
+	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
+	private static final String PLAYER_SPRITE = "PlayerShip_Final.png";
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
 	public GamePane(MainApplication app) {
@@ -62,7 +68,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		last_mouse_loc = new Vector2(0,0);
 		
-		cursor_dots = new ArrayList <GOval>();
+		cursor_dots = new ArrayList <GameImage>();
 		pressed_keys = new ArrayList <Integer>();
 		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <GameImage>();
@@ -71,7 +77,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player = console.getPlayer();
 
 		Vector2 pos = player.getPhysObj().getPosition();
-		player_img = new GameImage("PlayerShip_Placeholder.png", pos.getX(), pos.getY());
+		aiming_edge = new GameImage("Aiming_edge.png", 0, 0);
+		setSpriteLayer(aiming_edge, CURSOR_LAYER);
+		aiming_head = new GameImage("Aiming_Reticle.png", 0, 0);
+		player_img = new GameImage(PLAYER_SPRITE, pos.getX(), pos.getY());
 		setSpriteLayer(player_img, PLAYER_LAYER);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
@@ -90,11 +99,15 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	@Override
 	public void showContents() {
 		program.add(player_img);
+		program.add(aiming_edge);
+		program.add(aiming_head);
 	}
 
 	@Override
 	public void hideContents() {
 		program.remove(player_img);
+		program.remove(aiming_edge);
+		program.remove(aiming_head);
 	}
 	
 	@Override
@@ -269,12 +282,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void alignReticle(Vector2 coord) {
 		//Vector2 root = player.getPhysObj().getPosition();
 		Vector2 visual_root = new Vector2((float)(player_img.getX() + (player_img.getWidth()/2)), (float)(player_img.getY() + (player_img.getHeight()/2)));
+		
 		int distance = (int)Math.floor(PhysXLibrary.distance(visual_root, new Vector2(coord.getX(), coord.getY())));
-		int dots = (distance / CURSOR_DIST) + 1;
+		int dots = (distance / CURSOR_DIST);
 		if (cursor_dots.size() < dots) {
 			for (int i = 0; i < dots - cursor_dots.size(); i++) {
-				GOval dot = new GOval(10, 10, CURSOR_SIZE, CURSOR_SIZE);
-				dot.setColor(Color.black);
+				GameImage dot = new GameImage(CURSOR_LINE_SPRITE, 0, 0);
+				//dot.setColor(Color.black);
 				cursor_dots.add(dot);
 				program.add(dot);
 				setSpriteLayer(dot, CURSOR_LAYER);
@@ -282,8 +296,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		if (cursor_dots.size() > dots) {
 			for (int i = 0; i < cursor_dots.size() - dots; i++) {
-				program.remove(cursor_dots.get(0));
-				cursor_dots.remove(0);
+				program.remove(cursor_dots.get(cursor_dots.size() - i - 1));
+				cursor_dots.remove(cursor_dots.size() - i - 1);
 			}
 		}
 		
@@ -293,9 +307,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		double theta_rad = Math.atan2(off_y, off_x);
 		double unit_x = (Math.cos(theta_rad) * CURSOR_DIST);
 		double unit_y = (Math.sin(theta_rad) * CURSOR_DIST);
-		cursor_dots.get(0).setLocation(coord.getX() - (CURSOR_SIZE / 2), coord.getY() - (CURSOR_SIZE / 2));
-		for (int i = 1; i < cursor_dots.size(); i++) {
-			cursor_dots.get(i).setLocation(visual_root.getX() - (CURSOR_SIZE / 2) + (unit_x * i), visual_root.getY() - (CURSOR_SIZE / 2) + (unit_y * i));
+		aiming_edge.setDegrees(Math.toDegrees(theta_rad));
+		aiming_edge.setLocation(visual_root.getX() - (aiming_edge.getWidth() / 2), visual_root.getY() - (aiming_edge.getHeight() / 2));
+		aiming_head.setDegrees(Math.toDegrees(theta_rad));
+		aiming_head.setLocation(coord.getX() - (aiming_head.getWidth() / 2), coord.getY() - (aiming_head.getHeight() / 2));
+		for (int i = 0; i < cursor_dots.size(); i++) {
+			GameImage dot = cursor_dots.get(i);
+			double pos_x = visual_root.getX() - (dot.getWidth() / 2) + (unit_x * (i + 1.5));
+			double pos_y = visual_root.getY() - (dot.getHeight() / 2) + (unit_y * (i + 1.5));
+			dot.setDegrees(Math.toDegrees(theta_rad));
+			dot.setLocation(pos_x, pos_y);
 		}
 		//System.out.println("Distance: " + distance + ", Drawn: " + dots);
 		ALIGNMENT_LOCK = false;
