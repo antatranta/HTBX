@@ -65,8 +65,11 @@ public class Ship {
 	public void Move() {
 		if(getCurrent_health()>0) {
 			Vector2 currentPosition = physObj.getPosition();
-			physObj.setPosition(currentPosition.add(new Vector2(dx, dy)));
+			Vector2 newPosition = currentPosition.add(new Vector2(dx, dy));
+			physObj.setPosition(newPosition);
 		}
+		
+		
 	}
 	
 	public void moveVector2(Vector2 dir) {
