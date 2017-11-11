@@ -1,6 +1,9 @@
+import rotations.GameImage;
+
 public class Asteroid {
 	private PhysXObject physObj;
 	private CollisionData collisionData;
+	private GameImage sprite;
 	
 	public Asteroid() {
 		this.physObj = new PhysXObject();
@@ -11,9 +14,15 @@ public class Asteroid {
 		this.physObj = new PhysXObject(physObj);
 		this.collisionData = new CollisionData(0, CollisionType.asteroid);
 	}
+	
 	public PhysXObject getPhysObj() {
 		return this.physObj;
 	}
+	
+	public GameImage getSprite() {
+		return sprite;
+	}
+	
 	public CollisionData getCollisionData() {
 		return new CollisionData(collisionData);
 	}

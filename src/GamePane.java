@@ -32,18 +32,25 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private ArrayList <GOval> cursor_dots;
 	private ArrayList <Integer> pressed_keys;
+	private ArrayList <GameImage> drawn_rocks;
+	private ArrayList <GameImage> drawn_ships;
 	private float xAxis = 0;
 	private float yAxis = 0;
 	private int track_amount = 0;
+
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
 	public GamePane(MainApplication app) {
 		this.program = app;
 		CAN_MOVE = false;
-		
-		pressed_keys = new ArrayList<Integer>();
+
 		last_mouse_loc = new Vector2(0,0);
+		
 		cursor_dots = new ArrayList <GOval>();
+		pressed_keys = new ArrayList <Integer>();
+		drawn_rocks = new ArrayList <GameImage>();
+		drawn_ships = new ArrayList <GameImage>();
+		
 		console = program.getGameConsole();
 		player = console.getPlayer();
 
@@ -54,6 +61,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		centerPlayer();
 		player.setDxDy(Vector2.Zero());
+		
 		CAN_MOVE = true;
 	}
 	
@@ -188,9 +196,25 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	private void drawAsteroids(ArrayList<Asteroid> rocks) {
+		
 		for (int i = 0; i < rocks.size(); i++) {
+			// Get the offset
+			Asteroid rock = rocks.get(i);
+			float offset_x = rock.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
+			float offset_y = rock.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
 			
-			Camera.backendToFrontend(rocks.get(i).getPhysObj().getPosition());
+			// Make a proper vector2 location according to the camera zoom scale
+			Vector2 final_off = Camera.backendToFrontend(new Vector2(offset_x, offset_y));
+			
+			// Are we already drawing that rock?
+			if (!drawn_rocks.contains(rock)) {
+				drawn_rocks.add(rock.getSprite());
+				program.add(rock.getSprite());
+			}
+			
+			// Set its location according to the offset
+			rock.getSprite().setLocation(final_off.getX(), final_off.getY());
+			
 		}
 	}
 	
