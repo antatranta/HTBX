@@ -55,6 +55,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToMenu() {
+		audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
 		}
