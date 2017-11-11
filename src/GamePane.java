@@ -32,7 +32,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private ArrayList <GOval> cursor_dots;
 	private ArrayList <Integer> pressed_keys;
-	private ArrayList <GameImage> drawn_rocks;
+	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <GameImage> drawn_ships;
 	private float xAxis = 0;
 	private float yAxis = 0;
@@ -48,7 +48,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		cursor_dots = new ArrayList <GOval>();
 		pressed_keys = new ArrayList <Integer>();
-		drawn_rocks = new ArrayList <GameImage>();
+		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <GameImage>();
 		
 		console = program.getGameConsole();
@@ -60,7 +60,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
 		centerPlayer();
-		player.setDxDy(Vector2.Zero());
+		System.out.println("Player spawning at: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
+		
 		
 		CAN_MOVE = true;
 	}
@@ -116,8 +117,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		// TESTING!!! NOT FINAL
-		PhysX phys = console.physx();
-		ArrayList <Quadrant> quads = phys.getQuadrants();
+		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
 			if (quads.get(i).getAsteroids().size() > 0) {
 //				System.out.println(quads.get(i));
@@ -163,7 +163,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		float sin = (float) Math.sin(angle) * speed;
 		
 		player_img.rotate(TURN_POWER * final_turn);
-		player.adjustAngle(TURN_POWER * final_turn);
+		player.adjustAngle(TURN_POWER * -final_turn);
 		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
 		player.moveVector2(new Vector2(cos, sin));
 		
@@ -180,7 +180,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		MOVEMENT_LOCK = false;
 		
-//		System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY() + " | Angle: " + player.getAngle() + "*");
+		System.out.println("Player Pos: " + (int)player.getPhysObj().getPosition().getX() + ", " + (int)player.getPhysObj().getPosition().getY() + " | Angle: " + player.getAngle() + "*");
 		// Someone changed the code, so I commented it out if we want to retain any information from it.
 		/*
 		if (yAxis > 0 + MOVEMENT_CONSTANT) {
@@ -221,18 +221,22 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			Asteroid rock = rocks.get(i);
 			float offset_x = rock.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
 			float offset_y = rock.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
+			if (i == 0) {
+				//System.out.println(rocks.get(i) + " | Offset: " + offset_x + ", " + offset_y);
+			}
 			
 			// Make a proper vector2 location according to the camera zoom scale
 			Vector2 final_off = Camera.backendToFrontend(new Vector2(offset_x, offset_y));
 			
 			// Are we already drawing that rock?
 			if (!drawn_rocks.contains(rock)) {
-				drawn_rocks.add(rock.getSprite());
+				drawn_rocks.add(rock);
 				program.add(rock.getSprite());
 			}
 			
 			// Set its location according to the offset
-			rock.getSprite().setLocation(final_off.getX(), final_off.getY());
+			drawn_rocks.get(i).getSprite().setLocation(final_off.getX(), final_off.getY());
+			//drawn_rocks.get(i).setLocation(final_off.getX(), final_off.getY());
 			
 		}
 	}

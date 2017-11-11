@@ -17,16 +17,16 @@ public class PhysXObject {
 	
 	public PhysXObject(QuadrantID QUID, Vector2 position) {
 		this.colliders = new CircleCollider[0];
-		this.QUID = new QuadrantID(QUID);
-		this.position = new Vector2(position);
+		this.QUID = QUID;
+		this.position = position;
 	}
 	
 	public PhysXObject(QuadrantID QUID, Vector2 position, CircleCollider collider) {
 		CircleCollider[] colliders = new CircleCollider[1];
 		colliders[0] = collider;
 		this.colliders = colliders;
-		this.QUID = new QuadrantID(QUID);
-		this.position = new Vector2(position);
+		this.QUID = QUID;
+		this.position = position;
 	}
 	
 	public PhysXObject(PhysXObject toCopy) {

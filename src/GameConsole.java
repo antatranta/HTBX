@@ -22,12 +22,15 @@ public class GameConsole extends GraphicsProgram{
 		
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
 		float pos_x = (playerSpawn.getQUID().getX() * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
-		float pos_y = (playerSpawn.getQUID().getY() * PhysXLibrary.QUADRANT_HEIGHT) -  (PhysXLibrary.QUADRANT_HEIGHT / 2);
+		float pos_y = (playerSpawn.getQUID().getY() * PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2);
 		Vector2 pos = new Vector2(pos_x, pos_y);
+		System.out.println("pos = " + pos_x + ", " + pos_y);
 		
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 1);
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
 		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1));
+		player.setDxDy(Vector2.Zero());
+		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
 	}
 	
 	

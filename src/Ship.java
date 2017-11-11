@@ -11,8 +11,8 @@ public class Ship {
 	private float dy = 0;// 1 to up, -1 to down.
 
 	
-	public Ship(PhysXObject physObj,int current_health, ShipStats stats) {
-		this.physObj = new PhysXObject();
+	public Ship(PhysXObject physObj, int current_health, ShipStats stats) {
+		this.physObj = physObj;
 		this.setCurrent_health(current_health);
 		this.stats = new ShipStats(1, 1, 1, 1);//speed, shield_max, health_max, damage
 	}
