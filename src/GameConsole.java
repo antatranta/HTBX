@@ -14,6 +14,7 @@ public class GameConsole extends GraphicsProgram{
 	private MapCreator mapCreator;
 	private PhysX physx; // The controller for all things
 	private int skillPoints;
+	private Camera camera;
 //	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
@@ -24,6 +25,9 @@ public class GameConsole extends GraphicsProgram{
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
 		mapCreator = new MapCreator();
 		physx.addQuadrants(mapCreator.createMap());
+		
+		camera = new Camera();
+		camera.setupCamera(1, 1);
 		
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
 		float pos_x = (playerSpawn.getQUID().getX() * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
@@ -41,10 +45,21 @@ public class GameConsole extends GraphicsProgram{
 	
 	public void startDebugView() {
 		IS_DEBUGGING = true;
+		System.out.println("- - - DEBUG ON - - -");
 	}
 	
 	public void endDebugView() {
 		IS_DEBUGGING = false;
+		System.out.println("- - - DEBUG OFF - - -");
+	}
+	
+	public void changeGraphicsRatio(float FR, float BR) {
+		camera.setupCamera(FR, BR);
+		if(IS_DEBUGGING) {
+			System.out.println("- - - Changed Camera Ratios - - -");
+			System.out.println("FORWARD -> "+FR);
+			System.out.println("BACKWAR -> "+BR);
+		}
 	}
 	
 	public PhysX physx() {
@@ -52,11 +67,17 @@ public class GameConsole extends GraphicsProgram{
 	}
 	
 	public ArrayList<Asteroid> getActiveAsteroids() {
+		
+		
+		
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
 		for (Quadrant quad : quads) {
 			Asteroids.addAll(quad.getAsteroids());
 		}
+		
+//		Asteroids.add(new Asteroid(player.getPhysObj()));
+		
 		return Asteroids;
 	}
 	
