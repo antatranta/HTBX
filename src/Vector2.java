@@ -32,6 +32,14 @@ public class Vector2 {
 		return new Vector2(this.x + vectorB.getX(), this.y + vectorB.getY());
 	}
 	
+	public Vector2 div(Vector2 vectorB) {
+		return new Vector2(this.x / vectorB.getX(), this.y / vectorB.getY());
+	}
+	
+	public Vector2 mult(Vector2 vectorB) {
+		return new Vector2(this.x * vectorB.getX(), this.y * vectorB.getY());
+	}
+	
 	public Vector2 minusXAddY(Vector2 vectorB) {
 		return new Vector2(vectorB.getX() - this.getX(), vectorB.getY() + this.getY());
 	}
