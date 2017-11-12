@@ -59,7 +59,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private int track_amount = 0;
 	
 	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
-	private static final String PLAYER_SPRITE = "PlayerShip_Final.png";
+	private static final String PLAYER_SPRITE = "PlayerShip_Final2.png";
 	//private Vector2 combat_offset = new Vector2(0,0); Unused for now; planned for centering player post combat smoothly
 	
 	public GamePane(MainApplication app) {
