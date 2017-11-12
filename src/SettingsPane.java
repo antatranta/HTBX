@@ -102,7 +102,12 @@ public class SettingsPane extends GraphicsPane {
 						break;
 						
 					case "BACK":
-						program.switchToMenu();
+						if(!program.isPaused()) {
+							program.switchToMenu();
+						}
+						else {
+							program.switchToPause();
+						}
 						break;
 					
 					default:

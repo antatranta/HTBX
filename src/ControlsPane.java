@@ -35,7 +35,12 @@ public class ControlsPane extends GraphicsPane {
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {
-			program.switchToMenu();
+			if(!program.isPaused()) {
+				program.switchToMenu();
+			}
+			else {
+				program.switchToPause();
+			}
 		}
 	}
 	
