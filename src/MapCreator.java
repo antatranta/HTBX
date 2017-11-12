@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class MapCreator {
 	//500 for each. 250.
-	private float SEED;
+	private float SEED =200;
 	private final int MAX_ENEMIES_IN_QUAD = 2;
 	private final int MAX_ASTEROIDS_IN_QUAD = 4;
 	private final float BORDER_X = 10f;
@@ -75,15 +75,15 @@ public class MapCreator {
 		setPlayerAndBossQuadPositions();
 		
 		// Store the current position in the Array
-		int order = 0;
+//		int order = 0;
 	
-//		int totalQuads = PhysXLibrary.MAP_HEIGHT * PhysXLibrary.MAP_WIDTH;
-		for(int a = 0; a < PhysXLibrary.MAP_HEIGHT; ++a) {
-			for(int b = 0; b < PhysXLibrary.MAP_WIDTH; ++b) {
+		int order = (PhysXLibrary.MAP_HEIGHT * PhysXLibrary.MAP_WIDTH) - 1;
+		for(int a = PhysXLibrary.MAP_WIDTH; a > 0; --a) {
+			for(int b = PhysXLibrary.MAP_HEIGHT; b > 0; --b) {
 				
 //				int quad_width = (int) Math.round(b*PhysXLibrary.QUADRANT_WIDTH);
 //				int quad_height = (int) Math.round(a*PhysXLibrary.QUADRANT_HEIGHT);
-				Quadrant quad = createQuadrant(a,b,order);
+				Quadrant quad = createQuadrant(b,a,order);
 				
 				if(order != player_spawn_quad_order && order != boss_spawn_quad_order) {
 					fillQuadrant(quad);
@@ -93,7 +93,7 @@ public class MapCreator {
 				} else if (order == boss_spawn_quad_order) {
 					this.boss_spawn_quad = quad;
 				}
-				order++;
+				order--;
 			}
 		}
 		System.out.println("Player spawn at: "+ player_spawn_quad.getQUID().getX() + ", " + player_spawn_quad.getQUID().getY());

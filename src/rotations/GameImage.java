@@ -1,4 +1,5 @@
 package rotations;
+
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -150,13 +151,25 @@ public class GameImage extends GImage {
 	}
 	
 	public void setLocationRespectSize(double x, double y) {
-		setLocation(x - (origImage.getWidth()), y - (origImage.getHeight()), true);
+		super.setLocation(x - (origImage.getWidth() / 2 ), y - (origImage.getHeight()/ 2));
 	}
 	
 	/* setSize is not supported for the polygon */
 	@Override
 	public void setSize(double width, double height) {
-		
+		origImage.setSize(width, height);
+	}
+	
+	
+	public void changeSize(double width, double height) {
+		origImage.setSize(width, height);
+	}
+	public double getSizeX() {
+		return origImage.getWidth();
+	}
+	
+	public double getSizeY() {
+		return origImage.getHeight();
 	}
 	
 	@Override

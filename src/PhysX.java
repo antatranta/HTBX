@@ -8,6 +8,8 @@ public class PhysX {
 	private int 		MAP_WIDTH;
 	private int 		MAP_HEIGHT;
 	
+	private boolean COLLISION_LOCK;
+	
 	private ArrayList<Quadrant> Quadrants;
 	private QuadrantID ActiveQuadrant;
 	
@@ -27,6 +29,20 @@ public class PhysX {
 	}
 	
 	public QuadrantID assignQuadrant(Vector2 assign) {
+		
+		int order = 0;
+		for (int a = 0; a < MAP_HEIGHT; ++a) {
+			for( int b =0; b < MAP_WIDTH; ++b) {
+				if (assign.getY() > a * PhysXLibrary.QUADRANT_HEIGHT
+						&& assign.getY() < (a + 1) * PhysXLibrary.QUADRANT_HEIGHT
+						&& assign.getX() > b * PhysXLibrary.QUADRANT_WIDTH
+						&& assign.getX() < (b + 1) * PhysXLibrary.QUADRANT_WIDTH) {
+					return new QuadrantID(b,a,order);
+				}
+				order ++;
+			}
+		}
+		/*
 		int y_pos = (int)(assign.getY() / PhysXLibrary.QUADRANT_HEIGHT);
 		int x_pos = (int)(assign.getX() / PhysXLibrary.QUADRANT_WIDTH);
 		for (Quadrant quad : Quadrants) {
@@ -34,6 +50,7 @@ public class PhysX {
 				return quad.getQUID();
 			}
 		}
+		*/
 		
 		// -45 is an error code
 		return new QuadrantID (0,0,-45);
@@ -157,6 +174,24 @@ public class PhysX {
 		return MAP_HEIGHT;
 	}
 	*/
+	
+	
+	
+	public void checkForCollisions() {
+		
+		if(!COLLISION_LOCK) {
+			COLLISION_LOCK = true;
+			for(Quadrant quad : this.Quadrants) {
+				quad.checkForCollisions();
+			}
+			COLLISION_LOCK = false;
+		} else {
+			COLLISION_LOCK = false;
+			if (GameConsole.IS_DEBUGGING) {
+				System.out.println("Dropped PhysX frame");
+			}
+		}
+	}
 
 	public ArrayList<Quadrant> getQuadrants() {
 		return Quadrants;

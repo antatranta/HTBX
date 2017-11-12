@@ -4,19 +4,22 @@ public class PhysXObject {
 	private Vector2 position;
 	
 	public PhysXObject() {
-		this.colliders = new CircleCollider[0];
+		this.colliders = new CircleCollider[1];
+		this.colliders[0] = new CircleCollider();
 		this.QUID = new QuadrantID();
 		this.position = Vector2.Zero();
 	}
 
 	public PhysXObject(QuadrantID QUID) {
-		this.colliders = new CircleCollider[0];
+		this.colliders = new CircleCollider[1];
+		this.colliders[0] = new CircleCollider();
 		this.QUID = new QuadrantID(QUID);
 		this.position = Vector2.Zero();
 	}
 	
 	public PhysXObject(QuadrantID QUID, Vector2 position) {
-		this.colliders = new CircleCollider[0];
+		this.colliders = new CircleCollider[1];
+		this.colliders[0] = new CircleCollider();
 		this.QUID = QUID;
 		this.position = position;
 	}

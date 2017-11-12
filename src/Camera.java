@@ -52,4 +52,16 @@ public class Camera {
 
 	}
 	
+	public static Vector2 frontendToBackend(Vector2 pos, Vector2 size) {
+//		return new Vector2((pos.getX() - OFFSET.getX()) * BACKWARD_RATIO, (pos.getY() - OFFSET.getY()) * BACKWARD_RATIO).add(new Vector2(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT));
+		return new Vector2((pos.getX() - OFFSET.getX() + (size.getX() /2) - (MainApplication.WINDOW_WIDTH / 2)) * BACKWARD_RATIO, (pos.getY() - OFFSET.getY() + (size.getY()/2) - (MainApplication.WINDOW_HEIGHT / 2)) * BACKWARD_RATIO);
+//		return new Vector2((pos.getX()) * BACKWARD_RATIO, (pos.getY()) * BACKWARD_RATIO).minus(OFFSET);
+	}
+	
+	public static Vector2 backendToFrontend(Vector2 pos, Vector2 size) {
+//		return new Vector2((pos.getX() + OFFSET.getX()) * FORWARD_RATIO, (pos.getY() + OFFSET.getY()) * FORWARD_RATIO).minus(new Vector2(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT));
+		return new Vector2((pos.getX() + OFFSET.getX() - (size.getX() /2) + (MainApplication.WINDOW_WIDTH / 2)) * FORWARD_RATIO, (pos.getY() + OFFSET.getY() - (size.getY()/2) + (MainApplication.WINDOW_HEIGHT / 2)) * FORWARD_RATIO);
+
+	}
+	
 }
