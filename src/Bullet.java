@@ -86,6 +86,7 @@ public class Bullet {
 		
 		if(movementVector.getX() < physObj.getPosition().getX() && movementVector.getY() < physObj.getPosition().getY()) {
 			movement = this.physObj.getPosition().minus(movementVector);
+			movement.setXY(movement.getX() * -1, movement.getY() * -1);
 		}
 		else if(movementVector.getX() < physObj.getPosition().getX() && movementVector.getY() > physObj.getPosition().getY()) {
 			movement = this.physObj.getPosition().minusXAddY(movementVector);
