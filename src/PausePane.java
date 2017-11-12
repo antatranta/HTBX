@@ -29,7 +29,7 @@ public class PausePane extends MenuPane {
 		for(GLabel pause:pauseMenu) {
 			pause.setFont(font);
 			pause.setColor(Color.black);
-			pause.setLocation(CENTER_WIDTH - pause.getWidth(), yPos);
+			pause.setLocation(CENTER_WIDTH - (pause.getWidth() / 2), yPos);
 			yPos += 50;
 		}
 	}
@@ -46,5 +46,75 @@ public class PausePane extends MenuPane {
 	@Override
 	public void hideContents() {
 		program.removeAll();
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		obj = program.getElementAt(e.getX(), e.getY());
+		for(GLabel pause:pauseMenu) {
+			if(obj == pause) {
+				switch(pause.getLabel()) {
+					case "CONTINUE":
+						program.switchToGame();
+						break;
+						
+					case "SETTINGS":
+						program.switchToSettings();
+						break;
+						
+					case "SCORES":
+						program.switchToScores();
+						break;
+						
+					case "CONTROLS":
+						program.switchToControls();
+						break;
+						
+					case "EXIT TO MENU":
+						program.switchToMenu();
+						break;
+						
+					default:
+						break;
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		obj = program.getElementAt(e.getX(), e.getY());
+		for(GLabel pause:pauseMenu) {
+			if(obj == pause) {
+				selection.setVisible(true);
+				switch(pause.getLabel()) {
+					case "CONTINUE":
+						selection.setLocation(pause.getX() - 25, pause.getY());
+						break;
+						
+					case "SETTINGS":
+						selection.setLocation(pause.getX() - 25, pause.getY());
+						break;
+						
+					case "SCORES":
+						selection.setLocation(pause.getX() - 25, pause.getY());
+						break;
+						
+					case "CONTROLS":
+						selection.setLocation(pause.getX() - 25, pause.getY());
+						break;
+					
+					case "EXIT TO MENU":
+						selection.setLocation(pause.getX() - 25, pause.getY());
+						break;
+						
+					default:
+						break;
+				}
+			}
+			else if(obj == null) {
+				selection.setVisible(false);
+			}
+		}
 	}
 }

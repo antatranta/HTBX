@@ -68,18 +68,35 @@ public class Bullet {
 	}
 	
 	public float getBulletDX() {
-		Vector2 movement = this.physObj.getPosition().add(movementVector);
-		bulletDX = movement.normalize().getX();
+		bulletDX = bulletTrajectory().getX();
 		return bulletDX * bulletSpeed;
 	}
 	
 	public float getBulletDY() {
-		Vector2 movement = this.physObj.getPosition().add(movementVector);
-		bulletDY = movement.normalize().getY();
+		bulletDY = bulletTrajectory().getY();
 		return bulletDY * bulletSpeed;
 	}
 	
 	public void move() {
 		physObj.getPosition().setXY(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
+	}
+	
+	private Vector2 bulletTrajectory() {
+		Vector2 movement = null;
+		
+		if(movementVector.getX() < physObj.getPosition().getX() && movementVector.getY() < physObj.getPosition().getY()) {
+			movement = this.physObj.getPosition().minus(movementVector);
+		}
+		else if(movementVector.getX() < physObj.getPosition().getX() && movementVector.getY() > physObj.getPosition().getY()) {
+			movement = this.physObj.getPosition().minusXAddY(movementVector);
+		}
+		else if(movementVector.getX() > physObj.getPosition().getX() && movementVector.getY() < physObj.getPosition().getY()) {
+			movement = this.physObj.getPosition().addXMinusY(movementVector);
+		}
+		else {
+			movement = this.physObj.getPosition().add(movementVector);
+		}
+		
+		return movement.normalize();
 	}
 }

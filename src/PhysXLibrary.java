@@ -6,8 +6,10 @@ public class PhysXLibrary{
 	public static int 	MAP_HEIGHT;
 	*/
 	//For testing the map.--wenrui
+
 	public static float	QUADRANT_HEIGHT = 250f * 2;
 	public static float	QUADRANT_WIDTH = 500f * 2;
+
 	public static int 	MAP_WIDTH=10;
 	public static int 	MAP_HEIGHT=10;
 	

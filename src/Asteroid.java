@@ -18,7 +18,7 @@ public class Asteroid {
 	}
 	
 	private void createSprite() {
-		this.sprite = new GameImage("robot head.jpg", 0, 0);
+		this.sprite = new GameImage("Asteroids.png", 0, 0);
 		//System.out.println("Asteroid at: " + physObj.getPosition().getX() + ", " + physObj.getPosition().getY());
 	}
 	
