@@ -30,8 +30,8 @@ public class GameConsole extends GraphicsProgram{
 		camera.setupCamera(1, 1);
 		
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
-		float pos_x = (playerSpawn.getQUID().getX() * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
-		float pos_y = (playerSpawn.getQUID().getY() * PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2);
+		float pos_x = ((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
+		float pos_y = ((playerSpawn.getQUID().getY())* PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2);
 		Vector2 pos = new Vector2(pos_x, pos_y);
 		System.out.println("pos = " + pos_x + ", " + pos_y);
 		
@@ -71,8 +71,6 @@ public class GameConsole extends GraphicsProgram{
 	}
 	
 	public ArrayList<Asteroid> getActiveAsteroids() {
-		
-		
 		
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();

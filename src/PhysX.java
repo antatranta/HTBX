@@ -18,6 +18,14 @@ public class PhysX {
 		ActiveQuadrant = new QuadrantID(0,0,0);
 	}
 	
+	public void verifyOrder() {
+		int order = 0;
+		for(Quadrant quad : Quadrants) {
+			System.out.println("ORDER: " +quad.getQUID().Order() + " , INDEX: " + order);
+			order++;
+		}
+	}
+	
 	public PhysX(float QUADRANT_HEIGHT, float QUADRANT_WIDTH, int MAP_WIDTH, int MAP_HEIGHT) {
 		this.QUADRANT_HEIGHT = QUADRANT_HEIGHT;
 		this.QUADRANT_WIDTH = QUADRANT_WIDTH;
@@ -65,9 +73,39 @@ public class PhysX {
 		// Create our returning object
 		ArrayList<Quadrant> quads = new ArrayList<Quadrant>();
 		
+		if(QUID.Order() != -45) {
+		quads.add(Quadrants.get(QUID.Order()));
+		} else {
+			if(GameConsole.IS_DEBUGGING) {
+				System.out.println("- - OUT OF BOUNDS - -");
+			}
+			return new ArrayList<Quadrant>();
+		}
+		
+		
 		for(Quadrant quad : Quadrants) {
 			QuadrantID testQUID = quad.getQUID();
 			
+			if(testQUID.getX() == QUID.getX() -1
+					|| testQUID.getX() == QUID.getX() + 1) {
+				if(testQUID.getY() == QUID.getY() - 1
+						|| testQUID.getY() == QUID.getY() + 1) {
+					
+					if (Quadrants.size() > testQUID.Order() - 1 &&
+							0 < testQUID.Order() - 1) {
+						quads.add(Quadrants.get(testQUID.Order() - 1));
+					}
+					if (Quadrants.size() > testQUID.Order() + 1 &&
+							0 < testQUID.Order() + 1) {
+						quads.add(Quadrants.get(testQUID.Order() + 1));
+					}
+					
+					if (Quadrants.size() > testQUID.Order()) {
+						quads.add(Quadrants.get(testQUID.Order()));
+					}
+				}
+			}
+			/*
 			// Test if the quad is Above or Below
 			if(Math.abs(testQUID.getY() - QUID.getY()) < 2) {
 				if (Quadrants.size() > testQUID.Order()) {
@@ -89,6 +127,7 @@ public class PhysX {
 //				quads.add(Quadrants.get(testQUID.Order() - 1));
 //				quads.add(Quadrants.get(testQUID.Order() + 1));
 			}
+			*/
 		}
 		
 		return quads;
@@ -147,7 +186,11 @@ public class PhysX {
 	}
 	
 	public void addQuadrants(ArrayList<Quadrant> quads) {
-		this.Quadrants = quads;
+		
+		for(int i=quads.size()-1; i > 0; --i) {
+			addQuadrant(quads.get(i));
+		}
+		verifyOrder();
 	}
 	// The quadrants will always be read in order
 	// so there is no need to verify placement

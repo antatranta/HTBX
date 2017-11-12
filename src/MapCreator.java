@@ -15,8 +15,8 @@ public class MapCreator {
 	private float SEED =200;
 	private final int MAX_ENEMIES_IN_QUAD = 2;
 	private final int MAX_ASTEROIDS_IN_QUAD = 4;
-	private final float BORDER_X = 10f;
-	private final float BORDER_Y = 10f;
+	private final float BORDER_X = 100f;
+	private final float BORDER_Y = 100f;
 	private int max_quad=0;
 	private Random rand;
 //	private static ArrayList<Quadrant> Quad_list;
@@ -43,7 +43,7 @@ public class MapCreator {
 		
 	}
 	public void setPlayerAndBossQuadPositions() {
-		int totalQuads = PhysXLibrary.MAP_WIDTH * PhysXLibrary.MAP_HEIGHT;
+		int totalQuads = (PhysXLibrary.MAP_WIDTH * PhysXLibrary.MAP_HEIGHT);
 		max_quad = totalQuads;
 		int player_quad = randomNumber(0, totalQuads);
 		int boss_quad = randomNumber(0, totalQuads);
@@ -83,12 +83,11 @@ public class MapCreator {
 				
 //				int quad_width = (int) Math.round(b*PhysXLibrary.QUADRANT_WIDTH);
 //				int quad_height = (int) Math.round(a*PhysXLibrary.QUADRANT_HEIGHT);
-				Quadrant quad = createQuadrant(b,a,order);
+				Quadrant quad = createQuadrant(b-1,a-1,order);
+				fillQuadrant(quad);
+				Quadrants.add(quad);
 				
-				if(order != player_spawn_quad_order && order != boss_spawn_quad_order) {
-					fillQuadrant(quad);
-					Quadrants.add(quad);
-				} else if (order == player_spawn_quad_order) {
+				if (order == player_spawn_quad_order) {
 					this.player_spawn_quad = quad;
 				} else if (order == boss_spawn_quad_order) {
 					this.boss_spawn_quad = quad;
@@ -96,8 +95,8 @@ public class MapCreator {
 				order--;
 			}
 		}
-		System.out.println("Player spawn at: "+ player_spawn_quad.getQUID().getX() + ", " + player_spawn_quad.getQUID().getY());
-		System.out.println("Boss spawn at: "+ boss_spawn_quad.getQUID().getX() + ", " + boss_spawn_quad.getQUID().getY());
+		System.out.println("Player spawn at: "+ (player_spawn_quad.getQUID().getX() -1) + ", " + (player_spawn_quad.getQUID().getY()-1));
+		System.out.println("Boss spawn at: "+ (boss_spawn_quad.getQUID().getX() -1) + ", " + (boss_spawn_quad.getQUID().getY()-1));
 		return Quadrants;
 		
 	}
@@ -190,8 +189,8 @@ public class MapCreator {
 	*/
 	
 	public PhysXObject createPhysXObjectInQuad (QuadrantID quad) {
-		float startingX = (quad.getX() * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
-		float startingY = (quad.getY() * PhysXLibrary.QUADRANT_HEIGHT) -  (PhysXLibrary.QUADRANT_HEIGHT / 2);
+		float startingX = ((quad.getX() + 1)* PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
+		float startingY = ((quad.getY() + 1)* PhysXLibrary.QUADRANT_HEIGHT) -  (PhysXLibrary.QUADRANT_HEIGHT / 2);
 		
 		float randomMultiplierX = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
 		float randomMultiplierY = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
