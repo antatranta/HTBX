@@ -38,6 +38,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	private PlayerShip player;
 	private Vector2 last_mouse_loc;
+	private GOval playerCollider;
 	
 	private GLabel CURRENT_QUID_LABEL;
 	private GLabel CURRENT_PLAYER_POS_LABEL;
@@ -72,6 +73,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_OBJECTS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS;
+	
+	private ArrayList <GLabel> DEBUGGING_QUID_LABELS;
 	private float xAxis = 0;
 	private float yAxis = 0;
 	private int track_amount = 0;
@@ -96,6 +99,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.add(CURRENT_PLAYER_POS_LABEL);
 		program.add(CURRENT_MOUSE_POS_LABEL);
 		
+		program.add(playerCollider);
+		
 		DEBUGGING_BOX.setFillColor(Color.black);
 		DEBUGGING_BOX.setFilled(true);
 		
@@ -111,22 +116,26 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		CURRENT_MOUSE_POS_LABEL.setColor(Color.WHITE);
 		CURRENT_MOUSE_POS_LABEL.setFont("Arial");
 		
+		playerCollider.setColor(Color.YELLOW);
+		
 		DEBUGGING_ROWS = new ArrayList<StaticRect>();
 		DEBUGGING_COLS = new ArrayList<StaticRect>();
 		
 		DEBUGGING_LINES = new ArrayList<StaticRect>();
 		
+		DEBUGGING_QUID_LABELS = new ArrayList<GLabel>();
+		
 		
 		for(int i =0; i < PhysXLibrary.MAP_WIDTH; ++i) {
 //			DEBUGGING_ROWS.add(new StaticRect(new Vector2((PhysXLibrary.QUADRANT_WIDTH * i), -PhysXLibrary.getMapHeight()), new Vector2(5, PhysXLibrary.getMapHeight())));
-			DEBUGGING_ROWS.add(new StaticRect(new Vector2(-(PhysXLibrary.QUADRANT_WIDTH * i), 0), new Vector2(5, PhysXLibrary.getMapHeight())));
+			DEBUGGING_ROWS.add(new StaticRect(new Vector2((PhysXLibrary.QUADRANT_WIDTH * i), 0), new Vector2(5, PhysXLibrary.getMapHeight())));
 			program.add(DEBUGGING_ROWS.get(i).getRect());
 			DEBUGGING_ROWS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
 			DEBUGGING_ROWS.get(i).getRect().setFilled(true);
 		}
 		
 		for(int i =0; i < PhysXLibrary.MAP_HEIGHT; ++i) {
-			DEBUGGING_COLS.add(new StaticRect(new Vector2(0, -(PhysXLibrary.QUADRANT_HEIGHT * i)), new Vector2(PhysXLibrary.getMapWidth(), 5)));
+			DEBUGGING_COLS.add(new StaticRect(new Vector2(0, (PhysXLibrary.QUADRANT_HEIGHT * i)), new Vector2(PhysXLibrary.getMapWidth(), 5)));
 			program.add(DEBUGGING_COLS.get(i).getRect());
 			DEBUGGING_COLS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
 			DEBUGGING_COLS.get(i).getRect().setFilled(true);
@@ -178,11 +187,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			return;
 		}
 		for(int i =0; i < statics.size(); ++i) {
-
-			
-			
 			if (!DEBUGGING_COLLIDERS.contains(statics.get(i))) {
 				DEBUGGING_COLLIDERS.add(statics.get(i));
+				DEBUGGING_QUID_LABELS.add(new GLabel("QUID"));
+				program.add(DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1));
+				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setColor(Color.pink);
+				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setLabel(statics.get(i).getPhysObj().getQUID().toString());
 				statics.get(i).setup();
 			
 				for(GOval col : statics.get(i).getObjects()) {
@@ -195,8 +205,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			// Set its location according to the offset
 			if (DEBUGGING_COLLIDERS.contains(statics.get(i))) {
 				for(int f = 0; f < statics.get(i).getObjects().length; ++f) {
-					Vector2 frontEndPos = Camera.backendToFrontend(statics.get(i).getPhysObj().getColliders()[f].getCenter().add(statics.get(i).getPhysObj().getPosition()));
-					statics.get(i).getObjects()[f].setLocation(frontEndPos.getX(), frontEndPos.getY());
+					float diameter = statics.get(i).getPhysObj().getColliders()[f].getRadius() * 2;
+					Vector2 size = new Vector2(diameter, diameter);
+					Vector2 frontEndPos = Camera.backendToFrontend(statics.get(i).getPhysObj().getColliders()[f].getCenter().add(statics.get(i).getPhysObj().getPosition()), size);
+					statics.get(i).setLocationRespectSize(f, frontEndPos);
+					DEBUGGING_QUID_LABELS.get(i).setLocation(frontEndPos.getX(), frontEndPos.getY());
+//					statics.get(i).getObjects()[f].setLocation(frontEndPos.getX(), frontEndPos.getY());
 				}
 			}
 		}
@@ -222,9 +236,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		CURRENT_MOUSE_POS_LABEL = new GLabel("Current M Position", 15, 100);
 		DEBUGGING_BOX = new GRect(10, 10, 300, 100);
 		
+
 		
 		console = program.getGameConsole();
 		player = console.getPlayer();
+		
+		float size = player.getPhysObj().getColliders()[0].getRadius() * 2;
+		playerCollider = new GOval(0,0,size,size);
 		
 		Vector2 pos = player.getPhysObj().getPosition();
 
@@ -313,11 +331,15 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// TESTING!!! NOT FINAL
 		drawAsteroids(console.getActiveAsteroids());
 		
+		console.testCollisions();
+		
 		if(console.IS_DEBUGGING) {
 			CURRENT_QUID_LABEL.setLabel("Current QUID: " + player.getPhysObj().getQUID().toString());
 			CURRENT_PLAYER_POS_LABEL.setLabel("Current Player V2: " + player.getPhysObj().getPosition().toString());
 			CURRENT_MOUSE_POS_LABEL.setLabel("Current Mouse V2: " + Camera.frontendToBackend(last_mouse_loc).toString());
-//			pointTest();
+			
+			Vector2 frontEndPos = Camera.backendToFrontend(player.getPhysObj().getColliders()[0].getCenter().add(player.getPhysObj().getPosition()));
+			playerCollider.setLocation(frontEndPos.getX(), frontEndPos.getY());
 			
 			drawStaticRect(DEBUGGING_ROWS);
 			drawStaticRect(DEBUGGING_COLS);
@@ -333,7 +355,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 					}
 					if(!DEBUGGING_COLLIDERS_OBJECTS.contains(aster)) {
 						DEBUGGING_COLLIDERS_OBJECTS.add(aster);
-						DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(aster.getPhysObj()));
+						Vector2 imageSize = new Vector2((float)aster.getSprite().getWidth(), (float)aster.getSprite().getHeight());
+						DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(aster.getPhysObj(), imageSize));
 						draw ++;
 					}
 				}
@@ -498,7 +521,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //			float offset_y = asteroid.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
 			
 			// Make a proper vector2 location according to the camera zoom scale
-			Vector2 size = new Vector2(asteroid.getPhysObj().getColliders()[0].getRadius(), asteroid.getPhysObj().getColliders()[0].getRadius());
+			Vector2 size = new Vector2(asteroid.getPhysObj().getColliders()[0].getRadius() * 2, asteroid.getPhysObj().getColliders()[0].getRadius() * 2);
 			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition(), size);
 
 			// Are we already drawing that rock?
