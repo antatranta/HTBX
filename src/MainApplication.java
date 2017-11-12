@@ -39,6 +39,7 @@ public class MainApplication extends GraphicsApplication {
 		setting = new SettingsPane(this);
 		control = new ControlsPane(this);
 		score = new ScoresPane(this);
+		pause = new PausePane(this);
 		audio = AudioPlayer.getInstance();
 		gameTimer.addListener(game);
 		musicToggle = true;
@@ -98,6 +99,10 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToPause() {
+		audio.stopSound("sounds", "01 Misconection_1.mp3");
+		if(musicToggle) {
+			audio.playSound("sounds", "3A1W - Menu.wav", true);
+		}
 		switchToScreen(pause);
 	}
 	

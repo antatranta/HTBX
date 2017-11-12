@@ -360,6 +360,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         		pressed_keys.add(key);
         	}
         }
+        else if (key == KeyEvent.VK_ESCAPE) {
+        	program.switchToPause();
+        }
 
         
         
