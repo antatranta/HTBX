@@ -109,6 +109,7 @@ public class MainApplication extends GraphicsApplication {
 		isPaused = true;
 		
 		audio.stopSound("sounds", "01 Misconection_1.mp3");
+		audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
 		}
