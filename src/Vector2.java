@@ -24,6 +24,10 @@ public class Vector2 {
 		this.y = y;
 	}
 	
+	public String toString() {
+		return "(" + this.x + " , " + this.y + ")";
+	}
+	
 	public Vector2 add(Vector2 vectorB) {
 		return new Vector2(this.x + vectorB.getX(), this.y + vectorB.getY());
 	}
@@ -60,10 +64,7 @@ public class Vector2 {
 		return new Vector2(x, y);
 	}
 	
-	public Vector2 minus(Vector2 vectorB) {
-		float bX = vectorB.getX() - this.getX();
-		float bY = vectorB.getY() - this.getY();
-		
-		return new Vector2(bX, bY);
+	public Vector2 minus(Vector2 vectorB) {		
+		return new Vector2(this.x - vectorB.getX(), this.y - vectorB.getY());
 	}
 }
