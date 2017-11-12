@@ -21,6 +21,7 @@ public class MainApplication extends GraphicsApplication {
 	private AudioPlayer audio;
 	private boolean musicToggle;
 	private boolean sfxToggle;
+	private boolean isPaused;
 	//private int count = 0;
 	
 	
@@ -44,6 +45,7 @@ public class MainApplication extends GraphicsApplication {
 		gameTimer.addListener(game);
 		musicToggle = true;
 		sfxToggle = true;
+		isPaused = false;
 		
 		switchToMenu();
 	}
@@ -56,7 +58,12 @@ public class MainApplication extends GraphicsApplication {
 		return sfxToggle;
 	}
 	
+	public boolean isPaused() {
+		return isPaused;
+	}
+	
 	public void switchToMenu() {
+		isPaused = false;
 		audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
@@ -99,10 +106,13 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToPause() {
+		isPaused = true;
+		
 		audio.stopSound("sounds", "01 Misconection_1.mp3");
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
 		}
+		gameTimer.stopTimer();
 		switchToScreen(pause);
 	}
 	
