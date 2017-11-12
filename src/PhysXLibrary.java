@@ -13,6 +13,14 @@ public class PhysXLibrary{
 	
 	public static final float COLLISION_CONSTANT = 10f;
 	
+	public static float getMapHeight() {
+		return QUADRANT_HEIGHT * MAP_HEIGHT;
+	}
+	
+	public static float getMapWidth() {
+		return QUADRANT_WIDTH * MAP_WIDTH;
+	}
+	
 	public static PhysX createPhysXInstance() {
 		return new PhysX(QUADRANT_HEIGHT, QUADRANT_WIDTH, MAP_WIDTH, MAP_HEIGHT);
 	}
