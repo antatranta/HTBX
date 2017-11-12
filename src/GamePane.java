@@ -15,9 +15,11 @@ import rotations.GameImage;
 
 public class GamePane extends GraphicsPane implements ActionListener, KeyListener {
 	// LAYER DATA: 0 Is the front, above 0 puts things behind
-	// TODO: private static final int GUI_LAYER = 0;
-	private static final int CURSOR_LAYER = 1;
-	private static final int PLAYER_LAYER = 3;
+	private static final int DEBUG_LAYER 		= 0;
+	private static final int CURSOR_LAYER 		= 1;
+	private static final int PLAYER_LAYER 		= 3;
+	private static final int PLAYER_RECTILE 		= 4;
+	private static final int PLAYER_RECTILE_2 	= 5;
 	// TODO: 
 	//private static final int BOSS_LAYER = 4;
 	// TODO: 
@@ -40,6 +42,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private Vector2 last_mouse_loc;
 	private GOval playerCollider;
 	
+	
+	private boolean REQUEST_DEBUG_END = false;
 	private GLabel CURRENT_QUID_LABEL;
 	private GLabel CURRENT_PLAYER_POS_LABEL;
 	private GLabel CURRENT_MOUSE_POS_LABEL;
@@ -79,6 +83,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private float yAxis = 0;
 	private int track_amount = 0;
 	
+	
+	private boolean TRACKING_SET = false;
 	private Vector2 TRACKING_POSITION;
 
 	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
@@ -125,6 +131,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		DEBUGGING_QUID_LABELS = new ArrayList<GLabel>();
 		
+		DEBUGGING_COLLIDERS = new ArrayList<StaticGObject>();
+		DEBUGGING_COLLIDERS_OBJECTS = new ArrayList<Asteroid>();
+		DEBUGGING_COLLIDERS_OBJECTS_ref = new ArrayList<StaticGObject>();
+		
 		
 		for(int i =0; i < PhysXLibrary.MAP_WIDTH; ++i) {
 //			DEBUGGING_ROWS.add(new StaticRect(new Vector2((PhysXLibrary.QUADRANT_WIDTH * i), -PhysXLibrary.getMapHeight()), new Vector2(5, PhysXLibrary.getMapHeight())));
@@ -142,13 +152,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		
+		setSpriteLayer(DEBUGGING_BOX, DEBUG_LAYER);
+		setSpriteLayer(CURRENT_QUID_LABEL, DEBUG_LAYER);
+		setSpriteLayer(CURRENT_ASTEROIDS_LABEL, DEBUG_LAYER);
 		
-		setSpriteLayer(CURRENT_QUID_LABEL, 1);
-		setSpriteLayer(CURRENT_ASTEROIDS_LABEL, 1);
+		setSpriteLayer(CURRENT_PLAYER_POS_LABEL, DEBUG_LAYER);
+		setSpriteLayer(CURRENT_MOUSE_POS_LABEL, DEBUG_LAYER);
 		
-		setSpriteLayer(CURRENT_PLAYER_POS_LABEL, 1);
-		setSpriteLayer(CURRENT_MOUSE_POS_LABEL, 1);
-		setSpriteLayer(DEBUGGING_BOX, 6);
 	}
 	
 	public void pointTest(Vector2 pos) {
@@ -182,17 +192,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	public void drawPhysXObjects(ArrayList<StaticGObject> statics) {
-		if(statics.size() < 1) {
-			System.out.println("Empty Array!");
-			return;
-		}
 		for(int i =0; i < statics.size(); ++i) {
 			if (!DEBUGGING_COLLIDERS.contains(statics.get(i))) {
 				DEBUGGING_COLLIDERS.add(statics.get(i));
+				
 				DEBUGGING_QUID_LABELS.add(new GLabel("QUID"));
 				program.add(DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1));
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setColor(Color.pink);
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setLabel(statics.get(i).getPhysObj().getQUID().toString());
+				setSpriteLayer(DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1), DEBUG_LAYER);
+//				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).sendToFront();
 				statics.get(i).setup();
 			
 				for(GOval col : statics.get(i).getObjects()) {
@@ -210,7 +219,20 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 					Vector2 frontEndPos = Camera.backendToFrontend(statics.get(i).getPhysObj().getColliders()[f].getCenter().add(statics.get(i).getPhysObj().getPosition()), size);
 					statics.get(i).setLocationRespectSize(f, frontEndPos);
 					DEBUGGING_QUID_LABELS.get(i).setLocation(frontEndPos.getX(), frontEndPos.getY());
+					setSpriteLayer(DEBUGGING_QUID_LABELS.get(i), DEBUG_LAYER);
 //					statics.get(i).getObjects()[f].setLocation(frontEndPos.getX(), frontEndPos.getY());
+				}
+			}
+		}
+		
+		ArrayList<StaticGObject> new_statics = new ArrayList<StaticGObject>();
+		new_statics.addAll(statics);
+		// Remove asteroids
+		for (StaticGObject coll : new_statics) {
+			if (!new_statics.contains(coll)) {
+				DEBUGGING_COLLIDERS.remove(coll);
+				for(GOval oval :  coll.getObjects()) {
+					program.remove(oval);
 				}
 			}
 		}
@@ -246,13 +268,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		Vector2 pos = player.getPhysObj().getPosition();
 
-		aiming_edge = new GameImage("Aiming_edge.png", 0, 0);
-		setSpriteLayer(aiming_edge, CURSOR_LAYER);
+		aiming_edge = new GameImage("rectile.png", 0, 0);
+		setSpriteLayer(aiming_edge, PLAYER_RECTILE);
 		aiming_head = new GameImage("Aiming_Reticle.png", 0, 0);
+		setSpriteLayer(aiming_head, PLAYER_RECTILE_2);
 		player_img = new GameImage(PLAYER_SPRITE, pos.getX(), pos.getY());
-		player_img.changeSize(10, 10);
+//		player_img.changeSize(10, 10);
 //		player_img.scale(-10, -10);
-		setSpriteLayer(player_img, PLAYER_LAYER);
+		setSpriteLayer(player_img, 1);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
@@ -296,7 +319,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		//auto_fire.setInitialDelay(0);
 		//auto_fire.start();
-		pointTest(new Vector2(e.getX(), e.getY()));
+		
+		//pointTest(new Vector2(e.getX(), e.getY()));
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == player_img) {
 			program.switchToMenu();
@@ -315,7 +339,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	// Every tick of the global game clock calls all visual drawing necessary
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		TRACKING_POSITION = player.getPhysObj().getPosition();
+		if(!TRACKING_SET) {
+			TRACKING_POSITION = player.getPhysObj().getPosition();
+		}
+		
 		setOffset();
 		// Player shoot every tick
 //		System.out.println("Fired");
@@ -334,36 +361,63 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		console.testCollisions();
 		
 		if(console.IS_DEBUGGING) {
-			CURRENT_QUID_LABEL.setLabel("Current QUID: " + player.getPhysObj().getQUID().toString());
-			CURRENT_PLAYER_POS_LABEL.setLabel("Current Player V2: " + player.getPhysObj().getPosition().toString());
-			CURRENT_MOUSE_POS_LABEL.setLabel("Current Mouse V2: " + Camera.frontendToBackend(last_mouse_loc).toString());
+			if(REQUEST_DEBUG_END) {
+    				console.endDebugView();
+    				program.remove(CURRENT_QUID_LABEL);
+    				program.remove(DEBUGGING_BOX);
+    				
+    				for(StaticRect rect: DEBUGGING_ROWS) {
+    					program.remove(rect.getRect());
+    				}
+    				for(StaticRect rect: DEBUGGING_COLS) {
+    					program.remove(rect.getRect());
+    				}
+    				for(GLabel label: DEBUGGING_QUID_LABELS) {
+    					program.remove(label);
+    				}
+    				
+    				for(StaticGObject obj: DEBUGGING_COLLIDERS) {
+    					for (GOval oval : obj.getObjects()) {
+    						program.remove(oval);
+    					}
+    				}
+    				
+    				drawPhysXObjects(new ArrayList<StaticGObject>());
+    				REQUEST_DEBUG_END = false;
+    				
+			} else {
 			
-			Vector2 frontEndPos = Camera.backendToFrontend(player.getPhysObj().getColliders()[0].getCenter().add(player.getPhysObj().getPosition()));
-			playerCollider.setLocation(frontEndPos.getX(), frontEndPos.getY());
-			
-			drawStaticRect(DEBUGGING_ROWS);
-			drawStaticRect(DEBUGGING_COLS);
-			
-			if (!DRAWING_LOCK) {
-				try {
-				DRAWING_LOCK = true;
-				int MAXDRAW = 50;
-				int draw = 0;
-				for(Asteroid aster : drawn_rocks) {
-					if(draw >= MAXDRAW) {
-						break;
+				CURRENT_QUID_LABEL.setLabel("Current QUID: " + player.getPhysObj().getQUID().toString());
+				CURRENT_PLAYER_POS_LABEL.setLabel("Current Player V2: " + player.getPhysObj().getPosition().toString());
+				CURRENT_MOUSE_POS_LABEL.setLabel("Current Mouse V2: " + Camera.frontendToBackend(last_mouse_loc).toString());
+				
+				Vector2 frontEndPos = Camera.backendToFrontend(player.getPhysObj().getColliders()[0].getCenter().add(player.getPhysObj().getPosition()));
+				playerCollider.setLocation(frontEndPos.getX(), frontEndPos.getY());
+				
+				drawStaticRect(DEBUGGING_ROWS);
+				drawStaticRect(DEBUGGING_COLS);
+				
+				if (!DRAWING_LOCK) {
+					try {
+					DRAWING_LOCK = true;
+					int MAXDRAW = 50;
+					int draw = 0;
+					for(Asteroid aster : drawn_rocks) {
+						if(draw >= MAXDRAW) {
+							break;
+						}
+						if(!DEBUGGING_COLLIDERS_OBJECTS.contains(aster)) {
+							DEBUGGING_COLLIDERS_OBJECTS.add(aster);
+							Vector2 imageSize = new Vector2((float)aster.getSprite().getWidth(), (float)aster.getSprite().getHeight());
+							DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(aster.getPhysObj(), imageSize));
+							draw ++;
+						}
 					}
-					if(!DEBUGGING_COLLIDERS_OBJECTS.contains(aster)) {
-						DEBUGGING_COLLIDERS_OBJECTS.add(aster);
-						Vector2 imageSize = new Vector2((float)aster.getSprite().getWidth(), (float)aster.getSprite().getHeight());
-						DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(aster.getPhysObj(), imageSize));
-						draw ++;
+					drawPhysXObjects(DEBUGGING_COLLIDERS_OBJECTS_ref);
+					} catch (java.lang.NullPointerException e1) {
+						System.out.println("Dropped frame " + e1.getMessage());
+						DRAWING_LOCK = false;
 					}
-				}
-				drawPhysXObjects(DEBUGGING_COLLIDERS_OBJECTS_ref);
-				} catch (java.lang.NullPointerException e1) {
-					System.out.println("Dropped frame " + e1.getMessage());
-					DRAWING_LOCK = false;
 				}
 			}
 		}
@@ -418,7 +472,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		double angle = -Math.toRadians(player.getAngle());
-		float speed = (float) player.getStats().getSpeed() * 5 * final_forward;
+		float speed = (float) player.getStats().getSpeed() * 5 * final_forward * 2;
 		float cos = (float) Math.cos(angle) * speed;
 		float sin = (float) Math.sin(angle) * speed;
 		
@@ -538,12 +592,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			
 		}
 		
+		ArrayList<Asteroid> new_draw = new ArrayList<Asteroid>();
+		new_draw.addAll(drawn_rocks);
 		// Remove asteroids
-		for (Asteroid asteroid : drawn_rocks) {
+		for (Asteroid asteroid : new_draw) {
 			if (!asteroids.contains(asteroid)) {
+				drawn_rocks.remove(asteroid);
 				program.remove(asteroid.getSprite());
 			}
 		}
+		
 		
 	}
 	
@@ -552,6 +610,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		//Vector2 root = player.getPhysObj().getPosition();
 		Vector2 visual_root = new Vector2((float)(player_img.getX() + (player_img.getWidth()/2)), (float)(player_img.getY() + (player_img.getHeight()/2)));
 		
+		/*
 		int distance = (int)Math.floor(PhysXLibrary.distance(visual_root, new Vector2(coord.getX(), coord.getY())));
 		int dots = (distance / CURSOR_DIST);
 		if (cursor_dots.size() < dots) {
@@ -569,6 +628,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				cursor_dots.remove(cursor_dots.size() - i - 1);
 			}
 		}
+		*/
 		
 		// Align them properly
 		double off_x = (coord.getX() - visual_root.getX());
@@ -626,10 +686,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         }
         
         if(key == KeyEvent.VK_K && console.IS_DEBUGGING) {
-    			console.endDebugView();
-    			
-        		program.remove(CURRENT_QUID_LABEL);
-        		program.remove(DEBUGGING_BOX);
+        		REQUEST_DEBUG_END = true;
+        		/*
+c
+        		*/
         }
         
         if(console.IS_DEBUGGING) {
@@ -649,6 +709,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         			System.out.println("SNAPSHOT --- ");
         			System.out.println("Asteroids to draw: " + console.getActiveAsteroids().size());
         			System.out.println("Player QUID: (" + player.getPhysObj().getQUID().getX() +", " + player.getPhysObj().getQUID().getY() + ", " + player.getPhysObj().getQUID().Order() + ")");
+        		}
+        		if(key == KeyEvent.VK_V) {
+        			if(!TRACKING_SET) {
+        				System.out.println("TRACKING --- ON");
+            			TRACKING_SET = true;
+            			TRACKING_POSITION = player.getPhysObj().getPosition();
+        			} else {
+        				System.out.println("TRACKING --- OFF");
+        				TRACKING_SET = false;
+        			}
+
         		}
         }
         
