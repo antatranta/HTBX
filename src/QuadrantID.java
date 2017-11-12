@@ -29,4 +29,8 @@ public class QuadrantID {
 	public int getY() {
 		return y;
 	}
+	
+	public String toString() {
+		return "(" + this.x + " , " + this.y + " , " + this.order + ")"; 
+	}
 }
