@@ -28,6 +28,18 @@ public class Vector2 {
 		return new Vector2(this.x + vectorB.getX(), this.y + vectorB.getY());
 	}
 	
+	public Vector2 minusAll(Vector2 vectorB) {
+		return new Vector2(vectorB.getX() - this.getX(), vectorB.getY() - this.getY());
+	}
+	
+	public Vector2 minusXAddY(Vector2 vectorB) {
+		return new Vector2(vectorB.getX() - this.getX(), vectorB.getY() + this.getY());
+	}
+	
+	public Vector2 addXMinusY(Vector2 vectorB) {
+		return new Vector2(vectorB.getX() + this.getX(), vectorB.getY() - this.getY());
+	}
+	
 	public static Vector2 Zero() {
 		return new Vector2(0,0);
 	}
@@ -58,12 +70,5 @@ public class Vector2 {
 		}
 		
 		return new Vector2(x, y);
-	}
-	
-	public Vector2 minus(Vector2 vectorB) {
-		float bX = vectorB.getX() - this.getX();
-		float bY = vectorB.getY() - this.getY();
-		
-		return new Vector2(bX, bY);
 	}
 }
