@@ -4,6 +4,7 @@ public class Bullet {
 	private BulletType bulletType;
 	private float bulletDuration;
 	private PhysXObject physObj;
+	private PhysXObject initialLocation;
 	private CollisionData collisionData;
 	private Vector2 movementVector;
 	private float bulletDX;
@@ -16,6 +17,7 @@ public class Bullet {
 		this.bulletDuration = time;
 		this.physObj = obj;
 		this.movementVector = movementVector;
+		this.initialLocation = obj;
 		collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
 	}
 	
@@ -78,24 +80,27 @@ public class Bullet {
 	}
 	
 	public void move() {
-		physObj.getPosition().setXY(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
+		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
+		physObj.setPosition(movement);
 	}
 	
 	private Vector2 bulletTrajectory() {
 		Vector2 movement = null;
 		
-		if(movementVector.getX() < physObj.getPosition().getX() && movementVector.getY() < physObj.getPosition().getY()) {
-			movement = this.physObj.getPosition().minus(movementVector);
+		if(movementVector.getX() <= initialLocation.getPosition().getX() && movementVector.getY() <= initialLocation.getPosition().getY()) {
+			movement = this.initialLocation.getPosition().minus(movementVector);
 			movement.setXY(movement.getX() * -1, movement.getY() * -1);
 		}
-		else if(movementVector.getX() < physObj.getPosition().getX() && movementVector.getY() > physObj.getPosition().getY()) {
-			movement = this.physObj.getPosition().minusXAddY(movementVector);
+		else if(movementVector.getX() <= initialLocation.getPosition().getX() && movementVector.getY() >= initialLocation.getPosition().getY()) {
+			movement = this.initialLocation.getPosition().minusXAddY(movementVector);
+			movement.setXY(movement.getX() * -1, movement.getY());
 		}
-		else if(movementVector.getX() > physObj.getPosition().getX() && movementVector.getY() < physObj.getPosition().getY()) {
-			movement = this.physObj.getPosition().addXMinusY(movementVector);
+		else if(movementVector.getX() >= initialLocation.getPosition().getX() && movementVector.getY() <= initialLocation.getPosition().getY()) {
+			movement = this.initialLocation.getPosition().addXMinusY(movementVector);
+			movement.setXY(movement.getX(), movement.getY() * - 1);
 		}
 		else {
-			movement = this.physObj.getPosition().add(movementVector);
+			movement = this.initialLocation.getPosition().add(movementVector);
 		}
 		
 		return movement.normalize();

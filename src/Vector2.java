@@ -41,11 +41,11 @@ public class Vector2 {
 	}
 	
 	public Vector2 minusXAddY(Vector2 vectorB) {
-		return new Vector2(vectorB.getX() - this.getX(), vectorB.getY() + this.getY());
+		return new Vector2(this.x - vectorB.getX(), this.y + vectorB.getY());
 	}
 	
 	public Vector2 addXMinusY(Vector2 vectorB) {
-		return new Vector2(vectorB.getX() + this.getX(), vectorB.getY() - this.getY());
+		return new Vector2(this.x + vectorB.getX(), this.y - vectorB.getY());
 	}
 	
 	public static Vector2 Zero() {
