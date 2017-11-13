@@ -9,12 +9,12 @@ public class Bullet {
 	private float bulletDX;
 	private float bulletDY;
 	
-	public Bullet(int dmg, int spd, BulletType bullet, float time, Vector2 startingPos, Vector2 movementVector) {
+	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		this.bulletDamage = dmg;
 		this.bulletSpeed = spd;
 		this.bulletType = bullet;
 		this.bulletDuration = time;
-		this.physObj = new PhysXObject(new QuadrantID(0,0,0), startingPos);
+		this.physObj = obj;
 		this.movementVector = movementVector;
 		collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
 		bulletTrajectory();
@@ -77,8 +77,8 @@ public class Bullet {
 	}
 	
 	public void move() {
-//		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
-		physObj.setPosition(physObj.getPosition().add(movementVector));
+		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
+		physObj.setPosition(movement);
 	}
 	
 	private void bulletTrajectory() {

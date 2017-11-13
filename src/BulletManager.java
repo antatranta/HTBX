@@ -16,16 +16,12 @@ public class BulletManager {
 		return bullets;
 	}
 	
-	public void onShootEvent(int dmg, int spd, BulletType bullet, float time, Vector2 obj, Vector2 movementVector) {
+	public void onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		Bullet bulletShoot = new Bullet(dmg, spd, bullet, time, obj, movementVector);
 		bullets.add(bulletShoot);
 	}
 	
 	public void moveBullets() {
-		
-		if(bullets.size() < 1) {
-			return;
-		}
 		for(Bullet shoot:bullets) {
 			shoot.move();
 		}

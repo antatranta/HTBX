@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -18,17 +19,15 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	private ArrayList<GOval> bullets;
 	private Timer gameTimer;
 	private ArrayList<Bullet> storedBullets;
-	private Camera camera;
+	private Random rand;
 	
 	public void init() {
-
 		setSize(800, 600);
 		setBackground(Color.white);
+		rand = new Random();
 	}
 	
 	public void run() {
-		camera = new Camera (1, 1, 800, 600);
-		Camera.setOffset(new Vector2(300, 400));
 		bullets = new ArrayList<GOval>();
 		bulletStore = new BulletManager();
 		storedBullets = bulletStore.getBullets();
@@ -40,12 +39,11 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void moveBullets() {
 		bulletStore.moveBullets();
 		
-		/*
 		for(Bullet bulletStore:storedBullets) {
 			for(GOval bullet:bullets) {
 				bullet.setLocation(bulletStore.getPhysObj().getPosition().getX(), bulletStore.getPhysObj().getPosition().getY());
 			}
-		}*/
+		}
 		
 	}
 	
@@ -58,11 +56,9 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void mouseClicked(MouseEvent e) {
 		last_mouse_loc = new Vector2(e.getX(), e.getY());
 		PhysXObject currentLocation = new PhysXObject();
-		currentLocation.setPosition(new Vector2(400, 300));
+		currentLocation.setPosition(new Vector2(rand.nextInt(400), rand.nextInt(400)));
 		
-		bulletStore.onShootEvent(1, 5, BulletType.PLAYER_BULLET, 4, new Vector2(400, 300), last_mouse_loc.minus(new Vector2(400, 300)));
-		
-//		bulletStore.onShootEvent(1, 5, BulletType.PLAYER_BULLET, 4, currentLocation, last_mouse_loc);
+		bulletStore.onShootEvent(1, 5, BulletType.PLAYER_BULLET, 4, currentLocation, last_mouse_loc);
 		//bulletStore.moveBullets();
 		
 		for(Bullet bullet:storedBullets) {
