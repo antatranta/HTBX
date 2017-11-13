@@ -90,10 +90,10 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToSettings() {
-		if(musicToggle) {
-			audio.stopSound("sounds", "3A1W - Menu.wav");
-			audio.playSound("sounds", "Credits.mp3", true);
-		}
+//		if(musicToggle) {
+//			audio.stopSound("sounds", "3A1W - Menu.wav");
+//			audio.playSound("sounds", "Credits.mp3", true);
+//		}
 		switchToScreen(setting);
 	}
 	
@@ -124,11 +124,11 @@ public class MainApplication extends GraphicsApplication {
 	public void musicToggle(boolean toggle) {
 		musicToggle = toggle;
 		
-		if(musicToggle) {
-			audio.playSound("sounds", "Credits.mp3", true);
-		}
-		else {
-			audio.stopSound("sounds", "Credits.mp3");
-		}
+//		if(musicToggle) {
+//			audio.playSound("sounds", "Credits.mp3", true);
+//		}
+//		else {
+//			audio.stopSound("sounds", "Credits.mp3");
+//		}
 	}
 }

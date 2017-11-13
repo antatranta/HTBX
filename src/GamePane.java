@@ -50,6 +50,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GLabel CURRENT_ASTEROIDS_LABEL;
 	private GRect DEBUGGING_BOX;
 	
+	private boolean DO_POINT_TEST = false;
+	
 	private ArrayList<GOval> POINT_TEST;
 	
 	private ArrayList<StaticRect> DEBUGGING_LINES;
@@ -192,7 +194,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	public void pointTest(Vector2 pos) {
-		POINT_TEST = new ArrayList<GOval>();
+//		POINT_TEST = new ArrayList<GOval>();
 		
 		Vector2 player_pos = Camera.frontendToBackend(pos, new Vector2(25,25));
 		POINT_TEST.add(new GOval(player_pos.getX(), player_pos.getY(), 25, 25));
@@ -202,7 +204,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		Vector2 player_pos_to_front = Camera.backendToFrontend(player_pos, new Vector2(25,25));
 		
-		System.out.println("Does pos0 = pos2?: " + (pos == player_pos_to_front));
+		System.out.println("Does pos0 = pos2?: loss: " + (PhysXLibrary.distance(pos, player_pos_to_front)));
 		
 		POINT_TEST.add(new GOval(player_pos_to_front.getX(), player_pos_to_front.getY(), 25, 25));
 		program.add(POINT_TEST.get(POINT_TEST.size() - 1));
@@ -211,12 +213,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		Vector2 player_pos_back = Camera.frontendToBackend(player_pos_to_front, new Vector2(25,25));
 		
-		System.out.println("Does pos1 = pos3?: " + (player_pos == player_pos_back));
+		System.out.println("Does pos1 = pos3? loss: " + (PhysXLibrary.distance(player_pos, player_pos_back)));
 		
 		POINT_TEST.add(new GOval(player_pos_back.getX(), player_pos_back.getY(), 25, 25));
 		program.add(POINT_TEST.get(POINT_TEST.size() - 1));
 		POINT_TEST.get(POINT_TEST.size() - 1).setFillColor(Color.green);
 		POINT_TEST.get(POINT_TEST.size() - 1).setFilled(true);
+		
+//		System.out.println("Does pos1 = pos3?: " + (player_pos == player_pos_back) + " loss: " + (PhysXLibrary.distance(player_pos, player_pos_back)));
 		
 		
 	}
@@ -410,7 +414,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		isShooting = true;
+		
+		if (console.IS_DEBUGGING) {
+			if(!DO_POINT_TEST) {
+				isShooting = true;
+			} else {
+				pointTest(new Vector2(e.getX(), e.getY()));
+			}
+		} else {
+			isShooting = true;
+		}
+//		
 		// Timer should start here
 
 		//auto_fire.setInitialDelay(0);
@@ -418,7 +432,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //		PhysXObject currentLocation = new PhysXObject(player.getPhysObj());
 
 		
-		//pointTest(new Vector2(e.getX(), e.getY()));
+		
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == player_img) {
 			program.switchToMenu();
@@ -514,6 +528,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				CURRENT_QUID_LABEL.setLabel("Current QUID: " + player.getPhysObj().getQUID().toString());
 				CURRENT_PLAYER_POS_LABEL.setLabel("Current Player V2: " + player.getPhysObj().getPosition().toString());
 				CURRENT_MOUSE_POS_LABEL.setLabel("Current Mouse V2: " + Camera.frontendToBackend(last_mouse_loc).toString());
+				
 				float dia = player.getPhysObj().getColliders()[0].getRadius();
 				Vector2 size = new Vector2(dia, dia);
 				Vector2 GOvalSize = new Vector2((float)playerCollider.getWidth(), (float)playerCollider.getHeight());
@@ -706,8 +721,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //			float offset_y = asteroid.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
 			
 			// Make a proper vector2 location according to the camera zoom scale
-			Vector2 size = new Vector2(asteroid.getPhysObj().getColliders()[0].getRadius() * 2, asteroid.getPhysObj().getColliders()[0].getRadius() * 2);
-			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition(), size);
+//			Vector2 size = new Vector2(asteroid.getPhysObj().getColliders()[0].getRadius() * 2, asteroid.getPhysObj().getColliders()[0].getRadius() * 2);
+//			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition(), size);
+			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition());
 
 			// Are we already drawing that rock?
 			if (!drawn_rocks.contains(asteroid)) {
@@ -827,17 +843,31 @@ c
         }
         
         if(console.IS_DEBUGGING) {
+        	/*
         		if(key == KeyEvent.VK_P && Camera.getBackwardRatio() != 2) {
         			console.changeGraphicsRatio(1, 2);
         		}
         		if(key == KeyEvent.VK_O && Camera.getForwardRatio() != 2) {
         			console.changeGraphicsRatio(2, 1);
         		}
+        		
         		if(key == KeyEvent.VK_I && Camera.getBackwardRatio() != 2 && Camera.getForwardRatio() != 2) {
         			console.changeGraphicsRatio(2, 2);
         		}
         		if(key == KeyEvent.VK_U && Camera.getBackwardRatio() != 1 && Camera.getForwardRatio() != 1) {
         			console.changeGraphicsRatio(1, 1);
+        		}
+        	*/
+        		if(key == KeyEvent.VK_P) {
+        			DO_POINT_TEST = !DO_POINT_TEST;
+        			System.out.println("POINT_TEST --- " + DO_POINT_TEST);
+        			
+        			if(!DO_POINT_TEST) {
+        				for(GOval point : POINT_TEST)
+        					program.remove(point);
+        			} else {
+        				POINT_TEST = new ArrayList<GOval>();
+        			}
         		}
         		if(key == KeyEvent.VK_M) {
         			System.out.println("SNAPSHOT --- ");
