@@ -113,13 +113,100 @@ public class MapCreator {
 		
 		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
-		
-		
-		
+		//objects verification
+		/*
+		boolean check=true;
+		//return the object that has collision, remove that object.
+		while(check) {
+			Asteroid check_ast = checkAsteroid(Asteroids);
+			if(check_ast!=null) {
+				System.out.println("create new ast by ast");
+				Asteroids.remove(check_ast);
+				//Asteroids.add(placeAsteroid(quad.getQUID()));
+			}
+			EnemyShip check_enemy = checkEnemy(EnemyShips);
+			if(check_enemy!=null) {
+				System.out.println("create new ene by check_enemy");
+				EnemyShips.remove(check_enemy);
+				EnemyShips.add(placeEnemy(quad.getQUID()));
+			}
+			Asteroid check_both = checkBoth(Asteroids,EnemyShips);
+			if(check_both!=null) {
+				System.out.println("create new ast by both");
+				Asteroids.remove(check_both);
+				//Asteroids.add(placeAsteroid(quad.getQUID()));
+			}
+			if(check_ast==null&&check_ast==null&&check_ast==null) {
+				System.out.println("asteroid:" +Asteroids.toString());
+				System.out.println("Enemies:" +EnemyShips.toString());
+				check=false;
+			}
+		}*/
 		quad.setAsteroids(Asteroids);
 		quad.setShips(EnemyShips);
 	}
 	
+	public static Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {
+		for (int j=0;j<Asteroids.size();j++) {
+			for (int k=j+1;k<Asteroids.size();k++) {
+				if (k!=j && (Asteroids.get(k).getPhysObj().getPosition().getX()== Asteroids.get(j).getPhysObj().getPosition().getX())) {//comparing x coord
+//					System.out.println("Interrupt object: "+Asteroids.get(k)+" Position x: "+Asteroids.get(k).getPhysObj().getPosition().getX()); 
+					return Asteroids.get(k);
+				}else if(k!=j && (Asteroids.get(k).getPhysObj().getPosition().getY()== Asteroids.get(j).getPhysObj().getPosition().getY())) {//comparing y coord
+//					System.out.println("Interrupt object: "+Asteroids.get(k)+" Position y: "+Asteroids.get(k).getPhysObj().getPosition().getY()); 
+					return Asteroids.get(k);
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static EnemyShip checkEnemy(ArrayList<EnemyShip> EnemyShips) {
+		for (int j=0;j<EnemyShips.size();j++) {
+			for (int k=j+1;k<EnemyShips.size();k++) {
+				if (k!=j && (EnemyShips.get(k).getPhysObj().getPosition().getX()== EnemyShips.get(j).getPhysObj().getPosition().getX())) {//comparing x coord
+//					System.out.println("Interrupt object: "+EnemyShips.get(k)+" Position x: "+EnemyShips.get(k).getPhysObj().getPosition().getX()); 
+					return EnemyShips.get(k);
+				}else if(k!=j && (EnemyShips.get(k).getPhysObj().getPosition().getY()== EnemyShips.get(j).getPhysObj().getPosition().getY())) {//comparing y coord
+//					System.out.println("Interrupt object: "+EnemyShips.get(k)+" Position y: "+EnemyShips.get(k).getPhysObj().getPosition().getY()); 
+					return EnemyShips.get(k);
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static Asteroid checkBoth(ArrayList<Asteroid> Asteroids,ArrayList<EnemyShip> EnemyShips) {
+		//check x coord
+		for(int i = 0; i< Asteroids.size();i++) {
+			float Ax = Asteroids.get(i).getPhysObj().getPosition().getX();
+            for (int k = 0; k <EnemyShips.size(); k++) {
+            	float Ex = EnemyShips.get(k).getPhysObj().getPosition().getX();
+            	float different = Math.abs(Ax - Ex);
+//            	System.out.println("different: "+different);
+            	if(different==0 || different<=PhysXLibrary.COLLISION_CONSTANT) {//if they at the same position or in the collision range.
+//            		System.out.println("Interrupt object: "+Asteroids.get(i)+" Position x: "+Ax); 
+            		return Asteroids.get(i);
+            	}
+            }
+		}
+		//check y coord
+		for(int i = 0; i< Asteroids.size();i++) {
+			float Ay = Asteroids.get(i).getPhysObj().getPosition().getY();
+            for (int k = 0; k <EnemyShips.size(); k++) {
+            	float Ey = EnemyShips.get(k).getPhysObj().getPosition().getY();
+            	float different = Math.abs(Ay - Ey);
+//            	System.out.println("different: "+different);
+            	if(different==0 || different<=PhysXLibrary.COLLISION_CONSTANT) {//if they at the same position or in the collision range.
+//            		System.out.println("Interrupt object: "+Asteroids.get(i)+" Position y: "+Ay);
+            		return Asteroids.get(i);
+            	}
+            }
+		}
+		return null;
+	}
+	
+
 	/*
 	public void checkInterrupt(int start, float edge, char type) {
 		boolean interrupt = true;
