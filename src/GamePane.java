@@ -429,7 +429,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	private void shoot() {
-		float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
+		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
 		GOval bullet = console.Shoot(1, 50 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
 		program.add(bullet);
@@ -612,10 +612,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		float dia = player.getPhysObj().getColliders()[0].getRadius();
 		Vector2 size = new Vector2(dia, dia);
 		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
-		player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
-		player.moveVector2(new Vector2(cos, sin));
+		player_img.setLocationRespectSize(newFEPOS.getX() + (player.getPhysObj().getColliders()[0].getRadius() / 2), newFEPOS.getY() + (player.getPhysObj().getColliders()[0].getRadius() / 2));
+		//player.moveVector2(new Vector2(cos, sin));
 		//player.moveVector2(new Vector2(0 - player.getPhysObj().getPosition().getX(), 0 - player.getPhysObj().getPosition().getY())); 
-		//player_img.move(cos, sin);
+		player_img.move(cos, sin);
 		
 		if (xAxis > 0 + MOVEMENT_CONSTANT) {
 			player.adjustAngle(-TURN_POWER);

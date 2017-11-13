@@ -151,7 +151,7 @@ public class GameImage extends GImage {
 	}
 	
 	public void setLocationRespectSize(double x, double y) {
-		super.setLocation(x , y);
+		super.setLocation(x - (origImage.getWidth() / 2 ), y - (origImage.getHeight()/ 2));
 	}
 	
 	/* setSize is not supported for the polygon */
