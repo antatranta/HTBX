@@ -157,7 +157,7 @@ public class GameImage extends GImage {
 	/* setSize is not supported for the polygon */
 	@Override
 	public void setSize(double width, double height) {
-		origImage.setSize(width, height);
+		//origImage.setSize(width, height);
 	}
 	
 	
