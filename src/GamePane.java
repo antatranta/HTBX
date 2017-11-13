@@ -89,6 +89,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private boolean TRACKING_SET = false;
 	private Vector2 TRACKING_POSITION;
+	private Vector2 tracking_offset;
 
 	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
 	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
@@ -148,6 +149,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		DEBUGGING_COLLIDERS_OBJECTS = new ArrayList<Asteroid>();
 		DEBUGGING_COLLIDERS_OBJECTS_ref = new ArrayList<StaticGObject>();
 		
+		tracking_offset = new Vector2(0, 0);
 		
 		for(int i =0; i < PhysXLibrary.MAP_WIDTH; ++i) {
 //			DEBUGGING_ROWS.add(new StaticRect(new Vector2((PhysXLibrary.QUADRANT_WIDTH * i), -PhysXLibrary.getMapHeight()), new Vector2(5, PhysXLibrary.getMapHeight())));
@@ -346,7 +348,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	private void shoot() {
-		GOval bullet = console.Shoot(1, 50 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition()), Camera.frontendToBackend(last_mouse_loc) );
+		float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
+		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() - radius ), (float)( player.getPhysObj().getPosition().getY() - radius ));
+		GOval bullet = console.Shoot(1, 50 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
 		program.add(bullet);
 		bullet.setFilled(true);
 		bullet.setFillColor(Color.orange);
@@ -429,7 +433,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				CURRENT_QUID_LABEL.setLabel("Current QUID: " + player.getPhysObj().getQUID().toString());
 				CURRENT_PLAYER_POS_LABEL.setLabel("Current Player V2: " + player.getPhysObj().getPosition().toString());
 				CURRENT_MOUSE_POS_LABEL.setLabel("Current Mouse V2: " + Camera.frontendToBackend(last_mouse_loc).toString());
-				float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
+				float dia = player.getPhysObj().getColliders()[0].getRadius();
 				Vector2 size = new Vector2(dia, dia);
 				Vector2 GOvalSize = new Vector2((float)playerCollider.getWidth(), (float)playerCollider.getHeight());
 				Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
@@ -521,12 +525,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img.rotate(TURN_POWER * final_turn);
 		player.adjustAngle(TURN_POWER * -final_turn);
 //		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
-		player.moveVector2(new Vector2(cos, sin));
+		
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		float dia = player.getPhysObj().getColliders()[0].getRadius();
 		Vector2 size = new Vector2(dia, dia);
 		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
 		player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
+		player.moveVector2(new Vector2(cos, sin));
 //		player_img.move(cos, sin);
 		
 		if (xAxis > 0 + MOVEMENT_CONSTANT) {
@@ -592,7 +597,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			// Make a proper vector2 location according to the camera zoom scale
 			Vector2 final_off = Camera.backendToFrontend(rect.getPhysObj().getPosition());
 
-			// Are we already drawing that rock?
+			// Are we already drawing that rect?
 			if (!DEBUGGING_LINES.contains(rect)) {
 				DEBUGGING_LINES.add(rect);
 				setSpriteLayer(rect.getRect(), ROCK_LAYER);
@@ -695,12 +700,15 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		ALIGNMENT_LOCK = false;
 	}
 	
-	
 	private boolean containsKey(int key) {
 		if (!pressed_keys.contains(key)) {
 			return false;
 		}
 		return true;
+	}
+	
+	private void showStatus() {
+		
 	}
 
 	@Override
