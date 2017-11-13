@@ -2,6 +2,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
+import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
 
 public class GameConsole extends GraphicsProgram{
@@ -15,6 +16,7 @@ public class GameConsole extends GraphicsProgram{
 	private PhysX physx; // The controller for all things
 	private int skillPoints;
 	private Camera camera;
+	private BulletManager bulletStore;
 //	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
@@ -29,13 +31,15 @@ public class GameConsole extends GraphicsProgram{
 		camera = new Camera();
 		camera.setupCamera(1, 1);
 		
+		bulletStore = new BulletManager();
+		
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
 		float pos_x = ((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
 		float pos_y = ((playerSpawn.getQUID().getY())* PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2);
 		Vector2 pos = new Vector2(pos_x, pos_y);
 		System.out.println("pos = " + pos_x + ", " + pos_y);
 		
-		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 25);
+		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 50);
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
 		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1));
 		player.setDxDy(Vector2.Zero());
@@ -62,8 +66,10 @@ public class GameConsole extends GraphicsProgram{
 		}
 	}
 	
-	public void testCollisions() {
-		physx.checkForCollisions();
+	public void testCollisions(PlayerShip player) {
+		if(player.getPhysObj() != null) {
+			physx.checkForCollisions(player.getPhysObj());
+		}
 	}
 	
 	public PhysX physx() {
@@ -95,6 +101,19 @@ public class GameConsole extends GraphicsProgram{
 	public PlayerShip getPlayer() {
 		return this.player;
 	}
+	
+	public GOval Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,movementVector);
+	}
+	
+	public void moveBullets() {
+		this.bulletStore.moveBullets();
+	}
+	
+	public ArrayList<GOval> cullBullets() {
+		return this.bulletStore.getDeadBullets();
+	}
+	
 }
 
 

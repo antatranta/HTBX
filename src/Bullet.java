@@ -9,6 +9,11 @@ public class Bullet {
 	private float bulletDX;
 	private float bulletDY;
 	
+	private Vector2 GOval_Pos;
+	private Vector2 GOval_Size;
+	
+	private int steps = 0;
+	
 	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		this.bulletDamage = dmg;
 		this.bulletSpeed = spd;
@@ -16,87 +21,86 @@ public class Bullet {
 		this.bulletDuration = time;
 		this.physObj = obj;
 		this.movementVector = movementVector;
-		collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
+		this.collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
+		this.bulletTrajectory();
 	}
 	
 	public void setBulletDamage(int dmg) {
-		bulletDamage = dmg;
+		this.bulletDamage = dmg;
 	}
 	
 	public void setBulletSpeed(int spd) {
-		bulletSpeed = spd;
+		this.bulletSpeed = spd;
 	}
 	
 	public void setBulletType(BulletType bullet) {
-		bulletType = bullet;
+		this.bulletType = bullet;
 	}
 	
 	public void setBulletDuration(float time) {
-		bulletDuration = time;
+		this.bulletDuration = time;
 	}
 	
 	public void setPhysObj(PhysXObject obj) {
-		physObj = obj;
+		this.physObj = obj;
 	}
 	
 	public int getBulletDamage() {
-		return bulletDamage;
+		return this.bulletDamage;
 	}
 	
 	public int getBulletSpeed() {
-		return bulletSpeed;
+		return this.bulletSpeed;
 	}
 	
 	public BulletType getBulletType() {
-		return bulletType;
+		return this.bulletType;
 	}
 	
 	public float getBulletDuration() {
-		return bulletDuration;
+		return this.bulletDuration;
 	}
 	
 	public PhysXObject getPhysObj() {
-		return physObj;
+		return this.physObj;
 	}
 	
 	public CollisionData getCollisionData() {
-		return collisionData;
+		return this.collisionData;
 	}
 	
 	public Vector2 getMovementVector() {
-		return movementVector;
+		return this.movementVector;
 	}
 	
 	public float getBulletDX() {
-		bulletDX = bulletTrajectory().getX();
-		return bulletDX * bulletSpeed;
+		return this.bulletDX * this.bulletSpeed;
 	}
 	
 	public float getBulletDY() {
-		bulletDY = bulletTrajectory().getY();
-		return bulletDY * bulletSpeed;
+		return this.bulletDY * this.bulletSpeed;
 	}
 	
 	public void move() {
-		physObj.getPosition().setXY(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
+		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
+		this.physObj.setPosition(movement);
+		steps ++;
 	}
 	
-	private Vector2 bulletTrajectory() {
-		Vector2 movement = null;
-		
-		if(movementVector.getX() < physObj.getPosition().getX() && movementVector.getY() < physObj.getPosition().getY()) {
-			movement = this.physObj.getPosition().minus(movementVector);
-		}
-		else if(movementVector.getX() < physObj.getPosition().getX() && movementVector.getY() > physObj.getPosition().getY()) {
-			movement = this.physObj.getPosition().minusXAddY(movementVector);
-		}
-		else if(movementVector.getX() > physObj.getPosition().getX() && movementVector.getY() < physObj.getPosition().getY()) {
-			movement = this.physObj.getPosition().addXMinusY(movementVector);
-		}
-		else {
-			movement = this.physObj.getPosition().add(movementVector);
-		}
-		
-		return movement.normalize();
+	public int getSteps() {
+		return this.steps;
+	}
+	
+	private void bulletTrajectory() {
+		this.bulletDX = physObj.getPosition().normalize(movementVector).getX();
+		this.bulletDY = physObj.getPosition().normalize(movementVector).getY();
+	}
+	
+	public Vector2 getGOvalSize() {
+		return this.GOval_Size;
+	}
+	
+	public Vector2 getGOvalPos() {
+		return this.GOval_Pos;
 	}
 }

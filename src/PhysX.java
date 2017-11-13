@@ -220,10 +220,12 @@ public class PhysX {
 	
 	
 	
-	public void checkForCollisions() {
+	public void checkForCollisions(PhysXObject player) {
 		
 		if(!COLLISION_LOCK) {
 			COLLISION_LOCK = true;
+			
+			checkForCollisionsOnObject(player);
 			for(Quadrant quad : this.Quadrants) {
 				quad.checkForCollisions();
 			}
@@ -235,7 +237,22 @@ public class PhysX {
 			}
 		}
 	}
-
+	
+	
+	private void checkForCollisionsOnObject(PhysXObject obj) {
+		ArrayList<PhysXObject> objects = getNearbyPhysXObjects(obj, 1000);
+		
+		for( PhysXObject coll : objects) {
+			if(PhysXLibrary.areObjectsInCollisionRange(obj, coll)) {
+				if (PhysXLibrary.isCollision(obj, coll)) {
+					if (GameConsole.IS_DEBUGGING) {
+						System.out.println("Player Collision!");
+					}
+				}
+			}
+		}
+	}
+	
 	public ArrayList<Quadrant> getQuadrants() {
 		return Quadrants;
 	}

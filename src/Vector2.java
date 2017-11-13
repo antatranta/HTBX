@@ -32,6 +32,10 @@ public class Vector2 {
 		return new Vector2(this.x + vectorB.getX(), this.y + vectorB.getY());
 	}
 	
+	public Vector2 minus(Vector2 vectorB) {		
+		return new Vector2(this.x - vectorB.getX(), this.y - vectorB.getY());
+	}
+	
 	public Vector2 div(Vector2 vectorB) {
 		return new Vector2(this.x / vectorB.getX(), this.y / vectorB.getY());
 	}
@@ -40,23 +44,15 @@ public class Vector2 {
 		return new Vector2(this.x * vectorB.getX(), this.y * vectorB.getY());
 	}
 	
-	public Vector2 minusXAddY(Vector2 vectorB) {
-		return new Vector2(vectorB.getX() - this.getX(), vectorB.getY() + this.getY());
-	}
-	
-	public Vector2 addXMinusY(Vector2 vectorB) {
-		return new Vector2(vectorB.getX() + this.getX(), vectorB.getY() - this.getY());
-	}
-	
 	public static Vector2 Zero() {
 		return new Vector2(0,0);
 	}
 	
 	public static Vector2 One() {
 		return new Vector2(1,1);
-	}	
+	}
 	
-	public static Vector2 normalize(Vector2 vectorB) {
+	/*public static Vector2 normalize(Vector2 vectorB) {
 		float bX = vectorB.getX();
 		float bY = vectorB.getY();
 		double length = Math.sqrt((bX * bX) + (bY * bY));
@@ -70,7 +66,7 @@ public class Vector2 {
 	}
 	
 	public Vector2 normalize() {
-		double length = Math.sqrt((x * x) + (y * y));
+		float length = (float)Math.sqrt((x * x) + (y * y));
 		
 		if(length > 0) {
 			x /= length;
@@ -78,11 +74,19 @@ public class Vector2 {
 		}
 		
 		return new Vector2(x, y);
-	}
-
+	}*/
 	
-	public Vector2 minus(Vector2 vectorB) {		
-		return new Vector2(this.x - vectorB.getX(), this.y - vectorB.getY());
+	// Better normalize that actually WORKS - Anthony
+	public Vector2 normalize(Vector2 vectorB) {
+		float magnitude = (float)Math.sqrt(Math.pow(vectorB.getX() - this.x, 2) + Math.pow(vectorB.getY() - this.y, 2));
+		float aX = vectorB.getX() - this.x;
+		float aY = vectorB.getY() - this.y;
+		
+		if(magnitude > 0) {
+			aX /= magnitude;
+			aY /= magnitude;
+		}
+		
+		return new Vector2(aX, aY);
 	}
-
 }
