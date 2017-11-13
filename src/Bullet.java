@@ -9,6 +9,9 @@ public class Bullet {
 	private float bulletDX;
 	private float bulletDY;
 	
+	private Vector2 GOval_Pos;
+	private Vector2 GOval_Size;
+	
 	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		this.bulletDamage = dmg;
 		this.bulletSpeed = spd;
@@ -16,73 +19,81 @@ public class Bullet {
 		this.bulletDuration = time;
 		this.physObj = obj;
 		this.movementVector = movementVector;
-		collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
-		bulletTrajectory();
+		this.collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
+		this.bulletTrajectory();
 	}
 	
 	public void setBulletDamage(int dmg) {
-		bulletDamage = dmg;
+		this.bulletDamage = dmg;
 	}
 	
 	public void setBulletSpeed(int spd) {
-		bulletSpeed = spd;
+		this.bulletSpeed = spd;
 	}
 	
 	public void setBulletType(BulletType bullet) {
-		bulletType = bullet;
+		this.bulletType = bullet;
 	}
 	
 	public void setBulletDuration(float time) {
-		bulletDuration = time;
+		this.bulletDuration = time;
 	}
 	
 	public void setPhysObj(PhysXObject obj) {
-		physObj = obj;
+		this.physObj = obj;
 	}
 	
 	public int getBulletDamage() {
-		return bulletDamage;
+		return this.bulletDamage;
 	}
 	
 	public int getBulletSpeed() {
-		return bulletSpeed;
+		return this.bulletSpeed;
 	}
 	
 	public BulletType getBulletType() {
-		return bulletType;
+		return this.bulletType;
 	}
 	
 	public float getBulletDuration() {
-		return bulletDuration;
+		return this.bulletDuration;
 	}
 	
 	public PhysXObject getPhysObj() {
-		return physObj;
+		return this.physObj;
 	}
 	
 	public CollisionData getCollisionData() {
-		return collisionData;
+		return this.collisionData;
 	}
 	
 	public Vector2 getMovementVector() {
-		return movementVector;
+		return this.movementVector;
 	}
 	
 	public float getBulletDX() {
-		return bulletDX * bulletSpeed;
+		return this.bulletDX * this.bulletSpeed;
 	}
 	
 	public float getBulletDY() {
-		return bulletDY * bulletSpeed;
+		return this.bulletDY * this.bulletSpeed;
 	}
 	
 	public void move() {
 		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
-		physObj.setPosition(movement);
+		this.physObj.setPosition(movement);
 	}
 	
 	private void bulletTrajectory() {
-		bulletDX = physObj.getPosition().normalize(movementVector).getX();
-		bulletDY = physObj.getPosition().normalize(movementVector).getY();
+		this.bulletDX = physObj.getPosition().normalize(movementVector).getX();
+		this.bulletDY = physObj.getPosition().normalize(movementVector).getY();
+	}
+	
+	public Vector2 getGOvalSize() {
+		return this.GOval_Size;
+	}
+	
+	public Vector2 getGOvalPos() {
+		return this.GOval_Pos;
 	}
 }

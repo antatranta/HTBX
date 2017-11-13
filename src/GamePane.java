@@ -328,6 +328,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		//auto_fire.setInitialDelay(0);
 		//auto_fire.start();
+//		PhysXObject currentLocation = new PhysXObject(player.getPhysObj());
+		program.add(console.Shoot(1, 10 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition()), Camera.frontendToBackend(last_mouse_loc) ));
 		
 		//pointTest(new Vector2(e.getX(), e.getY()));
 		GObject obj = program.getElementAt(e.getX(), e.getY());
@@ -335,7 +337,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			program.switchToMenu();
 		}
 		else {
-			System.out.println("Clicked empty space");
+//			System.out.println("Clicked empty space");
 		}
 	}
 	
@@ -368,6 +370,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawAsteroids(console.getActiveAsteroids());
 		
 		console.testCollisions(player);
+		console.moveBullets();
 		
 		if(console.IS_DEBUGGING) {
 			if(REQUEST_DEBUG_END) {

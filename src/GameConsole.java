@@ -2,6 +2,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
+import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
 
 public class GameConsole extends GraphicsProgram{
@@ -15,6 +16,7 @@ public class GameConsole extends GraphicsProgram{
 	private PhysX physx; // The controller for all things
 	private int skillPoints;
 	private Camera camera;
+	private BulletManager bulletStore;
 //	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
@@ -28,6 +30,8 @@ public class GameConsole extends GraphicsProgram{
 		
 		camera = new Camera();
 		camera.setupCamera(1, 1);
+		
+		bulletStore = new BulletManager();
 		
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
 		float pos_x = ((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
@@ -97,6 +101,15 @@ public class GameConsole extends GraphicsProgram{
 	public PlayerShip getPlayer() {
 		return this.player;
 	}
+	
+	public GOval Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,movementVector);
+	}
+	
+	public void moveBullets() {
+		this.bulletStore.moveBullets();
+	}
+	
 }
 
 
