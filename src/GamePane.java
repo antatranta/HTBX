@@ -93,6 +93,21 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
 	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
+	
+	// Player STATUS HUD Stuffs
+	private GRect status_back;
+	private GRect status_bar_hp;
+	private GRect status_bar_hp_back;
+	private GLabel hp_label;
+	private GRect status_bar_shield;
+	private GRect status_bar_shield_back;
+	private GLabel shield_label;
+	private GRect compass_back;
+	//private GameImage compass_ptr;
+	private Vector2 status_origin;
+	private double bar_max_x;
+	private double bar_max_y;
+	
 
 	
 	public GamePane(MainApplication app) {
@@ -274,11 +289,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		DEBUGGING_BOX = new GRect(10, 10, 300, 100);
 		playerCollider = new GOval(0,0,0,0);
 
+		drawHUD();
 		
 		console = program.getGameConsole();
 		player = console.getPlayer();
-		
-
 		
 		Vector2 pos = player.getPhysObj().getPosition();
 
@@ -303,6 +317,41 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		CAN_MOVE = true;
 	}
 	
+	private void drawHUD() {
+		// STATUS BAR: Bottom left
+		status_back = new GRect(0, MainApplication.WINDOW_HEIGHT - (MainApplication.WINDOW_HEIGHT * 0.125), MainApplication.WINDOW_WIDTH * 0.225, MainApplication.WINDOW_HEIGHT * 0.125);
+		Vector2 status_origin = new Vector2((float)status_back.getX(), (float)status_back.getY());
+		bar_max_y = status_back.getHeight() * (0.25);
+		bar_max_x = (status_back.getWidth() * (0.96));
+		
+		status_back.setFillColor(Color.BLACK);
+		status_back.setFilled(true);
+		status_back.setColor(Color.WHITE);
+		setSpriteLayer(status_back, CURSOR_LAYER);
+		
+		status_bar_hp_back = new GRect((status_back.getWidth() * 0.02), status_origin.getY() + status_back.getHeight() - bar_max_y - (status_back.getHeight() * 0.05), bar_max_x, bar_max_y);
+		status_bar_hp_back.setFillColor(Color.WHITE);
+		status_bar_hp_back.setFilled(true);
+		status_bar_hp_back.setColor(Color.WHITE);
+		setSpriteLayer(status_bar_hp_back, CURSOR_LAYER);
+		
+		status_bar_shield_back = new GRect(status_bar_hp_back.getX(), status_bar_hp_back.getY() - bar_max_y - (status_back.getHeight() * 0.04), bar_max_x, bar_max_y);
+		status_bar_shield_back.setFillColor(Color.WHITE);
+		status_bar_shield_back.setFilled(true);
+		status_bar_shield_back.setColor(Color.WHITE);
+		setSpriteLayer(status_bar_shield_back, CURSOR_LAYER);
+		
+		compass_back = new GRect(0 + status_back.getWidth(), status_back.getY(), status_back.getHeight(), status_back.getHeight());
+		compass_back.setFillColor(Color.BLACK);
+		compass_back.setFilled(true);
+		compass_back.setColor(Color.WHITE);
+		setSpriteLayer(compass_back, CURSOR_LAYER);
+	}
+	
+	private void scaleStatusBar(GRect bar, double percent) {
+		bar.setSize(bar_max_x * percent, bar.getHeight());
+	}
+	
 	public void centerPlayer() {
 		Vector2 frontPos = Camera.backendToFrontend(player.getPhysObj().getPosition());
 //		player_img.setLocationRespectSize(frontPos.getX(), frontPos.getY());
@@ -318,6 +367,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.add(player_img);
 		program.add(aiming_edge);
 		program.add(aiming_head);
+		showHUD();
+	}
+	
+	public void showHUD() {
+		program.add(status_back);
+		//program.add(status_bar_hp);
+		program.add(status_bar_hp_back);
+		//program.add(status_bar_shield);
+		program.add(status_bar_shield_back);
+		program.add(compass_back);
 	}
 
 	@Override
@@ -325,6 +384,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.remove(player_img);
 		program.remove(aiming_edge);
 		program.remove(aiming_head);
+		hideHUD();
+	}
+	
+	public void hideHUD() {
+		program.remove(status_back);
+		//program.remove(status_bar_hp);
+		//program.remove(status_bar_shield);
+		program.remove(compass_back);
 	}
 	
 	@Override
