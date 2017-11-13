@@ -4,7 +4,6 @@ public class Bullet {
 	private BulletType bulletType;
 	private float bulletDuration;
 	private PhysXObject physObj;
-	private PhysXObject initialLocation;
 	private CollisionData collisionData;
 	private Vector2 movementVector;
 	private float bulletDX;
@@ -17,8 +16,8 @@ public class Bullet {
 		this.bulletDuration = time;
 		this.physObj = obj;
 		this.movementVector = movementVector;
-		this.initialLocation = obj;
 		collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
+		bulletTrajectory();
 	}
 	
 	public void setBulletDamage(int dmg) {
@@ -70,12 +69,10 @@ public class Bullet {
 	}
 	
 	public float getBulletDX() {
-		bulletDX = bulletTrajectory().getX();
 		return bulletDX * bulletSpeed;
 	}
 	
 	public float getBulletDY() {
-		bulletDY = bulletTrajectory().getY();
 		return bulletDY * bulletSpeed;
 	}
 	
@@ -84,25 +81,8 @@ public class Bullet {
 		physObj.setPosition(movement);
 	}
 	
-	private Vector2 bulletTrajectory() {
-		Vector2 movement = null;
-		
-		if(movementVector.getX() < initialLocation.getPosition().getX() && movementVector.getY() < initialLocation.getPosition().getY()) {
-			movement = this.initialLocation.getPosition().minus(movementVector);
-			movement.setXY(movement.getX() * -1, movement.getY() * -1);
-		}
-		else if(movementVector.getX() < initialLocation.getPosition().getX() && movementVector.getY() > initialLocation.getPosition().getY()) {
-			movement = this.initialLocation.getPosition().minusXAddY(movementVector);
-			movement.setXY(movement.getX() * -1, movement.getY());
-		}
-		else if(movementVector.getX() > initialLocation.getPosition().getX() && movementVector.getY() < initialLocation.getPosition().getY()) {
-			movement = this.initialLocation.getPosition().addXMinusY(movementVector);
-			movement.setXY(movement.getX(), movement.getY() * - 1);
-		}
-		else {
-			movement = this.initialLocation.getPosition().add(movementVector);
-		}
-		
-		return movement.normalize();
+	private void bulletTrajectory() {
+		bulletDX = physObj.getPosition().normalize(movementVector).getX();
+		bulletDY = physObj.getPosition().normalize(movementVector).getY();
 	}
 }
