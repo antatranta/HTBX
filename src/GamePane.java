@@ -105,6 +105,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GRect status_bar_shield_back;
 	private GLabel shield_label;
 	private GRect compass_back;
+	private GRect inner_compass_back;
 	private GameImage compass_sprite;
 	private Vector2 status_origin;
 	private double bar_max_x;
@@ -323,36 +324,44 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private void drawHUD() {
 		// STATUS BAR: Bottom left
-		status_back = new GRect(0, MainApplication.WINDOW_HEIGHT - (MainApplication.WINDOW_HEIGHT * 0.125), MainApplication.WINDOW_WIDTH * 0.225, MainApplication.WINDOW_HEIGHT * 0.125);
+//		status_back = new GRect(0, MainApplication.WINDOW_HEIGHT - (MainApplication.WINDOW_HEIGHT * 0.125), MainApplication.WINDOW_WIDTH * 0.225, MainApplication.WINDOW_HEIGHT * 0.125);
+		status_back = new GRect(10, MainApplication.WINDOW_HEIGHT - 10 - 75, 300, 75);
 		Vector2 status_origin = new Vector2((float)status_back.getX(), (float)status_back.getY());
-		bar_max_y = status_back.getHeight() * (0.25);
-		bar_max_x = (status_back.getWidth() * (0.96));
+		bar_max_y = status_back.getHeight() - 20 - ((status_back.getHeight() - 10) / 2);
+		bar_max_x = status_back.getWidth() - 20;
 		
 		status_back.setFillColor(Color.BLACK);
 		status_back.setFilled(true);
 		status_back.setColor(Color.WHITE);
 		setSpriteLayer(status_back, CURSOR_LAYER);
 		
-		status_bar_hp_back = new GRect((status_back.getWidth() * 0.02), status_origin.getY() + status_back.getHeight() - bar_max_y - (status_back.getHeight() * 0.05), bar_max_x, bar_max_y);
+		status_bar_hp_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y, bar_max_x, bar_max_y);
 		status_bar_hp_back.setFillColor(Color.WHITE);
 		status_bar_hp_back.setFilled(true);
 		status_bar_hp_back.setColor(Color.WHITE);
 		setSpriteLayer(status_bar_hp_back, CURSOR_LAYER);
 		
-		status_bar_shield_back = new GRect(status_bar_hp_back.getX(), status_bar_hp_back.getY() - bar_max_y - (status_back.getHeight() * 0.04), bar_max_x, bar_max_y);
+//		status_bar_shield_back = new GRect(status_bar_hp_back.getX(), status_bar_hp_back.getY() - bar_max_y - (status_back.getHeight() * 0.04), bar_max_x, bar_max_y);
+		status_bar_shield_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y + bar_max_y + 10, bar_max_x, bar_max_y);
 		status_bar_shield_back.setFillColor(Color.WHITE);
 		status_bar_shield_back.setFilled(true);
 		status_bar_shield_back.setColor(Color.WHITE);
 		setSpriteLayer(status_bar_shield_back, CURSOR_LAYER);
 		
-		compass_back = new GRect(0 + status_back.getWidth(), status_back.getY(), status_back.getHeight(), status_back.getHeight());
+		compass_back = new GRect(status_back.getX() + status_back.getWidth() + 5, status_back.getY(), status_back.getHeight(), status_back.getHeight());
 		compass_back.setFillColor(Color.BLACK);
 		compass_back.setFilled(true);
 		compass_back.setColor(Color.WHITE);
 		setSpriteLayer(compass_back, CURSOR_LAYER);
 		
-		compass_sprite = new GameImage("Arrow.png", compass_back.getX(), compass_back.getY());
-		compass_sprite.changeSize(compass_back.getWidth(), compass_back.getHeight());
+		inner_compass_back = new GRect(status_back.getX() + status_back.getWidth() + 15, status_back.getY() + 10, status_back.getHeight() - 20, status_back.getHeight() - 20);
+		inner_compass_back.setFillColor(Color.WHITE);
+		inner_compass_back.setFilled(true);
+		inner_compass_back.setColor(Color.WHITE);
+		setSpriteLayer(inner_compass_back, 0);
+		
+		compass_sprite = new GameImage("Compass.png", compass_back.getX() + 15, compass_back.getY() + 15);
+//		compass_sprite.changeSize(compass_back.getWidth(), compass_back.getHeight());
 		setSpriteLayer(compass_sprite, CURSOR_LAYER);
 	}
 	
@@ -391,7 +400,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		//program.add(status_bar_shield);
 		program.add(status_bar_shield_back);
 		program.add(compass_back);
+		program.add(inner_compass_back);
 		program.add(compass_sprite);
+		
 	}
 
 	@Override
