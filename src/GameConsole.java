@@ -110,6 +110,10 @@ public class GameConsole extends GraphicsProgram{
 		this.bulletStore.moveBullets();
 	}
 	
+	public ArrayList<GOval> cullBullets() {
+		return this.bulletStore.getDeadBullets();
+	}
+	
 }
 
 

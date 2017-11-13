@@ -65,6 +65,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private boolean ALIGNMENT_LOCK = false;
 	private boolean DRAWING_LOCK = false;
 	
+	private boolean isShooting = false;
+	private int shotCount = 0;
+	
 	// THINGS TO BE DRAWN
 	private GameImage player_img;
 	private GameImage aiming_head;
@@ -279,7 +282,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		aiming_edge = new GameImage("rectile.png", 0, 0);
 		setSpriteLayer(aiming_edge, PLAYER_RECTILE);
-		aiming_head = new GameImage("Aiming_Reticle.png", 0, 0);
+		aiming_head = new GameImage("Cursor.png", 0, 0);
 		setSpriteLayer(aiming_head, PLAYER_RECTILE_2);
 		player_img = new GameImage(PLAYER_SPRITE, pos.getX(), pos.getY());
 //		player_img.changeSize(10, 10);
@@ -324,12 +327,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		isShooting = true;
 		// Timer should start here
 
 		//auto_fire.setInitialDelay(0);
 		//auto_fire.start();
 //		PhysXObject currentLocation = new PhysXObject(player.getPhysObj());
-		program.add(console.Shoot(1, 10 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition()), Camera.frontendToBackend(last_mouse_loc) ));
+
 		
 		//pointTest(new Vector2(e.getX(), e.getY()));
 		GObject obj = program.getElementAt(e.getX(), e.getY());
@@ -341,8 +345,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 	
+	private void shoot() {
+		GOval bullet = console.Shoot(1, 50 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition()), Camera.frontendToBackend(last_mouse_loc) );
+		program.add(bullet);
+		bullet.setFilled(true);
+		bullet.setFillColor(Color.orange);
+		bullet.setColor(Color.orange);
+	}
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		isShooting = false;
+		shotCount= 0;
 //		auto_fire.stop();
 		System.out.println("Stopped shooting");
 	}
@@ -369,8 +383,19 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// TESTING!!! NOT FINAL
 		drawAsteroids(console.getActiveAsteroids());
 		
+		if(isShooting) {
+			if(shotCount % 5 == 0) {
+				shoot();
+			}
+			shotCount++;
+		}
+		
+		
 		console.testCollisions(player);
 		console.moveBullets();
+		for(GOval bullet : console.cullBullets()) {
+			program.remove(bullet);
+		}
 		
 		if(console.IS_DEBUGGING) {
 			if(REQUEST_DEBUG_END) {

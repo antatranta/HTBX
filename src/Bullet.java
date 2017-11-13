@@ -12,6 +12,8 @@ public class Bullet {
 	private Vector2 GOval_Pos;
 	private Vector2 GOval_Size;
 	
+	private int steps = 0;
+	
 	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		this.bulletDamage = dmg;
 		this.bulletSpeed = spd;
@@ -82,6 +84,11 @@ public class Bullet {
 	public void move() {
 		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
 		this.physObj.setPosition(movement);
+		steps ++;
+	}
+	
+	public int getSteps() {
+		return this.steps;
 	}
 	
 	private void bulletTrajectory() {
