@@ -4,20 +4,18 @@ public class Bullet {
 	private BulletType bulletType;
 	private float bulletDuration;
 	private PhysXObject physObj;
-	private PhysXObject initialLocation;
 	private CollisionData collisionData;
 	private Vector2 movementVector;
 	private float bulletDX;
 	private float bulletDY;
 	
-	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+	public Bullet(int dmg, int spd, BulletType bullet, float time, Vector2 startingPos, Vector2 movementVector) {
 		this.bulletDamage = dmg;
 		this.bulletSpeed = spd;
 		this.bulletType = bullet;
 		this.bulletDuration = time;
-		this.physObj = obj;
+		this.physObj = new PhysXObject(new QuadrantID(0,0,0), startingPos);
 		this.movementVector = movementVector;
-		this.initialLocation = obj;
 		collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
 	}
 	
@@ -80,13 +78,13 @@ public class Bullet {
 	}
 	
 	public void move() {
-		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
-		physObj.setPosition(movement);
+//		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
+		physObj.setPosition(physObj.getPosition().add(movementVector));
 	}
 	
 	private Vector2 bulletTrajectory() {
 		Vector2 movement = null;
-		
+		/*
 		if(movementVector.getX() <= initialLocation.getPosition().getX() && movementVector.getY() <= initialLocation.getPosition().getY()) {
 			movement = this.initialLocation.getPosition().minus(movementVector);
 			movement.setXY(movement.getX() * -1, movement.getY() * -1);
@@ -102,6 +100,7 @@ public class Bullet {
 		else {
 			movement = this.initialLocation.getPosition().add(movementVector);
 		}
+		*/
 		
 		return movement.normalize();
 	}

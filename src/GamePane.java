@@ -391,6 +391,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
     					}
     				}
     				
+    				program.remove(playerCollider);
+    				
     				drawPhysXObjects(new ArrayList<StaticGObject>());
     				REQUEST_DEBUG_END = false;
     				
