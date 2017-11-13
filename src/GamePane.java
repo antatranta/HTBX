@@ -514,7 +514,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		double angle = -Math.toRadians(player.getAngle());
-		float speed = (float) player.getStats().getSpeed() * 5 * final_forward * 2;
+		float speed = (float) player.getStats().getSpeed() * 5 * final_forward;
 		float cos = (float) Math.cos(angle) * speed;
 		float sin = (float) Math.sin(angle) * speed;
 		
@@ -523,7 +523,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
 		player.moveVector2(new Vector2(cos, sin));
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
-		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
+		float dia = player.getPhysObj().getColliders()[0].getRadius();
 		Vector2 size = new Vector2(dia, dia);
 		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
 		player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());

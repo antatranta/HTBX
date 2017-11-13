@@ -16,7 +16,7 @@ public class MainApplication extends GraphicsApplication {
 	private PausePane pause;
 	private GameConsole console;
 	private GameTimer gameTimer;
-	private int TIMER_INTERVAL = 30;
+	private int TIMER_INTERVAL = 16;
 	private int INITIAL_DELAY = 0;
 	private AudioPlayer audio;
 	private boolean musicToggle;
