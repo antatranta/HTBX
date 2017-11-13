@@ -53,7 +53,7 @@ public class MenuPane extends GraphicsPane {
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel menu:mainMenu) {
 			if(obj == menu) {

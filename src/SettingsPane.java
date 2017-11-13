@@ -68,7 +68,7 @@ public class SettingsPane extends GraphicsPane {
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel setting:settings) {
 			if(obj == setting) {

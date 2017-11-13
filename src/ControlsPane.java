@@ -32,7 +32,7 @@ public class ControlsPane extends GraphicsPane {
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {
 			if(!program.isPaused()) {
