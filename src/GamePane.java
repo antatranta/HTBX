@@ -120,6 +120,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		setOffset();
 	}
 	
+	public double debuggingColliderSize(PhysXObject object) {
+		float size = object.getColliders()[0].getRadius();
+		
+		Vector2 testPoint0 = Camera.backendToFrontend(object.getPosition());
+	    Vector2 testPoint1 = Camera.backendToFrontend(object.getPosition().add(new Vector2(0f, size)));
+	    return PhysXLibrary.distance(testPoint0, testPoint1);
+	}
+	
 	public void setupDebug() {
 		
 		float size = player.getPhysObj().getColliders()[0].getRadius();
@@ -237,7 +245,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setLabel(statics.get(i).getPhysObj().getQUID().toString());
 				setSpriteLayer(DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1), DEBUG_LAYER);
 //				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).sendToFront();
-				statics.get(i).setup();
+				statics.get(i).setup(debuggingColliderSize(statics.get(i).getPhysObj()));
+				
 			
 				for(GOval col : statics.get(i).getObjects()) {
 					program.add(col);

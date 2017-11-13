@@ -13,7 +13,7 @@ public class PhysXLibrary{
 	public static int 	MAP_WIDTH=5;
 	public static int 	MAP_HEIGHT=5;
 	
-	public static final float COLLISION_CONSTANT = 10f;
+	public static final float COLLISION_CONSTANT = 500f;
 	
 	public static float getMapHeight() {
 		return QUADRANT_HEIGHT * MAP_HEIGHT;
