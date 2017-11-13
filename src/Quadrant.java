@@ -28,6 +28,10 @@ public class Quadrant{
 				if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(),B.getPhysObj())) {
 					if(PhysXLibrary.isCollision(A.getPhysObj(), B.getPhysObj())) {
 						A.sendCollisionMessage(B.getCollisionData());
+						
+						if (GameConsole.IS_DEBUGGING) {
+							System.out.println("Asteroid Collision!");
+						}
 					}
 				}
 			}
@@ -36,6 +40,10 @@ public class Quadrant{
 					if(PhysXLibrary.isCollision(A.getPhysObj(), C.getPhysObj())) {
 						A.sendCollisionMessage(C.getCollisionData());
 						C.sendCollisionMessage(A.getCollisionData());
+						
+						if (GameConsole.IS_DEBUGGING) {
+//							System.out.println("Ship Collision!");
+						}
 					}
 
 				}
