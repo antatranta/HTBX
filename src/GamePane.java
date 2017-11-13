@@ -88,7 +88,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private Vector2 TRACKING_POSITION;
 
 	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
-	private static final String PLAYER_SPRITE = "PlayerShip-Small.jpg";
+	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
 
 	
 	public GamePane(MainApplication app) {

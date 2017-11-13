@@ -49,7 +49,7 @@ public class PausePane extends MenuPane {
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel pause:pauseMenu) {
 			if(obj == pause) {

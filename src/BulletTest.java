@@ -55,7 +55,7 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 		last_mouse_loc = new Vector2(e.getX(), e.getY());
 		PhysXObject currentLocation = new PhysXObject();
 		currentLocation.setPosition(new Vector2(400, 300));
