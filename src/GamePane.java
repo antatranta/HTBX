@@ -103,7 +103,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GRect status_bar_shield_back;
 	private GLabel shield_label;
 	private GRect compass_back;
-	//private GameImage compass_ptr;
+	private GameImage compass_sprite;
 	private Vector2 status_origin;
 	private double bar_max_x;
 	private double bar_max_y;
@@ -346,10 +346,20 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		compass_back.setFilled(true);
 		compass_back.setColor(Color.WHITE);
 		setSpriteLayer(compass_back, CURSOR_LAYER);
+		
+		compass_sprite = new GameImage("Aiming_Reticle.png", compass_back.getX(), compass_back.getY());
+		compass_sprite.changeSize(compass_back.getWidth(), compass_back.getHeight());
+		setSpriteLayer(compass_sprite, CURSOR_LAYER);
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
 		bar.setSize(bar_max_x * percent, bar.getHeight());
+	}
+	
+	private void aimCompass(GameImage compass, Vector2 spot) {
+		double x = spot.getX() - player.getPhysObj().getPosition().getX();
+		double y = spot.getY() - player.getPhysObj().getPosition().getY();
+		compass_sprite.setDegrees(Math.toDegrees(Math.atan2(y, x)));
 	}
 	
 	public void centerPlayer() {
@@ -377,6 +387,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		//program.add(status_bar_shield);
 		program.add(status_bar_shield_back);
 		program.add(compass_back);
+		program.add(compass_sprite);
 	}
 
 	@Override
@@ -390,8 +401,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void hideHUD() {
 		program.remove(status_back);
 		//program.remove(status_bar_hp);
+		program.remove(status_bar_hp_back);
 		//program.remove(status_bar_shield);
+		program.remove(status_bar_shield_back);
 		program.remove(compass_back);
+		program.remove(compass_sprite);
 	}
 	
 	@Override
@@ -534,6 +548,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				}
 			}
 		}
+		aimCompass(compass_sprite, new Vector2(0,0));
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
