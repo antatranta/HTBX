@@ -99,6 +99,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	public void setupDebug() {
+		
+		float size = player.getPhysObj().getColliders()[0].getRadius();
+		
+		
+		Vector2 testPoint0 = Camera.backendToFrontend(player.getPhysObj().getPosition());
+	    Vector2 testPoint1 = Camera.backendToFrontend(player.getPhysObj().getPosition().add(new Vector2(0f, size)));
+	    double dist = PhysXLibrary.distance(testPoint0, testPoint1);
+	    
+		playerCollider = new GOval(0,0,dist,dist);
+		
    		program.add(CURRENT_QUID_LABEL);
 		program.add(DEBUGGING_BOX);
 		program.add(CURRENT_ASTEROIDS_LABEL);
@@ -257,14 +267,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		CURRENT_PLAYER_POS_LABEL = new GLabel("Current P Position", 15, 75);
 		CURRENT_MOUSE_POS_LABEL = new GLabel("Current M Position", 15, 100);
 		DEBUGGING_BOX = new GRect(10, 10, 300, 100);
-		
+		playerCollider = new GOval(0,0,0,0);
 
 		
 		console = program.getGameConsole();
 		player = console.getPlayer();
 		
-		float size = player.getPhysObj().getColliders()[0].getRadius() * 2;
-		playerCollider = new GOval(0,0,size,size);
+
 		
 		Vector2 pos = player.getPhysObj().getPosition();
 
@@ -358,7 +367,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// TESTING!!! NOT FINAL
 		drawAsteroids(console.getActiveAsteroids());
 		
-		console.testCollisions();
+		console.testCollisions(player);
 		
 		if(console.IS_DEBUGGING) {
 			if(REQUEST_DEBUG_END) {
@@ -390,9 +399,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				CURRENT_QUID_LABEL.setLabel("Current QUID: " + player.getPhysObj().getQUID().toString());
 				CURRENT_PLAYER_POS_LABEL.setLabel("Current Player V2: " + player.getPhysObj().getPosition().toString());
 				CURRENT_MOUSE_POS_LABEL.setLabel("Current Mouse V2: " + Camera.frontendToBackend(last_mouse_loc).toString());
-				
-				Vector2 frontEndPos = Camera.backendToFrontend(player.getPhysObj().getColliders()[0].getCenter().add(player.getPhysObj().getPosition()));
-				playerCollider.setLocation(frontEndPos.getX(), frontEndPos.getY());
+				float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
+				Vector2 size = new Vector2(dia, dia);
+				Vector2 GOvalSize = new Vector2((float)playerCollider.getWidth(), (float)playerCollider.getHeight());
+				Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
+//				Vector2 frontEndPos = Camera.backendToFrontend(player.getPhysObj().getColliders()[0].getCenter().add(player.getPhysObj().getPosition()), size);
+				playerCollider.setLocation(newFEPOS.getX() - (GOvalSize.getX() / 2), newFEPOS.getY() - (GOvalSize.getY() / 2));
 				
 				drawStaticRect(DEBUGGING_ROWS);
 				drawStaticRect(DEBUGGING_COLS);
@@ -481,8 +493,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
 		player.moveVector2(new Vector2(cos, sin));
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
-		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), new Vector2((float)player_img.getSize().getWidth(), (float)player_img.getSize().getHeight()));
-		player_img.setLocation(newFEPOS.getX(), newFEPOS.getY());
+		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
+		Vector2 size = new Vector2(dia, dia);
+		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
+		player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
 //		player_img.move(cos, sin);
 		
 		if (xAxis > 0 + MOVEMENT_CONSTANT) {
