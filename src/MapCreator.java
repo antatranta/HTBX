@@ -11,7 +11,6 @@ import java.awt.*;
 
 
 public class MapCreator {
-	//500 for each. 250.
 	private float SEED =200;
 	private final int MAX_ENEMIES_IN_QUAD = 2;
 	private final int MAX_ASTEROIDS_IN_QUAD = 4;
@@ -19,7 +18,6 @@ public class MapCreator {
 	private final float BORDER_Y = 100f;
 	private int max_quad=0;
 	private Random rand;
-//	private static ArrayList<Quadrant> Quad_list;
 	private Quadrant player_spawn_quad;
 	private Quadrant boss_spawn_quad;
 	private int player_spawn_quad_order;
@@ -33,13 +31,9 @@ public class MapCreator {
 	public void init() {
 		rand = new Random((long) SEED);
 		System.out.println("Creating MAP using seed: "+SEED);
-//		max_quad = Calculate_Quad_Amount(PhysXLibrary.QUADRANT_HEIGHT ,PhysXLibrary.MAP_HEIGHT);
-//		System.out.println("quad_amount: "+max_quad);
 	}
 	
 	public void run() {
-//		Quad_list = new ArrayList<Quadrant>();
-//		Quad_list = createMap();
 		
 	}
 	public void setPlayerAndBossQuadPositions() {
@@ -54,14 +48,7 @@ public class MapCreator {
 		this.player_spawn_quad_order = player_quad;
 		this.boss_spawn_quad_order = boss_quad;
 	}
-	/*
-	public int Calculate_Quad_Amount(float quadrant_height,int map_height) {
-		int height_int = (int)quadrant_height;
-		int amount = map_height/height_int;
-		amount = amount*amount;
-		return amount;
-	}
-	
+/*	
 	public void createNoiseMap() {
 		//use perlin noise.
 		//https://stackoverflow.com/questions/17440865/using-perlin-noise-to-generate-a-2d-tile-map
@@ -69,7 +56,6 @@ public class MapCreator {
 	*/
 	
 	public ArrayList<Quadrant> createMap(){
-		
 		// Create a new array to hold the quads
 		ArrayList<Quadrant> Quadrants = new ArrayList<Quadrant>();
 		setPlayerAndBossQuadPositions();
@@ -101,13 +87,10 @@ public class MapCreator {
 		
 	}
 	public Quadrant createQuadrant(int x,int y, int order) {
-//		Quadrant quad = new Quadrant(new QuadrantID(x,y,order));
 //		System.out.println("x:"+x+" y: "+y+" order: "+order);
 		return new Quadrant(new QuadrantID(x,y,order));
 	}
 	public void fillQuadrant(Quadrant quad) {
-//		checkInterrupt(current_quad_x_startPoint, PhysXLibrary.QUADRANT_WIDTH, 'x');
-//		checkInterrupt(current_quad_y_startPoint, PhysXLibrary.QUADRANT_HEIGHT,'y');
 		int numberOfEnemies = randomNumber(0, MAX_ENEMIES_IN_QUAD);
 		int numberOfAsteroids = randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
 		
@@ -205,47 +188,7 @@ public class MapCreator {
 		}
 		return null;
 	}
-	
 
-	/*
-	public void checkInterrupt(int start, float edge, char type) {
-		boolean interrupt = true;
-		ArrayList<Integer> objects;
-		int end = (int) Math.round(start+edge);
-		while(interrupt) {
-			objects = new ArrayList<Integer>();
-			if(type == 'x') {
-				Ex = new int[max_enemies];
-				Ax = new int[max_asteroid];
-			}else if (type == 'y') {
-				Ey = new int[max_enemies];
-				Ay = new int[max_asteroid];
-			}
-			for(int i=0;i<max_enemies;i++) {
-				int enemy_rand = randomNumber(end, start);
-				objects.add(enemy_rand);
-				//System.out.println("Erand: "+enemy_rand);
-				if(type == 'x') {
-					Ex[i] = enemy_rand;
-				}else if (type == 'y') {
-					Ey[i] = enemy_rand;					
-				}
-			}
-			for(int j=0;j<max_asteroid;j++) {
-				int asteroid_rand = randomNumber(end, start);
-				objects.add(asteroid_rand);
-				//System.out.println("Arand: "+asteroid_rand);
-				if(type == 'x') {
-					Ax[j] = asteroid_rand;
-				}else if (type == 'y') {
-					Ay[j] = asteroid_rand;					
-				}
-			}
-			interrupt=interrrupt_occurred(objects,PhysXLibrary.COLLISION_CONSTANT);
-		}
-	}
-	*/
-	
 	private int randomNumber(int min, int max) {		
 		if (min >= max) {
 			throw new IllegalArgumentException("max must be greater than min");
@@ -253,27 +196,6 @@ public class MapCreator {
 		int rtrn = rand.nextInt((max - min) + 1) + min;
 		return rtrn;
 	}
-
-	/*
-	public boolean interrrupt_occurred(ArrayList<Integer> objects,float range) {
-		// VERIFY SHIP IS "PhysXLibrary.COLLISION_CONSTANT * x" distance from any other 
-		// objects!!!!
-        for (int i = 0; i <objects.size(); i++) {
-            float object = objects.get(i);
-            for (int k = 0; k <objects.size(); k++) {
-            	if(k!=i) {
-	            	float compare = objects.get(k);
-	            	float different = Math.abs(object - compare);
-	            	if(different==0 || different<=range) {
-	            		//System.out.println("Interrupt!!!!"); 
-	            		return true;
-	            	}
-            	}
-            }
-        }
-        return false;
-	}
-	*/
 	
 	public PhysXObject createPhysXObjectInQuad (QuadrantID quad) {
 		float startingX = ((quad.getX() + 1)* PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
