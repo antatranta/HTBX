@@ -347,7 +347,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		compass_back.setColor(Color.WHITE);
 		setSpriteLayer(compass_back, CURSOR_LAYER);
 		
-		compass_sprite = new GameImage("Aiming_Reticle.png", compass_back.getX(), compass_back.getY());
+		compass_sprite = new GameImage("Arrow.png", compass_back.getX(), compass_back.getY());
 		compass_sprite.changeSize(compass_back.getWidth(), compass_back.getHeight());
 		setSpriteLayer(compass_sprite, CURSOR_LAYER);
 	}
@@ -364,7 +364,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	public void centerPlayer() {
 		Vector2 frontPos = Camera.backendToFrontend(player.getPhysObj().getPosition());
-//		player_img.setLocationRespectSize(frontPos.getX(), frontPos.getY());
+		player_img.setLocationRespectSize(frontPos.getX(), frontPos.getY());
 //		player_img.setLocation((MainApplication.WINDOW_WIDTH / 2) - (player_img.getWidth() / 2), (MainApplication.WINDOW_HEIGHT / 2) - (player_img.getHeight() /2));
 	}
 	
