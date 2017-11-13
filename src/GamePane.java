@@ -633,6 +633,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img.rotate(TURN_POWER * final_turn);
 		player.adjustAngle(TURN_POWER * -final_turn);
 //		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
+		player.moveVector2(new Vector2(cos, sin));
 		
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		float dia = player.getPhysObj().getColliders()[0].getRadius();
@@ -641,7 +642,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img.setLocationRespectSize(newFEPOS.getX() + (player.getPhysObj().getColliders()[0].getRadius() / 2), newFEPOS.getY() + (player.getPhysObj().getColliders()[0].getRadius() / 2));
 		//player.moveVector2(new Vector2(cos, sin));
 		//player.moveVector2(new Vector2(0 - player.getPhysObj().getPosition().getX(), 0 - player.getPhysObj().getPosition().getY())); 
-		player_img.move(cos, sin);
+//		player_img.move(cos, sin);
+		
 		
 		if (xAxis > 0 + MOVEMENT_CONSTANT) {
 			player.adjustAngle(-TURN_POWER);
