@@ -87,15 +87,15 @@ public class Bullet {
 	private Vector2 bulletTrajectory() {
 		Vector2 movement = null;
 		
-		if(movementVector.getX() <= initialLocation.getPosition().getX() && movementVector.getY() <= initialLocation.getPosition().getY()) {
+		if(movementVector.getX() < initialLocation.getPosition().getX() && movementVector.getY() < initialLocation.getPosition().getY()) {
 			movement = this.initialLocation.getPosition().minus(movementVector);
 			movement.setXY(movement.getX() * -1, movement.getY() * -1);
 		}
-		else if(movementVector.getX() <= initialLocation.getPosition().getX() && movementVector.getY() >= initialLocation.getPosition().getY()) {
+		else if(movementVector.getX() < initialLocation.getPosition().getX() && movementVector.getY() > initialLocation.getPosition().getY()) {
 			movement = this.initialLocation.getPosition().minusXAddY(movementVector);
 			movement.setXY(movement.getX() * -1, movement.getY());
 		}
-		else if(movementVector.getX() >= initialLocation.getPosition().getX() && movementVector.getY() <= initialLocation.getPosition().getY()) {
+		else if(movementVector.getX() > initialLocation.getPosition().getX() && movementVector.getY() < initialLocation.getPosition().getY()) {
 			movement = this.initialLocation.getPosition().addXMinusY(movementVector);
 			movement.setXY(movement.getX(), movement.getY() * - 1);
 		}
