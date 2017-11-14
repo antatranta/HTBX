@@ -30,7 +30,7 @@ public class Quadrant{
 						A.sendCollisionMessage(B.getCollisionData());
 						
 						if (GameConsole.IS_DEBUGGING) {
-							System.out.println("Asteroid Collision!");
+//							System.out.println("Asteroid Collision!");
 						}
 					}
 				}

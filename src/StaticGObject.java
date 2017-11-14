@@ -32,14 +32,14 @@ public class StaticGObject {
 	public void setup(double ColliderSize) {
 		this.objects = new GOval[physObj.getColliders().length];
 		for(int i =0; i<this.objects.length; ++i) {
-			Vector2 center = physObj.getColliders()[i].getCenter().add(physObj.getPosition());
+			Vector2 center = Camera.backendToFrontend(physObj.getColliders()[i].getCenter().add(physObj.getPosition()));
 			float halfsize = physObj.getColliders()[i].getRadius();
-			this.objects[i] = new GOval(center.getX() - halfsize, center.getY() - halfsize, ColliderSize, ColliderSize);
+			this.objects[i] = new GOval(center.getX() + halfsize, center.getY() + halfsize, ColliderSize, ColliderSize);
 		}
 	}
 	
 	public void setLocationRespectSize(int coll, Vector2 pos) {
-		this.objects[coll].setLocation(pos.getX() - (imageSize.getX() / 2), pos.getY() - (imageSize.getY() / 2));
+		this.objects[coll].setLocation(pos.getX() + (imageSize.getX() / 2), pos.getY() + (imageSize.getY() / 2));
 	}
 	
 	public GOval[] getObjects() {

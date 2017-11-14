@@ -38,8 +38,14 @@ public class PhysXLibrary{
 		Vector2 positionB = b.getPosition();
 		for(CircleCollider coll_A : colliderSetA) {
 			for(CircleCollider coll_B : colliderSetB) {
+				
+				// Get the distance between two colliders
 				double dist = distance(positionA.add(coll_A.getCenter()), positionB.add(coll_B.getCenter()));
+				
+				// Add the radii of the two colliders
 				float hittingDistance = coll_A.getRadius() + coll_B.getRadius();
+				
+				// if the distance is less than the raii of the colliders, collision
 				if (dist <= hittingDistance) {
 					return true;
 				}
