@@ -121,7 +121,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	public double debuggingColliderSize(PhysXObject object) {
-		float size = object.getColliders()[0].getRadius();
+		float size = object.getColliders()[0].getRadius() * 2;
 		
 		Vector2 testPoint0 = Camera.backendToFrontend(object.getPosition());
 	    Vector2 testPoint1 = Camera.backendToFrontend(object.getPosition().add(new Vector2(0f, size)));
@@ -130,13 +130,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	public void setupDebug() {
 		
-		float size = player.getPhysObj().getColliders()[0].getRadius();
-		
-		
-		Vector2 testPoint0 = Camera.backendToFrontend(player.getPhysObj().getPosition());
-	    Vector2 testPoint1 = Camera.backendToFrontend(player.getPhysObj().getPosition().add(new Vector2(0f, size)));
-	    double dist = PhysXLibrary.distance(testPoint0, testPoint1);
-	    
+//		float size = player.getPhysObj().getColliders()[0].getRadius();
+//		
+//		
+//		Vector2 testPoint0 = Camera.backendToFrontend(player.getPhysObj().getPosition());
+//	    Vector2 testPoint1 = Camera.backendToFrontend(player.getPhysObj().getPosition().add(new Vector2(0f, size)));
+//	    double dist = PhysXLibrary.distance(testPoint0, testPoint1);
+	    double dist = debuggingColliderSize(player.getPhysObj());
 		playerCollider = new GOval(0,0,dist,dist);
 		
    		program.add(CURRENT_QUID_LABEL);
