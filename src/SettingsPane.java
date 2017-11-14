@@ -68,6 +68,23 @@ public class SettingsPane extends GraphicsPane {
 	}
 	
 	@Override
+	public void mousePressed(MouseEvent e) {
+		obj = program.getElementAt(e.getX(), e.getY());
+		if(obj == null) {
+			return;
+		}
+		
+		obj.setColor(Color.gray);
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		for(GLabel setting:settings) {
+			setting.setColor(Color.black);
+		}
+	}
+	
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel setting:settings) {

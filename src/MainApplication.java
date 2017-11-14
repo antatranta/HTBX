@@ -124,11 +124,11 @@ public class MainApplication extends GraphicsApplication {
 	public void musicToggle(boolean toggle) {
 		musicToggle = toggle;
 		
-//		if(musicToggle) {
-//			audio.playSound("sounds", "Credits.mp3", true);
-//		}
-//		else {
-//			audio.stopSound("sounds", "Credits.mp3");
-//		}
+		if(musicToggle) {
+			audio.playSound("sounds", "3A1W - Menu.wav", true);
+		}
+		else {
+			audio.stopSound("sounds", "3A1W - Menu.wav");
+		}
 	}
 }
