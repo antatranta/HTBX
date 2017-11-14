@@ -39,7 +39,9 @@ public class StaticGObject {
 	}
 	
 	public void setLocationRespectSize(int coll, Vector2 pos) {
-		this.objects[coll].setLocation(pos.getX() + (imageSize.getX() / 2), pos.getY() + (imageSize.getY() / 2));
+//		this.objects[coll].setLocation(pos.getX() + (imageSize.getX() / 2), pos.getY() + (imageSize.getY() / 2));
+//		this.objects[coll].setLocation(pos.getX() + (imageSize.getX() / 2), pos.getY() + (imageSize.getY() / 2));
+		this.objects[coll].setLocation(pos.getX(), pos.getY());
 	}
 	
 	public GOval[] getObjects() {
