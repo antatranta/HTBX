@@ -31,11 +31,12 @@ public class FileInput {
 		
 	}
 	
+	// Read the previous file. REQUIRES FileInput to be implemented as composition of objects
 	public ArrayList<String> readFileLinesPreviousFile() {
 		return readLinesFromFile(last_file);
 	}
 	
-	// Static version of the file reading method
+	// Static version of the file reading method. Simply call FileInput.readFileLines(String) and you can get the lines out of the file
 	public static ArrayList<String> readFileLines(String file) {
 		ArrayList<String> lines = new ArrayList<String>();
 		
@@ -55,7 +56,7 @@ public class FileInput {
 		return lines;
 	}
 	
-	// DRIVER
+	// DRIVER TESTS
 	public static void main(String [] args) {
 
 		String file = "C:\\Users\\Kevin\\Pictures\\HTBX Assets\\Text.txt";
