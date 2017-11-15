@@ -59,6 +59,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList<StaticRect> DEBUGGING_ROWS;
 	private ArrayList<StaticRect> DEBUGGING_COLS;
 	
+	
+	private boolean DEBUGGING_MOVE_LOCK = false;
 	private boolean CAN_MOVE = false;
 	private boolean MOVEMENT_LOCK = false;
 	private float MOVEMENT_CONSTANT = .0000001f;
@@ -639,16 +641,20 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		float cos = (float) Math.cos(angle) * speed;
 		float sin = (float) Math.sin(angle) * speed;
 		
-		player_img.rotate(TURN_POWER * final_turn);
+//		player_img.rotate(TURN_POWER * final_turn);
 		player.adjustAngle(TURN_POWER * -final_turn);
 //		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
-		player.moveVector2(new Vector2(cos, sin));
+		
+		if (!DEBUGGING_MOVE_LOCK)
+			player.moveVector2(new Vector2(cos, sin));
 		
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		float dia = player.getPhysObj().getColliders()[0].getRadius();
 		Vector2 size = new Vector2(dia, dia);
 		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
-		player_img.setLocationRespectSize(newFEPOS.getX() + (player.getPhysObj().getColliders()[0].getRadius() / 2), newFEPOS.getY() + (player.getPhysObj().getColliders()[0].getRadius() / 2));
+		
+		if (!DEBUGGING_MOVE_LOCK)
+			player_img.setLocationRespectSize(newFEPOS.getX() + (player.getPhysObj().getColliders()[0].getRadius() / 2), newFEPOS.getY() + (player.getPhysObj().getColliders()[0].getRadius() / 2));
 		//player.moveVector2(new Vector2(cos, sin));
 		//player.moveVector2(new Vector2(0 - player.getPhysObj().getPosition().getX(), 0 - player.getPhysObj().getPosition().getY())); 
 //		player_img.move(cos, sin);
@@ -656,10 +662,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		if (xAxis > 0 + MOVEMENT_CONSTANT) {
 			player.adjustAngle(-TURN_POWER);
-			player_img.rotate(TURN_POWER);
+			
+			if (!DEBUGGING_MOVE_LOCK)
+				player_img.rotate(TURN_POWER);
 		} else if (xAxis < 0 - MOVEMENT_CONSTANT) {
 			player.adjustAngle(TURN_POWER);
-			player_img.rotate(-TURN_POWER);
+			
+			if (!DEBUGGING_MOVE_LOCK)
+				player_img.rotate(-TURN_POWER);
 		}
 		
 		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
@@ -905,6 +915,17 @@ c
         			} else {
         				System.out.println("TRACKING --- OFF");
         				TRACKING_SET = false;
+        			}
+
+        		}
+        		
+        		if(key == KeyEvent.VK_T) {
+        			if(!DEBUGGING_MOVE_LOCK) {
+        				System.out.println("MOVING --- OFF");
+        				DEBUGGING_MOVE_LOCK = true;
+        			} else {
+        				System.out.println("MOVING --- ON");
+        				DEBUGGING_MOVE_LOCK = false;
         			}
 
         		}
