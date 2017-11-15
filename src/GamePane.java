@@ -113,8 +113,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private double bar_max_x;
 	private double bar_max_y;
 	
-
-	
 	public GamePane(MainApplication app) {
 		this.program = app;
 		init();
@@ -132,13 +130,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	public void setupDebug() {
 		
-//		float size = player.getPhysObj().getColliders()[0].getRadius();
-//		
-//		
-//		Vector2 testPoint0 = Camera.backendToFrontend(player.getPhysObj().getPosition());
-//	    Vector2 testPoint1 = Camera.backendToFrontend(player.getPhysObj().getPosition().add(new Vector2(0f, size)));
-//	    double dist = PhysXLibrary.distance(testPoint0, testPoint1);
-	    double dist = debuggingColliderSize(player.getPhysObj());
+		double dist = debuggingColliderSize(player.getPhysObj());
 		playerCollider = new GOval(0,0,dist,dist);
 		
    		program.add(CURRENT_QUID_LABEL);
@@ -180,7 +172,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		tracking_offset = new Vector2(0, 0);
 		
 		for(int i =0; i < PhysXLibrary.MAP_WIDTH; ++i) {
-//			DEBUGGING_ROWS.add(new StaticRect(new Vector2((PhysXLibrary.QUADRANT_WIDTH * i), -PhysXLibrary.getMapHeight()), new Vector2(5, PhysXLibrary.getMapHeight())));
 			DEBUGGING_ROWS.add(new StaticRect(new Vector2((PhysXLibrary.QUADRANT_WIDTH * i), 0), new Vector2(5, PhysXLibrary.getMapHeight())));
 			program.add(DEBUGGING_ROWS.get(i).getRect());
 			DEBUGGING_ROWS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
@@ -205,8 +196,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	public void pointTest(Vector2 pos) {
-//		POINT_TEST = new ArrayList<GOval>();
-		
+
 		Vector2 player_pos = Camera.frontendToBackend(pos, new Vector2(25,25));
 		POINT_TEST.add(new GOval(player_pos.getX(), player_pos.getY(), 25, 25));
 		program.add(POINT_TEST.get(POINT_TEST.size() - 1));
@@ -230,10 +220,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.add(POINT_TEST.get(POINT_TEST.size() - 1));
 		POINT_TEST.get(POINT_TEST.size() - 1).setFillColor(Color.green);
 		POINT_TEST.get(POINT_TEST.size() - 1).setFilled(true);
-		
-//		System.out.println("Does pos1 = pos3?: " + (player_pos == player_pos_back) + " loss: " + (PhysXLibrary.distance(player_pos, player_pos_back)));
-		
-		
+	
 	}
 	
 	public void drawPhysXObjects(ArrayList<StaticGObject> statics) {
@@ -246,7 +233,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setColor(Color.pink);
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setLabel(statics.get(i).getPhysObj().getQUID().toString());
 				setSpriteLayer(DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1), DEBUG_LAYER);
-//				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).sendToFront();
 				statics.get(i).setup(debuggingColliderSize(statics.get(i).getPhysObj()));
 				
 			
@@ -317,8 +303,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		aiming_head = new GameImage("Cursor.png", 0, 0);
 		setSpriteLayer(aiming_head, PLAYER_RECTILE_2);
 		player_img = new GameImage(PLAYER_SPRITE, pos.getX(), pos.getY());
-//		player_img.changeSize(10, 10);
-//		player_img.scale(-10, -10);
 		setSpriteLayer(player_img, 1);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
@@ -334,8 +318,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	private void drawHUD() {
-		// STATUS BAR: Bottom left
-//		status_back = new GRect(0, MainApplication.WINDOW_HEIGHT - (MainApplication.WINDOW_HEIGHT * 0.125), MainApplication.WINDOW_WIDTH * 0.225, MainApplication.WINDOW_HEIGHT * 0.125);
 		status_back = new GRect(10, MainApplication.WINDOW_HEIGHT - 10 - 75, 300, 75);
 		Vector2 status_origin = new Vector2((float)status_back.getX(), (float)status_back.getY());
 		bar_max_y = status_back.getHeight() - 20 - ((status_back.getHeight() - 10) / 2);
@@ -352,7 +334,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		status_bar_hp_back.setColor(Color.WHITE);
 		setSpriteLayer(status_bar_hp_back, CURSOR_LAYER);
 		
-//		status_bar_shield_back = new GRect(status_bar_hp_back.getX(), status_bar_hp_back.getY() - bar_max_y - (status_back.getHeight() * 0.04), bar_max_x, bar_max_y);
 		status_bar_shield_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y + bar_max_y + 10, bar_max_x, bar_max_y);
 		status_bar_shield_back.setFillColor(Color.WHITE);
 		status_bar_shield_back.setFilled(true);
@@ -372,7 +353,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		setSpriteLayer(inner_compass_back, 0);
 		
 		compass_sprite = new GameImage("Compass.png", compass_back.getX() + 15, compass_back.getY() + 15);
-//		compass_sprite.changeSize(compass_back.getWidth(), compass_back.getHeight());
 		setSpriteLayer(compass_sprite, CURSOR_LAYER);
 	}
 	
@@ -446,15 +426,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		} else {
 			isShooting = true;
 		}
-//		
-		// Timer should start here
-
-		//auto_fire.setInitialDelay(0);
-		//auto_fire.start();
-//		PhysXObject currentLocation = new PhysXObject(player.getPhysObj());
-
-		
-		
+				
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == player_img) {
 			program.switchToMenu();
@@ -649,12 +621,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img.setDegrees(-player.getAngle() + 90);
 		
 		player.moveVector2(new Vector2(cos, sin));
-		
-		//System.out.println("Setting image degrees to " + (player.getAngle()));
-//		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
-		
-
-		
 		
 		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
 		Vector2 size = new Vector2(dia, dia);
