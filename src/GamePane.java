@@ -466,10 +466,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
 		GOval bullet = console.Shoot(1, 25 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
-		program.add(bullet);
 		bullet.setFilled(true);
 		bullet.setFillColor(Color.orange);
 		bullet.setColor(Color.orange);
+		program.add(bullet);
 	}
 	
 	@Override
