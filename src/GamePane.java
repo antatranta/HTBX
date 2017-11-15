@@ -523,11 +523,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				CURRENT_PLAYER_POS_LABEL.setLabel("Current Player V2: " + player.getPhysObj().getPosition().toString());
 				CURRENT_MOUSE_POS_LABEL.setLabel("Current Mouse V2: " + Camera.frontendToBackend(last_mouse_loc).toString());
 				
-				float dia = player.getPhysObj().getColliders()[0].getRadius();
+				float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
 				Vector2 size = new Vector2(dia, dia);
 				Vector2 GOvalSize = new Vector2((float)playerCollider.getWidth(), (float)playerCollider.getHeight());
 				Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
-//				Vector2 frontEndPos = Camera.backendToFrontend(player.getPhysObj().getColliders()[0].getCenter().add(player.getPhysObj().getPosition()), size);
 				playerCollider.setLocation(newFEPOS.getX(), newFEPOS.getY());
 				
 				drawStaticRect(DEBUGGING_ROWS);
