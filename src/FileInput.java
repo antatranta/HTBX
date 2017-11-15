@@ -9,7 +9,7 @@ public class FileInput {
 	}
 
 	// Give this the file path and file name, ie, "C:\\Place1\\Place2\File.txt"
-	public ArrayList<String> readFileLines(String file) {
+	public ArrayList<String> readLinesFromFile(String file) {
 
 		ArrayList<String> lines = new ArrayList<String>();
 		
@@ -32,7 +32,27 @@ public class FileInput {
 	}
 	
 	public ArrayList<String> readFileLinesPreviousFile() {
-		return readFileLines(last_file);
+		return readLinesFromFile(last_file);
+	}
+	
+	// Static version of the file reading method
+	public static ArrayList<String> readFileLines(String file) {
+		ArrayList<String> lines = new ArrayList<String>();
+		
+        try {
+        	Reader reader = new FileReader(file);
+        	BufferedReader buffer = new BufferedReader(reader);
+        	String line = null;
+            while((line = buffer.readLine()) != null) {
+                lines.add(line);
+            }   
+            // Always close files.
+            reader.close();
+        }
+        catch(IOException ex) {
+            System.out.println("[ERROR] Couldn't read file: " + file);                  
+        }
+		return lines;
 	}
 	
 	// DRIVER
@@ -40,7 +60,7 @@ public class FileInput {
 
 		String file = "C:\\Users\\Kevin\\Pictures\\HTBX Assets\\Text.txt";
 		FileInput red = new FileInput();
-		ArrayList<String> recv = red.readFileLines(file);
+		ArrayList<String> recv = red.readLinesFromFile(file);
 		
 		for (String line : recv) {
 			System.out.println(line);
@@ -51,5 +71,12 @@ public class FileInput {
 		for (String line : recv) {
 			System.out.println(line);
 		}
+		
+		recv = FileInput.readFileLines(file);
+		
+		for (String line : recv) {
+			System.out.println(line);
+		}
+		
 	}
 };
