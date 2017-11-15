@@ -19,6 +19,10 @@ public class BulletManager {
 		this.gOvals = new ArrayList<GOval>();
 	}
 	
+	public void setBullets(ArrayList<Bullet> bullets) {
+		this.bullets = bullets;
+	}
+	
 	public ArrayList<Bullet> getBullets() {
 		return bullets;
 	}

@@ -45,6 +45,19 @@ public class ControlsPane extends GraphicsPane {
 	}
 	
 	@Override
+	public void mousePressed(MouseEvent e) {
+		obj = program.getElementAt(e.getX(), e.getY());
+		if(obj == back) {
+			back.setColor(Color.gray);
+		}
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		back.setColor(Color.black);
+	}
+	
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {

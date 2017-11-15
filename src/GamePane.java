@@ -467,7 +467,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-		GOval bullet = console.Shoot(1, 50 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
+		GOval bullet = console.Shoot(1, 25 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
 		program.add(bullet);
 		bullet.setFilled(true);
 		bullet.setFillColor(Color.orange);
@@ -621,6 +621,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		MOVEMENT_LOCK = true;
 		int final_turn = 0;
 		int final_forward = 0;
+		
 		// Set rotation
 		if (pressed_keys.contains(KeyEvent.VK_A) && !pressed_keys.contains(KeyEvent.VK_D)) {
 			final_turn = -1;
@@ -638,43 +639,46 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		double angle = -Math.toRadians(player.getAngle());
 		float speed = (float) player.getStats().getSpeed() * 5 * final_forward;
+		
+		
 		float cos = (float) Math.cos(angle) * speed;
 		float sin = (float) Math.sin(angle) * speed;
-		
-//		player_img.rotate(TURN_POWER * final_turn);
+
+		player_img.rotate(TURN_POWER * final_turn);
 		player.adjustAngle(TURN_POWER * -final_turn);
+		player_img.setDegrees(-player.getAngle() + 90);
+		
+		player.moveVector2(new Vector2(cos, sin));
+		
+		//System.out.println("Setting image degrees to " + (player.getAngle()));
 //		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
 		
-		if (!DEBUGGING_MOVE_LOCK)
-			player.moveVector2(new Vector2(cos, sin));
+
 		
-		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
-		float dia = player.getPhysObj().getColliders()[0].getRadius();
+		
+		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
 		Vector2 size = new Vector2(dia, dia);
-		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
-		
-		if (!DEBUGGING_MOVE_LOCK)
-			player_img.setLocationRespectSize(newFEPOS.getX() + (player.getPhysObj().getColliders()[0].getRadius() / 2), newFEPOS.getY() + (player.getPhysObj().getColliders()[0].getRadius() / 2));
-		//player.moveVector2(new Vector2(cos, sin));
-		//player.moveVector2(new Vector2(0 - player.getPhysObj().getPosition().getX(), 0 - player.getPhysObj().getPosition().getY())); 
-//		player_img.move(cos, sin);
-		
-		
-		if (xAxis > 0 + MOVEMENT_CONSTANT) {
-			player.adjustAngle(-TURN_POWER);
-			
-			if (!DEBUGGING_MOVE_LOCK)
-				player_img.rotate(TURN_POWER);
-		} else if (xAxis < 0 - MOVEMENT_CONSTANT) {
-			player.adjustAngle(TURN_POWER);
-			
-			if (!DEBUGGING_MOVE_LOCK)
-				player_img.rotate(-TURN_POWER);
+		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition());
+
+//		player_img.setLocationRespectSize(newFEPOS.getX() + (player.getPhysObj().getColliders()[0].getRadius() / 2), newFEPOS.getY() + (player.getPhysObj().getColliders()[0].getRadius() / 2));
+		if(!DEBUGGING_MOVE_LOCK) {
+			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
 		}
 		
-		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
-		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
+
+//		if (xAxis > 0 + MOVEMENT_CONSTANT) {
+//			player.adjustAngle(-TURN_POWER);
+//			player_img.rotate(TURN_POWER);
+//		} else if (xAxis < 0 - MOVEMENT_CONSTANT) {
+//			player.adjustAngle(TURN_POWER);
+//			player_img.rotate(-TURN_POWER);
+//		}
 		
+//		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
+//		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
+		
+		
+		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		
 		MOVEMENT_LOCK = false;

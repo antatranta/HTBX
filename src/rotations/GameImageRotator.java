@@ -25,7 +25,7 @@ public class GameImageRotator extends GraphicsProgram {
 	public static final int MS_DELAY = 100;
 	public static final int DEGREES = 10;
 	
-	public static final String FILE_NAME = "robot head.jpg";
+	public static final String FILE_NAME = "PlayerShip.jpg";
 	public static final String NO_LABEL = "no";
 	public static final String YES_LABEL = "yes";
 	
@@ -63,7 +63,7 @@ public class GameImageRotator extends GraphicsProgram {
 
 	public void actionPerformed(ActionEvent e) {
 		image.rotate(DEGREES);
-		image.move(IMAGE_DX, IMAGE_DY);
+		//image.move(IMAGE_DX, IMAGE_DY);
 		if(getElementAt(oval.getX() + oval.getWidth()/2, oval.getY() + oval.getHeight()/2) == image) {
 			label.setLabel(YES_LABEL);
 		}else{
