@@ -17,7 +17,7 @@ import acm.program.GraphicsProgram;
 public class Rotator extends GraphicsProgram implements ActionListener {
 private static final int HEIGHT = 600;
 private static final int WIDTH = 800;
-public static final String FILE_NAME = "robot2.png";
+public static final String FILE_NAME = "PlayerShip.jpg";
 private GImage img, origImg;
 private int rotation;
 private GRect rect;

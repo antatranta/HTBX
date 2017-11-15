@@ -639,28 +639,31 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		float cos = (float) Math.cos(angle) * speed;
 		float sin = (float) Math.sin(angle) * speed;
 		
-		player_img.rotate(TURN_POWER * final_turn);
+
 		player.adjustAngle(TURN_POWER * -final_turn);
+		player_img.setDegrees(-player.getAngle() + 90);
+		//System.out.println("Setting image degrees to " + (player.getAngle()));
 //		player.getPhysObj().getPosition().add(new Vector2(cos, sin));
-		player.moveVector2(new Vector2(cos, sin));
+		
 		
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		float dia = player.getPhysObj().getColliders()[0].getRadius();
 		Vector2 size = new Vector2(dia, dia);
 		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
 		player_img.setLocationRespectSize(newFEPOS.getX() + (player.getPhysObj().getColliders()[0].getRadius() / 2), newFEPOS.getY() + (player.getPhysObj().getColliders()[0].getRadius() / 2));
+		
+		player.moveVector2(new Vector2(cos, sin));	
 		//player.moveVector2(new Vector2(cos, sin));
 		//player.moveVector2(new Vector2(0 - player.getPhysObj().getPosition().getX(), 0 - player.getPhysObj().getPosition().getY())); 
-//		player_img.move(cos, sin);
 		
 		
-		if (xAxis > 0 + MOVEMENT_CONSTANT) {
-			player.adjustAngle(-TURN_POWER);
-			player_img.rotate(TURN_POWER);
-		} else if (xAxis < 0 - MOVEMENT_CONSTANT) {
-			player.adjustAngle(TURN_POWER);
-			player_img.rotate(-TURN_POWER);
-		}
+//		if (xAxis > 0 + MOVEMENT_CONSTANT) {
+//			player.adjustAngle(-TURN_POWER);
+//			player_img.rotate(TURN_POWER);
+//		} else if (xAxis < 0 - MOVEMENT_CONSTANT) {
+//			player.adjustAngle(TURN_POWER);
+//			player_img.rotate(-TURN_POWER);
+//		}
 		
 		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
 		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
