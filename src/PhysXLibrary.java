@@ -13,7 +13,7 @@ public class PhysXLibrary{
 	public static int 	MAP_WIDTH=5;
 	public static int 	MAP_HEIGHT=5;
 	
-	public static final float COLLISION_CONSTANT = 500f;
+	public static final float COLLISION_CONSTANT = 1000f;
 	
 	public static float getMapHeight() {
 		return QUADRANT_HEIGHT * MAP_HEIGHT;
@@ -28,6 +28,7 @@ public class PhysXLibrary{
 	}
 	
 	protected static double distance(Vector2 a, Vector2 b) {
+//		return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
 		return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
 	}
 	
