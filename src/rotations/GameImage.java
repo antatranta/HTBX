@@ -116,18 +116,9 @@ public class GameImage extends GImage {
 
 		double diffX = newBImage.getWidth()-getWidth();
 		double diffY = newBImage.getHeight()-getHeight();
-		
-//		double diffX = newBImage.getWidth()-getWidth()/2;
-//		double diffY = newBImage.getHeight()-getHeight()/2;
-		
-//		double diffX = Math.abs(newBImage.getWidth() - getWidth());
-//		double diffY = Math.abs(newBImage.getHeight() - getHeight());
-		
+			
 		setImage(newBImage);
-//		setLocation(getX() - diffX/2, getY() - diffY/2, false);
-		
 		setLocation(getX() - diffX/2, getY() - diffY/2, false);
-//		setLocation(getX(), getY());
 		poly.rotate(-degrees);
 		poly.recenter();
 	}
@@ -135,7 +126,6 @@ public class GameImage extends GImage {
 	@Override
 	public boolean contains(double x, double y) {
 		Polygon p = poly.getPolygon();
-//		System.out.println(p);
 		if(p.contains(x, y)) {
 			return true;
 		}
@@ -156,13 +146,11 @@ public class GameImage extends GImage {
 	public void setLocation(double x, double y, boolean movePoly) {
 		super.setLocation(x, y);
 		if(poly != null && movePoly) {
-//			poly.setLocation(x-getWidth()/2, y-getHeight()/2);
 			poly.setLocation(x+getWidth()/2, y+getHeight()/2);
 		}
 	}
 	
 	public void setLocationRespectSize(double x, double y) {
-//		super.setLocation(x - (origImage.getWidth() / 2 ), y - (origImage.getHeight()/ 2));
 		super.setLocation(x - (getWidth() / 2 ), y - (getHeight()/ 2));
 	}
 	
