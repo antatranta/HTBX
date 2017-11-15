@@ -45,6 +45,11 @@ public class Bullet {
 		this.physObj = obj;
 	}
 	
+	public void setBulletDXDY(float dx, float dy) {
+		bulletDX = dx;
+		bulletDY = dy;
+	}
+	
 	public int getBulletDamage() {
 		return this.bulletDamage;
 	}
