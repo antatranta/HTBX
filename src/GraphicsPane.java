@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
+import acm.graphics.GRect;
 
 public abstract class GraphicsPane implements Interfaceable {
 	public static final Font font = new Font("", Font.BOLD, 20);
@@ -12,6 +13,7 @@ public abstract class GraphicsPane implements Interfaceable {
 	public static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
 	public static final GLabel selection = new GLabel(">");
 	
+	private static final GRect whiteBG = new GRect(0, 0, MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
 	private static final GImage title = new GImage("HTBX_Title.png");
 	
 	public GImage title() {
@@ -24,6 +26,12 @@ public abstract class GraphicsPane implements Interfaceable {
 		selection.setColor(Color.black);
 		selection.setVisible(false);
 		return selection;
+	}
+	
+	public GRect whiteBG() {
+		whiteBG.setFilled(true);
+		whiteBG.setColor(Color.white);
+		return whiteBG;
 	}
 	
 	@Override

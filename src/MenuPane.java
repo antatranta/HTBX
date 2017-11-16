@@ -40,6 +40,7 @@ public class MenuPane extends GraphicsPane {
 	
 	@Override
 	public void showContents() {
+		program.add(whiteBG());
 		for(GLabel menu:mainMenu) {
 			program.add(menu);
 		}
@@ -49,7 +50,12 @@ public class MenuPane extends GraphicsPane {
 
 	@Override
 	public void hideContents() {
-		program.removeAll();
+		program.remove(whiteBG());
+		for(GLabel menu:mainMenu) {
+			program.remove(menu);
+		}
+		program.remove(title());
+		program.remove(selection());
 	}
 	
 	@Override
