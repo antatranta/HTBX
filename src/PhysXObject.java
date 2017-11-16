@@ -2,8 +2,18 @@ public class PhysXObject {
 	private CircleCollider[] colliders;
 	private QuadrantID QUID;
 	private Vector2 position;
+	private Object host;
+	private CollisionData collisionData;
 	
 	public PhysXObject() {
+		this.colliders = new CircleCollider[1];
+		this.colliders[0] = new CircleCollider();
+		this.QUID = new QuadrantID();
+		this.position = Vector2.Zero();
+	}
+	
+	public PhysXObject(Object host) {
+		this.host = host;
 		this.colliders = new CircleCollider[1];
 		this.colliders[0] = new CircleCollider();
 		this.QUID = new QuadrantID();
@@ -25,6 +35,15 @@ public class PhysXObject {
 	}
 	
 	public PhysXObject(QuadrantID QUID, Vector2 position, CircleCollider collider) {
+		CircleCollider[] colliders = new CircleCollider[1];
+		colliders[0] = collider;
+		this.colliders = colliders;
+		this.QUID = QUID;
+		this.position = position;
+	}
+	
+	public PhysXObject(QuadrantID QUID, Vector2 position, CircleCollider collider, Object host) {
+		this.host = host;
 		CircleCollider[] colliders = new CircleCollider[1];
 		colliders[0] = collider;
 		this.colliders = colliders;
@@ -69,5 +88,21 @@ public class PhysXObject {
 			System.arraycopy(colliders, 0, newColliderArray, 0, colliders.length);
 			colliders = newColliderArray;
 		}
+	}
+	
+	public void setHost(Object host) {
+		this.host = host;
+	}
+	
+	public Object getHost() {
+		return host;
+	}
+	
+	public void setCollisionData(CollisionData coll) {
+		this.collisionData = coll;
+	}
+	
+	public CollisionData getCollisionData() {
+		return collisionData;
 	}
 }

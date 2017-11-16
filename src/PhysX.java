@@ -242,20 +242,32 @@ public class PhysX {
 	private void checkForCollisionsOnObject(PhysXObject obj) {
 		ArrayList<PhysXObject> objects = getNearbyPhysXObjects(obj, 1000);
 		
-		for( PhysXObject coll : objects) {
+		for(PhysXObject coll : objects) {
 			if(PhysXLibrary.areObjectsInCollisionRange(obj, coll)) {
 				if (PhysXLibrary.isCollision(obj, coll)) {
+					// Bulets hitting things
+					if (obj.getHost() instanceof Bullet) {
+						if (coll.getHost() instanceof Ship) {
+							Bullet item = (Bullet)obj.getHost();
+							if ((item.getBulletType() == BulletType.PLAYER_BULLET && coll.getHost() instanceof PlayerShip) ||
+									(item.getBulletType() == BulletType.ENEMY_BULLET && coll.getHost() instanceof EnemyShip)) {
+								return;
+							}
+							item.destroy();
+							
+						}				
+					}
 					if (GameConsole.IS_DEBUGGING) {
-						/*System.out.println(" - - ");
+						System.out.println(" - - ");
 						System.out.println("Player Pos : " + obj.getPosition().toString());
 						System.out.println("Coll Pos   : " + coll.getPosition().toString());
 						System.out.println("Distance   : " + (int)PhysXLibrary.distance(coll.getPosition(), obj.getPosition()));
-						*/
+						
 					}
 				}
 			}
 		}
-	}
+}
 	
 	public ArrayList<Quadrant> getQuadrants() {
 		return Quadrants;

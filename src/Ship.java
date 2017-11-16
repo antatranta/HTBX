@@ -15,6 +15,7 @@ public class Ship {
 	
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
 		this.physObj = physObj;
+		physObj.setHost(this);
 		this.setCurrentHealth(current_health);
 		this.stats = stats;//speed, shield_max, health_max, damage
 		createSprite(sprite);

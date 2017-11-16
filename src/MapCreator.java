@@ -253,13 +253,17 @@ public class MapCreator {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		for(int i =0; i < numToCreate; ++i) {
 			PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
-			EnemyShips.add(new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01()));
+			EnemyShip new_ship = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
+			new_ship.getPhysObj().setHost(new_ship);
+			EnemyShips.add(new_ship);
 		}
 		return EnemyShips;
 	}
 	
 	public EnemyShip placeEnemy (QuadrantID quad) {
+		CircleCollider collider = new CircleCollider(Vector2.Zero(), 25);
 		PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
+		shipPhysXObj.addCollider(collider);
 		EnemyShip enemy = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
 		return enemy; // Temporary
 	}
@@ -268,7 +272,9 @@ public class MapCreator {
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		for(int i =0; i < numToCreate; ++i) {
 			PhysXObject newAsteroid = createPhysXObjectInQuad(quad);
-			Asteroids.add(new Asteroid(newAsteroid));
+			Asteroid new_rock = new Asteroid(newAsteroid);
+			new_rock.getPhysObj().setHost(new_rock);
+			Asteroids.add(new_rock);
 		}
 		return Asteroids;
 	}
