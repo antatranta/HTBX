@@ -78,8 +78,13 @@ public class BulletManager {
 		*/
 	}
 	
-	public void moveSpiralPattern() {
-		pattern.CounterClockwiseSpiralPattern(this);
+	public void moveClockwiseSpiralPattern() {
+		pattern.clockwiseSpiralPattern(this);
+		moveBullets();
+	}
+	
+	public void moveCounterSpiralPattern() {
+		pattern.counterClockwiseSpiralPattern(this);
 		moveBullets();
 	}
 }

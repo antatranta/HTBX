@@ -3,7 +3,7 @@ import java.util.ArrayList;
 //TODO Implement bullet patterns that the enemy will use
 public class BulletPattern {
 
-	public void ClockwiseSpiralPattern(BulletManager enemyBullets) {
+	public void clockwiseSpiralPattern(BulletManager enemyBullets) {
 		ArrayList<Bullet> enemyBullet = enemyBullets.getBullets();
 		float angle = 0;
 		float x_angle;
@@ -20,7 +20,7 @@ public class BulletPattern {
 		enemyBullets.setBullets(enemyBullet);
 	}
 	
-	public void CounterClockwiseSpiralPattern(BulletManager enemyBullets) {
+	public void counterClockwiseSpiralPattern(BulletManager enemyBullets) {
 		ArrayList<Bullet> enemyBullet = enemyBullets.getBullets();
 		float angle = 0;
 		float x_angle;
@@ -35,5 +35,9 @@ public class BulletPattern {
 		}
 		
 		enemyBullets.setBullets(enemyBullet);
+	}
+	
+	public void zigZagBottom(BulletManager enemyBullets) {
+		
 	}
 }
