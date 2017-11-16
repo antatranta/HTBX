@@ -39,7 +39,7 @@ public class GameConsole extends GraphicsProgram{
 		Vector2 pos = new Vector2(pos_x, pos_y);
 		System.out.println("pos = " + pos_x + ", " + pos_y);
 		
-		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 50);
+		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 25);
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
 		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1));
 		player.setDxDy(Vector2.Zero());
