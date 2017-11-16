@@ -70,6 +70,11 @@ public class GameConsole extends GraphicsProgram{
 		if(player.getPhysObj() != null) {
 			physx.checkForCollisions(player.getPhysObj());
 		}
+		if(bulletStore.getBullets() != null) {
+			for(Bullet bullet:bulletStore.getBullets()) {
+				physx.checkForCollisions(bullet.getPhysObj());
+			}
+		}
 	}
 	
 	public PhysX physx() {

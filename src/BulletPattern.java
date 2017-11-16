@@ -11,10 +11,10 @@ public class BulletPattern {
 		
 		for(Bullet spiral:enemyBullet) {
 			x_angle = (float)Math.cos(Math.toRadians(angle));
-			y_angle = (float)Math.sin(Math.toRadians(angle));
+			y_angle = -(float)Math.sin(Math.toRadians(angle));
 			
 			spiral.setBulletDXDY(x_angle, y_angle);
-			angle += 1;
+			angle++;
 		}
 		
 		enemyBullets.setBullets(enemyBullet);
@@ -31,7 +31,7 @@ public class BulletPattern {
 			y_angle = (float)Math.sin(Math.toRadians(angle));
 			
 			spiral.setBulletDXDY(x_angle, y_angle);
-			angle -= 1;
+			angle--;
 		}
 		
 		enemyBullets.setBullets(enemyBullet);
