@@ -96,26 +96,23 @@ public class MapCreator {
 		//objects verification
 		boolean check=true;
 		while(check) {//return the object that has collision, remove that object.
-			Asteroid check_ast = checkAsteroid(Asteroids);
+			Asteroid check_ast = checkAsteroid(Asteroids);//check only asteroids
 			while(check_ast!=null) {
-//				System.out.println("create new asteroid by check_ast");
 				Asteroids.remove(check_ast);
 				Asteroids.add(placeAsteroid(quad.getQUID()));
 				check_ast = checkAsteroid(Asteroids);
 			}
-			EnemyShip check_enemy = checkEnemy(EnemyShips);
+			EnemyShip check_enemy = checkEnemy(EnemyShips);//check only enemies
 			while(check_enemy!=null) {
-//				System.out.println("create new enemy by check_enemy");
 				EnemyShips.remove(check_enemy);
 				EnemyShips.add(placeEnemy(quad.getQUID()));
 				check_enemy = checkEnemy(EnemyShips);
 			}
-			Asteroid check_both = checkBoth(Asteroids,EnemyShips);
+			Asteroid check_both = checkBoth(Asteroids,EnemyShips);//comparing asteroids with enemies.
 			while(check_both!=null) {
-//				System.out.println("create new asteroid by check_both");
 //				System.out.println("X: "+check_both.getPhysObj().getPosition().getX()+" Y: "+check_both.getPhysObj().getPosition().getY());
 				Asteroids.remove(check_both);
-				//these two codes take times:-wenrui
+				//these two codes take some times:-wenrui
 				Asteroids.add(placeAsteroid(quad.getQUID()));
 				check_ast = checkAsteroid(Asteroids);
 				
@@ -235,7 +232,7 @@ public class MapCreator {
 		
 		float randomMultiplierX = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
 		float randomMultiplierY = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
-		
+		//the possibility of a float number is 0.0f is too big-wenrui 
 		while (randomMultiplierX==0.0f) {
 			randomMultiplierX = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
 		}
@@ -280,7 +277,6 @@ public class MapCreator {
 		PhysXObject newAsteroid = createPhysXObjectInQuad(quad);
 		return new Asteroid(newAsteroid);
 	}
-	
 	
 	public void placeBoss(Quadrant quad, Boss boss) {
 		System.out.println(boss);
