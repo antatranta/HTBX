@@ -1,3 +1,5 @@
+import rotations.GameImage;
+
 public class Ship {
 
 	private PhysXObject physObj;
@@ -5,16 +7,17 @@ public class Ship {
 	private int current_health;
 	private ShipStats stats;
 	private double dir = 90;
-
+	private GameImage sprite;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
 
 	
-	public Ship(PhysXObject physObj, int current_health, ShipStats stats) {
+	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
 		this.physObj = physObj;
 		this.setCurrentHealth(current_health);
 		this.stats = stats;//speed, shield_max, health_max, damage
+		createSprite(sprite);
 	}
 	
 	public double getAngle() {
@@ -100,6 +103,14 @@ public class Ship {
 	public ShipStats getStats() {
 		return stats;
 	}
+	
+	private void createSprite(String file) {
+		this.sprite = new GameImage(file, 0, 0);
+		//System.out.println("Asteroid at: " + physObj.getPosition().getX() + ", " + physObj.getPosition().getY());
+	}
+	public GameImage getSprite() {
+		return sprite;
+	}
 	/*
 	public int getX() {
 		return x;
@@ -114,4 +125,5 @@ public class Ship {
 		this.y = y;
 	}
 	*/
+
 }

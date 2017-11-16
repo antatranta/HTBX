@@ -246,10 +246,11 @@ public class PhysX {
 			if(PhysXLibrary.areObjectsInCollisionRange(obj, coll)) {
 				if (PhysXLibrary.isCollision(obj, coll)) {
 					if (GameConsole.IS_DEBUGGING) {
-						System.out.println(" - - ");
+						/*System.out.println(" - - ");
 						System.out.println("Player Pos : " + obj.getPosition().toString());
 						System.out.println("Coll Pos   : " + coll.getPosition().toString());
 						System.out.println("Distance   : " + (int)PhysXLibrary.distance(coll.getPosition(), obj.getPosition()));
+						*/
 					}
 				}
 			}

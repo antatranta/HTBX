@@ -6,8 +6,8 @@ public class PlayerShip extends Ship implements ActionListener{
 	private int current_shield;
 	private int shield_regen = 100;
 	
-	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats) {
-		super(physObj, current_health, stats);
+	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
+		super(physObj, current_health, stats, sprite);
 		this.current_shield = 0;//stats.getShield_max();
 	}
 

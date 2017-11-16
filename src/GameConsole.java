@@ -46,7 +46,7 @@ public class GameConsole extends GraphicsProgram{
 		
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 25);
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
-		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,100,1,1));
+		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,100,1,1), "PlayerShip-Small.png");
 		player.setDxDy(Vector2.Zero());
 		gameTimer.addListener(player);
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
