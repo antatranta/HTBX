@@ -45,7 +45,7 @@ public class BulletManager {
 		for(int i=0; i < this.bullets.size(); i++) {
 			this.bullets.get(i).move();
 			Vector2 pos = Camera.backendToFrontend(this.bullets.get(i).getPhysObj().getPosition());
-			this.gOvals.get(i).setLocation(pos.getX(), pos.getY());
+			this.gOvals.get(i).setLocation(pos.getX() - (gOvals.get(i).getWidth() / 2), pos.getY() - (gOvals.get(i).getHeight() / 2));
 			
 			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 100) {
 				this.deadBullets.add(gOvals.get(i));

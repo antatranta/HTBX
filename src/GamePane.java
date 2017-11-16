@@ -366,6 +366,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		status_bar_shield.setFilled(true);
 		status_bar_shield.setColor(Color.CYAN);
 		setSpriteLayer(status_bar_shield, CURSOR_LAYER);
+		
+//		stats_back = new GRect();
 	}
 	
 	private void updateHUD() {
