@@ -13,10 +13,13 @@ public class BulletManager {
 	private ArrayList<GOval> deadBullets;
 	private ArrayList<GOval> gOvals;
 	
+	private BulletPattern pattern;
+	
 	public BulletManager() {
 		this.bullets = new ArrayList<Bullet>();
 		this.deadBullets = new ArrayList<GOval>();
 		this.gOvals = new ArrayList<GOval>();
+		pattern = new BulletPattern();
 	}
 	
 	public void setBullets(ArrayList<Bullet> bullets) {
@@ -25,6 +28,10 @@ public class BulletManager {
 	
 	public ArrayList<Bullet> getBullets() {
 		return bullets;
+	}
+	
+	public ArrayList<GOval> getGOvalBullet(){
+		return gOvals;
 	}
 	
 	public GOval onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
@@ -69,5 +76,10 @@ public class BulletManager {
 			delete.start();
 		}
 		*/
+	}
+	
+	public void moveSpiralPattern() {
+		pattern.CounterClockwiseSpiralPattern(this);
+		moveBullets();
 	}
 }
