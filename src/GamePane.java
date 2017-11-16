@@ -1,16 +1,16 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.util.ArrayList;
 
-import javax.swing.Timer;
-
-import acm.graphics.*;
+import acm.graphics.GLabel;
+import acm.graphics.GObject;
+import acm.graphics.GOval;
+import acm.graphics.GPoint;
+import acm.graphics.GRect;
 import rotations.GameImage;
 
 public class GamePane extends GraphicsPane implements ActionListener, KeyListener {
@@ -79,7 +79,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <GameImage> cursor_dots;
 	private ArrayList <Integer> pressed_keys;
 	private ArrayList <Asteroid> drawn_rocks;
-	private ArrayList <GameImage> drawn_ships;
+	private ArrayList <EnemyShip> drawn_ships;
 	
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_OBJECTS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
@@ -278,7 +278,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		cursor_dots = new ArrayList <GameImage>();
 		pressed_keys = new ArrayList <Integer>();
 		drawn_rocks = new ArrayList <Asteroid>();
-		drawn_ships = new ArrayList <GameImage>();
+		drawn_ships = new ArrayList <EnemyShip>();
 		
 		DEBUGGING_COLLIDERS = new ArrayList<StaticGObject>();
 		DEBUGGING_COLLIDERS_OBJECTS = new ArrayList<Asteroid>();
@@ -302,7 +302,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		setSpriteLayer(aiming_edge, PLAYER_RECTILE);
 		aiming_head = new GameImage("Cursor.png", 0, 0);
 		setSpriteLayer(aiming_head, PLAYER_RECTILE_2);
-		player_img = new GameImage(PLAYER_SPRITE, pos.getX(), pos.getY());
+		player_img = player.getSprite();
 		setSpriteLayer(player_img, 1);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
@@ -487,7 +487,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		// TESTING!!! NOT FINAL
-		drawAsteroids(console.getActiveAsteroids());
+		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
+		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
 		
 		if(isShooting) {
 			if(shotCount % 5 == 0) {
@@ -728,13 +729,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 	
-	private void drawAsteroids(ArrayList<Asteroid> asteroids) {
+	private <Item extends Ship> void drawSprites(ArrayList<Item> ships, ArrayList<Item> storage, int layer) {
 		if(console.IS_DEBUGGING) {
-			CURRENT_ASTEROIDS_LABEL.setLabel("Current ASTER: " + asteroids.size());
+			CURRENT_ASTEROIDS_LABEL.setLabel("Current ASTER: " + ships.size());
 		}
-		for (int i = 0; i < asteroids.size(); i++) {
+		for (int i = 0; i < ships.size(); i++) {
 			// Get the offset
-			Asteroid asteroid = asteroids.get(i);
+			Item obj = ships.get(i);
 //			Vector2 offset = asteroid.getPhysObj().getPosition().minus(player.getPhysObj().getPosition());
 //			float offset_x = asteroid.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
 //			float offset_y = asteroid.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
@@ -742,29 +743,29 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			// Make a proper vector2 location according to the camera zoom scale
 //			Vector2 size = new Vector2(asteroid.getPhysObj().getColliders()[0].getRadius() * 2, asteroid.getPhysObj().getColliders()[0].getRadius() * 2);
 //			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition(), size);
-			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition());
+			Vector2 frontEndPos = Camera.backendToFrontend(obj.getPhysObj().getPosition());
 
 			// Are we already drawing that rock?
-			if (!drawn_rocks.contains(asteroid)) {
-				drawn_rocks.add(asteroid);
-				program.add(asteroid.getSprite());
-				setSpriteLayer(asteroid.getSprite(), ROCK_LAYER);
+			if (!storage.contains(obj)) {
+				storage.add(obj);
+				program.add(obj.getSprite());
+				setSpriteLayer(obj.getSprite(), layer);
 			}
 			
 			// Set its location according to the offset
-			if (drawn_rocks.contains(asteroid)) {
-				asteroid.getSprite().setLocationRespectSize(frontEndPos.getX(), frontEndPos.getY());
+			if (storage.contains(obj)) {
+				obj.getSprite().setLocationRespectSize(frontEndPos.getX(), frontEndPos.getY());
 			}
 			
 		}
 		
-		ArrayList<Asteroid> new_draw = new ArrayList<Asteroid>();
-		new_draw.addAll(drawn_rocks);
+		ArrayList<Ship> new_draw = new ArrayList<Ship>();
+		new_draw.addAll(storage);
 		// Remove asteroids
-		for (Asteroid asteroid : new_draw) {
-			if (!asteroids.contains(asteroid)) {
-				drawn_rocks.remove(asteroid);
-				program.remove(asteroid.getSprite());
+		for (Ship obj : new_draw) {
+			if (!ships.contains(obj)) {
+				storage.remove(obj);
+				program.remove(obj.getSprite());
 			}
 		}
 	}
