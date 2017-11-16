@@ -8,6 +8,8 @@ import acm.program.GraphicsProgram;
 public class GameConsole extends GraphicsProgram{
 	
 	public static boolean IS_DEBUGGING;
+	private int TIMER_INTERVAL = 16;
+	private int INITIAL_DELAY = 0;
 	
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
 	//private PlayerShip player;
@@ -16,12 +18,15 @@ public class GameConsole extends GraphicsProgram{
 	private PhysX physx; // The controller for all things
 	private int skillPoints;
 	private Camera camera;
+	private GameTimer gameTimer;
 	private BulletManager bulletStore;
 //	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
 		endDebugView();
 		
+		gameTimer = new GameTimer();
+		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
 		// Create the universe. For now, only a single quadrant
 		System.out.println("Made a new game console");
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
@@ -41,8 +46,9 @@ public class GameConsole extends GraphicsProgram{
 		
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 25);
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
-		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1));
+		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,100,1,1));
 		player.setDxDy(Vector2.Zero());
+		gameTimer.addListener(player);
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
 	}
 	
@@ -117,6 +123,10 @@ public class GameConsole extends GraphicsProgram{
 	
 	public ArrayList<GOval> cullBullets() {
 		return this.bulletStore.getDeadBullets();
+	}
+	
+	public GameTimer getTimer() {
+		return gameTimer;
 	}
 	
 }

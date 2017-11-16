@@ -368,6 +368,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		setSpriteLayer(status_bar_shield, CURSOR_LAYER);
 	}
 	
+	private void updateHUD() {
+		scaleStatusBar(status_bar_hp, (double)player.getCurrentHealth() / (double)player.getStats().getHealthMax());
+		scaleStatusBar(status_bar_shield, (double)player.getCurrentShield() / (double)player.getStats().getShieldMax());
+		aimCompass(compass_sprite, new Vector2(0,0));
+	}
+	
 	private void scaleStatusBar(GRect bar, double percent) {
 		bar.setSize(bar_max_x * percent, bar.getHeight());
 	}
@@ -480,10 +486,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			alignReticle(last_mouse_loc);
 		}
 		
-		if(CAN_MOVE) {
-			movementLoop();
-		}
-		
 		// TESTING!!! NOT FINAL
 		drawAsteroids(console.getActiveAsteroids());
 		
@@ -567,7 +569,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				}
 			}
 		}
-		aimCompass(compass_sprite, new Vector2(0,0));
+		
+		if(CAN_MOVE) {
+			movementLoop();
+		}
+		
+		updateHUD();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
@@ -630,7 +637,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.adjustAngle(TURN_POWER * -final_turn);
 		player_img.setDegrees(-player.getAngle() + 90);
 		
-		player.moveVector2(new Vector2(cos, sin));
+		
 		
 //		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
 //		Vector2 size = new Vector2(dia, dia);
@@ -640,7 +647,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		if(!DEBUGGING_MOVE_LOCK) {
 			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
 		}
-		
+		player.moveVector2(new Vector2(cos, sin));
 
 //		if (xAxis > 0 + MOVEMENT_CONSTANT) {
 //			player.adjustAngle(-TURN_POWER);
@@ -652,10 +659,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 //		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
 //		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
-		
-		
+
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
+
 		
 		MOVEMENT_LOCK = false;
 		
