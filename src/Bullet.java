@@ -96,7 +96,7 @@ public class Bullet {
 		return this.steps;
 	}
 	
-	private void bulletTrajectory() {
+	public void bulletTrajectory() {
 		this.bulletDX = physObj.getPosition().normalize(movementVector).getX();
 		this.bulletDY = physObj.getPosition().normalize(movementVector).getY();
 	}

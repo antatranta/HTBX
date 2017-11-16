@@ -13,8 +13,8 @@ public class Ship {
 	
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats) {
 		this.physObj = physObj;
-		this.setCurrent_health(current_health);
-		this.stats = new ShipStats(1, 1, 1, 1);//speed, shield_max, health_max, damage
+		this.setCurrentHealth(current_health);
+		this.stats = stats;//speed, shield_max, health_max, damage
 	}
 	
 	public double getAngle() {
@@ -44,18 +44,18 @@ public class Ship {
 	}
 	
 	public void takeDamage(int damage) {
-		if(getCurrent_health() > 0) {
-			setCurrent_health(getCurrent_health() - damage);
+		if(getCurrentHealth() > 0) {
+			setCurrentHealth(getCurrentHealth() - damage);
 		} else {
-			setCurrent_health(0);
+			setCurrentHealth(0);
 		}
 	}	
 
-	public int getCurrent_health() {
+	public int getCurrentHealth() {
 		return current_health;
 	}
 
-	public void setCurrent_health(int current_health) {
+	public void setCurrentHealth(int current_health) {
 		if (current_health > 0)
 			this.current_health = current_health;
 		else
@@ -63,7 +63,7 @@ public class Ship {
 	}
 	
 	public void Move() {
-		if(getCurrent_health()>0) {
+		if(getCurrentHealth()>0) {
 			Vector2 currentPosition = physObj.getPosition();
 			Vector2 newPosition = currentPosition.add(new Vector2(dx, dy));
 			physObj.setPosition(newPosition);
@@ -73,7 +73,7 @@ public class Ship {
 	}
 	
 	public void moveVector2(Vector2 dir) {
-		if(getCurrent_health()>0) {
+		if(getCurrentHealth()>0) {
 			Vector2 currentPosition = physObj.getPosition();
 			physObj.setPosition(currentPosition.add(dir));
 		}

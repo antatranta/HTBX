@@ -14,25 +14,31 @@ import acm.graphics.*;
 import rotations.GameImage;
 
 public class BulletTest extends GraphicsApplication implements ActionListener {
-	private Vector2 last_mouse_loc;
+	//private Vector2 last_mouse_loc;
 	private BulletManager bulletStore;
-//	private ArrayList<GOval> bullets;
+	//private ArrayList<GOval> bullets;
 	private Timer gameTimer;
-//	private ArrayList<Bullet> storedBullets;
-	private Random rand;
+	//private ArrayList<Bullet> storedBullets;
+	private PhysXObject currentLocation;
+	private BulletPattern ccwSpiral = new BulletPattern();
 	
 	public void init() {
 		setSize(800, 600);
 		setBackground(Color.white);
-		rand = new Random();
+		
 	}
 	
 	public void run() {
-//		bullets = new ArrayList<GOval>();
+		//bullets = new ArrayList<GOval>();
 		bulletStore = new BulletManager();
-//		storedBullets = bulletStore.getBullets();
 		
-		gameTimer = new Timer(15, this);
+		currentLocation = new PhysXObject();
+		currentLocation.setPosition(new Vector2(400, 300));
+		for(int i = 0; i < 30; i++) {
+			add(bulletStore.onShootEvent(1, 1, BulletType.PLAYER_BULLET, 4, currentLocation, new Vector2(600, 500)));
+		}
+		ccwSpiral.CounterClockwiseSpiralPattern(bulletStore);
+		gameTimer = new Timer(3000, this);
 		gameTimer.start();
 	}
 	
@@ -53,11 +59,11 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 		moveBullets();
 	}
 	
-	@Override
+	/*@Override
 	public void mouseClicked(MouseEvent e) {
 		last_mouse_loc = new Vector2(e.getX(), e.getY());
 		PhysXObject currentLocation = new PhysXObject();
-		currentLocation.setPosition(new Vector2(rand.nextInt(400), rand.nextInt(400)));
+		currentLocation.setPosition(new Vector2(400, 300));
 		
 		add(bulletStore.onShootEvent(1, 5, BulletType.PLAYER_BULLET, 4, currentLocation, last_mouse_loc));
 		//bulletStore.moveBullets();
@@ -67,5 +73,5 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 			bullets.add(bulletSprite);
 			add(bulletSprite);
 		}*/
-	}
+	//}
 }

@@ -328,13 +328,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		status_back.setColor(Color.WHITE);
 		setSpriteLayer(status_back, CURSOR_LAYER);
 		
-		status_bar_hp_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y, bar_max_x, bar_max_y);
+		status_bar_hp_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y + bar_max_y + 10, bar_max_x, bar_max_y);
 		status_bar_hp_back.setFillColor(Color.WHITE);
 		status_bar_hp_back.setFilled(true);
 		status_bar_hp_back.setColor(Color.WHITE);
 		setSpriteLayer(status_bar_hp_back, CURSOR_LAYER);
 		
-		status_bar_shield_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y + bar_max_y + 10, bar_max_x, bar_max_y);
+		status_bar_shield_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y, bar_max_x, bar_max_y);
 		status_bar_shield_back.setFillColor(Color.WHITE);
 		status_bar_shield_back.setFilled(true);
 		status_bar_shield_back.setColor(Color.WHITE);
@@ -352,8 +352,26 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		inner_compass_back.setColor(Color.WHITE);
 		setSpriteLayer(inner_compass_back, 0);
 		
-		compass_sprite = new GameImage("Compass.png", compass_back.getX() + 15, compass_back.getY() + 15);
+		compass_sprite = new GameImage("Compass2.png", compass_back.getX() + 15, compass_back.getY() + 15);
 		setSpriteLayer(compass_sprite, CURSOR_LAYER);
+		
+		status_bar_hp = new GRect(status_bar_hp_back.getLocation().getX(), status_bar_hp_back.getY(), status_bar_hp_back.getWidth(), status_bar_hp_back.getHeight());
+		status_bar_hp.setFillColor(Color.GREEN);
+		status_bar_hp.setFilled(true);
+		status_bar_hp.setColor(Color.YELLOW);
+		setSpriteLayer(status_bar_hp, CURSOR_LAYER);
+		
+		status_bar_shield = new GRect(status_bar_shield_back.getLocation().getX(), status_bar_shield_back.getY(), status_bar_shield_back.getWidth(), status_bar_shield_back.getHeight());
+		status_bar_shield.setFillColor(Color.BLUE);
+		status_bar_shield.setFilled(true);
+		status_bar_shield.setColor(Color.CYAN);
+		setSpriteLayer(status_bar_shield, CURSOR_LAYER);
+	}
+	
+	private void updateHUD() {
+		scaleStatusBar(status_bar_hp, (double)player.getCurrentHealth() / (double)player.getStats().getHealthMax());
+		scaleStatusBar(status_bar_shield, (double)player.getCurrentShield() / (double)player.getStats().getShieldMax());
+		aimCompass(compass_sprite, new Vector2(0,0));
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -386,14 +404,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	public void showHUD() {
 		program.add(status_back);
-		//program.add(status_bar_hp);
 		program.add(status_bar_hp_back);
-		//program.add(status_bar_shield);
+		program.add(status_bar_hp);
 		program.add(status_bar_shield_back);
+		program.add(status_bar_shield);
 		program.add(compass_back);
 		program.add(inner_compass_back);
 		program.add(compass_sprite);
-		
 	}
 
 	@Override
@@ -439,11 +456,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-		GOval bullet = console.Shoot(1, 25 , BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
-		program.add(bullet);
+		GOval bullet = console.Shoot(1, 25, BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
 		bullet.setFilled(true);
 		bullet.setFillColor(Color.orange);
 		bullet.setColor(Color.orange);
+		program.add(bullet);
 	}
 	
 	@Override
@@ -467,10 +484,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		if (CAN_ALIGN && !ALIGNMENT_LOCK) {
 			ALIGNMENT_LOCK = true;
 			alignReticle(last_mouse_loc);
-		}
-		
-		if(CAN_MOVE) {
-			movementLoop();
 		}
 		
 		// TESTING!!! NOT FINAL
@@ -556,7 +569,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				}
 			}
 		}
-		aimCompass(compass_sprite, new Vector2(0,0));
+		
+		if(CAN_MOVE) {
+			movementLoop();
+		}
+		
+		updateHUD();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
@@ -619,17 +637,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.adjustAngle(TURN_POWER * -final_turn);
 		player_img.setDegrees(-player.getAngle() + 90);
 		
-		player.moveVector2(new Vector2(cos, sin));
 		
-		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
-		Vector2 size = new Vector2(dia, dia);
+		
+//		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
+//		Vector2 size = new Vector2(dia, dia);
 		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition());
 
 //		player_img.setLocationRespectSize(newFEPOS.getX() + (player.getPhysObj().getColliders()[0].getRadius() / 2), newFEPOS.getY() + (player.getPhysObj().getColliders()[0].getRadius() / 2));
 		if(!DEBUGGING_MOVE_LOCK) {
 			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
 		}
-		
+		player.moveVector2(new Vector2(cos, sin));
 
 //		if (xAxis > 0 + MOVEMENT_CONSTANT) {
 //			player.adjustAngle(-TURN_POWER);
@@ -641,10 +659,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 //		player.setDx((float) player.getStats().getSpeed() * 5 * xAxis);
 //		player.setDy((float) player.getStats().getSpeed() * 5 * yAxis);
-		
-		
+
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
+
 		
 		MOVEMENT_LOCK = false;
 		
@@ -711,7 +729,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	private void drawAsteroids(ArrayList<Asteroid> asteroids) {
-		
 		if(console.IS_DEBUGGING) {
 			CURRENT_ASTEROIDS_LABEL.setLabel("Current ASTER: " + asteroids.size());
 		}
@@ -743,8 +760,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				program.remove(asteroid.getSprite());
 			}
 		}
-		
-		
 	}
 	
 	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
