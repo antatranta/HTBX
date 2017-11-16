@@ -24,7 +24,6 @@ public class MapCreator {
 	private int player_spawn_quad_order;
 	private int boss_spawn_quad_order;
 	
-	
 	public MapCreator () {
 		init();
 	}
@@ -116,10 +115,10 @@ public class MapCreator {
 //				System.out.println("create new asteroid by check_both");
 //				System.out.println("X: "+check_both.getPhysObj().getPosition().getX()+" Y: "+check_both.getPhysObj().getPosition().getY());
 				Asteroids.remove(check_both);
-				//it just remove the asteroid, because i found out it take so much time for the calculation.-wenrui
-				/*
+				//these two codes take times:-wenrui
 				Asteroids.add(placeAsteroid(quad.getQUID()));
-				check_ast = checkAsteroid(Asteroids);*/
+				check_ast = checkAsteroid(Asteroids);
+				
 				check_both = checkBoth(Asteroids,EnemyShips);
 			}
 			if(check_ast==null&&check_enemy==null&&check_both==null) {
