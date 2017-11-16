@@ -718,13 +718,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		for (int i = 0; i < asteroids.size(); i++) {
 			// Get the offset
 			Asteroid asteroid = asteroids.get(i);
-//			Vector2 offset = asteroid.getPhysObj().getPosition().minus(player.getPhysObj().getPosition());
-//			float offset_x = asteroid.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
-//			float offset_y = asteroid.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
-			
-			// Make a proper vector2 location according to the camera zoom scale
-//			Vector2 size = new Vector2(asteroid.getPhysObj().getColliders()[0].getRadius() * 2, asteroid.getPhysObj().getColliders()[0].getRadius() * 2);
-//			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition(), size);
 			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition());
 
 			// Are we already drawing that rock?
@@ -824,12 +817,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	// Key Presses work; the println statements were removed to prevent clutter in the console as I test
 	@Override
     public void keyPressed(KeyEvent e) {
-//		System.out.print("Press");
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_A || key == KeyEvent.VK_D || key == KeyEvent.VK_S || key == KeyEvent.VK_W) {
-        	if (!containsKey(key)) {
-        		pressed_keys.add(key);
-        	}
+		    	if (!containsKey(key)) {
+		    		pressed_keys.add(key);
+		    	}
         }
         
         if(key == KeyEvent.VK_L && !console.IS_DEBUGGING) {
@@ -839,27 +831,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         
         if(key == KeyEvent.VK_K && console.IS_DEBUGGING) {
         		REQUEST_DEBUG_END = true;
-        		/*
-c
-        		*/
         }
         
         if(console.IS_DEBUGGING) {
-        	/*
-        		if(key == KeyEvent.VK_P && Camera.getBackwardRatio() != 2) {
-        			console.changeGraphicsRatio(1, 2);
-        		}
-        		if(key == KeyEvent.VK_O && Camera.getForwardRatio() != 2) {
-        			console.changeGraphicsRatio(2, 1);
-        		}
-        		
-        		if(key == KeyEvent.VK_I && Camera.getBackwardRatio() != 2 && Camera.getForwardRatio() != 2) {
-        			console.changeGraphicsRatio(2, 2);
-        		}
-        		if(key == KeyEvent.VK_U && Camera.getBackwardRatio() != 1 && Camera.getForwardRatio() != 1) {
-        			console.changeGraphicsRatio(1, 1);
-        		}
-        	*/
         		if(key == KeyEvent.VK_P) {
         			DO_POINT_TEST = !DO_POINT_TEST;
         			System.out.println("POINT_TEST --- " + DO_POINT_TEST);
@@ -885,7 +859,6 @@ c
         				System.out.println("TRACKING --- OFF");
         				TRACKING_SET = false;
         			}
-
         		}
         		
         		if(key == KeyEvent.VK_T) {
@@ -896,92 +869,27 @@ c
         				System.out.println("MOVING --- ON");
         				DEBUGGING_MOVE_LOCK = false;
         			}
-
         		}
         }
         
         if (key == KeyEvent.VK_ESCAPE) {
         		program.switchToPause();
-
         }
 
-        
-        
-        /*
-        switch(key) {
-        case KeyEvent.VK_A:
-//    			System.out.print("ed : A");
-    			xAxis = -(1 + MOVEMENT_CONSTANT);
-    			break;
-        case KeyEvent.VK_D:
-//        		System.out.print("ed : D");
-        		xAxis = (1 + MOVEMENT_CONSTANT);
-        		break;
-        case KeyEvent.VK_W:
-//        		System.out.print("ed : W");
-        		yAxis = (1 + MOVEMENT_CONSTANT);
-        		break;
-        case KeyEvent.VK_S:
-//    			System.out.print("ed : S");
-    			yAxis = -(1 + MOVEMENT_CONSTANT);
-    			break;
-    		default:
-//    			System.out.print("ed : NONE");
-    			break;
-        */
-//        System.out.println("");
     }
 
 	@Override
     public void keyReleased(KeyEvent e) {
-//		System.out.print("Release");
 		int key = e.getKeyCode();
         if (key == KeyEvent.VK_A || key == KeyEvent.VK_D || key == KeyEvent.VK_S || key == KeyEvent.VK_W) {
-        	if (containsKey(key)) {
-        		for (int i = 0; i < pressed_keys.size(); i++) {
-        			if (pressed_keys.get(i) == key) {
-        				pressed_keys.remove(i);
-        			}
-        		}
-        	}
+	        	if (containsKey(key)) {
+	        		for (int i = 0; i < pressed_keys.size(); i++) {
+	        			if (pressed_keys.get(i) == key) {
+	        				pressed_keys.remove(i);
+	        			}
+	        		}
+	        	}
         }
-		/*
-		switch(key) {
-			case KeyEvent.VK_A:
-//				player.setDx(0);
-//				System.out.print("d: A");
-				
-				if (xAxis + MOVEMENT_CONSTANT < 0) {
-					xAxis = 0;
-				}
-				break;
-			case KeyEvent.VK_D:
-//				player.setDx(0);
-//				System.out.print("d: D");
-				if (xAxis + MOVEMENT_CONSTANT > 0) {
-					xAxis = 0;
-				}
-				break;
-			case KeyEvent.VK_W:
-//				player.setDy(0);
-//				System.out.print("d: W");
-				if (yAxis + MOVEMENT_CONSTANT > 0) {
-					yAxis = 0;
-				}
-				break;
-			case KeyEvent.VK_S:
-//				player.setDy(0);
-//				System.out.print("d: S");
-				if (yAxis + MOVEMENT_CONSTANT < 0) {
-					yAxis = 0;
-				}
-				break;
-			default:
-//				System.out.print("d: NONE");
-				break;
-		}
-		*/
-//		System.out.println("");
     }
 	
 	
