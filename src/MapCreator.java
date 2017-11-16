@@ -13,8 +13,8 @@ import java.awt.*;
 public class MapCreator {
 	private static float min_distance_between_objects=400.0f;
 	private float SEED=200.0f;
-	private final int MAX_ENEMIES_IN_QUAD = 1;
-	private final int MAX_ASTEROIDS_IN_QUAD = 5;
+	private final int MAX_ENEMIES_IN_QUAD = 2;
+	private final int MAX_ASTEROIDS_IN_QUAD = 4;
 	private final float BORDER_X = 100f;
 	private final float BORDER_Y = 100f;
 	private int max_quad=0;
@@ -32,14 +32,6 @@ public class MapCreator {
 	public void init() {
 		rand = new Random((long) SEED);
 		System.out.println("Creating MAP using seed: "+SEED);
-	}
-	/*
-	public void run() {
-		
-	}*/
-	public static void main(String[] args) {
-		
-		
 	}
 	
 	public void setPlayerAndBossQuadPositions() {
@@ -107,23 +99,24 @@ public class MapCreator {
 		while(check) {//return the object that has collision, remove that object.
 			Asteroid check_ast = checkAsteroid(Asteroids);
 			while(check_ast!=null) {
-				System.out.println("create new asteroid by check_ast");
+//				System.out.println("create new asteroid by check_ast");
 				Asteroids.remove(check_ast);
 				Asteroids.add(placeAsteroid(quad.getQUID()));
 				check_ast = checkAsteroid(Asteroids);
 			}
 			EnemyShip check_enemy = checkEnemy(EnemyShips);
 			while(check_enemy!=null) {
-				System.out.println("create new enemy by check_enemy");
+//				System.out.println("create new enemy by check_enemy");
 				EnemyShips.remove(check_enemy);
 				EnemyShips.add(placeEnemy(quad.getQUID()));
 				check_enemy = checkEnemy(EnemyShips);
 			}
 			Asteroid check_both = checkBoth(Asteroids,EnemyShips);
 			while(check_both!=null) {
-				System.out.println("create new asteroid by check_both");
+//				System.out.println("create new asteroid by check_both");
 //				System.out.println("X: "+check_both.getPhysObj().getPosition().getX()+" Y: "+check_both.getPhysObj().getPosition().getY());
 				Asteroids.remove(check_both);
+				//it just remove the asteroid, because i found out it take so much time for the calculation.-wenrui
 				/*
 				Asteroids.add(placeAsteroid(quad.getQUID()));
 				check_ast = checkAsteroid(Asteroids);*/
@@ -250,14 +243,13 @@ public class MapCreator {
 		while (randomMultiplierY==0.0f) {
 			randomMultiplierY = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
 		}
-		System.out.println("startingX: "+startingX  +" startingY: "+startingY);
 //		float x_pos = randomMultiplierX * ((PhysXLibrary.QUADRANT_WIDTH - BORDER_X) / 2);
 //		float y_pos = randomMultiplierY * ((PhysXLibrary.QUADRANT_HEIGHT - BORDER_Y) / 2);
 		float x_pos = randomMultiplierX * (PhysXLibrary.QUADRANT_WIDTH / 2 - BORDER_X);
 		float y_pos = randomMultiplierY * (PhysXLibrary.QUADRANT_HEIGHT / 2 - BORDER_Y);
-		float x = startingX + x_pos;
+/*		float x = startingX + x_pos;
 		float y = startingY + y_pos;
-		System.out.println("x_pos: "+ x +" y_pos: "+y);
+		System.out.println("x_pos: "+ x +" y_pos: "+y);*/
 		return new PhysXObject(quad, new Vector2(startingX + x_pos, startingY + y_pos));
 	}
 	
