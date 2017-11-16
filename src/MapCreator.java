@@ -11,9 +11,10 @@ import java.awt.*;
 
 
 public class MapCreator {
-	private float SEED =200;
-	private final int MAX_ENEMIES_IN_QUAD = 2;
-	private final int MAX_ASTEROIDS_IN_QUAD = 4;
+	private static float min_distance_between_objects=400.0f;
+	private float SEED=200.0f;
+	private final int MAX_ENEMIES_IN_QUAD = 1;
+	private final int MAX_ASTEROIDS_IN_QUAD = 5;
 	private final float BORDER_X = 100f;
 	private final float BORDER_Y = 100f;
 	private int max_quad=0;
@@ -32,10 +33,15 @@ public class MapCreator {
 		rand = new Random((long) SEED);
 		System.out.println("Creating MAP using seed: "+SEED);
 	}
-	
+	/*
 	public void run() {
 		
+	}*/
+	public static void main(String[] args) {
+		
+		
 	}
+	
 	public void setPlayerAndBossQuadPositions() {
 		int totalQuads = (PhysXLibrary.MAP_WIDTH * PhysXLibrary.MAP_HEIGHT);
 		max_quad = totalQuads;
@@ -93,52 +99,69 @@ public class MapCreator {
 	public void fillQuadrant(Quadrant quad) {
 		int numberOfEnemies = randomNumber(0, MAX_ENEMIES_IN_QUAD);
 		int numberOfAsteroids = randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
-		
 		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
+		
 		//objects verification
-		/*
 		boolean check=true;
-		//return the object that has collision, remove that object.
-		while(check) {
+		while(check) {//return the object that has collision, remove that object.
 			Asteroid check_ast = checkAsteroid(Asteroids);
-			if(check_ast!=null) {
-				System.out.println("create new ast by ast");
+			while(check_ast!=null) {
+				System.out.println("create new asteroid by check_ast");
 				Asteroids.remove(check_ast);
-				//Asteroids.add(placeAsteroid(quad.getQUID()));
+				Asteroids.add(placeAsteroid(quad.getQUID()));
+				check_ast = checkAsteroid(Asteroids);
 			}
 			EnemyShip check_enemy = checkEnemy(EnemyShips);
-			if(check_enemy!=null) {
-				System.out.println("create new ene by check_enemy");
+			while(check_enemy!=null) {
+				System.out.println("create new enemy by check_enemy");
 				EnemyShips.remove(check_enemy);
 				EnemyShips.add(placeEnemy(quad.getQUID()));
+				check_enemy = checkEnemy(EnemyShips);
 			}
 			Asteroid check_both = checkBoth(Asteroids,EnemyShips);
-			if(check_both!=null) {
-				System.out.println("create new ast by both");
+			while(check_both!=null) {
+				System.out.println("create new asteroid by check_both");
+//				System.out.println("X: "+check_both.getPhysObj().getPosition().getX()+" Y: "+check_both.getPhysObj().getPosition().getY());
 				Asteroids.remove(check_both);
-				//Asteroids.add(placeAsteroid(quad.getQUID()));
+				/*
+				Asteroids.add(placeAsteroid(quad.getQUID()));
+				check_ast = checkAsteroid(Asteroids);*/
+				check_both = checkBoth(Asteroids,EnemyShips);
 			}
-			if(check_ast==null&&check_ast==null&&check_ast==null) {
+			if(check_ast==null&&check_enemy==null&&check_both==null) {
 				System.out.println("asteroid:" +Asteroids.toString());
 				System.out.println("Enemies:" +EnemyShips.toString());
 				check=false;
 			}
-		}*/
+		}
 		quad.setAsteroids(Asteroids);
 		quad.setShips(EnemyShips);
 	}
 	
 	public static Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {
 		for (int j=0;j<Asteroids.size();j++) {
+			float Jx = Asteroids.get(j).getPhysObj().getPosition().getX();
+			float Jy = Asteroids.get(j).getPhysObj().getPosition().getY();
 			for (int k=j+1;k<Asteroids.size();k++) {
-				if (k!=j && (Asteroids.get(k).getPhysObj().getPosition().getX()== Asteroids.get(j).getPhysObj().getPosition().getX())) {//comparing x coord
+				float Kx = Asteroids.get(k).getPhysObj().getPosition().getX();
+				float Ky = Asteroids.get(k).getPhysObj().getPosition().getY();
+            	float differentX = Math.abs(Jx - Kx);
+            	float differentY = Math.abs(Jy - Ky);
+            	/*
+				if (k!=j &&(differentX<=min_distance_between_objects)) {
 //					System.out.println("Interrupt object: "+Asteroids.get(k)+" Position x: "+Asteroids.get(k).getPhysObj().getPosition().getX()); 
 					return Asteroids.get(k);
-				}else if(k!=j && (Asteroids.get(k).getPhysObj().getPosition().getY()== Asteroids.get(j).getPhysObj().getPosition().getY())) {//comparing y coord
+				}else if (k!=j &&(differentY<=min_distance_between_objects)) {
 //					System.out.println("Interrupt object: "+Asteroids.get(k)+" Position y: "+Asteroids.get(k).getPhysObj().getPosition().getY()); 
 					return Asteroids.get(k);
-				}
+				}*/
+            	if (k!=j &&(differentX<=min_distance_between_objects)) {
+            		if (differentY<=min_distance_between_objects) {
+            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
+            			return Asteroids.get(k);
+            		}
+            	}
 			}
 		}
 		return null;
@@ -146,46 +169,63 @@ public class MapCreator {
 	
 	public static EnemyShip checkEnemy(ArrayList<EnemyShip> EnemyShips) {
 		for (int j=0;j<EnemyShips.size();j++) {
+			float Jx = EnemyShips.get(j).getPhysObj().getPosition().getX();
+			float Jy = EnemyShips.get(j).getPhysObj().getPosition().getY();
 			for (int k=j+1;k<EnemyShips.size();k++) {
+				float Kx = EnemyShips.get(k).getPhysObj().getPosition().getX();
+				float Ky = EnemyShips.get(k).getPhysObj().getPosition().getY();
+            	float differentX = Math.abs(Jx - Kx);
+            	float differentY = Math.abs(Jy - Ky);
+            	/*
 				if (k!=j && (EnemyShips.get(k).getPhysObj().getPosition().getX()== EnemyShips.get(j).getPhysObj().getPosition().getX())) {//comparing x coord
 //					System.out.println("Interrupt object: "+EnemyShips.get(k)+" Position x: "+EnemyShips.get(k).getPhysObj().getPosition().getX()); 
 					return EnemyShips.get(k);
 				}else if(k!=j && (EnemyShips.get(k).getPhysObj().getPosition().getY()== EnemyShips.get(j).getPhysObj().getPosition().getY())) {//comparing y coord
 //					System.out.println("Interrupt object: "+EnemyShips.get(k)+" Position y: "+EnemyShips.get(k).getPhysObj().getPosition().getY()); 
 					return EnemyShips.get(k);
-				}
+				}*/
+            	if (k!=j &&(differentX<=min_distance_between_objects)) {
+            		if (differentY<=min_distance_between_objects) {
+            			return EnemyShips.get(k);
+            		}
+            	}
 			}
 		}
 		return null;
 	}
 	
 	public static Asteroid checkBoth(ArrayList<Asteroid> Asteroids,ArrayList<EnemyShip> EnemyShips) {
-		//check x coord
 		for(int i = 0; i< Asteroids.size();i++) {
 			float Ax = Asteroids.get(i).getPhysObj().getPosition().getX();
+			float Ay = Asteroids.get(i).getPhysObj().getPosition().getY();
             for (int k = 0; k <EnemyShips.size(); k++) {
             	float Ex = EnemyShips.get(k).getPhysObj().getPosition().getX();
-            	float different = Math.abs(Ax - Ex);
-//            	System.out.println("different: "+different);
-            	if(different==0 || different<=PhysXLibrary.COLLISION_CONSTANT) {//if they at the same position or in the collision range.
-//            		System.out.println("Interrupt object: "+Asteroids.get(i)+" Position x: "+Ax); 
-            		return Asteroids.get(i);
+            	float Ey = EnemyShips.get(k).getPhysObj().getPosition().getY();
+            	float differentX = Math.abs(Ax - Ex);
+            	float differentY = Math.abs(Ay - Ey);
+            	if(differentX<=min_distance_between_objects) {//if they at the same position or in the collision range.
+            		if(differentY<=min_distance_between_objects) {
+            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
+            			return Asteroids.get(i);
+            		}
             	}
+            	
             }
 		}
 		//check y coord
+		/*
 		for(int i = 0; i< Asteroids.size();i++) {
 			float Ay = Asteroids.get(i).getPhysObj().getPosition().getY();
             for (int k = 0; k <EnemyShips.size(); k++) {
             	float Ey = EnemyShips.get(k).getPhysObj().getPosition().getY();
             	float different = Math.abs(Ay - Ey);
 //            	System.out.println("different: "+different);
-            	if(different==0 || different<=PhysXLibrary.COLLISION_CONSTANT) {//if they at the same position or in the collision range.
+            	if(different<=min_distance_between_objects) {//if they at the same position or in the collision range.
 //            		System.out.println("Interrupt object: "+Asteroids.get(i)+" Position y: "+Ay);
             		return Asteroids.get(i);
             	}
             }
-		}
+		}*/
 		return null;
 	}
 
@@ -203,8 +243,21 @@ public class MapCreator {
 		
 		float randomMultiplierX = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
 		float randomMultiplierY = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
-		float x_pos = randomMultiplierX * ((PhysXLibrary.QUADRANT_WIDTH - BORDER_X) / 2);
-		float y_pos = randomMultiplierY * ((PhysXLibrary.QUADRANT_HEIGHT - BORDER_Y) / 2);
+		
+		while (randomMultiplierX==0.0f) {
+			randomMultiplierX = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
+		}
+		while (randomMultiplierY==0.0f) {
+			randomMultiplierY = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
+		}
+		System.out.println("startingX: "+startingX  +" startingY: "+startingY);
+//		float x_pos = randomMultiplierX * ((PhysXLibrary.QUADRANT_WIDTH - BORDER_X) / 2);
+//		float y_pos = randomMultiplierY * ((PhysXLibrary.QUADRANT_HEIGHT - BORDER_Y) / 2);
+		float x_pos = randomMultiplierX * (PhysXLibrary.QUADRANT_WIDTH / 2 - BORDER_X);
+		float y_pos = randomMultiplierY * (PhysXLibrary.QUADRANT_HEIGHT / 2 - BORDER_Y);
+		float x = startingX + x_pos;
+		float y = startingY + y_pos;
+		System.out.println("x_pos: "+ x +" y_pos: "+y);
 		return new PhysXObject(quad, new Vector2(startingX + x_pos, startingY + y_pos));
 	}
 	
@@ -218,7 +271,9 @@ public class MapCreator {
 	}
 	
 	public EnemyShip placeEnemy (QuadrantID quad) {
-		return null; // Temporary
+		PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
+		EnemyShip enemy = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
+		return enemy; // Temporary
 	}
 	
 	public ArrayList<Asteroid> placeAsteroids(QuadrantID quad, int numToCreate) {
@@ -231,7 +286,8 @@ public class MapCreator {
 	}
 	
 	public Asteroid placeAsteroid (QuadrantID quad) {
-		return new Asteroid();
+		PhysXObject newAsteroid = createPhysXObjectInQuad(quad);
+		return new Asteroid(newAsteroid);
 	}
 	
 	
