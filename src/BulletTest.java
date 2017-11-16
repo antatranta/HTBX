@@ -43,7 +43,7 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	}
 	
 	public void moveBullets() {
-		bulletStore.moveCounterSpiralPattern();
+		bulletStore.moveClockwiseSpiralPattern();
 		
 		/*
 		for(Bullet bulletStore:storedBullets) {
