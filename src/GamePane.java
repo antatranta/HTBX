@@ -371,6 +371,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void updateHUD() {
 		scaleStatusBar(status_bar_hp, (double)player.getCurrentHealth() / (double)player.getStats().getHealthMax());
 		scaleStatusBar(status_bar_shield, (double)player.getCurrentShield() / (double)player.getStats().getShieldMax());
+		aimCompass(compass_sprite, new Vector2(0,0));
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -574,7 +575,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		updateHUD();
-		aimCompass(compass_sprite, new Vector2(0,0));
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
