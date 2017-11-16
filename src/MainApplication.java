@@ -16,8 +16,6 @@ public class MainApplication extends GraphicsApplication {
 	private PausePane pause;
 	private GameConsole console;
 	private GameTimer gameTimer;
-	private int TIMER_INTERVAL = 16;
-	private int INITIAL_DELAY = 0;
 	private AudioPlayer audio;
 	private boolean musicToggle;
 	private boolean sfxToggle;
@@ -27,8 +25,7 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void init() {
 		console = new GameConsole();
-		gameTimer = new GameTimer();
-		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
+		gameTimer = console.getTimer();
 		setTitle("HTBX");
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setBackground(Color.white);

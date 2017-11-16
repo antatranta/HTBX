@@ -22,16 +22,16 @@ public class ShipStats {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	public int getShield_max() {
+	public int getShieldMax() {
 		return shield_max;
 	}
-	public void setShield_max(int shield_max) {
+	public void setShieldMax(int shield_max) {
 		this.shield_max = shield_max;
 	}
-	public int getHealth_max() {
+	public int getHealthMax() {
 		return health_max;
 	}
-	public void setHealth_max(int health_max) {
+	public void setHealthMax(int health_max) {
 		this.health_max = health_max;
 	}
 	public int getDamage() {
@@ -43,10 +43,10 @@ public class ShipStats {
 	public void incSpeed(int update) {
 		this.speed += update;
 	}
-	public void incShield_max(int update) {
+	public void incShieldMax(int update) {
 		this.shield_max += update;
 	}
-	public void incHealth_max(int update) {
+	public void incHealthMax(int update) {
 		this.health_max += update;
 	}
 	public void incDamage(int update) {

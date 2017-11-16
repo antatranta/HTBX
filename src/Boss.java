@@ -18,7 +18,7 @@ public class Boss extends EnemyShip implements ActionListener{
 	}
 	
 	public void increaseStage() {
-		if(this.getCurrent_health()<Stage2Health){
+		if(this.getCurrentHealth()<Stage2Health){
 			currentStage++;
 		}
 	}
