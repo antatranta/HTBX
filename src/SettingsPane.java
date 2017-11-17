@@ -53,6 +53,7 @@ public class SettingsPane extends GraphicsPane {
 	
 	@Override
 	public void showContents() {
+		program.add(whiteBG());
 		for(GLabel setting:settings) {
 			program.add(setting);
 		}
@@ -64,7 +65,14 @@ public class SettingsPane extends GraphicsPane {
 
 	@Override
 	public void hideContents() {
-		program.removeAll();
+		program.remove(whiteBG());
+		for(GLabel setting:settings) {
+			program.remove(setting);
+		}
+		program.remove(toggle1);
+		program.remove(toggle2);
+		program.remove(selection());
+		program.remove(title());
 	}
 	
 	@Override

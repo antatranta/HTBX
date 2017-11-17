@@ -30,7 +30,7 @@ public class GameConsole extends GraphicsProgram{
 		// Create the universe. For now, only a single quadrant
 		System.out.println("Made a new game console");
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
-		mapCreator = new MapCreator();
+		mapCreator = new MapCreator(gameTimer);
 		physx.addQuadrants(mapCreator.createMap());
 		
 		camera = new Camera();
@@ -46,7 +46,8 @@ public class GameConsole extends GraphicsProgram{
 		
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 25);
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
-		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,100,1,1));
+		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,100,1,1), "PlayerShip-Small.png");
+		player.getPhysObj().setHost(player);
 		player.setDxDy(Vector2.Zero());
 		gameTimer.addListener(player);
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
