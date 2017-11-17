@@ -111,37 +111,17 @@ public class MenuPane extends GraphicsPane {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		for(GLabel menu:mainMenu) {
-			if(obj == menu) {
-				selection.setVisible(true);
-				switch(menu.getLabel()) {
-					case "PLAY":
-						selection.setLocation(menu.getX() - 25, menu.getY());
-						break;
-						
-					case "SETTINGS":
-						selection.setLocation(menu.getX() - 25, menu.getY());
-						break;
-						
-					case "SCORES":
-						selection.setLocation(menu.getX() - 25, menu.getY());
-						break;
-						
-					case "CONTROLS":
-						selection.setLocation(menu.getX() - 25, menu.getY());
-						break;
-					
-					case "QUIT":
-						selection.setLocation(menu.getX() - 25, menu.getY());
-						break;
-						
-					default:
-						break;
+		
+		if(obj != whiteBG() && obj != title()) {
+			for(GLabel menu:mainMenu) {
+				if(obj == menu) {
+					selection.setVisible(true);
+					selection.setLocation(menu.getX() - 25, menu.getY());
 				}
 			}
-			else if(obj == null) {
-				selection.setVisible(false);
-			}
+		}
+		else {
+			selection.setVisible(false);
 		}
 	}
 }

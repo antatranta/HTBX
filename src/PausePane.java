@@ -108,37 +108,17 @@ public class PausePane extends MenuPane {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		for(GLabel pause:pauseMenu) {
-			if(obj == pause) {
-				selection.setVisible(true);
-				switch(pause.getLabel()) {
-					case "CONTINUE":
-						selection.setLocation(pause.getX() - 25, pause.getY());
-						break;
-						
-					case "SETTINGS":
-						selection.setLocation(pause.getX() - 25, pause.getY());
-						break;
-						
-					case "SCORES":
-						selection.setLocation(pause.getX() - 25, pause.getY());
-						break;
-						
-					case "CONTROLS":
-						selection.setLocation(pause.getX() - 25, pause.getY());
-						break;
-					
-					case "EXIT TO MENU":
-						selection.setLocation(pause.getX() - 25, pause.getY());
-						break;
-						
-					default:
-						break;
+		
+		if(obj != whiteBG() && obj != title()) {
+			for(GLabel pause:pauseMenu) {
+				if(obj == pause) {
+					selection.setVisible(true);
+					selection.setLocation(pause.getX() - 25, pause.getY());
 				}
 			}
-			else if(obj == null) {
-				selection.setVisible(false);
-			}
+		}
+		else {
+			selection.setVisible(false);
 		}
 	}
 	
@@ -149,6 +129,10 @@ public class PausePane extends MenuPane {
 		switch(key) {
 			case KeyEvent.VK_ESCAPE:
 				program.switchToGame();
+				break;
+				
+			default:
+				break;
 		}
 	}
 }
