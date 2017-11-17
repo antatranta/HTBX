@@ -21,8 +21,8 @@ public class EnemyShip extends Ship implements ActionListener{
 		return type;
 	}
 	
-	public void AIUpdate() {
-	
+	public void AIUpdate(Vector2 playerPos) {
+		
 	}
 
 	@Override
