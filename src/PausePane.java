@@ -56,6 +56,23 @@ public class PausePane extends MenuPane {
 	}
 	
 	@Override
+	public void mousePressed(MouseEvent e) {
+		obj = program.getElementAt(e.getX(), e.getY());
+		if(obj == null || obj == whiteBG()) {
+			return;
+		}
+		
+		obj.setColor(Color.gray);
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		for(GLabel pause:pauseMenu) {
+			pause.setColor(Color.black);
+		}
+	}
+	
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		for(GLabel pause:pauseMenu) {

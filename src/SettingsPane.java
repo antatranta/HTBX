@@ -78,7 +78,7 @@ public class SettingsPane extends GraphicsPane {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == null) {
+		if(obj == null || obj == whiteBG()) {
 			return;
 		}
 		
