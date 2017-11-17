@@ -1,13 +1,19 @@
+import java.awt.Color;
+
+import acm.graphics.GOval;
+
 public class Bullet {
 	private int bulletDamage;
 	private int bulletSpeed;
 	private BulletType bulletType;
 	private float bulletDuration;
 	private PhysXObject physObj;
-	private CollisionData collisionData;
+
 	private Vector2 movementVector;
 	private float bulletDX;
 	private float bulletDY;
+	private GOval sprite;
+	private boolean dead;
 	
 	private Vector2 GOval_Pos;
 	private Vector2 GOval_Size;
@@ -21,8 +27,12 @@ public class Bullet {
 		this.bulletDuration = time;
 		this.physObj = obj;
 		this.movementVector = movementVector;
-		this.collisionData = new CollisionData(bulletDamage, CollisionType.enemyShip);
+		physObj.setCollisionData(new CollisionData(bulletDamage, CollisionType.bullet));
+//		physObj.setHost(this);
 		this.bulletTrajectory();
+		sprite = new GOval(0, 0, 10, 10);
+		sprite.setFillColor(Color.yellow);
+		sprite.setFilled(true);
 	}
 	
 	public void setBulletDamage(int dmg) {
@@ -70,10 +80,6 @@ public class Bullet {
 		return this.physObj;
 	}
 	
-	public CollisionData getCollisionData() {
-		return this.collisionData;
-	}
-	
 	public Vector2 getMovementVector() {
 		return this.movementVector;
 	}
@@ -92,6 +98,14 @@ public class Bullet {
 		steps ++;
 	}
 	
+	public void destroy() {
+		dead = true;
+	}
+	
+	public boolean checkIfDead() {
+		return dead;
+	}
+	
 	public int getSteps() {
 		return this.steps;
 	}
@@ -108,4 +122,9 @@ public class Bullet {
 	public Vector2 getGOvalPos() {
 		return this.GOval_Pos;
 	}
+	
+	public GOval getSprite() {
+		return sprite;
+	}
+	
 }

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
@@ -36,6 +37,7 @@ public class PausePane extends MenuPane {
 	
 	@Override
 	public void showContents() {
+		program.add(whiteBG());
 		for(GLabel pause:pauseMenu) {
 			program.add(pause);
 		}
@@ -45,7 +47,12 @@ public class PausePane extends MenuPane {
 	
 	@Override
 	public void hideContents() {
-		program.removeAll();
+		program.remove(whiteBG());
+		for(GLabel pause:pauseMenu) {
+			program.remove(pause);
+		}
+		program.remove(title());
+		program.remove(selection());
 	}
 	
 	@Override
@@ -115,6 +122,16 @@ public class PausePane extends MenuPane {
 			else if(obj == null) {
 				selection.setVisible(false);
 			}
+		}
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+		
+		switch(key) {
+			case KeyEvent.VK_ESCAPE:
+				program.switchToGame();
 		}
 	}
 }

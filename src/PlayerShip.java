@@ -6,8 +6,8 @@ public class PlayerShip extends Ship implements ActionListener{
 	private int current_shield;
 	private int shield_regen = 100;
 	
-	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats) {
-		super(physObj, current_health, stats);
+	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
+		super(physObj, current_health, stats, sprite);
 		this.current_shield = 0;//stats.getShield_max();
 	}
 
@@ -30,7 +30,14 @@ public class PlayerShip extends Ship implements ActionListener{
 		
 		//System.out.println("Shield regen cd at: " + shield_regen + " | Current shield: " + current_shield + " / " + getStats().getShieldMax());
 	}
-
+	
+	@Override
+	protected void handleCollision(CollisionData data) {
+		// TODO Auto-generated method stub
+		takeDamage(data.getDamage());
+	}
+	
+	/*
 	@Override
 	public void sendCollisionMessage(CollisionData data) {
 		int damage = data.getDamage();
@@ -39,6 +46,7 @@ public class PlayerShip extends Ship implements ActionListener{
 		}
 		takeDamage(damage);
 	}
+	*/
 	
 	@Override
 	public void takeDamage(int amount) {

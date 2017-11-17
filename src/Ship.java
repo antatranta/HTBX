@@ -1,20 +1,20 @@
-public class Ship {
+import rotations.GameImage;
 
-	private PhysXObject physObj;
-	private CollisionData collisionData;
+public class Ship extends Entity implements Collision {
+
 	private int current_health;
 	private ShipStats stats;
 	private double dir = 90;
-
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
-
 	
-	public Ship(PhysXObject physObj, int current_health, ShipStats stats) {
+	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
 		this.physObj = physObj;
+		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
 		this.stats = stats;//speed, shield_max, health_max, damage
+		createSprite(sprite);
 	}
 	
 	public double getAngle() {
@@ -31,25 +31,13 @@ public class Ship {
 		}
 	}
 	
-	public PhysXObject getPhysObj() {
-		return this.physObj;
-	}
-	
-	public CollisionData getCollisionData() {
-		return new CollisionData(collisionData);
-	}
-	
-	public void sendCollisionMessage(CollisionData data) {
-		takeDamage(data.getDamage());
-	}
-	
-	public void takeDamage(int damage) {
+	protected void takeDamage(int damage) {
 		if(getCurrentHealth() > 0) {
 			setCurrentHealth(getCurrentHealth() - damage);
 		} else {
 			setCurrentHealth(0);
 		}
-	}	
+	}
 
 	public int getCurrentHealth() {
 		return current_health;
@@ -66,16 +54,14 @@ public class Ship {
 		if(getCurrentHealth()>0) {
 			Vector2 currentPosition = physObj.getPosition();
 			Vector2 newPosition = currentPosition.add(new Vector2(dx, dy));
-			physObj.setPosition(newPosition);
+			this.physObj.setPosition(newPosition);
 		}
-		
-		
 	}
 	
 	public void moveVector2(Vector2 dir) {
 		if(getCurrentHealth()>0) {
 			Vector2 currentPosition = physObj.getPosition();
-			physObj.setPosition(currentPosition.add(dir));
+			this.physObj.setPosition(currentPosition.add(dir));
 		}
 	}
 	
@@ -100,18 +86,15 @@ public class Ship {
 	public ShipStats getStats() {
 		return stats;
 	}
-	/*
-	public int getX() {
-		return x;
+	
+	@Override
+	public void onCollisionEvent(CollisionData data) {
+		// TODO Auto-generated method stub
+//		takeDamage(data.getDamage());
+		handleCollision(data);
 	}
-	public void setX(int x) {
-		this.x = x;
+	
+	protected void handleCollision(CollisionData data) {
+		takeDamage(data.getDamage());
 	}
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
-	}
-	*/
 }

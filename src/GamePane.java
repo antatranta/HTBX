@@ -1,16 +1,16 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.util.ArrayList;
 
-import javax.swing.Timer;
-
-import acm.graphics.*;
+import acm.graphics.GLabel;
+import acm.graphics.GObject;
+import acm.graphics.GOval;
+import acm.graphics.GPoint;
+import acm.graphics.GRect;
 import rotations.GameImage;
 
 public class GamePane extends GraphicsPane implements ActionListener, KeyListener {
@@ -79,7 +79,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <GameImage> cursor_dots;
 	private ArrayList <Integer> pressed_keys;
 	private ArrayList <Asteroid> drawn_rocks;
-	private ArrayList <GameImage> drawn_ships;
+	private ArrayList <EnemyShip> drawn_ships;
 	
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_OBJECTS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
@@ -95,17 +95,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private Vector2 TRACKING_POSITION;
 	private Vector2 tracking_offset;
 
-	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
-	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
+//	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
+//	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
 	
 	// Player STATUS HUD Stuffs
+	private GRect stats_back;
 	private GRect status_back;
 	private GRect status_bar_hp;
 	private GRect status_bar_hp_back;
-	private GLabel hp_label;
+	//private GLabel hp_label;
 	private GRect status_bar_shield;
 	private GRect status_bar_shield_back;
-	private GLabel shield_label;
+	//private GLabel shield_label;
 	private GRect compass_back;
 	private GRect inner_compass_back;
 	private GameImage compass_sprite;
@@ -278,7 +279,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		cursor_dots = new ArrayList <GameImage>();
 		pressed_keys = new ArrayList <Integer>();
 		drawn_rocks = new ArrayList <Asteroid>();
-		drawn_ships = new ArrayList <GameImage>();
+		drawn_ships = new ArrayList <EnemyShip>();
 		
 		DEBUGGING_COLLIDERS = new ArrayList<StaticGObject>();
 		DEBUGGING_COLLIDERS_OBJECTS = new ArrayList<Asteroid>();
@@ -295,14 +296,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		console = program.getGameConsole();
 		player = console.getPlayer();
-		
-		Vector2 pos = player.getPhysObj().getPosition();
 
 		aiming_edge = new GameImage("rectile.png", 0, 0);
 		setSpriteLayer(aiming_edge, PLAYER_RECTILE);
 		aiming_head = new GameImage("Cursor.png", 0, 0);
 		setSpriteLayer(aiming_head, PLAYER_RECTILE_2);
-		player_img = new GameImage(PLAYER_SPRITE, pos.getX(), pos.getY());
+		player_img = player.getSprite();
 		setSpriteLayer(player_img, 1);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
@@ -319,7 +318,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private void drawHUD() {
 		status_back = new GRect(10, MainApplication.WINDOW_HEIGHT - 10 - 75, 300, 75);
-		Vector2 status_origin = new Vector2((float)status_back.getX(), (float)status_back.getY());
+		//Vector2 status_origin = new Vector2((float)status_back.getX(), (float)status_back.getY());
 		bar_max_y = status_back.getHeight() - 20 - ((status_back.getHeight() - 10) / 2);
 		bar_max_x = status_back.getWidth() - 20;
 		
@@ -366,6 +365,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		status_bar_shield.setFilled(true);
 		status_bar_shield.setColor(Color.CYAN);
 		setSpriteLayer(status_bar_shield, CURSOR_LAYER);
+		
+//		stats_back = new GRect();
 	}
 	
 	private void updateHUD() {
@@ -487,7 +488,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		// TESTING!!! NOT FINAL
-		drawAsteroids(console.getActiveAsteroids());
+		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
+		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
 		
 		if(isShooting) {
 			if(shotCount % 5 == 0) {
@@ -538,7 +540,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				
 				float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
 				Vector2 size = new Vector2(dia, dia);
-				Vector2 GOvalSize = new Vector2((float)playerCollider.getWidth(), (float)playerCollider.getHeight());
+				//Vector2 GOvalSize = new Vector2((float)playerCollider.getWidth(), (float)playerCollider.getHeight());
 				Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
 				playerCollider.setLocation(newFEPOS.getX(), newFEPOS.getY());
 				
@@ -575,6 +577,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		updateHUD();
+		layerSprites();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
@@ -600,6 +603,39 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		for(int i = 0; i < layer; i++) {
 			sprite.sendBackward();
 		}
+	}
+	
+	// TODO
+	private void layerSprites() {
+		// First, put aiming reticles in front
+		aiming_edge.sendToBack();
+		aiming_head.sendToBack();
+		
+		// Then dynamic parts of the HUD
+		status_bar_hp.sendToBack();
+		status_bar_hp_back.sendToBack();
+		status_bar_shield.sendToBack();
+		status_bar_shield_back.sendToBack();
+		status_back.sendToBack();
+		compass_sprite.sendToBack();
+		inner_compass_back.sendToBack();
+		compass_back.sendToBack();
+		player_img.sendToBack();
+		
+		// FX Layer
+		
+		// Bullets; needs to be redone
+		
+		// Enemy ships have priority next
+		for (int i = 0; i < drawn_ships.size(); i++) {
+			drawn_ships.get(i).getSprite().sendToBack();
+		}
+		
+		// Big rocks have priority next
+		for (int i = 0; i < drawn_rocks.size(); i++) {
+			drawn_rocks.get(i).getSprite().sendToBack();
+		}
+		
 	}
 	
 	private void movementLoop() {
@@ -700,9 +736,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	}
 	
-	private Vector2 fromGPoint(GPoint point) {
-		return Camera.frontendToBackend(new Vector2((float)point.getX(), (float)point.getY()));
-	}
+//	private Vector2 fromGPoint(GPoint point) {
+//		return Camera.frontendToBackend(new Vector2((float)point.getX(), (float)point.getY()));
+//	}
 	
 	private void drawStaticRect(ArrayList<StaticRect> lines) {
 		for (int i = 0; i < lines.size(); i++) {
@@ -717,7 +753,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			// Are we already drawing that rect?
 			if (!DEBUGGING_LINES.contains(rect)) {
 				DEBUGGING_LINES.add(rect);
-				setSpriteLayer(rect.getRect(), ROCK_LAYER);
+				//setSpriteLayer(rect.getRect(), ROCK_LAYER);
 			}
 			
 			// Set its location according to the offset
@@ -728,36 +764,43 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 	
-	private void drawAsteroids(ArrayList<Asteroid> asteroids) {
+	private <Item extends Entity> void drawSprites(ArrayList<Item> objects, ArrayList<Item> storage, int layer) {
 		if(console.IS_DEBUGGING) {
-			CURRENT_ASTEROIDS_LABEL.setLabel("Current ASTER: " + asteroids.size());
+			CURRENT_ASTEROIDS_LABEL.setLabel("Current ASTER: " + objects.size());
 		}
-		for (int i = 0; i < asteroids.size(); i++) {
+		for (int i = 0; i < objects.size(); i++) {
 			// Get the offset
-			Asteroid asteroid = asteroids.get(i);
-			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition());
+			Item obj = objects.get(i);
+//			Vector2 offset = asteroid.getPhysObj().getPosition().minus(player.getPhysObj().getPosition());
+//			float offset_x = asteroid.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
+//			float offset_y = asteroid.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
+			
+			// Make a proper vector2 location according to the camera zoom scale
+//			Vector2 size = new Vector2(asteroid.getPhysObj().getColliders()[0].getRadius() * 2, asteroid.getPhysObj().getColliders()[0].getRadius() * 2);
+//			Vector2 frontEndPos = Camera.backendToFrontend(asteroid.getPhysObj().getPosition(), size);
+			Vector2 frontEndPos = Camera.backendToFrontend(obj.getPhysObj().getPosition());
 
 			// Are we already drawing that rock?
-			if (!drawn_rocks.contains(asteroid)) {
-				drawn_rocks.add(asteroid);
-				program.add(asteroid.getSprite());
-				setSpriteLayer(asteroid.getSprite(), ROCK_LAYER);
+			if (!storage.contains(obj)) {
+				storage.add(obj);
+				program.add(obj.getSprite());
+				setSpriteLayer(obj.getSprite(), layer);
 			}
 			
 			// Set its location according to the offset
-			if (drawn_rocks.contains(asteroid)) {
-				asteroid.getSprite().setLocationRespectSize(frontEndPos.getX(), frontEndPos.getY());
+			if (storage.contains(obj)) {
+				obj.getSprite().setLocationRespectSize(frontEndPos.getX(), frontEndPos.getY());
 			}
 			
 		}
 		
-		ArrayList<Asteroid> new_draw = new ArrayList<Asteroid>();
-		new_draw.addAll(drawn_rocks);
+		ArrayList<Item> new_draw = new ArrayList<Item>();
+		new_draw.addAll(storage);
 		// Remove asteroids
-		for (Asteroid asteroid : new_draw) {
-			if (!asteroids.contains(asteroid)) {
-				drawn_rocks.remove(asteroid);
-				program.remove(asteroid.getSprite());
+		for (Item obj : new_draw) {
+			if (!objects.contains(obj)) {
+				storage.remove(obj);
+				program.remove(obj.getSprite());
 			}
 		}
 	}

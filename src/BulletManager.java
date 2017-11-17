@@ -9,14 +9,13 @@ import acm.graphics.*;
 
 public class BulletManager {
 	private ArrayList<Bullet> bullets;
-	
 	private ArrayList<GOval> deadBullets;
-	private ArrayList<GOval> gOvals;
+	
+	private BulletPattern pattern;
 	
 	public BulletManager() {
 		this.bullets = new ArrayList<Bullet>();
-		this.deadBullets = new ArrayList<GOval>();
-		this.gOvals = new ArrayList<GOval>();
+		pattern = new BulletPattern();
 	}
 	
 	public void setBullets(ArrayList<Bullet> bullets) {
@@ -28,12 +27,13 @@ public class BulletManager {
 	}
 	
 	public GOval onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
-		this.bullets.add(new Bullet(dmg, spd, bullet, time, obj, movementVector));
-		this.gOvals.add(new GOval(obj.getPosition().getX(), obj.getPosition().getY(), 10, 10));
+		Bullet shot = new Bullet(dmg, spd, bullet, time, obj, movementVector);
+		this.bullets.add(shot);
+		//this.gOvals.add(shot.getSprite());
 		
-		System.out.println(gOvals.size() + " <- Bullets");
+		System.out.println(bullets.size() + " <- Bullets");
 		
-		return this.gOvals.get(gOvals.size() -1);
+		return shot.getSprite();
 	}
 	
 	public ArrayList<GOval> getDeadBullets(){
@@ -45,12 +45,12 @@ public class BulletManager {
 		for(int i=0; i < this.bullets.size(); i++) {
 			this.bullets.get(i).move();
 			Vector2 pos = Camera.backendToFrontend(this.bullets.get(i).getPhysObj().getPosition());
-			this.gOvals.get(i).setLocation(pos.getX(), pos.getY());
-			
-			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 100) {
-				this.deadBullets.add(gOvals.get(i));
+
+			this.bullets.get(i).getSprite().setLocation(pos.getX(), pos.getY());
+
+			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 100 || this.bullets.get(i).checkIfDead()) {
+				this.deadBullets.add(bullets.get(i).getSprite());
 				this.bullets.remove(bullets.get(i));
-				this.gOvals.remove(gOvals.get(i));
 			}
 		}
 		
@@ -69,5 +69,15 @@ public class BulletManager {
 			delete.start();
 		}
 		*/
+	}
+	
+	public void moveClockwiseSpiralPattern() {
+		pattern.clockwiseSpiralPattern(this);
+		moveBullets();
+	}
+	
+	public void moveCounterSpiralPattern() {
+		pattern.counterClockwiseSpiralPattern(this);
+		moveBullets();
 	}
 }

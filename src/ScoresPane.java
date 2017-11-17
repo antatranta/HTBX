@@ -20,6 +20,7 @@ public class ScoresPane extends GraphicsPane{
 	
 	@Override
 	public void showContents() {
+		program.add(whiteBG());
 		program.add(title());
 		program.add(back);
 		program.add(selection());
@@ -28,7 +29,10 @@ public class ScoresPane extends GraphicsPane{
 
 	@Override
 	public void hideContents() {
-		program.removeAll();
+		program.remove(whiteBG());
+		program.remove(title());
+		program.remove(back);
+		program.remove(selection());
 	}
 	
 	@Override

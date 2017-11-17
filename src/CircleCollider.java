@@ -7,7 +7,7 @@ public class CircleCollider {
 	
 	public CircleCollider() {
 		this.center = Vector2.Zero();
-		this.radius = 200f;
+		this.radius = 50;
 	}
 	
 	public CircleCollider(Vector2 center, float radius) {
