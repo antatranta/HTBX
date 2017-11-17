@@ -6,12 +6,15 @@ public class EnemyShip extends Ship implements ActionListener{
 	
 	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats) {
 		super(physObj, current_health, stats, "PlayerShip-Small.png");
+		
 		// TODO Auto-generated constructor stub
 		
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
+		// Detect target
+		Vector2 target = new Vector2(0, 0);
+		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
 		
 	}
 	public EnemyType getEnemyType() {

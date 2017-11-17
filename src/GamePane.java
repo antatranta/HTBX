@@ -95,17 +95,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private Vector2 TRACKING_POSITION;
 	private Vector2 tracking_offset;
 
-	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
-	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
+//	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
+//	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
 	
 	// Player STATUS HUD Stuffs
+	private GRect stats_back;
 	private GRect status_back;
 	private GRect status_bar_hp;
 	private GRect status_bar_hp_back;
-	private GLabel hp_label;
+	//private GLabel hp_label;
 	private GRect status_bar_shield;
 	private GRect status_bar_shield_back;
-	private GLabel shield_label;
+	//private GLabel shield_label;
 	private GRect compass_back;
 	private GRect inner_compass_back;
 	private GameImage compass_sprite;
@@ -576,6 +577,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		updateHUD();
+		layerSprites();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
@@ -601,6 +603,39 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		for(int i = 0; i < layer; i++) {
 			sprite.sendBackward();
 		}
+	}
+	
+	// TODO
+	private void layerSprites() {
+		// First, put aiming reticles in front
+		aiming_edge.sendToBack();
+		aiming_head.sendToBack();
+		
+		// Then dynamic parts of the HUD
+		status_bar_hp.sendToBack();
+		status_bar_hp_back.sendToBack();
+		status_bar_shield.sendToBack();
+		status_bar_shield_back.sendToBack();
+		status_back.sendToBack();
+		compass_sprite.sendToBack();
+		inner_compass_back.sendToBack();
+		compass_back.sendToBack();
+		player_img.sendToBack();
+		
+		// FX Layer
+		
+		// Bullets; needs to be redone
+		
+		// Enemy ships have priority next
+		for (int i = 0; i < drawn_ships.size(); i++) {
+			drawn_ships.get(i).getSprite().sendToBack();
+		}
+		
+		// Big rocks have priority next
+		for (int i = 0; i < drawn_rocks.size(); i++) {
+			drawn_rocks.get(i).getSprite().sendToBack();
+		}
+		
 	}
 	
 	private void movementLoop() {
@@ -701,9 +736,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	}
 	
-	private Vector2 fromGPoint(GPoint point) {
-		return Camera.frontendToBackend(new Vector2((float)point.getX(), (float)point.getY()));
-	}
+//	private Vector2 fromGPoint(GPoint point) {
+//		return Camera.frontendToBackend(new Vector2((float)point.getX(), (float)point.getY()));
+//	}
 	
 	private void drawStaticRect(ArrayList<StaticRect> lines) {
 		for (int i = 0; i < lines.size(); i++) {
@@ -718,7 +753,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			// Are we already drawing that rect?
 			if (!DEBUGGING_LINES.contains(rect)) {
 				DEBUGGING_LINES.add(rect);
-				setSpriteLayer(rect.getRect(), ROCK_LAYER);
+				//setSpriteLayer(rect.getRect(), ROCK_LAYER);
 			}
 			
 			// Set its location according to the offset

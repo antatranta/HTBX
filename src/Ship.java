@@ -53,7 +53,7 @@ public class Ship {
 		} else {
 			setCurrentHealth(0);
 		}
-	}	
+	}
 
 	public int getCurrentHealth() {
 		return current_health;
