@@ -30,7 +30,7 @@ public class GameConsole extends GraphicsProgram{
 		// Create the universe. For now, only a single quadrant
 		System.out.println("Made a new game console");
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
-		mapCreator = new MapCreator(gameTimer);
+		mapCreator = new MapCreator();
 		physx.addQuadrants(mapCreator.createMap());
 		
 		camera = new Camera();
