@@ -19,14 +19,12 @@ public class MapCreator {
 	private final float BORDER_Y = 100f;
 	private int max_quad=0;
 	private Random rand;
-	private GameTimer timer; // Used to add enemy ships to listen
 	private Quadrant player_spawn_quad;
 	private Quadrant boss_spawn_quad;
 	private int player_spawn_quad_order;
 	private int boss_spawn_quad_order;
 	
-	public MapCreator (GameTimer timer) {
-		this.timer = timer;
+	public MapCreator () {
 		init();
 	}
 	
@@ -130,7 +128,7 @@ public class MapCreator {
 		quad.setShips(EnemyShips);
 	}
 	
-	public static Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {
+	public Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {
 		for (int j=0;j<Asteroids.size();j++) {
 			float Jx = Asteroids.get(j).getPhysObj().getPosition().getX();
 			float Jy = Asteroids.get(j).getPhysObj().getPosition().getY();
@@ -158,7 +156,7 @@ public class MapCreator {
 		return null;
 	}
 	
-	public static EnemyShip checkEnemy(ArrayList<EnemyShip> EnemyShips) {
+	public EnemyShip checkEnemy(ArrayList<EnemyShip> EnemyShips) {
 		for (int j=0;j<EnemyShips.size();j++) {
 			float Jx = EnemyShips.get(j).getPhysObj().getPosition().getX();
 			float Jy = EnemyShips.get(j).getPhysObj().getPosition().getY();
@@ -185,7 +183,7 @@ public class MapCreator {
 		return null;
 	}
 	
-	public static Asteroid checkBoth(ArrayList<Asteroid> Asteroids,ArrayList<EnemyShip> EnemyShips) {
+	public Asteroid checkBoth(ArrayList<Asteroid> Asteroids,ArrayList<EnemyShip> EnemyShips) {
 		for(int i = 0; i< Asteroids.size();i++) {
 			float Ax = Asteroids.get(i).getPhysObj().getPosition().getX();
 			float Ay = Asteroids.get(i).getPhysObj().getPosition().getY();
@@ -256,7 +254,6 @@ public class MapCreator {
 		for(int i =0; i < numToCreate; ++i) {
 			PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
 			EnemyShip new_ship = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
-			new_ship.getPhysObj().setHost(new_ship);
 			EnemyShips.add(new_ship);
 		}
 		return EnemyShips;
@@ -267,7 +264,6 @@ public class MapCreator {
 		PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
 		shipPhysXObj.addCollider(collider);
 		EnemyShip enemy = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
-		timer.addListener(enemy);
 		return enemy; // Temporary
 	}
 	
@@ -276,7 +272,6 @@ public class MapCreator {
 		for(int i =0; i < numToCreate; ++i) {
 			PhysXObject newAsteroid = createPhysXObjectInQuad(quad);
 			Asteroid new_rock = new Asteroid(newAsteroid);
-			new_rock.getPhysObj().setHost(new_rock);
 			Asteroids.add(new_rock);
 		}
 		return Asteroids;

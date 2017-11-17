@@ -30,7 +30,14 @@ public class PlayerShip extends Ship implements ActionListener{
 		
 		//System.out.println("Shield regen cd at: " + shield_regen + " | Current shield: " + current_shield + " / " + getStats().getShieldMax());
 	}
-
+	
+	@Override
+	protected void handleCollision(CollisionData data) {
+		// TODO Auto-generated method stub
+		takeDamage(data.getDamage());
+	}
+	
+	/*
 	@Override
 	public void sendCollisionMessage(CollisionData data) {
 		int damage = data.getDamage();
@@ -39,6 +46,7 @@ public class PlayerShip extends Ship implements ActionListener{
 		}
 		takeDamage(damage);
 	}
+	*/
 	
 	@Override
 	public void takeDamage(int amount) {
