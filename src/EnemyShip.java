@@ -8,7 +8,6 @@ public class EnemyShip extends Ship implements ActionListener{
 		super(physObj, current_health, stats, "PlayerShip-Small.png");
 		
 		// TODO Auto-generated constructor stub
-		
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -31,9 +30,5 @@ public class EnemyShip extends Ship implements ActionListener{
 			//toward to player
 		}//avoid asteroid method?
 	}
-
-	
-	//different bullet patterns method
-	
 	
 }
