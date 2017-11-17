@@ -9,6 +9,7 @@ public class PhysXObject {
 	private CollisionData collisionData;
 	
 	public PhysXObject() {
+		this.subscribers = new ArrayList<Collision>();
 		this.colliders = new CircleCollider[1];
 		this.colliders[0] = new CircleCollider();
 		this.QUID = new QuadrantID();
@@ -26,6 +27,7 @@ public class PhysXObject {
 	*/
 
 	public PhysXObject(QuadrantID QUID) {
+		this.subscribers = new ArrayList<Collision>();
 		this.colliders = new CircleCollider[1];
 		this.colliders[0] = new CircleCollider();
 		this.QUID = new QuadrantID(QUID);
@@ -33,6 +35,7 @@ public class PhysXObject {
 	}
 	
 	public PhysXObject(QuadrantID QUID, Vector2 position) {
+		this.subscribers = new ArrayList<Collision>();
 		this.colliders = new CircleCollider[1];
 		this.colliders[0] = new CircleCollider();
 		this.QUID = QUID;
@@ -40,6 +43,7 @@ public class PhysXObject {
 	}
 	
 	public PhysXObject(QuadrantID QUID, Vector2 position, CircleCollider collider) {
+		this.subscribers = new ArrayList<Collision>();
 		CircleCollider[] colliders = new CircleCollider[1];
 		colliders[0] = collider;
 		this.colliders = colliders;
@@ -48,7 +52,7 @@ public class PhysXObject {
 	}
 	
 	public PhysXObject(QuadrantID QUID, Vector2 position, CircleCollider collider, Object host) {
-//		this.host = host;
+		this.subscribers = new ArrayList<Collision>();
 		CircleCollider[] colliders = new CircleCollider[1];
 		colliders[0] = collider;
 		this.colliders = colliders;
@@ -57,6 +61,7 @@ public class PhysXObject {
 	}
 	
 	public PhysXObject(PhysXObject toCopy) {
+		this.subscribers = new ArrayList<Collision>();
 		this.colliders = toCopy.getColliders();
 		this.QUID = toCopy.getQUID();
 		this.position = toCopy.getPosition();
@@ -104,7 +109,11 @@ public class PhysXObject {
 //	}
 	
 	public void addSubscriber(Collision newSubscriber) {
-		subscribers.add(newSubscriber);
+		if (newSubscriber != null) {
+			subscribers.add(newSubscriber);
+		} else {
+			System.out.println("Error: Null object!");
+		}
 	}
 	
 	public void setCollisionData(CollisionData coll) {
