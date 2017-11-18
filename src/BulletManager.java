@@ -80,4 +80,9 @@ public class BulletManager {
 		pattern.counterClockwiseSpiralPattern(this);
 		moveBullets();
 	}
+	
+	public void moveZigZagBottom() {
+		pattern.zigZagBottom(this);
+		moveBullets();
+	}
 }

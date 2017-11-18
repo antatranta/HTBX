@@ -78,7 +78,7 @@ public class SettingsPane extends GraphicsPane {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == null) {
+		if(obj == null || obj == whiteBG()) {
 			return;
 		}
 		
@@ -145,29 +145,17 @@ public class SettingsPane extends GraphicsPane {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		for(GLabel setting:settings) {
-			if(obj == setting) {
-				selection.setVisible(true);
-				switch(setting.getLabel()) {
-					case "MUSIC":
-						selection.setLocation(setting.getX() - 25, setting.getY());
-						break;
-						
-					case "SFX":
-						selection.setLocation(setting.getX() - 25, setting.getY());
-						break;
-						
-					case "BACK":
-						selection.setLocation(setting.getX() - 25, setting.getY());
-						break;
-						
-					default:
-						break;
+		
+		if(obj != whiteBG() && obj != title()) {
+			for(GLabel setting:settings) {
+				if(obj == setting) {
+					selection.setVisible(true);
+					selection.setLocation(setting.getX() - 25, setting.getY());
 				}
 			}
-			else if(obj == null) {
-				selection.setVisible(false);
-			}
+		}
+		else{
+			selection.setVisible(false);
 		}
 	}
 }
