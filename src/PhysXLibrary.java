@@ -48,6 +48,7 @@ public class PhysXLibrary{
 				
 				// if the distance is less than the raii of the colliders, collision
 				if (dist <= hittingDistance) {
+					/*
 					if(a.getCollisionData() != null) {
 						System.out.println("A data: " + a.getCollisionData().getDamage());
 						b.sendCollisionData(a.getCollisionData());
@@ -56,6 +57,7 @@ public class PhysXLibrary{
 						System.out.println("B data: " + b.getCollisionData().getDamage());
 						a.sendCollisionData(b.getCollisionData());
 					}
+					*/
 					return true;
 				}
 			}
