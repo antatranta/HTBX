@@ -21,8 +21,12 @@ public class EnemyShip extends Ship implements ActionListener{
 		return type;
 	}
 	
-	public void AIUpdate() {
 	
+	public void AI(Vector2 Player) {
+		float MovetoX = Player.getX();
+		float MovetoY = Player.getY();
+		//dont pass player object, just pass the angle and stuffs of the player.
+		float differentX = MovetoX;
 	}
 
 	@Override
