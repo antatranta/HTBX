@@ -6,7 +6,7 @@ public class EnemyShip extends Ship implements ActionListener{
 	private Vector2 target = new Vector2(500,500);
 	
 	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats) {
-		super(physObj, current_health, stats, "PlayerShip-Small.png");
+		super(physObj, current_health, stats, "PlayerShip-Small.png", CollisionType.enemyShip);
 		// TODO Auto-generated constructor stub
 	}
 	@Override
