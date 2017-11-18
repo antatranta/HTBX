@@ -1,6 +1,6 @@
 import rotations.GameImage;
 
-public class Ship extends Entity implements Collision {
+public class Ship extends Entity {
 
 	private int current_health;
 	private ShipStats stats;
@@ -10,11 +10,13 @@ public class Ship extends Entity implements Collision {
 	private float dy = 0;// 1 to up, -1 to down.
 	
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
-		this.physObj = physObj;
+		super(physObj, sprite, new CollisionData(10, CollisionType.enemyShip));
+//		this.physObj = physObj;
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
 		this.stats = stats;//speed, shield_max, health_max, damage
-		createSprite(sprite);
+//		super.createSprite(sprite);
+//		super.setCollisionData(new CollisionData(10, CollisionType.enemyShip));
 	}
 	
 	public double getAngle() {

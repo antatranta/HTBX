@@ -1,9 +1,15 @@
 import rotations.GameImage;
 
-public class Entity {
+public class Entity implements Collision{
 	protected PhysXObject physObj;
 	protected CollisionData collisionData;
 	protected GameImage sprite;
+	
+	public Entity(PhysXObject physObj, String sprite, CollisionData data) {
+		this.physObj = physObj;
+		this.collisionData = data;
+		this.sprite = new GameImage(sprite);
+	}
 	
 	protected void createSprite(String file) {
 		this.sprite = new GameImage(file, 0, 0);
@@ -16,8 +22,18 @@ public class Entity {
 	public PhysXObject getPhysObj() {
 		return this.physObj;
 	}
+		
+	protected void setCollisionData(CollisionData data) {
+		this.collisionData = data;
+	}
 	
 	public CollisionData getCollisionData() {
 		return new CollisionData(this.collisionData);
+	}
+
+	@Override
+	public void onCollisionEvent(CollisionData data) {
+		// TODO Auto-generated method stub
+		
 	}
 }

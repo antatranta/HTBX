@@ -246,8 +246,14 @@ public class PhysX {
 			if(PhysXLibrary.areObjectsInCollisionRange(obj, coll)) {
 				if (PhysXLibrary.isCollision(obj, coll)) {
 					
-					obj.sendCollisionData(coll.getCollisionData());
-					coll.sendCollisionData(obj.getCollisionData());
+					if (coll.getCollisionData() != null) {
+						System.out.println("Collision! :" + coll.getCollisionData());
+						obj.sendCollisionData(coll.getCollisionData());
+					}
+					if (obj.getCollisionData() != null) {
+						System.out.println("Collision! :" + obj.getCollisionData());
+						coll.sendCollisionData(obj.getCollisionData());
+					}
 					
 					/*
 					// Bulets hitting things
