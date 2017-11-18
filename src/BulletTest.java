@@ -16,11 +16,8 @@ import rotations.GameImage;
 public class BulletTest extends GraphicsApplication implements ActionListener {
 	private Vector2 last_mouse_loc;
 	private BulletManager bulletStore;
-	private ArrayList<GOval> bullets;
 	private Timer gameTimer;
-	//private ArrayList<Bullet> storedBullets;
 	private PhysXObject currentLocation;
-	private BulletPattern ccwSpiral = new BulletPattern();
 	private boolean isShooting;
 	private int shotCount;
 	
@@ -43,16 +40,8 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	}
 	
 	public void moveBullets() {
-		bulletStore.moveClockwiseSpiralPattern();
-		//bulletStore.moveZigZagBottom();
-		
-		/*
-		for(Bullet bulletStore:storedBullets) {
-			for(GOval bullet:bullets) {
-				bullet.setLocation(bulletStore.getPhysObj().getPosition().getX(), bulletStore.getPhysObj().getPosition().getY());
-			}
-		}*/
-		
+		//bulletStore.moveClockwiseSpiralPattern();
+		bulletStore.moveZigZagBottom();
 	}
 	
 	@Override
@@ -81,17 +70,6 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void mousePressed(MouseEvent e) {
 		isShooting = true;
 		last_mouse_loc = new Vector2(e.getX(), e.getY());
-		//PhysXObject currentLocation = new PhysXObject();
-		//currentLocation.setPosition(new Vector2(400, 300));
-		
-		//add(bulletStore.onShootEvent(1, 5, BulletType.PLAYER_BULLET, 4, currentLocation, last_mouse_loc));
-		//bulletStore.moveBullets();
-		/*
-		for(Bullet bullet:storedBullets) {
-			GOval bulletSprite = new GOval(bullet.getPhysObj().getPosition().getX(), bullet.getPhysObj().getPosition().getY(), 10, 10);
-			bullets.add(bulletSprite);
-			add(bulletSprite);
-		}*/
 	}
 	
 	@Override
