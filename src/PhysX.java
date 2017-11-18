@@ -245,6 +245,11 @@ public class PhysX {
 		for(PhysXObject coll : objects) {
 			if(PhysXLibrary.areObjectsInCollisionRange(obj, coll)) {
 				if (PhysXLibrary.isCollision(obj, coll)) {
+					
+					obj.sendCollisionData(coll.getCollisionData());
+					coll.sendCollisionData(obj.getCollisionData());
+					
+					/*
 					// Bulets hitting things
 					if (obj.getHost() instanceof Bullet) {
 						if (coll.getHost() instanceof Ship) {
@@ -261,6 +266,7 @@ public class PhysX {
 							
 						}				
 					}
+					*/
 					if (GameConsole.IS_DEBUGGING) {
 						System.out.println(" - - ");
 						System.out.println("Player Pos : " + obj.getPosition().toString());

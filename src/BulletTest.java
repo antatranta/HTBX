@@ -44,6 +44,7 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	
 	public void moveBullets() {
 		bulletStore.moveClockwiseSpiralPattern();
+		//bulletStore.moveZigZagBottom();
 		
 		/*
 		for(Bullet bulletStore:storedBullets) {
@@ -101,7 +102,7 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void shoot() {
 		PhysXObject currentLocation = new PhysXObject();
 		currentLocation.setPosition(new Vector2(400, 300));
-		GOval bullet = bulletStore.onShootEvent(1, 1, BulletType.PLAYER_BULLET, 1000, currentLocation, Camera.frontendToBackend(last_mouse_loc) );
+		GOval bullet = bulletStore.onShootEvent(1, 1, BulletType.ENEMY_BULLET, 1000, currentLocation, Camera.frontendToBackend(last_mouse_loc) );
 		bullet.setFilled(true);
 		bullet.setFillColor(Color.orange);
 		bullet.setColor(Color.orange);

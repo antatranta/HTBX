@@ -1,12 +1,17 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FileInput {
 	public static final String ROOT_PATH = new File("").getAbsolutePath(); // Leave this
 	private String last_file;
 	
+	private Map<String, Asteroid> AsteroidDictionary;
+	
 	public FileInput() {
 		last_file = null;
+		AsteroidDictionary = new HashMap<String, Asteroid>();
 	}
 
 	// Give this the file path and file name, ie, "C:\\Place1\\Place2\File.txt"
@@ -31,6 +36,32 @@ public class FileInput {
         }
 		return lines;
 		
+	}
+	
+	public void decodeFile(ArrayList<String> lines) {
+		for(String line : lines) {
+			
+			// Remove spaces
+			String Reader = line.replace(" ", "");
+			
+			if(Reader.contains("#ASTER#")) {
+				readAsteroid(line);
+
+			}
+		}
+	}
+	
+	public void readAsteroid(String asteroidLine) {
+		// Split
+		String[] values = asteroidLine.split("/");
+		
+		int numColliders = Integer.parseInt(values[0]);
+		
+		for(int i =0; i < numColliders; i+=3) {
+			float colliderX 		= Integer.parseInt(values[i]);
+			float colliderY 		= Integer.parseInt(values[i]);
+			float colliderRadius = Integer.parseInt(values[i]);
+		}
 	}
 	
 	// Read the previous file. REQUIRES FileInput to be implemented as composition of objects
@@ -62,9 +93,15 @@ public class FileInput {
         }
 		return lines;
 	}
-	
+	/*
+	public static Asteroid GetAsteroidData (String key){
+		return Asteroid();
+	}
+	*/
 	// DRIVER TESTS
 	public static void main() {
+		
+
 		String file = ROOT_PATH + "\\src";
 		System.out.println(file);
 		FileInput red = new FileInput();

@@ -8,7 +8,6 @@ public class EnemyShip extends Ship implements ActionListener{
 		super(physObj, current_health, stats, "PlayerShip-Small.png");
 		
 		// TODO Auto-generated constructor stub
-		
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -21,12 +20,11 @@ public class EnemyShip extends Ship implements ActionListener{
 		return type;
 	}
 	
-	
-	public void AI(Vector2 Player) {
-		float MovetoX = Player.getX();
-		float MovetoY = Player.getY();
+	public void AIUpdate(Vector2 playerPos) {
+		float MovetoX = playerPos.getX();
+		float MovetoY = playerPos.getY();
 		//dont pass player object, just pass the angle and stuffs of the player.
-		float differentX = MovetoX;
+		//float differentX = MovetoX;
 	}
 
 	@Override
@@ -35,9 +33,5 @@ public class EnemyShip extends Ship implements ActionListener{
 			//toward to player
 		}//avoid asteroid method?
 	}
-
-	
-	//different bullet patterns method
-	
 	
 }

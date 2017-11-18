@@ -28,7 +28,7 @@ public class Bullet {
 		this.physObj = obj;
 		this.movementVector = movementVector;
 		physObj.setCollisionData(new CollisionData(bulletDamage, CollisionType.bullet));
-		physObj.setHost(this);
+//		physObj.setHost(this);
 		this.bulletTrajectory();
 		sprite = new GOval(0, 0, 10, 10);
 		sprite.setFillColor(Color.yellow);
