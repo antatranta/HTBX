@@ -26,15 +26,15 @@ public class EnemyShip extends Ship implements ActionListener{
 		System.out.println("MovetoX: "+ MovetoX+" MovetoY: "+MovetoY);
 		float thisX = this.getPhysObj().getPosition().getX();
 		float thisY = this.getPhysObj().getPosition().getY();
-		float differentX = thisX - MovetoX;
-		float differentY = thisY - MovetoY;
+		float differentX = MovetoX - thisX;
+		float differentY = MovetoY - thisY;
 		System.out.println("DifferentX: "+ differentX+" DifferentY: "+differentY);
-		float angle = (float)Math.atan2(differentX,differentY);
+		float angle = (float)Math.atan2(differentY,differentX);
 		System.out.println("Angle: "+angle);
-//		thisX+= this.getStats().getSpeed()*Math.cos(angle);
-//		thisY+= this.getStats().getSpeed()*Math.sin(angle);
-		thisX-= Math.cos(angle);
-		thisY-= Math.sin(angle);
+		thisX+= this.getStats().getSpeed()*Math.cos(angle);
+		thisY+= this.getStats().getSpeed()*Math.sin(angle);
+		//thisX+= Math.cos(angle);
+		//thisY+= Math.sin(angle);
 		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
 	}
 

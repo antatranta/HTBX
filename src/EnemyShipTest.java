@@ -11,7 +11,7 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 	private Vector2 enemyVector = new Vector2(100,100);
 	private Vector2 targetVector = new Vector2(500,500);
 	public void init() {
-		setSize(800, 600);
+		setSize(1000,1000);
 		setBackground(Color.white);
 		QuadrantID id = new QuadrantID(0,0,0);
 
@@ -43,8 +43,8 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 			//enemy.AIUpdate(enemy.getTarget());
 			enemy.AIUpdate(target1.getPhysObj().getPosition());
 			enemy.getSprite().setLocationRespectSize(enemy.getPhysObj().getPosition().getX(),enemy.getPhysObj().getPosition().getY());
-			//target1.getPhysObj().setPosition(new Vector2(target1.getPhysObj().getPosition().getX(),target1.getPhysObj().getPosition().getY()-1));
-			//target1.getSprite().setLocationRespectSize(target1.getPhysObj().getPosition().getX(),target1.getPhysObj().getPosition().getY());
+			target1.getPhysObj().setPosition(new Vector2(target1.getPhysObj().getPosition().getX()+1,target1.getPhysObj().getPosition().getY()));
+			target1.getSprite().setLocationRespectSize(target1.getPhysObj().getPosition().getX(),target1.getPhysObj().getPosition().getY());
 		}
 	}
 }
