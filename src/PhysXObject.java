@@ -121,14 +121,16 @@ public class PhysXObject {
 	}
 	
 	public void sendCollisionData(CollisionData data) {
+		
+		if (subscribers.size() < 1) {
+			System.out.println("No subscribers!");
+		}
 		for(Collision sub : subscribers) {
-			
 			if(sub != null) {
 				sub.onCollisionEvent(data);
 			}
 		}
 	}
-	
 	
 	public CollisionData getCollisionData() {
 		return collisionData;

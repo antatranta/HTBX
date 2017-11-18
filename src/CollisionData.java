@@ -25,4 +25,8 @@ public class CollisionData {
 	public CollisionType getType() {
 		return type;
 	}
+	
+	public String toString() {
+		return "Dam: "+ this.damage + " Type: " + this.type; 
+	}
 }

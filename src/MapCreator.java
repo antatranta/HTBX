@@ -128,8 +128,12 @@ public class MapCreator {
 		quad.setShips(EnemyShips);
 	}
 	
-	public Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {
+	public static Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {
 		for (int j=0;j<Asteroids.size();j++) {
+			
+			if(Asteroids.get(j).getPhysObj() == null) {
+				System.out.println("Phys null");
+			}
 			float Jx = Asteroids.get(j).getPhysObj().getPosition().getX();
 			float Jy = Asteroids.get(j).getPhysObj().getPosition().getY();
 			for (int k=j+1;k<Asteroids.size();k++) {

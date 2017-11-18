@@ -54,9 +54,9 @@ public class PlayerShip extends Ship implements ActionListener{
 		if (current_shield > 0) {
 			current_shield -= amount;
 		}
-		else {
-			takeDamage(amount);
-		}
+//		else {
+////			takeDamage(amount);
+//		}
 	}
 
 	public int getCurrentShield() {

@@ -1,14 +1,18 @@
 import rotations.GameImage;
 
-public class Asteroid extends Entity implements Collision {
+public class Asteroid extends Entity {
 	private CollisionData collisionData;
 	
 	public Asteroid(PhysXObject physObj) {
-		this.collisionData = new CollisionData(0, CollisionType.asteroid);
+		super(physObj, "Asteroids.png", new CollisionData(100, CollisionType.asteroid));
+//		this.collisionData = new CollisionData(0, CollisionType.asteroid);
+//		this.physObj = physObj;
+//		super.createSprite("Asteroids.png");
+//		super.setCollisionData(new CollisionData(100, CollisionType.asteroid));
 	}
 
 	public CollisionData getCollisionData() {
-		return new CollisionData(collisionData);
+		return new CollisionData(this.collisionData);
 	}
 
 	@Override
