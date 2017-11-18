@@ -3,16 +3,16 @@ import java.awt.event.ActionListener;
 
 public class EnemyShip extends Ship implements ActionListener{
 	protected static EnemyType type;
-	private static Vector2 target;
+	private Vector2 target = new Vector2(500,500);
 	
 	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats) {
 		super(physObj, current_health, stats, "PlayerShip-Small.png");
-		target = new Vector2(0,0);
 		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// Detect target
+		Move();
 		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
 		
 	}
@@ -37,16 +37,17 @@ public class EnemyShip extends Ship implements ActionListener{
 		//thisY+= Math.sin(angle);
 		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
 	}
-
+	
+	public void Rotate2Player(Vector2 playerPos) {
+		
+	}
 	@Override
 	public void Move() {
 		if(getCurrentHealth()>0) {
-			//toward to player
+			//move to player
 			AIUpdate(target);
+			this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
 		}//avoid asteroid method?
 	}
 	
-	public Vector2 getTarget() {
-		return this.target;
-	}
 }

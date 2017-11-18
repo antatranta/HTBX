@@ -43,7 +43,7 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 			//enemy.AIUpdate(enemy.getTarget());
 			enemy.AIUpdate(target1.getPhysObj().getPosition());
 			enemy.getSprite().setLocationRespectSize(enemy.getPhysObj().getPosition().getX(),enemy.getPhysObj().getPosition().getY());
-			target1.getPhysObj().setPosition(new Vector2(target1.getPhysObj().getPosition().getX()+1,target1.getPhysObj().getPosition().getY()));
+			target1.getPhysObj().setPosition(new Vector2(target1.getPhysObj().getPosition().getX(),target1.getPhysObj().getPosition().getY()-1));
 			target1.getSprite().setLocationRespectSize(target1.getPhysObj().getPosition().getX(),target1.getPhysObj().getPosition().getY());
 		}
 	}
