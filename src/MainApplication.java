@@ -20,7 +20,6 @@ public class MainApplication extends GraphicsApplication {
 	private boolean musicToggle;
 	private boolean sfxToggle;
 	private boolean isPaused;
-	//private int count = 0;
 	
 	
 	public void init() {
@@ -65,32 +64,25 @@ public class MainApplication extends GraphicsApplication {
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
 		}
-		/*switch(count % 2) {
-			case 0: audio.stopSound("sounds", "r2d2.mp3"); break;
-			case 1: audio.stopSound("sounds", "somethinlikethis.mp3"); break;
-		}*/
-		//count++;
 		switchToScreen(menu);
 	}
 	
 	public void switchToGame() {
+		if(!isPaused) {
+			removeAll();
+			init();
+			run();
+		}
 		if(musicToggle) {
 			audio.stopSound("sounds", "3A1W - Menu.wav");
 			audio.playSound("sounds", "01 Misconection_1.mp3", true);
 		}
-		/*switch(count % 2) {
-			case 0: audio.playSound("sounds", "r2d2.mp3"); break;
-			case 1: audio.playSound("sounds", "somethinlikethis.mp3"); break;
-		}*/
+
 		gameTimer.startTimer();
 		switchToScreen(game);
 	}
 	
 	public void switchToSettings() {
-//		if(musicToggle) {
-//			audio.stopSound("sounds", "3A1W - Menu.wav");
-//			audio.playSound("sounds", "Credits.mp3", true);
-//		}
 		switchToScreen(setting);
 	}
 	
