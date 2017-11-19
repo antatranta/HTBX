@@ -14,7 +14,7 @@ public class ControlsPane extends GraphicsPane {
 	public ControlsPane(MainApplication app) {
 		program = app;
 		controls = new GImage("controls.gif", 0, 0);
-		controls.setLocation(((MainApplication.WINDOW_WIDTH / 2) - (controls.getWidth() / 2)), ((MainApplication.WINDOW_HEIGHT / 2) - (controls.getHeight() / 2) + 25));
+		controls.setLocation(((MainApplication.WINDOW_WIDTH / 2) - (controls.getWidth() / 2) - 10), ((MainApplication.WINDOW_HEIGHT / 2) - (controls.getHeight() / 2) + 25));
 		
 		back = new GLabel("BACK");
 		back.setFont(font);

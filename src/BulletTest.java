@@ -42,7 +42,9 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void moveBullets() {
 		//bulletStore.moveClockwiseSpiralPattern();
 		//bulletStore.moveSunBurstBottom();
-		bulletStore.moveSunBurstTop();
+		//bulletStore.moveSunBurstTop();
+		//bulletStore.moveZigZagBottom();
+		bulletStore.moveZigZagTop();
 	}
 	
 	@Override

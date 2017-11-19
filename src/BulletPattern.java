@@ -3,6 +3,7 @@ public class BulletPattern {
 	private float angle;
 	private float x_angle;
 	private float y_angle;
+	private float i;
 	
 	public void clockwiseSpiralPattern(BulletManager enemyBullets) {
 		angle = 0;
@@ -10,7 +11,7 @@ public class BulletPattern {
 		y_angle = 0;
 		
 		for(Bullet spiral:enemyBullets.getBullets()) {
-			switch(spiral.getBulletType()){
+			switch(spiral.getBulletType()) {
 				case ENEMY_BULLET:
 					x_angle = (float)Math.cos(Math.toRadians(angle));
 					y_angle = (float)Math.sin(Math.toRadians(angle));
@@ -50,7 +51,7 @@ public class BulletPattern {
 		angle = 0;
 		x_angle = 0;
 		y_angle = 0;
-		float i = 20;
+		i = 0;
 		
 		for(Bullet sunBurst:enemyBullets.getBullets()) {
 			switch(sunBurst.getBulletType()) {
@@ -76,10 +77,10 @@ public class BulletPattern {
 	}
 	
 	public void sunBurstTop(BulletManager enemyBullets) {
-		angle = 0;
+		angle = 180;
 		x_angle = 0;
 		y_angle = 0;
-		float i = -20;
+		i = 0;
 		
 		for(Bullet sunBurst:enemyBullets.getBullets()) {
 			switch(sunBurst.getBulletType()) {
@@ -89,11 +90,11 @@ public class BulletPattern {
 					
 					sunBurst.setBulletDXDY(x_angle, y_angle);
 					
-					if(angle <= -180) {
-						i = 20;
-					}
-					else if(angle >= 0) {
+					if(angle >= 180) {
 						i = -20;
+					}
+					else if(angle <= 0) {
+						i = 20;
 					}
 					angle += i;
 					break;
@@ -108,6 +109,55 @@ public class BulletPattern {
 		angle = 0;
 		x_angle = 0;
 		y_angle = 1;
-		float i = 20;
+		i = 0;
+		
+		for(Bullet zigZag:enemyBullets.getBullets()) {
+			switch(zigZag.getBulletType()) {
+				case ENEMY_BULLET:
+					x_angle = (float)Math.cos(Math.toRadians(angle));
+					
+					zigZag.setBulletDXDY(x_angle, y_angle);
+					
+					if(angle >= 180) {
+						i = -20;
+					}
+					else if(angle <= 0) {
+						i = 20;
+					}
+					angle += i;
+					break;
+					
+				default:
+					break;
+			}
+		}
+	}
+	
+	public void zigZagTop(BulletManager enemyBullets) {
+		angle = 180;
+		x_angle = 0;
+		y_angle = -1;
+		i = 0;
+		
+		for(Bullet zigZag:enemyBullets.getBullets()) {
+			switch(zigZag.getBulletType()) {
+				case ENEMY_BULLET:
+					x_angle = (float)Math.cos(Math.toRadians(angle));
+					
+					zigZag.setBulletDXDY(x_angle, y_angle);
+					
+					if(angle >= 180) {
+						i = -20;
+					}
+					else if(angle <= 0) {
+						i = 20;
+					}
+					angle += i;
+					break;
+					
+				default:
+					break;
+			}
+		}
 	}
 }
