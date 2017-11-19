@@ -248,11 +248,11 @@ public class PhysX {
 					
 					if (coll.getCollisionData() != null) {
 						System.out.println("Collision! :" + coll.getCollisionData());
-						obj.sendCollisionData(coll.getCollisionData());
+						obj.sendCollisionData(coll.getCollisionData(), coll.getPosition());
 					}
 					if (obj.getCollisionData() != null) {
 						System.out.println("Collision! :" + obj.getCollisionData());
-						coll.sendCollisionData(obj.getCollisionData());
+						coll.sendCollisionData(obj.getCollisionData(), obj.getPosition());
 					}
 					
 					/*

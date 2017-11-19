@@ -10,6 +10,7 @@ public class EnemyShip extends Ship implements ActionListener{
 		super(physObj, current_health, stats, "PlayerShip-Small.png", CollisionType.enemyShip);
 		// TODO Auto-generated constructor stub
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// Detect target

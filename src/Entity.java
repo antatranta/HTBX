@@ -31,8 +31,7 @@ public class Entity implements Collision{
 		return new CollisionData(this.physObj.getCollisionData());
 	}
 
-	@Override
-	public void onCollisionEvent(CollisionData data) {
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub
 		
 	}

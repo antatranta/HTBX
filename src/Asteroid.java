@@ -16,7 +16,7 @@ public class Asteroid extends Entity {
 	}
 
 	@Override
-	public void onCollisionEvent(CollisionData data) {
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub
 	}
 }
