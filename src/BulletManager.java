@@ -81,8 +81,13 @@ public class BulletManager {
 		moveBullets();
 	}
 	
-	public void moveZigZagBottom() {
-		pattern.zigZagBottom(this);
+	public void moveSunBurstBottom() {
+		pattern.sunBurstBottom(this);
+		moveBullets();
+	}
+	
+	public void moveSunBurstTop() {
+		pattern.sunBurstTop(this);
 		moveBullets();
 	}
 }

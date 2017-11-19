@@ -46,19 +46,19 @@ public class BulletPattern {
 		}
 	}
 	
-	public void zigZagBottom(BulletManager enemyBullets) {
+	public void sunBurstBottom(BulletManager enemyBullets) {
 		angle = 0;
 		x_angle = 0;
 		y_angle = 0;
 		float i = 20;
 		
-		for(Bullet zigZag:enemyBullets.getBullets()) {
-			switch(zigZag.getBulletType()) {
+		for(Bullet sunBurst:enemyBullets.getBullets()) {
+			switch(sunBurst.getBulletType()) {
 				case ENEMY_BULLET:
 					x_angle = (float)Math.cos(Math.toRadians(angle));
 					y_angle = (float)Math.sin(Math.toRadians(angle));
 					
-					zigZag.setBulletDXDY(x_angle, y_angle);
+					sunBurst.setBulletDXDY(x_angle, y_angle);
 					
 					if(angle >= 180) {
 						i = -20;
@@ -75,11 +75,39 @@ public class BulletPattern {
 		}
 	}
 	
-	public void zigZagTop(BulletManager enemyBullets) {
+	public void sunBurstTop(BulletManager enemyBullets) {
+		angle = 0;
+		x_angle = 0;
+		y_angle = 0;
+		float i = -20;
 		
+		for(Bullet sunBurst:enemyBullets.getBullets()) {
+			switch(sunBurst.getBulletType()) {
+				case ENEMY_BULLET:
+					x_angle = (float)Math.cos(Math.toRadians(angle));
+					y_angle = (float)Math.sin(Math.toRadians(angle));
+					
+					sunBurst.setBulletDXDY(x_angle, y_angle);
+					
+					if(angle <= -180) {
+						i = 20;
+					}
+					else if(angle >= 0) {
+						i = -20;
+					}
+					angle += i;
+					break;
+					
+				default:
+					break;
+			}
+		}
 	}
 	
-	public void zShapeBottom(BulletManager enemyBullets) {
-		
+	public void zigZagBottom(BulletManager enemyBullets) {
+		angle = 0;
+		x_angle = 0;
+		y_angle = 1;
+		float i = 20;
 	}
 }
