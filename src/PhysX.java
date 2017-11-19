@@ -253,6 +253,7 @@ public class PhysX {
 					if (obj.getCollisionData() != null) {
 						System.out.println("Collision! :" + obj.getCollisionData());
 						coll.sendCollisionData(obj.getCollisionData(), obj.getPosition());
+
 					}
 					
 					/*

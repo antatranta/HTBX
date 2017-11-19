@@ -364,16 +364,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		setOffset();
-		// Player shoot every tick
-//		System.out.println("Fired");
 		if (CAN_ALIGN && !ALIGNMENT_LOCK) {
 			ALIGNMENT_LOCK = true;
 			alignReticle(last_mouse_loc);
 		}
 		
-		// TESTING!!! NOT FINAL
-		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
-		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
+		if(CAN_MOVE) {
+			movementLoop();
+		}
+		
+		moveEnemyShips();
+		
+		drawSprites();
 		
 		if(isShooting) {
 			if(shotCount % 5 == 0) {
@@ -382,13 +384,34 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			shotCount++;
 		}
 		
-		
 		console.testCollisions(player);
 		console.moveBullets();
 		for(GOval bullet : console.cullBullets()) {
 			program.remove(bullet);
 		}
+
+		HUD.updateHUD();
+		layerSprites();
+		/*
+		ArrayList <Quadrant> quads = console.physx().getQuadrants();
+		for (int i = 0; i < quads.size(); i++) {
+			if (quads.get(i).getAsteroids().size() > 0) {
+//				System.out.println(quads.get(i));
+//				for (Asteroid rock : quads.get(i).getAsteroids()) {
+//					System.out.println(rock);
+//					if (rock.getSprite() == null) {
+//						System.out.println("No sprite!");
+//					}
+//				}
+				drawAsteroids(quads.get(i).getAsteroids());
+			}
+		}
+		*/
 		
+		
+	}
+	
+	public void debugUpdate() {
 		if(console.IS_DEBUGGING) {
 			if(REQUEST_DEBUG_END) {
     				console.endDebugView();
@@ -455,11 +478,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				}
 			}
 		}
-		
-		if(CAN_MOVE) {
-			movementLoop();
+	}
+	
+	public void drawSprites() {
+		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
+		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
+	}
+	
+	public void moveEnemyShips() {
+		ArrayList<EnemyShip> ships = console.getActiveShips();
+		for(EnemyShip ship: ships) {
+			ship.AIUpdate(player.physObj.getPosition());
 		}
-		
 		HUD.updateHUD();
 		layerSprites();
 		/*
@@ -477,8 +507,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			}
 		}
 		*/
-		
-		
 	}
 	
 	// TODO
@@ -722,10 +750,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			return false;
 		}
 		return true;
-	}
-	
-	private void showStatus() {
-		
 	}
 
 	@Override
