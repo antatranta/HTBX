@@ -25,31 +25,46 @@ public class GameConsole extends GraphicsProgram{
 	public GameConsole() {
 		endDebugView();
 		
+		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
-		// Create the universe. For now, only a single quadrant
-		System.out.println("Made a new game console");
+		
+		// create an object to handle physX
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
+		
+		// create a new map
 		mapCreator = new MapCreator();
+		
+		// populate the PhysX sim
 		physx.addQuadrants(mapCreator.createMap());
 		
+		// setup a new camera
 		camera = new Camera();
 		camera.setupCamera(1, 1);
 		
+		// create a new bullet manager
 		bulletStore = new BulletManager();
 		
+		// get the player spawn point
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
 		float pos_x = ((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
 		float pos_y = ((playerSpawn.getQUID().getY())* PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2);
 		Vector2 pos = new Vector2(pos_x, pos_y);
-		System.out.println("pos = " + pos_x + ", " + pos_y);
+		System.out.println("player starting position = " + pos_x + ", " + pos_y);
 		
+		// create a new collider for the player
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 25);
+		
+		// create a new physXobject for the player
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
+		
+		// create the player
 		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,100,1,1), "PlayerShip-Small.png");
 		player.setDxDy(Vector2.Zero());
 		gameTimer.addListener(player);
+		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
+		System.out.println("Made a new game console");
 	}
 	
 	

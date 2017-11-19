@@ -5,10 +5,15 @@ public class EnemyShip extends Ship implements ActionListener{
 	protected static EnemyType type;
 	private int orgin_degree = -90;
 	private Vector2 target = new Vector2(500,500);
+	private float interactionDistance = 500f;
 	
 	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats) {
 		super(physObj, current_health, stats, "PlayerShip-Small.png", CollisionType.enemyShip);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void setInteractionDistance(float interactionDistance) {
+		this.interactionDistance = interactionDistance;
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -22,22 +27,31 @@ public class EnemyShip extends Ship implements ActionListener{
 	}
 	
 	public void AIUpdate(Vector2 playerPos) {
+		
+		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > interactionDistance)
+			return;
+		
 		float MovetoX = playerPos.getX();
 		float MovetoY = playerPos.getY();
+		
 //		System.out.println("MovetoX: "+ MovetoX+" MovetoY: "+MovetoY);
 		float thisX = this.getPhysObj().getPosition().getX();
 		float thisY = this.getPhysObj().getPosition().getY();
 		float differentX = MovetoX - thisX;
 		float differentY = MovetoY - thisY;
+		
 //		System.out.println("DifferentX: "+ differentX+" DifferentY: "+differentY);
 		float angle = (float)Math.atan2(differentY,differentX);
 //		System.out.println("Angle: "+angle);
+		
 		thisX+= this.getStats().getSpeed()*Math.cos(angle);
 		thisY+= this.getStats().getSpeed()*Math.sin(angle);
+		
 		//Set enemy backend position
 		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
+		
 		//Set enemy image position
-		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
+//		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
 		Rotate2Player(angle);
 	}
 	

@@ -247,11 +247,16 @@ public class PhysX {
 				if (PhysXLibrary.isCollision(obj, coll)) {
 					
 					if (coll.getCollisionData() != null) {
-						System.out.println("Collision! :" + coll.getCollisionData());
+						if(GameConsole.IS_DEBUGGING) {
+							System.out.println("Collision! :" + coll.getCollisionData());
+						}
 						obj.sendCollisionData(coll.getCollisionData());
 					}
 					if (obj.getCollisionData() != null) {
-						System.out.println("Collision! :" + obj.getCollisionData());
+						if (GameConsole.IS_DEBUGGING)
+						{
+//							System.out.println("Collision! :" + obj.getCollisionData());
+						}
 						coll.sendCollisionData(obj.getCollisionData());
 					}
 					
