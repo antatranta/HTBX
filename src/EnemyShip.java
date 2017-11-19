@@ -3,6 +3,7 @@ import java.awt.event.ActionListener;
 
 public class EnemyShip extends Ship implements ActionListener{
 	protected static EnemyType type;
+	private int orgin_degree = -90;
 	private Vector2 target = new Vector2(500,500);
 	
 	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats) {
@@ -23,31 +24,49 @@ public class EnemyShip extends Ship implements ActionListener{
 	public void AIUpdate(Vector2 playerPos) {
 		float MovetoX = playerPos.getX();
 		float MovetoY = playerPos.getY();
-		System.out.println("MovetoX: "+ MovetoX+" MovetoY: "+MovetoY);
+//		System.out.println("MovetoX: "+ MovetoX+" MovetoY: "+MovetoY);
 		float thisX = this.getPhysObj().getPosition().getX();
 		float thisY = this.getPhysObj().getPosition().getY();
 		float differentX = MovetoX - thisX;
 		float differentY = MovetoY - thisY;
-		System.out.println("DifferentX: "+ differentX+" DifferentY: "+differentY);
+//		System.out.println("DifferentX: "+ differentX+" DifferentY: "+differentY);
 		float angle = (float)Math.atan2(differentY,differentX);
-		System.out.println("Angle: "+angle);
+//		System.out.println("Angle: "+angle);
 		thisX+= this.getStats().getSpeed()*Math.cos(angle);
 		thisY+= this.getStats().getSpeed()*Math.sin(angle);
-		//thisX+= Math.cos(angle);
-		//thisY+= Math.sin(angle);
+		//Set enemy backend position
 		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
+		//Set enemy image position
+		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
+		Rotate2Player(angle);
 	}
 	
-	public void Rotate2Player(Vector2 playerPos) {
-		
+	public void Rotate2Player(float angle) {
+		//Angle: 3.14 & -3.14 = 360'.     -1.57 = 90'.    1.57=270'
+		int target_degree = (int) (angle * 57.32);
+		int different = orgin_degree - target_degree;
+		if(Math.abs(different)>180) {
+			different+=different>0?-360:360;
+		}
+		if(different<0) {
+			this.getSprite().rotate(1);
+			orgin_degree++;
+		}else if(different>0) {
+			this.getSprite().rotate(-1);
+			orgin_degree--;
+		}
+//		System.out.println("target_degree: "+target_degree); 
+//		System.out.println("orgin_degree: "+orgin_degree); 
 	}
+	
 	@Override
 	public void Move() {
 		if(getCurrentHealth()>0) {
 			//move to player
 			AIUpdate(target);
-			this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
-		}//avoid asteroid method?
+			//avoid asteroid method?
+
+		}
 	}
 	
 }

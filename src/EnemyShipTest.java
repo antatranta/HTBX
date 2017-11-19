@@ -10,9 +10,11 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 	private EnemyShip target1;
 	private Vector2 enemyVector = new Vector2(100,100);
 	private Vector2 targetVector = new Vector2(500,500);
+	int count;
 	public void init() {
 		setSize(1000,1000);
 		setBackground(Color.white);
+		count = 0;
 		QuadrantID id = new QuadrantID(0,0,0);
 
 		PhysXObject shipPhysXObj =  new PhysXObject(id, enemyVector);
@@ -34,6 +36,7 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 	public void actionPerformed(ActionEvent arg0) {
 		// Detect target
 		Move();
+		TargetMovementSimulate();
 		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
 		
 	}
@@ -42,8 +45,14 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 		if(enemy.getCurrentHealth()>0) {
 			//enemy.AIUpdate(enemy.getTarget());
 			enemy.AIUpdate(target1.getPhysObj().getPosition());
-			enemy.getSprite().setLocationRespectSize(enemy.getPhysObj().getPosition().getX(),enemy.getPhysObj().getPosition().getY());
-			target1.getPhysObj().setPosition(new Vector2(target1.getPhysObj().getPosition().getX(),target1.getPhysObj().getPosition().getY()-1));
+			//enemy.getSprite().setLocationRespectSize(enemy.getPhysObj().getPosition().getX(),enemy.getPhysObj().getPosition().getY());
+		}
+	}
+	
+	public void TargetMovementSimulate() {
+		count++;
+		if(count%2==0) {
+			target1.getPhysObj().setPosition(new Vector2(target1.getPhysObj().getPosition().getX()+1,target1.getPhysObj().getPosition().getY()-1));
 			target1.getSprite().setLocationRespectSize(target1.getPhysObj().getPosition().getX(),target1.getPhysObj().getPosition().getY());
 		}
 	}
