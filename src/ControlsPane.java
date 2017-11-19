@@ -3,14 +3,18 @@ import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GImage;
 
 public class ControlsPane extends GraphicsPane {
 	private MainApplication program;
+	private GImage controls;
 	private GLabel back;
 	private GObject obj;
 	
 	public ControlsPane(MainApplication app) {
 		program = app;
+		controls = new GImage("controls.gif", 0, 0);
+		controls.setLocation(((MainApplication.WINDOW_WIDTH / 2) - (controls.getWidth() / 2)), ((MainApplication.WINDOW_HEIGHT / 2) - (controls.getHeight() / 2) + 25));
 		
 		back = new GLabel("BACK");
 		back.setFont(font);
@@ -21,6 +25,7 @@ public class ControlsPane extends GraphicsPane {
 	@Override
 	public void showContents() {
 		program.add(whiteBG());
+		program.add(controls);
 		program.add(title());
 		program.add(back);
 		program.add(selection());
@@ -33,6 +38,7 @@ public class ControlsPane extends GraphicsPane {
 		program.remove(title());
 		program.remove(back);
 		program.remove(selection());
+		program.remove(controls);
 	}
 	
 	@Override
