@@ -90,6 +90,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private float yAxis = 0;
 	private int track_amount = 0;
 	
+	private DisplayableHUD HUD;
+	
 	
 	private boolean TRACKING_SET = false;
 	private Vector2 TRACKING_POSITION;
@@ -99,21 +101,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
 	
 	// Player STATUS HUD Stuffs
-	private GRect stats_back;
-	private GRect status_back;
-	private GRect status_bar_hp;
-	private GRect status_bar_hp_back;
-	//private GLabel hp_label;
-	private GRect status_bar_shield;
-	private GRect status_bar_shield_back;
-	//private GLabel shield_label;
-	private GRect compass_back;
-	private GRect inner_compass_back;
-	private GameImage compass_sprite;
-	private Vector2 status_origin;
-	private double bar_max_x;
-	private double bar_max_y;
-	
+
 	public GamePane(MainApplication app) {
 		this.program = app;
 		init();
@@ -185,15 +173,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			DEBUGGING_COLS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
 			DEBUGGING_COLS.get(i).getRect().setFilled(true);
 		}
-		
-		
-		setSpriteLayer(DEBUGGING_BOX, DEBUG_LAYER);
-		setSpriteLayer(CURRENT_QUID_LABEL, DEBUG_LAYER);
-		setSpriteLayer(CURRENT_ASTEROIDS_LABEL, DEBUG_LAYER);
-		
-		setSpriteLayer(CURRENT_PLAYER_POS_LABEL, DEBUG_LAYER);
-		setSpriteLayer(CURRENT_MOUSE_POS_LABEL, DEBUG_LAYER);
-		
 	}
 	
 	public void pointTest(Vector2 pos) {
@@ -233,14 +212,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				program.add(DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1));
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setColor(Color.pink);
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setLabel(statics.get(i).getPhysObj().getQUID().toString());
-				setSpriteLayer(DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1), DEBUG_LAYER);
 				statics.get(i).setup(debuggingColliderSize(statics.get(i).getPhysObj()));
 				
 			
 				for(GOval col : statics.get(i).getObjects()) {
 					program.add(col);
 					col.setColor(Color.MAGENTA);
-					setSpriteLayer(col, 1);
 				}
 			}
 			
@@ -252,7 +229,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 					Vector2 frontEndPos = Camera.backendToFrontend(statics.get(i).getPhysObj().getColliders()[f].getCenter().add(statics.get(i).getPhysObj().getPosition()), size);
 					statics.get(i).setLocationRespectSize(f, frontEndPos);
 					DEBUGGING_QUID_LABELS.get(i).setLocation(frontEndPos.getX(), frontEndPos.getY());
-					setSpriteLayer(DEBUGGING_QUID_LABELS.get(i), DEBUG_LAYER);
 //					statics.get(i).getObjects()[f].setLocation(frontEndPos.getX(), frontEndPos.getY());
 				}
 			}
@@ -291,18 +267,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		CURRENT_MOUSE_POS_LABEL = new GLabel("Current M Position", 15, 100);
 		DEBUGGING_BOX = new GRect(10, 10, 300, 100);
 		playerCollider = new GOval(0,0,0,0);
-
-		drawHUD();
 		
 		console = program.getGameConsole();
 		player = console.getPlayer();
 
 		aiming_edge = new GameImage("rectile.png", 0, 0);
-		setSpriteLayer(aiming_edge, PLAYER_RECTILE);
 		aiming_head = new GameImage("Cursor.png", 0, 0);
-		setSpriteLayer(aiming_head, PLAYER_RECTILE_2);
 		player_img = player.getSprite();
-		setSpriteLayer(player_img, 1);
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
 		}
@@ -311,79 +282,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		
-		
-	
+		HUD = new DisplayableHUD(program, player);
 		CAN_MOVE = true;
 	}
 	
-	private void drawHUD() {
-		status_back = new GRect(10, MainApplication.WINDOW_HEIGHT - 10 - 75, 300, 75);
-		//Vector2 status_origin = new Vector2((float)status_back.getX(), (float)status_back.getY());
-		bar_max_y = status_back.getHeight() - 20 - ((status_back.getHeight() - 10) / 2);
-		bar_max_x = status_back.getWidth() - 20;
-		
-		status_back.setFillColor(Color.BLACK);
-		status_back.setFilled(true);
-		status_back.setColor(Color.WHITE);
-		setSpriteLayer(status_back, CURSOR_LAYER);
-		
-		status_bar_hp_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y + bar_max_y + 10, bar_max_x, bar_max_y);
-		status_bar_hp_back.setFillColor(Color.WHITE);
-		status_bar_hp_back.setFilled(true);
-		status_bar_hp_back.setColor(Color.WHITE);
-		setSpriteLayer(status_bar_hp_back, CURSOR_LAYER);
-		
-		status_bar_shield_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y, bar_max_x, bar_max_y);
-		status_bar_shield_back.setFillColor(Color.WHITE);
-		status_bar_shield_back.setFilled(true);
-		status_bar_shield_back.setColor(Color.WHITE);
-		setSpriteLayer(status_bar_shield_back, CURSOR_LAYER);
-		
-		compass_back = new GRect(status_back.getX() + status_back.getWidth() + 5, status_back.getY(), status_back.getHeight(), status_back.getHeight());
-		compass_back.setFillColor(Color.BLACK);
-		compass_back.setFilled(true);
-		compass_back.setColor(Color.WHITE);
-		setSpriteLayer(compass_back, CURSOR_LAYER);
-		
-		inner_compass_back = new GRect(status_back.getX() + status_back.getWidth() + 15, status_back.getY() + 10, status_back.getHeight() - 20, status_back.getHeight() - 20);
-		inner_compass_back.setFillColor(Color.WHITE);
-		inner_compass_back.setFilled(true);
-		inner_compass_back.setColor(Color.WHITE);
-		setSpriteLayer(inner_compass_back, 0);
-		
-		compass_sprite = new GameImage("Compass2.png", compass_back.getX() + 15, compass_back.getY() + 15);
-		setSpriteLayer(compass_sprite, CURSOR_LAYER);
-		
-		status_bar_hp = new GRect(status_bar_hp_back.getLocation().getX(), status_bar_hp_back.getY(), status_bar_hp_back.getWidth(), status_bar_hp_back.getHeight());
-		status_bar_hp.setFillColor(Color.GREEN);
-		status_bar_hp.setFilled(true);
-		status_bar_hp.setColor(Color.YELLOW);
-		setSpriteLayer(status_bar_hp, CURSOR_LAYER);
-		
-		status_bar_shield = new GRect(status_bar_shield_back.getLocation().getX(), status_bar_shield_back.getY(), status_bar_shield_back.getWidth(), status_bar_shield_back.getHeight());
-		status_bar_shield.setFillColor(Color.BLUE);
-		status_bar_shield.setFilled(true);
-		status_bar_shield.setColor(Color.CYAN);
-		setSpriteLayer(status_bar_shield, CURSOR_LAYER);
-		
-//		stats_back = new GRect();
-	}
-	
-	private void updateHUD() {
-		scaleStatusBar(status_bar_hp, (double)player.getCurrentHealth() / (double)player.getStats().getHealthMax());
-		scaleStatusBar(status_bar_shield, (double)player.getCurrentShield() / (double)player.getStats().getShieldMax());
-		aimCompass(compass_sprite, new Vector2(0,0));
-	}
-	
-	private void scaleStatusBar(GRect bar, double percent) {
-		bar.setSize(bar_max_x * percent, bar.getHeight());
-	}
-	
-	private void aimCompass(GameImage compass, Vector2 spot) {
-		double x = spot.getX() - player.getPhysObj().getPosition().getX();
-		double y = spot.getY() - player.getPhysObj().getPosition().getY();
-		compass_sprite.setDegrees(Math.toDegrees(Math.atan2(y, x)));
-	}
 	
 	public void centerPlayer() {
 		Vector2 frontPos = Camera.backendToFrontend(player.getPhysObj().getPosition());
@@ -400,38 +302,20 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.add(player_img);
 		program.add(aiming_edge);
 		program.add(aiming_head);
-		showHUD();
+		HUD.showContents();
 	}
 	
-	public void showHUD() {
-		program.add(status_back);
-		program.add(status_bar_hp_back);
-		program.add(status_bar_hp);
-		program.add(status_bar_shield_back);
-		program.add(status_bar_shield);
-		program.add(compass_back);
-		program.add(inner_compass_back);
-		program.add(compass_sprite);
-	}
+
 
 	@Override
 	public void hideContents() {
 		program.remove(player_img);
 		program.remove(aiming_edge);
 		program.remove(aiming_head);
-		hideHUD();
+		HUD.hideContents();
 	}
 	
-	public void hideHUD() {
-		program.remove(status_back);
-		//program.remove(status_bar_hp);
-		program.remove(status_bar_hp_back);
-		//program.remove(status_bar_shield);
-		program.remove(status_bar_shield_back);
-		program.remove(compass_back);
-		program.remove(compass_sprite);
-	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
@@ -576,7 +460,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			movementLoop();
 		}
 		
-		updateHUD();
+		HUD.updateHUD();
 		layerSprites();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
@@ -597,14 +481,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 	}
 	
-	// Logic is backwards because .acm is weird. Sprites must be sent to front before sending back to layer appropriately
-	private void setSpriteLayer(GObject sprite, int layer) {
-		sprite.sendToFront();
-		for(int i = 0; i < layer; i++) {
-			sprite.sendBackward();
-		}
-	}
-	
 	// TODO
 	private void layerSprites() {
 		// First, put aiming reticles in front
@@ -612,14 +488,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		aiming_head.sendToBack();
 		
 		// Then dynamic parts of the HUD
-		status_bar_hp.sendToBack();
-		status_bar_hp_back.sendToBack();
-		status_bar_shield.sendToBack();
-		status_bar_shield_back.sendToBack();
-		status_back.sendToBack();
-		compass_sprite.sendToBack();
-		inner_compass_back.sendToBack();
-		compass_back.sendToBack();
+		HUD.layerSprites();
+
 		player_img.sendToBack();
 		
 		// FX Layer
@@ -672,8 +542,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img.rotate(TURN_POWER * final_turn);
 		player.adjustAngle(TURN_POWER * -final_turn);
 		player_img.setDegrees(-player.getAngle() + 90);
-		
-		
 		
 //		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
 //		Vector2 size = new Vector2(dia, dia);
@@ -753,7 +621,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			// Are we already drawing that rect?
 			if (!DEBUGGING_LINES.contains(rect)) {
 				DEBUGGING_LINES.add(rect);
-				//setSpriteLayer(rect.getRect(), ROCK_LAYER);
 			}
 			
 			// Set its location according to the offset
@@ -784,7 +651,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			if (!storage.contains(obj)) {
 				storage.add(obj);
 				program.add(obj.getSprite());
-				setSpriteLayer(obj.getSprite(), layer);
 			}
 			
 			// Set its location according to the offset
