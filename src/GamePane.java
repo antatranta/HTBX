@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
-import acm.graphics.GPoint;
 import acm.graphics.GRect;
 import rotations.GameImage;
 
@@ -391,6 +390,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 
 		HUD.updateHUD();
+		HUD.updateStats();
 		layerSprites();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();

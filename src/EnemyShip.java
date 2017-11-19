@@ -66,7 +66,8 @@ public class EnemyShip extends Ship implements ActionListener{
 		if(different<0) {
 			this.getSprite().rotate(1);
 			orgin_degree++;
-		}else if(different>0) {
+		}
+		else if(different>0) {
 			this.getSprite().rotate(-1);
 			orgin_degree--;
 		}
