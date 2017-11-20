@@ -506,8 +506,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			program.remove(bullet);
 		}
 		
-		
-		
+		debugUpdate();		
 
 		
 		updateHUD();
