@@ -1,5 +1,8 @@
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
+import acm.graphics.GImage;
 import acm.graphics.GRect;
 import rotations.GameImage;
 
@@ -8,7 +11,7 @@ public class DisplayableHUD implements Displayable {
 	private MainApplication program;
 	private PlayerShip player;
 	
-	private GRect stats_back;
+
 	private GRect status_back;
 	private GRect status_bar_hp;
 	private GRect status_bar_hp_back;
@@ -19,16 +22,25 @@ public class DisplayableHUD implements Displayable {
 	private GRect compass_back;
 	private GRect inner_compass_back;
 	private GameImage compass_sprite;
-	private Vector2 status_origin;
+	
+	private GImage stats_display;
+	private GRect stats_back;
+	private GRect speed_stat;
+	private GRect damage_stat;
+	private GRect health_stat;
+	private GRect shield_stat;
 	
 	private double bar_max_x;
 	private double bar_max_y;
+	private double stats_x = 21;
+	private double stats_y = 19;
 	
 	
 	public DisplayableHUD(MainApplication program, PlayerShip player) {
 		this.program = program;
 		this.player = player;
 		init();
+		updateStats();
 	}
 	
 	private void init() {
@@ -72,10 +84,44 @@ public class DisplayableHUD implements Displayable {
 		status_bar_shield.setFillColor(Color.BLUE);
 		status_bar_shield.setFilled(true);
 		status_bar_shield.setColor(Color.CYAN);
+		
+		stats_display = new GImage("Stats_Display.png", 5, 5);
+		stats_back = new GRect(stats_display.getX(), stats_display.getY(), stats_display.getWidth(), stats_display.getHeight());
+		stats_back.setFillColor(Color.BLACK);
+		stats_back.setFilled(true);
+		stats_back.setColor(Color.WHITE);
+		
+		double startx = stats_back.getX() + 6;
+		double starty = stats_back.getY() + 28;
+		double unity = 21;
+		
+		speed_stat = new GRect(startx, starty, 0, 0);
+		speed_stat.setFilled(true);
+		speed_stat.setFillColor(Color.WHITE);
+		speed_stat.setColor(Color.WHITE);
+		
+		damage_stat = new GRect(startx, starty + (unity), 0, 0);
+		damage_stat.setFilled(true);
+		damage_stat.setFillColor(Color.WHITE);
+		damage_stat.setColor(Color.WHITE);
+		
+		health_stat = new GRect(startx, starty + (unity * 2), 0, 0);
+		health_stat.setFilled(true);
+		health_stat.setFillColor(Color.WHITE);
+		health_stat.setColor(Color.WHITE);
+		
+		shield_stat = new GRect(startx, starty + (unity * 3), 0, 0);
+		shield_stat.setFilled(true);
+		shield_stat.setFillColor(Color.WHITE);
+		shield_stat.setColor(Color.WHITE);
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
 		bar.setSize(bar_max_x * percent, bar.getHeight());
+	}
+	
+	private void scaleStatsBar(GRect bar, int level) {
+		bar.setSize(stats_x * level, stats_y);
 	}
 	
 	private void aimCompass(GameImage compass, Vector2 spot) {
@@ -90,6 +136,13 @@ public class DisplayableHUD implements Displayable {
 		aimCompass(compass_sprite, new Vector2(0,0));
 	}
 	
+	public void updateStats() {
+		scaleStatsBar(speed_stat, (player.getStats().getSpeed() - 1) / 4);
+		scaleStatsBar(damage_stat, (player.getStats().getDamage() - 1) / 4);
+		scaleStatsBar(health_stat, (player.getStats().getHealthMax() - 1) / 4);
+		scaleStatsBar(shield_stat, (player.getStats().getShieldMax() - 1) / 4);
+	}
+	
 	public void layerSprites() {
 		status_bar_hp.sendToBack();
 		status_bar_hp_back.sendToBack();
@@ -99,6 +152,12 @@ public class DisplayableHUD implements Displayable {
 		compass_sprite.sendToBack();
 		inner_compass_back.sendToBack();
 		compass_back.sendToBack();
+		stats_display.sendToBack();
+		speed_stat.sendToBack();
+		damage_stat.sendToBack();
+		health_stat.sendToBack();
+		shield_stat.sendToBack();
+		stats_back.sendToBack();
 	}
 	
 	@Override
@@ -112,6 +171,12 @@ public class DisplayableHUD implements Displayable {
 		program.add(inner_compass_back);
 		program.add(compass_sprite);
 		
+		program.add(stats_back);
+		program.add(stats_display);
+		program.add(speed_stat);
+		program.add(damage_stat);
+		program.add(health_stat);
+		program.add(shield_stat);
 	}
 
 	@Override
@@ -123,6 +188,17 @@ public class DisplayableHUD implements Displayable {
 		program.remove(status_bar_shield_back);
 		program.remove(compass_back);
 		program.remove(compass_sprite);
+		
+		program.remove(stats_back);
+		program.remove(stats_display);
+		program.remove(speed_stat);
+		program.remove(damage_stat);
+		program.remove(health_stat);
+		program.remove(shield_stat);
+	}
+
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
