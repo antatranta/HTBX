@@ -26,6 +26,10 @@ public class CollisionData {
 		return type;
 	}
 	
+	public static CollisionData Blank() {
+		return new CollisionData(0, CollisionType.blank);
+	}
+	
 	public String toString() {
 		return "Dam: "+ this.damage + " Type: " + this.type; 
 	}

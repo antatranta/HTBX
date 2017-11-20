@@ -2,6 +2,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
+import acm.graphics.GImage;
 import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
 
@@ -59,7 +60,7 @@ public class GameConsole extends GraphicsProgram{
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
 		
 		// create the player
-		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,100,1,1), "PlayerShip-Small.png");
+		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
 		player.setDxDy(Vector2.Zero());
 		gameTimer.addListener(player);
 		
@@ -128,7 +129,7 @@ public class GameConsole extends GraphicsProgram{
 		return this.player;
 	}
 	
-	public GOval Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+	public GImage Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,movementVector);
 	}
 	
@@ -136,7 +137,7 @@ public class GameConsole extends GraphicsProgram{
 		this.bulletStore.moveBullets();
 	}
 	
-	public ArrayList<GOval> cullBullets() {
+	public ArrayList<GImage> cullBullets() {
 		return this.bulletStore.getDeadBullets();
 	}
 	

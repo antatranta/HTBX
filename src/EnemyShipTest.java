@@ -18,9 +18,9 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 		QuadrantID id = new QuadrantID(0,0,0);
 
 		PhysXObject shipPhysXObj =  new PhysXObject(id, enemyVector);
-		enemy = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
+		enemy = new EnemyShip(shipPhysXObj, "Enemy_1.png",10, ShipStats.EnemyStats_01(), 1);
 		PhysXObject TargetPhysXObj =  new PhysXObject(id, targetVector);
-		target1 = new EnemyShip(TargetPhysXObj,10,ShipStats.EnemyStats_01());
+		target1 = new EnemyShip(TargetPhysXObj, "Enemy_2.png",10,ShipStats.EnemyStats_01(), 1);
 		enemy.getSprite().setLocationRespectSize(enemyVector.getX(),enemyVector.getY());
 		target1.getSprite().setLocationRespectSize(targetVector.getX(),targetVector.getY());
 		add(enemy.getSprite());

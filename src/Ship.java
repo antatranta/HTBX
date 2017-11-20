@@ -1,10 +1,14 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import rotations.GameImage;
 
-public class Ship extends Entity {
+public class Ship extends Entity implements ActionListener {
 
-	private int current_health;
-	private ShipStats stats;
-	private double dir = 90;
+	protected int current_health;
+	protected ShipStats stats;
+	protected Vector2 external_force;
+	protected double dir = 90;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
@@ -12,6 +16,7 @@ public class Ship extends Entity {
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType) {
 		super(physObj, sprite, new CollisionData(10, shipType));
 //		this.physObj = physObj;
+		this.external_force = new Vector2(0, 0);
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
 		this.stats = stats;//speed, shield_max, health_max, damage
@@ -67,6 +72,7 @@ public class Ship extends Entity {
 		}
 	}
 	
+	
 	public float getDx() {
 		return dx;
 	}
@@ -90,13 +96,17 @@ public class Ship extends Entity {
 	}
 	
 	@Override
-	public void onCollisionEvent(CollisionData data) {
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub
-//		takeDamage(data.getDamage());
 		handleCollision(data);
 	}
 	
 	protected void handleCollision(CollisionData data) {
 		takeDamage(data.getDamage());
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// Stub
 	}
 }

@@ -9,7 +9,7 @@ import acm.graphics.*;
 
 public class BulletManager {
 	private ArrayList<Bullet> bullets;
-	private ArrayList<GOval> deadBullets;
+	private ArrayList<GImage> deadBullets;
 	
 	private BulletPattern pattern;
 	
@@ -26,22 +26,26 @@ public class BulletManager {
 		return bullets;
 	}
 	
-	public GOval onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
-		Bullet shot = new Bullet(dmg, spd, bullet, time, obj, movementVector);
-		this.bullets.add(shot);
+	public GImage onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+		
+		// Variable Verification
+		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {
+			Bullet shot = new Bullet(dmg, spd, bullet, time, obj, "Cursor.png", movementVector);
+			this.bullets.add(shot);
+			return shot.getSprite();
+		}
 		//this.gOvals.add(shot.getSprite());
+//		System.out.println(bullets.size() + " <- Bullets");
 		
-		System.out.println(bullets.size() + " <- Bullets");
-		
-		return shot.getSprite();
+		return null;
 	}
 	
-	public ArrayList<GOval> getDeadBullets(){
+	public ArrayList<GImage> getDeadBullets(){
 		return this.deadBullets;
 	}
 	
 	public void moveBullets() {
-		this.deadBullets = new ArrayList<GOval>();
+		this.deadBullets = new ArrayList<GImage>();
 		for(int i=0; i < this.bullets.size(); i++) {
 			this.bullets.get(i).move();
 			Vector2 pos = Camera.backendToFrontend(this.bullets.get(i).getPhysObj().getPosition());

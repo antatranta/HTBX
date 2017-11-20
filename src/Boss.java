@@ -3,7 +3,7 @@ import java.awt.event.ActionListener;
 
 public class Boss extends EnemyShip implements ActionListener{
 	public Boss(PhysXObject physObj, int current_health, ShipStats stats) {
-		super(physObj, current_health, stats);
+		super(physObj, "Enemy_1.png", current_health, stats, 5);
 		// TODO Auto-generated constructor stub
 	}
 

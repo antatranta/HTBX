@@ -185,6 +185,40 @@ public class PhysX {
 		
 	}
 	
+	private ArrayList<PhysXObject> getObjectsNearPosition(Vector2 pos, float range){
+		
+		QuadrantID QUID = assignQuadrant(pos);
+		
+		ArrayList<Quadrant> quads = getNearbyQuadrants(QUID);
+		ArrayList<PhysXObject> objects = new ArrayList<PhysXObject>();
+		
+		for(Quadrant quad : quads) {
+			for(Ship ship : quad.getShips()) {
+				if(PhysXLibrary.arePositionsInXRange(pos, ship.getPhysObj().getPosition(), range)) {
+					objects.add(ship.getPhysObj());
+				}
+			}
+			for (Asteroid asteroid : quad.getStatics()) {
+				if(PhysXLibrary.arePositionsInXRange(pos, asteroid.getPhysObj().getPosition(), range)) {
+					objects.add(asteroid.getPhysObj());
+				}
+			}
+		}
+		
+		// Do a distance calc to see if in camera range
+		// Draw everything that returns
+		// Update what is and what is not to be displayed
+		// Create an offset so that the camera will be centered
+		return objects;
+	}
+
+	public boolean isPositionSafe(Vector2 pos, float range) {
+		if(getObjectsNearPosition(pos, range).size() > 0) {
+			return false;
+		}
+		return true;
+	}
+	
 	public void addQuadrants(ArrayList<Quadrant> quads) {
 		
 		for(int i=quads.size()-1; i > 0; --i) {
@@ -198,27 +232,6 @@ public class PhysX {
 	public void addQuadrant(Quadrant quad) {
 		Quadrants.add(quad);
 	}
-	
-	/* These variables are meant to be private
-	 * get their values from PhsXLibrary instead
-	public float getQUADRANT_HEIGHT() {
-		return QUADRANT_HEIGHT;
-	}
-
-	public float getQUADRANT_WIDTH() {
-		return QUADRANT_WIDTH;
-	}
-
-	public int getMAP_WIDTH() {
-		return MAP_WIDTH;
-	}
-
-	public int getMAP_HEIGHT() {
-		return MAP_HEIGHT;
-	}
-	*/
-	
-	
 	
 	public void checkForCollisions(PhysXObject player) {
 		
@@ -238,7 +251,6 @@ public class PhysX {
 		}
 	}
 	
-	
 	private void checkForCollisionsOnObject(PhysXObject obj) {
 		ArrayList<PhysXObject> objects = getNearbyPhysXObjects(obj, 1000);
 		
@@ -247,17 +259,13 @@ public class PhysX {
 				if (PhysXLibrary.isCollision(obj, coll)) {
 					
 					if (coll.getCollisionData() != null) {
-						if(GameConsole.IS_DEBUGGING) {
-							System.out.println("Collision! :" + coll.getCollisionData());
-						}
-						obj.sendCollisionData(coll.getCollisionData());
+//						System.out.println("Collision! :" + coll.getCollisionData());
+						obj.sendCollisionData(coll.getCollisionData(), coll.getPosition());
 					}
 					if (obj.getCollisionData() != null) {
-						if (GameConsole.IS_DEBUGGING)
-						{
-//							System.out.println("Collision! :" + obj.getCollisionData());
-						}
-						coll.sendCollisionData(obj.getCollisionData());
+//						System.out.println("Collision! :" + obj.getCollisionData());
+						coll.sendCollisionData(obj.getCollisionData(), obj.getPosition());
+
 					}
 					
 					/*

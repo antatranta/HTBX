@@ -1,18 +1,19 @@
 import java.awt.Color;
 
+import acm.graphics.GObject;
 import acm.graphics.GOval;
+import rotations.GameImage;
 
-public class Bullet {
+public class Bullet extends Entity {
 	private int bulletDamage;
 	private int bulletSpeed;
 	private BulletType bulletType;
 	private float bulletDuration;
-	private PhysXObject physObj;
 
 	private Vector2 movementVector;
 	private float bulletDX;
 	private float bulletDY;
-	private GOval sprite;
+	private GOval oval;
 	private boolean dead;
 	
 	private Vector2 GOval_Pos;
@@ -20,19 +21,25 @@ public class Bullet {
 	
 	private int steps = 0;
 	
-	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
+		super(physObj, sprite, new CollisionData(10, CollisionType.bullet));
+		
+		
+		
+		
 		this.bulletDamage = dmg;
 		this.bulletSpeed = spd;
 		this.bulletType = bullet;
 		this.bulletDuration = time;
-		this.physObj = obj;
 		this.movementVector = movementVector;
+		
+		this.physObj.addSubscriber(this);
 		physObj.setCollisionData(new CollisionData(bulletDamage, CollisionType.bullet));
 //		physObj.setHost(this);
 		this.bulletTrajectory();
-		sprite = new GOval(0, 0, 10, 10);
-		sprite.setFillColor(Color.yellow);
-		sprite.setFilled(true);
+//		oval = new GOval(0, 0, 10, 10);
+//		oval.setFillColor(Color.yellow);
+//		oval.setFilled(true);
 	}
 	
 	public void setBulletDamage(int dmg) {
@@ -123,8 +130,25 @@ public class Bullet {
 		return this.GOval_Pos;
 	}
 	
-	public GOval getSprite() {
+	public GameImage getSprite() {
 		return sprite;
+	}
+	
+	public GOval getGOval() {
+		return oval;
+	}
+	
+	@Override
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
+		// TODO Auto-generated method stub
+		handleCollision(data);
+	}
+	
+	protected void handleCollision(CollisionData data) {
+		if(data.getType() != CollisionType.bullet && data.getType() != CollisionType.blank) {
+			this.dead = true;
+			this.setCollisionData(CollisionData.Blank());
+		}
 	}
 	
 }

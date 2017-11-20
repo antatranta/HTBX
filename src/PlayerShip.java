@@ -1,7 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PlayerShip extends Ship implements ActionListener{
+public class PlayerShip extends Ship {
 
 	private int current_shield;
 	private int shield_regen = 100;
@@ -54,9 +54,12 @@ public class PlayerShip extends Ship implements ActionListener{
 		if (current_shield > 0) {
 			current_shield -= amount;
 		}
-//		else {
-////			takeDamage(amount);
-//		}
+		else {
+			current_health -= amount;
+			if (current_health < 0) {
+				current_health = 0;
+			}
+		}
 	}
 
 	public int getCurrentShield() {
