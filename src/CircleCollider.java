@@ -10,6 +10,11 @@ public class CircleCollider {
 		this.radius = 50;
 	}
 	
+	public CircleCollider(float radius) {
+		this.center = Vector2.Zero();
+		this.radius = radius;
+	}
+	
 	public CircleCollider(Vector2 center, float radius) {
 		this.center = center;
 		this.radius = radius;

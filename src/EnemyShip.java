@@ -26,13 +26,6 @@ public class EnemyShip extends Ship implements ActionListener{
 		this.stoppingDistance = stoppingDistance;
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// Detect target
-//		Move();
-//		BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
-		
-	}
 	public EnemyType getEnemyType() {
 		return type;
 	}
@@ -69,7 +62,7 @@ public class EnemyShip extends Ship implements ActionListener{
 		
 		//Set back-end position
 		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
-		
+		moveExternalForce();
 		//Set enemy image position
 //		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
 		Rotate2Player(angle);
@@ -101,12 +94,33 @@ public class EnemyShip extends Ship implements ActionListener{
 	}
 	
 	@Override
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
+
+		if (data.getType() == CollisionType.playerShip) {
+			calculateCollisionForce(pos);
+		}
+		if (data.getType() == CollisionType.asteroid) {
+			takeDamage(data.getDamage());
+		}
+	}
+	
+	
+	// WARNING: THIS IS NEVER ACCESSED IN THE GAME LOOP (GAMEPANE CALLS AIUPDATE)
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// Detect target
+		Move();
+		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
+		
+	}
+	
+	// WARNING: THIS IS NEVER ACCESSED IN THE GAME LOOP (GAMEPANE CALLS AIUPDATE)
+	@Override
 	public void Move() {
-		if(getCurrentHealth()>0) {
+		if(getCurrentHealth() > 0) {
 			//move to player
 			AIUpdate(target);
 			//avoid asteroid method?
-
 		}
 	}
 	

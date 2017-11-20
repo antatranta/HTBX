@@ -47,10 +47,11 @@ public class BulletManager {
 	public void moveBullets() {
 		this.deadBullets = new ArrayList<GImage>();
 		for(int i=0; i < this.bullets.size(); i++) {
-			this.bullets.get(i).move();
-			Vector2 pos = Camera.backendToFrontend(this.bullets.get(i).getPhysObj().getPosition());
+			Bullet current = this.bullets.get(i);
+			current.move();
+			Vector2 pos = Camera.backendToFrontend(current.getPhysObj().getPosition());
 
-			this.bullets.get(i).getSprite().setLocation(pos.getX(), pos.getY());
+			current.getSprite().setLocation(pos.getX() - (current.getSprite().getWidth() / 2), pos.getY() - (current.getSprite().getHeight() / 2));
 
 			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 100 || this.bullets.get(i).checkIfDead()) {
 				this.deadBullets.add(bullets.get(i).getSprite());

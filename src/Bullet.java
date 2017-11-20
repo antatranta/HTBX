@@ -5,6 +5,7 @@ import acm.graphics.GOval;
 import rotations.GameImage;
 
 public class Bullet extends Entity {
+
 	private int bulletDamage;
 	private int bulletSpeed;
 	private BulletType bulletType;
@@ -132,7 +133,7 @@ public class Bullet extends Entity {
 	
 	public GameImage getSprite() {
 		return sprite;
-	}
+	}	
 	
 	public GOval getGOval() {
 		return oval;
@@ -142,6 +143,7 @@ public class Bullet extends Entity {
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub
 		handleCollision(data);
+		destroy();
 	}
 	
 	protected void handleCollision(CollisionData data) {

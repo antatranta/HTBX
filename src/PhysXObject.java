@@ -124,6 +124,7 @@ public class PhysXObject {
 		
 		if (subscribers.size() < 1) {
 			System.out.println("No subscribers!");
+			return;
 		}
 		for(Collision sub : subscribers) {
 			if(sub != null) {

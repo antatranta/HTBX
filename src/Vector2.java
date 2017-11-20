@@ -24,6 +24,14 @@ public class Vector2 {
 		this.y = y;
 	}
 	
+	public void setX(float x) {
+		this.x = x;
+	}
+	
+	public void setY(float y) {
+		this.y = y;
+	}
+	
 	public String toString() {
 		return "(" + this.x + " , " + this.y + ")";
 	}

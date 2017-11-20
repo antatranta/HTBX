@@ -1,6 +1,6 @@
 import rotations.GameImage;
 
-public class Entity implements Collision{
+public class Entity implements Collision {
 	protected PhysXObject physObj;
 	protected GameImage sprite;
 	

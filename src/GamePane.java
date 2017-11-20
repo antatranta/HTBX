@@ -271,6 +271,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		console = program.getGameConsole();
 		player = console.getPlayer();
 
+
 		aiming_edge = new GameImage("rectile.png", 0, 0);
 		aiming_head = new GameImage("Cursor.png", 0, 0);
 		player_img = player.getSprite();
@@ -388,11 +389,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			alignReticle(last_mouse_loc);
 		}
 		
-		if(CAN_MOVE) {
-			movementLoop();
-		}
-		
-		moveEnemyShips();
+
 		
 		drawSprites();
 		
@@ -414,6 +411,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		HUD.updateHUD();
 		HUD.updateStats();
 		layerSprites();
+		
+		if (console.IS_DEBUGGING) {
+			debugUpdate();
+		}
+		
+		if(CAN_MOVE) {
+			movementLoop();
+		}
+		
+		moveEnemyShips();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
