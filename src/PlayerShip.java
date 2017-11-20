@@ -1,6 +1,9 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+
 public class PlayerShip extends Ship {
 
 	private static int INV_CAP = 90;
@@ -103,7 +106,7 @@ public class PlayerShip extends Ship {
 		processInvincibility();
 		regenerateShield();
 		moveExternalForce();
+
 		// TODO: Charges the shield. Use a timer to check for hits before charge, and when charging starts
 	}
-	
 }

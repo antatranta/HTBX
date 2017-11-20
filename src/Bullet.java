@@ -2,7 +2,7 @@ import java.awt.Color;
 
 import acm.graphics.GOval;
 
-public class Bullet {
+public class Bullet implements Collision {
 	private int bulletDamage;
 	private int bulletSpeed;
 	private BulletType bulletType;
@@ -26,6 +26,7 @@ public class Bullet {
 		this.bulletType = bullet;
 		this.bulletDuration = time;
 		this.physObj = obj;
+		this.physObj.addSubscriber(this);
 		this.movementVector = movementVector;
 		physObj.setCollisionData(new CollisionData(bulletDamage, CollisionType.bullet));
 //		physObj.setHost(this);
@@ -126,5 +127,12 @@ public class Bullet {
 	public GOval getSprite() {
 		return sprite;
 	}
+
+	@Override
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
+		// TODO Auto-generated method stub
+		destroy();
+	}
+	
 	
 }

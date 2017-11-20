@@ -1,9 +1,10 @@
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GImage;
 import acm.graphics.GRect;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import rotations.GameImage;
 
 public class DisplayableHUD implements Displayable {
@@ -11,7 +12,6 @@ public class DisplayableHUD implements Displayable {
 	private MainApplication program;
 	private PlayerShip player;
 	
-
 	private GRect status_back;
 	private GRect status_bar_hp;
 	private GRect status_bar_hp_back;
@@ -35,7 +35,9 @@ public class DisplayableHUD implements Displayable {
 	private double stats_x = 21;
 	private double stats_y = 19;
 	
-	
+	private int last_shield;
+	private int last_hp;
+
 	public DisplayableHUD(MainApplication program, PlayerShip player) {
 		this.program = program;
 		this.player = player;
@@ -201,5 +203,6 @@ public class DisplayableHUD implements Displayable {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }
