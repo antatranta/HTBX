@@ -14,7 +14,7 @@ public class MenuPane extends GraphicsPane {
 	public MenuPane(MainApplication app) {
 		program = app;
 		
-		GLabel play = new GLabel("PLAY");
+		GLabel play = new GLabel("NEW GAME");
 		GLabel settings = new GLabel("SETTINGS");
 		GLabel scores = new GLabel("SCORES");
 		GLabel controls = new GLabel("CONTROLS");
@@ -81,7 +81,7 @@ public class MenuPane extends GraphicsPane {
 		for(GLabel menu:mainMenu) {
 			if(obj == menu) {
 				switch(menu.getLabel()) {
-					case "PLAY":
+					case "NEW GAME":
 						program.switchToGame();
 						break;
 						

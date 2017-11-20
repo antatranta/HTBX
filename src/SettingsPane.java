@@ -78,11 +78,13 @@ public class SettingsPane extends GraphicsPane {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == null || obj == whiteBG()) {
-			return;
+		if(obj != null) {
+			for(GLabel setting:settings) {
+				if(obj == setting) {
+					setting.setColor(Color.gray);
+				}
+			}
 		}
-		
-		obj.setColor(Color.gray);
 	}
 	
 	@Override
@@ -98,46 +100,76 @@ public class SettingsPane extends GraphicsPane {
 		for(GLabel setting:settings) {
 			if(obj == setting) {
 				switch(setting.getLabel()) {
-					case "MUSIC":
-						count1++;
-						switch(count1 % 2) {
-							case 0:
-								toggle1.setLabel("ON");
-								program.musicToggle(true);
-								break;
-							case 1:
-								toggle1.setLabel("OFF");
-								program.musicToggle(false);
-								break;
-						}
+				case "MUSIC":
+					count1++;
+					switch(count1 % 2) {
+					case 0:
+						toggle1.setLabel("ON");
+						program.musicToggle(true);
 						break;
-						
-					case "SFX":
-						count2++;
-						switch(count2 % 2) {
-							case 0:
-								toggle2.setLabel("ON");
-								program.sfxToggle(true);
-								break;
-							case 1:
-								toggle2.setLabel("OFF");
-								program.sfxToggle(false);
-								break;
-						}
+
+					case 1:
+						toggle1.setLabel("OFF");
+						program.musicToggle(false);
 						break;
-						
-					case "BACK":
-						if(!program.isPaused()) {
-							program.switchToMenu();
-						}
-						else {
-							program.switchToPause();
-						}
+					}
+					break;
+
+				case "SFX":
+					count2++;
+					switch(count2 % 2) {
+					case 0:
+						toggle2.setLabel("ON");
+						program.sfxToggle(true);
 						break;
-					
-					default:
+
+					case 1:
+						toggle2.setLabel("OFF");
+						program.sfxToggle(false);
 						break;
+					}
+					break;
+
+				case "BACK":
+					if(!program.isPaused()) {
+						program.switchToMenu();
+					}
+					else {
+						program.switchToPause();
+					}
+					break;
+
+				default:
+					break;
 				}
+			}
+		}
+		if(obj == toggle1) {
+			count1++;
+			switch(count1 % 2) {
+				case 0:
+					toggle1.setLabel("ON");
+					program.musicToggle(true);
+					break;
+					
+				case 1:
+					toggle1.setLabel("OFF");
+					program.musicToggle(false);
+					break;
+			}
+		}
+		else if(obj == toggle2) {
+			count2++;
+			switch(count2 % 2) {
+				case 0:
+					toggle2.setLabel("ON");
+					program.sfxToggle(true);
+					break;
+				
+				case 1:
+					toggle2.setLabel("OFF");
+					program.sfxToggle(false);
+					break;
 			}
 		}
 	}
