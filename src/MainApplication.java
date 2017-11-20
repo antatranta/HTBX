@@ -14,6 +14,7 @@ public class MainApplication extends GraphicsApplication {
 	private ScoresPane score;
 	private ControlsPane control;
 	private PausePane pause;
+	private GameOverPane gameOver;
 	private GameConsole console;
 	private GameTimer gameTimer;
 	private AudioPlayer audio;
@@ -37,6 +38,7 @@ public class MainApplication extends GraphicsApplication {
 		control = new ControlsPane(this);
 		score = new ScoresPane(this);
 		pause = new PausePane(this);
+		gameOver = new GameOverPane(this);
 		audio = AudioPlayer.getInstance();
 		gameTimer.addListener(game);
 		musicToggle = true;
@@ -80,6 +82,12 @@ public class MainApplication extends GraphicsApplication {
 
 		gameTimer.startTimer();
 		switchToScreen(game);
+	}
+	
+	public void switchToGameOver() {
+		isPaused = false;
+		audio.stopSound("sounds", "01 Misconection_1.mp3");
+		switchToScreen(gameOver);
 	}
 	
 	public void switchToSettings() {
