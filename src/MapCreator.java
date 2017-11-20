@@ -36,14 +36,17 @@ public class MapCreator {
 	public void setPlayerAndBossQuadPositions() {
 		int totalQuads = (PhysXLibrary.MAP_WIDTH * PhysXLibrary.MAP_HEIGHT);
 		max_quad = totalQuads;
-		int player_quad = randomNumber(0, totalQuads);
-		int boss_quad = randomNumber(0, totalQuads);
-		while(player_quad == boss_quad) {
-			player_quad = randomNumber(0, totalQuads);
-			boss_quad   = randomNumber(0, totalQuads);
+		int player_quad = randomNumber(0, totalQuads-1);
+		int boss_quad = randomNumber(0, totalQuads-1);
+		System.out.println("player quad:"+player_quad+" boss_quad: "+boss_quad);
+		while((player_quad == boss_quad)) {
+			player_quad = randomNumber(0, totalQuads-1);
+			boss_quad   = randomNumber(0, totalQuads-1);
 		}
 		this.player_spawn_quad_order = player_quad;
 		this.boss_spawn_quad_order = boss_quad;
+		System.out.print("player_spawn_quad_order: "+ player_spawn_quad_order);
+		System.out.print("boss_spawn_quad_order: "+ boss_spawn_quad_order);
 	}
 /*	
 	public void createNoiseMap() {
@@ -72,8 +75,10 @@ public class MapCreator {
 				
 				if (order == player_spawn_quad_order) {
 					this.player_spawn_quad = quad;
+					System.out.print("player_spawn_quad: "+ player_spawn_quad);
 				} else if (order == boss_spawn_quad_order) {
 					this.boss_spawn_quad = quad;
+					System.out.print("boss_spawn_quad_order: "+ boss_spawn_quad_order);
 				}
 				order--;
 			}

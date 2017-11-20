@@ -47,8 +47,10 @@ public class GameConsole extends GraphicsProgram{
 		
 		// get the player spawn point
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
-		float pos_x = ((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
-		float pos_y = ((playerSpawn.getQUID().getY())* PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2);
+		float pos_x = Math.abs(((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2));
+		float pos_y = Math.abs(((playerSpawn.getQUID().getY())* PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2));
+//		System.out.println("(playerSpawn.getQUID().getX: "+playerSpawn.getQUID().getX()+" PhysXLibrary.QUADRANT_WIDTH): "+PhysXLibrary.QUADRANT_WIDTH);
+//		System.out.println("(playerSpawn.getQUID().getY: "+playerSpawn.getQUID().getY()+" PhysXLibrary.QUADRANT_HEIGHT): "+PhysXLibrary.QUADRANT_HEIGHT);
 		Vector2 pos = new Vector2(pos_x, pos_y);
 		System.out.println("player starting position = " + pos_x + ", " + pos_y);
 		
