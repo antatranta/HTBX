@@ -72,8 +72,8 @@ public class MainApplication extends GraphicsApplication {
 	public void switchToGame() {
 		if(!isPaused) {
 			removeAll();
-//			init();
-//			run();
+			init();
+			run();
 		}
 		if(musicToggle) {
 			audio.stopSound("sounds", "3A1W - Menu.wav");
