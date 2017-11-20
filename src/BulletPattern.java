@@ -11,8 +11,8 @@ public class BulletPattern {
 		y_angle = 0;
 		
 		for(Bullet spiral:enemyBullets.getBullets()) {
-			switch(spiral.getBulletType()) {
-				case ENEMY_BULLET:
+			switch(spiral.getPhysObj().getCollisionData().getType()) {
+				case enemy_bullet:
 					x_angle = (float)Math.cos(Math.toRadians(angle));
 					y_angle = (float)Math.sin(Math.toRadians(angle));
 					
@@ -32,8 +32,8 @@ public class BulletPattern {
 		y_angle = 0;
 		
 		for(Bullet spiral:enemyBullets.getBullets()) {
-			switch(spiral.getBulletType()) {
-				case ENEMY_BULLET:
+			switch(spiral.getPhysObj().getCollisionData().getType()) {
+				case enemy_bullet:
 					x_angle = (float)Math.cos(Math.toRadians(angle));
 					y_angle = (float)Math.sin(Math.toRadians(angle));
 				
@@ -54,8 +54,8 @@ public class BulletPattern {
 		i = 0;
 		
 		for(Bullet sunBurst:enemyBullets.getBullets()) {
-			switch(sunBurst.getBulletType()) {
-				case ENEMY_BULLET:
+			switch(sunBurst.getPhysObj().getCollisionData().getType()) {
+				case enemy_bullet:
 					x_angle = (float)Math.cos(Math.toRadians(angle));
 					y_angle = (float)Math.sin(Math.toRadians(angle));
 					
@@ -83,8 +83,8 @@ public class BulletPattern {
 		i = 0;
 		
 		for(Bullet sunBurst:enemyBullets.getBullets()) {
-			switch(sunBurst.getBulletType()) {
-				case ENEMY_BULLET:
+			switch(sunBurst.getPhysObj().getCollisionData().getType()) {
+				case enemy_bullet:
 					x_angle = (float)Math.cos(Math.toRadians(angle));
 					y_angle = (float)Math.sin(Math.toRadians(angle));
 					
@@ -112,8 +112,8 @@ public class BulletPattern {
 		i = 0;
 		
 		for(Bullet zigZag:enemyBullets.getBullets()) {
-			switch(zigZag.getBulletType()) {
-				case ENEMY_BULLET:
+			switch(zigZag.getPhysObj().getCollisionData().getType()) {
+				case enemy_bullet:
 					x_angle = (float)Math.cos(Math.toRadians(angle));
 					
 					zigZag.setBulletDXDY(x_angle, y_angle);
@@ -140,8 +140,8 @@ public class BulletPattern {
 		i = 0;
 		
 		for(Bullet zigZag:enemyBullets.getBullets()) {
-			switch(zigZag.getBulletType()) {
-				case ENEMY_BULLET:
+			switch(zigZag.getPhysObj().getCollisionData().getType()) {
+				case enemy_bullet:
 					x_angle = (float)Math.cos(Math.toRadians(angle));
 					
 					zigZag.setBulletDXDY(x_angle, y_angle);

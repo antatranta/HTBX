@@ -37,6 +37,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private MainApplication program; // You will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
+	private BulletManager bulletStore;
 
 	private PlayerShip player;
 	private Vector2 last_mouse_loc;
@@ -80,6 +81,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <Integer> pressed_keys;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <EnemyShip> drawn_ships;
+	private ArrayList <Bullet> drawn_bullets;
 	
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_OBJECTS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
@@ -256,6 +258,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		pressed_keys = new ArrayList <Integer>();
 		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <EnemyShip>();
+		drawn_bullets = new ArrayList <Bullet>();
 		
 		DEBUGGING_COLLIDERS = new ArrayList<StaticGObject>();
 		DEBUGGING_COLLIDERS_OBJECTS = new ArrayList<Asteroid>();
@@ -270,6 +273,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		console = program.getGameConsole();
 		player = console.getPlayer();
+		bulletStore = console.getBulletManager();
 
 
 		aiming_edge = new GameImage("rectile.png", 0, 0);
@@ -358,7 +362,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-		GImage bullet = console.Shoot(1, 25, BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
+
+		GImage bullet = console.Shoot(1, 25, BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "Cursor.png",  Camera.frontendToBackend(last_mouse_loc) );
 		
 		if(bullet != null) {
 //			bullet.setFilled(true);
@@ -366,6 +371,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //			bullet.setColor(Color.orange);
 			program.add(bullet);
 		}
+////		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
+////		program.add(bullet);
+//		player.shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc));
+
 	}
 	
 	@Override
@@ -399,7 +408,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		console.testCollisions(player);
 		console.moveBullets();
-		for(GImage bullet : console.cullBullets()) {
+
+		for(GameImage bullet : console.cullBullets()) {
 			program.remove(bullet);
 		}
 
@@ -493,11 +503,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void drawSprites() {
 		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
 		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
+		drawBullets(bulletStore.getBullets(), drawn_bullets);
 	}
 	
 	public void moveEnemyShips() {
 		ArrayList<EnemyShip> ships = console.getActiveShips();
 		for(EnemyShip ship: ships) {
+			ship.setBulletManagerListener(bulletStore);
 			ship.AIUpdate(player.physObj.getPosition());
 		}
 		/*
@@ -569,8 +581,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		double angle = -Math.toRadians(player.getAngle());
+
 		float speed = (float) player.getStats().getSpeedValue() * final_forward;
-		
 		
 		float cos = (float) Math.cos(angle) * speed;
 		float sin = (float) Math.sin(angle) * speed;
@@ -664,6 +676,24 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				rect.getRect().setLocation(final_off.getX(), final_off.getY());
 			}
 			
+		}
+	}
+	
+	private void drawBullets(ArrayList<Bullet> objects, ArrayList<Bullet> storage) {
+		for (int i = 0; i < objects.size(); i++) {
+			Bullet bullet = objects.get(i);
+			Vector2 frontEndPos = Camera.backendToFrontend(bullet.getPhysObj().getPosition());
+
+			// Are we already drawing that rock?
+			if (!storage.contains(bullet)) {
+				storage.add(bullet);
+				program.add(bullet.getSprite());
+			}
+			
+			// Set its location according to the offset
+			if (storage.contains(bullet)) {
+				bullet.getSprite().setLocationRespectSize(frontEndPos.getX(), frontEndPos.getY());
+			}
 		}
 	}
 	

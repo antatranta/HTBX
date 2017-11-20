@@ -1,26 +1,34 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EnemyShip extends Ship implements ActionListener{
+public class EnemyShip extends Ship implements ActionListener {
 	protected static EnemyType type;
 	private int orgin_degree = -90;
 	private Vector2 target = new Vector2(500,500);
 	private float interactionDistance = 500f;
+
 	private float stoppingDistance = 100f;
 	private EnemyShipStats stats;
 	
 	private boolean inFlyby = false;
 	private Vector2 flybyOffset = Vector2.Zero();
+
+	private int shoot_cd;
+	private int weapon_cd;
 	
 	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
 		super(physObj, current_health, stats, sprite, CollisionType.enemyShip);
 		this.stats = new EnemyShipStats(stats, aggression);
 		// TODO Auto-generated constructor stub
+		shoot_cd = 60;
+		weapon_cd = 90;
 	}
 	
 	public void setInteractionDistance(float interactionDistance) {
 		this.interactionDistance = interactionDistance;
 	}
+
 	
 	public void setStoppingDistance(float stoppingDistance) {
 		this.stoppingDistance = stoppingDistance;
@@ -46,6 +54,7 @@ public class EnemyShip extends Ship implements ActionListener{
 		
 		float MovetoX = playerPos.getX();
 		float MovetoY = playerPos.getY();
+		target = playerPos;
 		
 		if(inFlyby) {
 			flybyOffset.setXY(LavaLamp.randomNumber(0, 10), LavaLamp.randomNumber(0, 10));
@@ -60,6 +69,7 @@ public class EnemyShip extends Ship implements ActionListener{
 		
 		float angle = (float)Math.atan2(differentY,differentX);
 		
+
 		thisX+= (stats.getSpeedValue()*Math.cos(angle));
 		thisY+= (stats.getSpeedValue()*Math.sin(angle));
 		
@@ -69,6 +79,16 @@ public class EnemyShip extends Ship implements ActionListener{
 		//Set enemy image position
 //		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
 		Rotate2Player(angle);
+		
+		if (weapon_cd > 0) {
+			weapon_cd -= 1;
+		}
+		if (weapon_cd == 0) {
+			weapon_cd = shoot_cd;
+			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
+			shoot(1, 4, BulletType.ENEMY_BULLET,(60 * 5), obj, "Cursor.png",target);
+		}
+		
 	}
 	
 	public void Rotate2Player(float angle) {
@@ -102,7 +122,8 @@ public class EnemyShip extends Ship implements ActionListener{
 		if (data.getType() == CollisionType.playerShip) {
 			calculateCollisionForce(pos);
 		}
-		if (data.getType() == CollisionType.asteroid) {
+		if (data.getType() == CollisionType.asteroid ||
+				data.getType() == CollisionType.player_bullet) {
 			takeDamage(data.getDamage());
 		}
 	}

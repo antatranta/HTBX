@@ -5,11 +5,10 @@ import acm.graphics.GOval;
 import rotations.GameImage;
 
 public class Bullet extends Entity {
-
-	private int bulletDamage;
 	private int bulletSpeed;
 	private BulletType bulletType;
 	private float bulletDuration;
+	
 
 	private Vector2 movementVector;
 	private float bulletDX;
@@ -22,29 +21,29 @@ public class Bullet extends Entity {
 	
 	private int steps = 0;
 	
+
 	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
-		super(physObj, sprite, new CollisionData(10, CollisionType.bullet));
+		super(physObj, sprite, new CollisionData(10, CollisionType.blank));
 		
-		
-		
-		
-		this.bulletDamage = dmg;
 		this.bulletSpeed = spd;
 		this.bulletType = bullet;
 		this.bulletDuration = time;
+		this.physObj.addSubscriber(this);
 		this.movementVector = movementVector;
 		
 		this.physObj.addSubscriber(this);
-		physObj.setCollisionData(new CollisionData(bulletDamage, CollisionType.bullet));
-//		physObj.setHost(this);
+		
+		CollisionType collType = CollisionType.enemy_bullet;
+		if (bullet == BulletType.PLAYER_BULLET) {
+			collType = CollisionType.player_bullet;
+		}
+		
+		physObj.setCollisionData(new CollisionData(dmg, collType));
 		this.bulletTrajectory();
-//		oval = new GOval(0, 0, 10, 10);
-//		oval.setFillColor(Color.yellow);
-//		oval.setFilled(true);
 	}
 	
 	public void setBulletDamage(int dmg) {
-		this.bulletDamage = dmg;
+		this.physObj.getCollisionData().setDamage(dmg);
 	}
 	
 	public void setBulletSpeed(int spd) {
@@ -69,7 +68,7 @@ public class Bullet extends Entity {
 	}
 	
 	public int getBulletDamage() {
-		return this.bulletDamage;
+		return this.physObj.getCollisionData().getDamage();
 	}
 	
 	public int getBulletSpeed() {
@@ -108,6 +107,7 @@ public class Bullet extends Entity {
 	
 	public void destroy() {
 		dead = true;
+		this.setCollisionData(CollisionData.Blank());
 	}
 	
 	public boolean checkIfDead() {
@@ -139,17 +139,19 @@ public class Bullet extends Entity {
 		return oval;
 	}
 	
+
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub
 		handleCollision(data);
-		destroy();
 	}
 	
 	protected void handleCollision(CollisionData data) {
-		if(data.getType() != CollisionType.bullet && data.getType() != CollisionType.blank) {
-			this.dead = true;
-			this.setCollisionData(CollisionData.Blank());
+		if(data.getType() != CollisionType.player_bullet || data.getType() != CollisionType.blank
+				|| data.getType() == CollisionType.enemy_bullet || data.getType() == CollisionType.enemyShip) {
+			return;
+		} else {
+			destroy();
 		}
 	}
 	

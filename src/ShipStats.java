@@ -42,15 +42,15 @@ public class ShipStats {
 	public float getSpeedValue() {
 		switch(this.speed) {
 		case 0:
-			return 1;
+			return 5;
 		case 1:
-			return 1.75f;
+			return 5f;
 		case 2:
-			return 2.5f;
+			return 6f;
 		case 3:
-			return 3f;
+			return 7f;
 		default:
-			return 1;
+			return 8;
 		}
 	}
 	public void setSpeed(int speed) {

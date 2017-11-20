@@ -24,16 +24,17 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void init() {
 		setSize(800, 600);
 		setBackground(Color.white);
-		
+		last_mouse_loc = new Vector2(0, 0);
+		bulletStore = new BulletManager();
+		currentLocation = new PhysXObject();
+		currentLocation.setPosition(new Vector2(400, 300));
 	}
 	
 	public void run() {
 		isShooting = false;
 		shotCount = 0;
-		last_mouse_loc = new Vector2(0, 0);
-		bulletStore = new BulletManager();
-		currentLocation = new PhysXObject();
-		currentLocation.setPosition(new Vector2(400, 300));
+
+
 		
 		gameTimer = new Timer(15, this);
 		gameTimer.start();
@@ -83,10 +84,11 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void shoot() {
 		PhysXObject currentLocation = new PhysXObject();
 		currentLocation.setPosition(new Vector2(400, 300));
-		GImage bullet = bulletStore.onShootEvent(1, 1, BulletType.ENEMY_BULLET, 1000, currentLocation, Camera.frontendToBackend(last_mouse_loc) );
+
+		GameImage bullet = bulletStore.onShootEvent(1, 1, BulletType.ENEMY_BULLET, 1000, currentLocation, "Cursor.png", Camera.frontendToBackend(last_mouse_loc) );
 //		bullet.setFilled(true);
 //		bullet.setFillColor(Color.orange);
-		bullet.setColor(Color.orange);
+//		bullet.setColor(Color.orange);
 		add(bullet);
 	}
 }

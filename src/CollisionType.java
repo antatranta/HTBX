@@ -2,6 +2,7 @@ public enum CollisionType {
 	playerShip,
 	enemyShip,
 	asteroid,
-	bullet,
-	blank
+	blank,
+	enemy_bullet,
+	player_bullet
 }

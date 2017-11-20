@@ -6,16 +6,17 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import acm.graphics.*;
+import rotations.GameImage;
 
-public class BulletManager implements Shoot {
+public class BulletManager implements ShipTriggers {
 	private ArrayList<Bullet> bullets;
-	private ArrayList<GImage> deadBullets;
+	private ArrayList<GameImage> deadBullets;
 	
 	private BulletPattern pattern;
 	
 	public BulletManager() {
 		this.bullets = new ArrayList<Bullet>();
-		this.deadBullets = new ArrayList<GImage>();
+		this.deadBullets = new ArrayList<GameImage>();
 		pattern = new BulletPattern();
 	}
 	
@@ -27,26 +28,22 @@ public class BulletManager implements Shoot {
 		return bullets;
 	}
 	
-	public GImage onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
-		
+	public GameImage onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		// Variable Verification
 		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {
-			Bullet shot = new Bullet(dmg, spd, bullet, time, obj, "Cursor.png", movementVector);
+			Bullet shot = new Bullet(dmg, spd, bullet, time, obj, sprite, movementVector);
 			this.bullets.add(shot);
 			return shot.getSprite();
-		}
-		//this.gOvals.add(shot.getSprite());
-//		System.out.println(bullets.size() + " <- Bullets");
-		
+		}		
 		return null;
 	}
 	
-	public ArrayList<GImage> getDeadBullets(){
+	public ArrayList<GameImage> getDeadBullets(){
 		return this.deadBullets;
 	}
 	
 	public void moveBullets() {
-		this.deadBullets = new ArrayList<GImage>();
+		this.deadBullets = new ArrayList<GameImage>();
 		for(int i=0; i < this.bullets.size(); i++) {
 			Bullet current = this.bullets.get(i);
 			current.move();
@@ -106,10 +103,10 @@ public class BulletManager implements Shoot {
 		pattern.zigZagTop(this);
 		moveBullets();
 	}
-	
+
 	@Override
-	public void onShootEvent(Bullet shot, Vector2 origin, Vector2 target_pos) {
-		this.bullets.add(shot);
-		
+	public void onShipFire(BulletFireEventData data) {
+		if(data != null)
+			onShootEvent(data.getDamage(), data.getSpeed(), data.getBulletType(), data.getTime(), data.getPhysXObject(), data.getSprite(), data.getMovementVector());
 	}
 }

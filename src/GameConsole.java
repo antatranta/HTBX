@@ -5,6 +5,7 @@ import java.util.*;
 import acm.graphics.GImage;
 import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
+import rotations.GameImage;
 
 public class GameConsole extends GraphicsProgram{
 	
@@ -33,38 +34,43 @@ public class GameConsole extends GraphicsProgram{
 		// create an object to handle physX
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
 		
+		// create a new bullet manager
+		bulletStore = new BulletManager();
+		
+		// setup a new camera
+		camera = new Camera();
+		camera.setupCamera(1, 1);
+		
 		// create a new map
 		mapCreator = new MapCreator();
 		
 		// populate the PhysX sim
 		physx.addQuadrants(mapCreator.createMap());
 		
-		// setup a new camera
-		camera = new Camera();
-		camera.setupCamera(1, 1);
-		
-		// create a new bullet manager
-		bulletStore = new BulletManager();
-		
+		/*
 		// get the player spawn point
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
-		float pos_x = ((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
-		float pos_y = ((playerSpawn.getQUID().getY())* PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2);
+		float pos_x = Math.abs(((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2));
+		float pos_y = Math.abs(((playerSpawn.getQUID().getY())* PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2));
+//		System.out.println("(playerSpawn.getQUID().getX: "+playerSpawn.getQUID().getX()+" PhysXLibrary.QUADRANT_WIDTH): "+PhysXLibrary.QUADRANT_WIDTH);
+//		System.out.println("(playerSpawn.getQUID().getY: "+playerSpawn.getQUID().getY()+" PhysXLibrary.QUADRANT_HEIGHT): "+PhysXLibrary.QUADRANT_HEIGHT);
 		Vector2 pos = new Vector2(pos_x, pos_y);
 		System.out.println("player starting position = " + pos_x + ", " + pos_y);
 		
 		// create a new collider for the player
-		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 25);
+		
 		
 		// create a new physXobject for the player
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
-		
+		*/
 		// create the player
 //		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
+		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 15);
 		player = mapCreator.placePlayer(mapCreator.getPlayerSpawn().getQUID());
 		player.physObj.removeColliders();
 		player.physObj.addCollider(playerCollider);
 		player.setDxDy(Vector2.Zero());
+		player.setBulletManagerListener(bulletStore);
 		gameTimer.addListener(player);
 		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
@@ -132,15 +138,16 @@ public class GameConsole extends GraphicsProgram{
 		return this.player;
 	}
 	
-	public GImage Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
-		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,movementVector);
+
+	public GameImage Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,sprite,movementVector);
 	}
 	
 	public void moveBullets() {
 		this.bulletStore.moveBullets();
 	}
 	
-	public ArrayList<GImage> cullBullets() {
+	public ArrayList<GameImage> cullBullets() {
 		return this.bulletStore.getDeadBullets();
 	}
 	
@@ -148,6 +155,9 @@ public class GameConsole extends GraphicsProgram{
 		return gameTimer;
 	}
 	
+	public BulletManager getBulletManager() {
+		return bulletStore;
+	}
 }
 
 

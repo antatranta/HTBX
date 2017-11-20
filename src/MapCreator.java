@@ -30,14 +30,18 @@ public class MapCreator {
 	public void setPlayerAndBossQuadPositions() {
 		int totalQuads = (PhysXLibrary.MAP_WIDTH * PhysXLibrary.MAP_HEIGHT);
 		max_quad = totalQuads;
-		int player_quad = LavaLamp.randomNumber(0, totalQuads);
-		int boss_quad = LavaLamp.randomNumber(0, totalQuads);
+		int player_quad = LavaLamp.randomNumber(0, totalQuads-1);
+		int boss_quad = LavaLamp.randomNumber(0, totalQuads-1);
+		System.out.println("player quad:"+player_quad+" boss_quad: "+boss_quad);
 		while(player_quad == boss_quad) {
-			player_quad = LavaLamp.randomNumber(0, totalQuads);
-			boss_quad   = LavaLamp.randomNumber(0, totalQuads);
+			player_quad = LavaLamp.randomNumber(0, totalQuads -1);
+			boss_quad   = LavaLamp.randomNumber(0, totalQuads -1);
+
 		}
 		this.player_spawn_quad_order = player_quad;
 		this.boss_spawn_quad_order = boss_quad;
+		System.out.print("player_spawn_quad_order: "+ player_spawn_quad_order);
+		System.out.print("boss_spawn_quad_order: "+ boss_spawn_quad_order);
 	}
 /*	
 	public void createNoiseMap() {
@@ -66,8 +70,10 @@ public class MapCreator {
 				
 				if (order == player_spawn_quad_order) {
 					this.player_spawn_quad = quad;
+					System.out.print("player_spawn_quad: "+ player_spawn_quad);
 				} else if (order == boss_spawn_quad_order) {
 					this.boss_spawn_quad = quad;
+					System.out.print("boss_spawn_quad_order: "+ boss_spawn_quad_order);
 				}
 				order--;
 			}
@@ -145,7 +151,7 @@ public class MapCreator {
 				}*/
             	if (k!=j &&(differentX<=min_distance_between_objects)) {
             		if (differentY<=min_distance_between_objects) {
-            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
+//            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
             			return Asteroids.get(k);
             		}
             	}
@@ -192,7 +198,7 @@ public class MapCreator {
             	float differentY = Math.abs(Ay - Ey);
             	if(differentX<=min_distance_between_objects) {//if they at the same position or in the collision range.
             		if(differentY<=min_distance_between_objects) {
-            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
+//            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
             			return Asteroids.get(i);
             		}
             	}
@@ -242,7 +248,9 @@ public class MapCreator {
 	public ArrayList<EnemyShip> placeEnemies(QuadrantID quad, int numToCreate) {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		for(int i =0; i < numToCreate; ++i) {
+			CircleCollider collider = new CircleCollider(Vector2.Zero(), 15);
 			PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
+			shipPhysXObj.addCollider(collider);
 			int level = LavaLamp.randomNumber(1,2);
 			EnemyShip new_ship = new EnemyShip(shipPhysXObj, "Enemy_"+level+"_S.png", 10, ShipStats.EnemyStats_01(), level);
 			EnemyShips.add(new_ship);
@@ -251,7 +259,7 @@ public class MapCreator {
 	}
 	
 	public EnemyShip placeEnemy (QuadrantID quad) {
-		CircleCollider collider = new CircleCollider(Vector2.Zero(), 25);
+		CircleCollider collider = new CircleCollider(Vector2.Zero(), 15);
 		PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
 		shipPhysXObj.addCollider(collider);
 		int level = LavaLamp.randomNumber(1,2);

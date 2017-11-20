@@ -1,9 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import rotations.GameImage;
-
-public class Ship extends Entity implements ActionListener {
+public class Ship extends Entity {
 
 	private static final int KB_FORCE = 7;
 	private static final float FRICTION = (float) 1.1;
@@ -11,13 +9,14 @@ public class Ship extends Entity implements ActionListener {
 	protected ShipStats stats;
 	protected Vector2 external_force;
 	protected double dir = 90;
+	private ShipTriggers bulletStore;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
 	
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType) {
 		super(physObj, sprite, new CollisionData(10, shipType));
-//		this.physObj = physObj;
+//		this.physObj = physObj;s
 		this.external_force = new Vector2(0, 0);
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
@@ -40,14 +39,21 @@ public class Ship extends Entity implements ActionListener {
 		}
 	}
 	
+	private void destroyShip() {
+		setCurrentHealth(0);
+		
+		// TEMPORARY solution to "kill" enemies
+		physObj.setPosition(new Vector2(0, 0));
+		
+		sprite.rotate(0);
+	}
+	
 	protected void takeDamage(int damage) {
 		if(getCurrentHealth() > 0) {
 			setCurrentHealth(getCurrentHealth() - damage);
 		} 
-		else {
-			setCurrentHealth(0);
-			sprite.setImage("Aiming_Reticle.png");
-			sprite.rotate(0);
+		if (getCurrentHealth() <= 0) {
+			destroyShip();
 		}
 	}
 
@@ -114,21 +120,22 @@ public class Ship extends Entity implements ActionListener {
 		return stats;
 	}
 	
-	public void shoot() {
-		// TODO Auto-generated method stub
-		
+	protected void shoot(int damage, int speed, BulletType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		BulletFireEventData bfe = new BulletFireEventData(damage,speed,type, time, obj, sprite, movementVector);
+		bulletStore.onShipFire(bfe);
 	}
 	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-		// TODO Auto-generated method stub
 	}
 	
 	protected void handleCollision(CollisionData data) {
 		takeDamage(data.getDamage());
 	}
-
 	
-	public void actionPerformed(ActionEvent e) {
-		// Stub
+	public void setBulletManagerListener(ShipTriggers b) {
+		if (bulletStore == null) {
+			this.bulletStore = b;
+			System.out.println("Setting Bullet Manager");
+		}
 	}
 }

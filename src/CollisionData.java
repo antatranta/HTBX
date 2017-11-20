@@ -22,6 +22,11 @@ public class CollisionData {
 	public int getDamage() {
 		return this.damage;
 	}
+	
+	public void setDamage(int dmg) {
+		this.damage = dmg;
+	}
+	
 	public CollisionType getType() {
 		return type;
 	}

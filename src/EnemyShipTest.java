@@ -11,6 +11,7 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 	private Vector2 enemyVector = new Vector2(100,100);
 	private Vector2 targetVector = new Vector2(500,500);
 	int count;
+	
 	public void init() {
 		setSize(1000,1000);
 		setBackground(Color.white);

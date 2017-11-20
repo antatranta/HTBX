@@ -4,9 +4,9 @@ import java.awt.event.ActionListener;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
-public class PlayerShip extends Ship {
-
-	public static int INV_CAP = 90;
+public class PlayerShip extends Ship implements ActionListener{
+	
+	public static int INV_CAP = 120;
 	public static int REGEN_CAP = 240;
 	private int current_shield;
 	private int shield_regen = REGEN_CAP;
@@ -25,7 +25,7 @@ public class PlayerShip extends Ship {
 	}
 	
 	private void regenerateShield() {
-		if (shield_regen == 0 && current_shield < getStats().getShieldMax()) {
+		if (shield_regen == 0 && current_shield < getStats().getShieldMax() && current_health > 0) {
 			chargeShield(1);
 		}
 		else {
@@ -44,11 +44,15 @@ public class PlayerShip extends Ship {
 			System.out.println("Got hit!");
 			if (data.getType() == CollisionType.asteroid || data.getType() == CollisionType.enemyShip) {
 				calculateCollisionForce(pos);
-				
+				takeDamage(data.getDamage());
 			}
 		}
 		
-		takeDamage(data.getDamage());
+		if (i_frames == 0) {
+			if (data.getType() == CollisionType.enemy_bullet) {
+				takeDamage(data.getDamage());
+			}
+		}
 	}
 	
 	@Override
@@ -72,12 +76,6 @@ public class PlayerShip extends Ship {
 		if (i_frames > 0) {
 			i_frames -= 1;
 		}
-	}
-	
-	@Override
-	public void shoot() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
