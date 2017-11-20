@@ -15,7 +15,6 @@ public class EnemyShip extends Ship implements ActionListener{
 	public void setInteractionDistance(float interactionDistance) {
 		this.interactionDistance = interactionDistance;
 	}
-	
 
 	public EnemyType getEnemyType() {
 		return type;
@@ -78,7 +77,8 @@ public class EnemyShip extends Ship implements ActionListener{
 		if (data.getType() == CollisionType.playerShip) {
 			calculateCollisionForce(pos);
 		}
-		if (data.getType() == CollisionType.asteroid) {
+		if (data.getType() == CollisionType.asteroid ||
+				data.getType() == CollisionType.bullet) {
 			takeDamage(data.getDamage());
 		}
 	}

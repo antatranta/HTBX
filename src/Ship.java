@@ -7,6 +7,7 @@ public class Ship extends Entity implements ActionListener {
 
 	private static final int KB_FORCE = 7;
 	private static final float FRICTION = (float) 1.1;
+	protected BulletManager manager;
 	protected int current_health;
 	protected ShipStats stats;
 	protected Vector2 external_force;
@@ -40,14 +41,21 @@ public class Ship extends Entity implements ActionListener {
 		}
 	}
 	
+	private void destroyShip() {
+		setCurrentHealth(0);
+		
+		// TEMPORARY solution to "kill" enemies
+		physObj.setPosition(new Vector2(0, 0));
+		
+		sprite.rotate(0);
+	}
+	
 	protected void takeDamage(int damage) {
 		if(getCurrentHealth() > 0) {
 			setCurrentHealth(getCurrentHealth() - damage);
 		} 
-		else {
-			setCurrentHealth(0);
-			sprite.setImage("Aiming_Reticle.png");
-			sprite.rotate(0);
+		if (getCurrentHealth() <= 0) {
+			destroyShip();
 		}
 	}
 
@@ -115,12 +123,10 @@ public class Ship extends Entity implements ActionListener {
 	}
 	
 	public void shoot() {
-		// TODO Auto-generated method stub
-		
+		// Auto-generated stub
 	}
 	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-		// TODO Auto-generated method stub
 	}
 	
 	protected void handleCollision(CollisionData data) {
@@ -129,6 +135,10 @@ public class Ship extends Entity implements ActionListener {
 
 	
 	public void actionPerformed(ActionEvent e) {
-		// Stub
+		// Auto-generated stub
+	}
+	
+	public void addBulletManagerListener(BulletManager b) {
+		this.manager = b;
 	}
 }
