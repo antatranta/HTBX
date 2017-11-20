@@ -60,7 +60,10 @@ public class GameConsole extends GraphicsProgram{
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
 		
 		// create the player
-		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
+//		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
+		player = mapCreator.placePlayer(mapCreator.getPlayerSpawn().getQUID());
+		player.physObj.removeColliders();
+		player.physObj.addCollider(playerCollider);
 		player.setDxDy(Vector2.Zero());
 		gameTimer.addListener(player);
 		

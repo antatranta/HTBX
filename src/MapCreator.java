@@ -269,6 +269,11 @@ public class MapCreator {
 		return Asteroids;
 	}
 	
+	public PlayerShip placePlayer (QuadrantID quad) {
+		PhysXObject physObj = createPhysXObjectInQuad(quad);
+		return new PlayerShip(physObj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
+	}
+	
 	public Asteroid placeAsteroid (QuadrantID quad) {
 		PhysXObject newAsteroid = createPhysXObjectInQuad(quad);
 		return new Asteroid(newAsteroid);
