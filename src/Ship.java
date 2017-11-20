@@ -5,6 +5,8 @@ import rotations.GameImage;
 
 public class Ship extends Entity implements ActionListener {
 
+	private static final int KB_FORCE = 7;
+	private static final float FRICTION = (float) 1.1;
 	protected int current_health;
 	protected ShipStats stats;
 	protected Vector2 external_force;
@@ -69,9 +71,23 @@ public class Ship extends Entity implements ActionListener {
 		if(getCurrentHealth()>0) {
 			Vector2 currentPosition = physObj.getPosition();
 			this.physObj.setPosition(currentPosition.add(dir));
+			
 		}
 	}
 	
+	protected void moveExternalForce() {
+		Vector2 currentPosition = physObj.getPosition();
+		this.physObj.setPosition(currentPosition.add(external_force));
+		external_force = external_force.div(new Vector2(FRICTION, FRICTION));
+	}
+
+	protected void calculateCollisionForce(Vector2 pos) {
+		double theta_rad = Math.atan2(pos.getY() - physObj.getPosition().getY(), pos.getX() - physObj.getPosition().getX());
+		float unit_x = (float)(Math.cos(theta_rad));
+		float unit_y = (float)(Math.sin(theta_rad));
+		external_force.setXY(unit_x * -KB_FORCE, unit_y * -KB_FORCE);
+
+	}
 	
 	public float getDx() {
 		return dx;
@@ -95,17 +111,16 @@ public class Ship extends Entity implements ActionListener {
 		return stats;
 	}
 	
-	@Override
+	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub
-		handleCollision(data);
 	}
 	
 	protected void handleCollision(CollisionData data) {
 		takeDamage(data.getDamage());
 	}
 
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		// Stub
 	}

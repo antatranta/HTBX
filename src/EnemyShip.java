@@ -16,13 +16,7 @@ public class EnemyShip extends Ship implements ActionListener{
 		this.interactionDistance = interactionDistance;
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// Detect target
-		Move();
-		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
-		
-	}
+
 	public EnemyType getEnemyType() {
 		return type;
 	}
@@ -50,7 +44,6 @@ public class EnemyShip extends Ship implements ActionListener{
 		
 		//Set enemy backend position
 		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
-		
 		//Set enemy image position
 //		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
 		Rotate2Player(angle);
@@ -76,12 +69,27 @@ public class EnemyShip extends Ship implements ActionListener{
 	}
 	
 	@Override
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
+
+		if (data.getType() == CollisionType.asteroid) {
+			takeDamage(data.getDamage());
+		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// Detect target
+		Move();
+		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
+		
+	}
+	
+	@Override
 	public void Move() {
-		if(getCurrentHealth()>0) {
+		if(getCurrentHealth() > 0) {
 			//move to player
 			AIUpdate(target);
 			//avoid asteroid method?
-
 		}
 	}
 	

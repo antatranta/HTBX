@@ -3,8 +3,11 @@ import java.awt.event.ActionListener;
 
 public class PlayerShip extends Ship {
 
+	private static int INV_CAP = 90;
+	private static int REGEN_CAP = 240;
 	private int current_shield;
-	private int shield_regen = 100;
+	private int shield_regen = REGEN_CAP;
+	private int i_frames = INV_CAP;
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
 		super(physObj, current_health, stats, sprite, CollisionType.playerShip);
@@ -32,6 +35,20 @@ public class PlayerShip extends Ship {
 	}
 	
 	@Override
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
+
+		if (i_frames == 0) {
+			System.out.println("Got hit!");
+			if (data.getType() == CollisionType.asteroid || data.getType() == CollisionType.enemyShip) {
+				calculateCollisionForce(pos);
+				
+			}
+		}
+		
+		takeDamage(data.getDamage());
+	}
+	
+	@Override
 	protected void handleCollision(CollisionData data) {
 		// TODO Auto-generated method stub
 		takeDamage(data.getDamage());
@@ -48,9 +65,19 @@ public class PlayerShip extends Ship {
 	}
 	*/
 	
+	private void processInvincibility() {
+		if (i_frames > 0) {
+			i_frames -= 1;
+		}
+	}
+	
 	@Override
 	public void takeDamage(int amount) {
-		shield_regen = 100;
+		if (i_frames > 0) {
+			return;
+		}
+		i_frames = INV_CAP;
+		shield_regen = REGEN_CAP;
 		if (current_shield > 0) {
 			current_shield -= amount;
 		}
@@ -72,7 +99,10 @@ public class PlayerShip extends Ship {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
+		processInvincibility();
 		regenerateShield();
+		moveExternalForce();
 		// TODO: Charges the shield. Use a timer to check for hits before charge, and when charging starts
 	}
 	
