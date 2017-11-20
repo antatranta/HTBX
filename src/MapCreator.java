@@ -151,7 +151,7 @@ public class MapCreator {
 				}*/
             	if (k!=j &&(differentX<=min_distance_between_objects)) {
             		if (differentY<=min_distance_between_objects) {
-            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
+//            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
             			return Asteroids.get(k);
             		}
             	}
@@ -198,7 +198,7 @@ public class MapCreator {
             	float differentY = Math.abs(Ay - Ey);
             	if(differentX<=min_distance_between_objects) {//if they at the same position or in the collision range.
             		if(differentY<=min_distance_between_objects) {
-            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
+//            			System.out.println("differentX: "+ differentX + " differentY: "+differentY);
             			return Asteroids.get(i);
             		}
             	}
