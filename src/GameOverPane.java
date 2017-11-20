@@ -50,7 +50,46 @@ public class GameOverPane extends GraphicsPane {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+		obj = program.getElementAt(e.getX(), e.getY());
+		if(obj == retryGame) {
+			program.switchToGame();
+		}
+		else if(obj == exitToMenu) {
+			program.switchToMenu();
+		}
 	}
 	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		obj = program.getElementAt(e.getX(), e.getY());
+		if(obj == null || obj == whiteBG()) {
+			return;
+		}
+		
+		obj.setColor(Color.gray);
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		gameOver.setColor(Color.black);
+		retryGame.setColor(Color.black);
+		exitToMenu.setColor(Color.black);
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		obj = program.getElementAt(e.getX(), e.getY());
+		
+		if(obj == retryGame) {
+			selection.setVisible(true);
+			selection.setLocation(retryGame.getX() - 25, retryGame.getY());
+		}
+		else if(obj == exitToMenu) {
+			selection.setVisible(true);
+			selection.setLocation(exitToMenu.getX() - 25, exitToMenu.getY());
+		}
+		else {
+			selection.setVisible(false);
+		}
+	}
 }
