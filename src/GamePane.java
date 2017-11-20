@@ -341,7 +341,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-		GOval bullet = console.Shoot(1, 25, BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), Camera.frontendToBackend(last_mouse_loc) );
+		GOval bullet = console.Shoot(1, 25, BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
 		bullet.setFilled(true);
 		bullet.setFillColor(Color.orange);
 		bullet.setColor(Color.orange);
@@ -369,11 +369,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			alignReticle(last_mouse_loc);
 		}
 		
-		if(CAN_MOVE) {
-			movementLoop();
-		}
-		
-		moveEnemyShips();
+
 		
 		drawSprites();
 		
@@ -397,6 +393,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		if (console.IS_DEBUGGING) {
 			debugUpdate();
 		}
+		
+		if(CAN_MOVE) {
+			movementLoop();
+		}
+		
+		moveEnemyShips();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {
