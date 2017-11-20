@@ -22,7 +22,6 @@ public class MainApplication extends GraphicsApplication {
 	private boolean sfxToggle;
 	private boolean isPaused;
 	
-	
 	public void init() {
 		//console = new GameConsole();
 		//gameTimer = console.getTimer();

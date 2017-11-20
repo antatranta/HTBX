@@ -2,6 +2,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
+import acm.graphics.GImage;
 import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
 import rotations.GameImage;
@@ -46,6 +47,7 @@ public class GameConsole extends GraphicsProgram{
 		// populate the PhysX sim
 		physx.addQuadrants(mapCreator.createMap());
 		
+		/*
 		// get the player spawn point
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
 		float pos_x = Math.abs(((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2));
@@ -56,13 +58,17 @@ public class GameConsole extends GraphicsProgram{
 		System.out.println("player starting position = " + pos_x + ", " + pos_y);
 		
 		// create a new collider for the player
-		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 15);
+		
 		
 		// create a new physXobject for the player
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
-		
+		*/
 		// create the player
-		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
+//		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
+		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 15);
+		player = mapCreator.placePlayer(mapCreator.getPlayerSpawn().getQUID());
+		player.physObj.removeColliders();
+		player.physObj.addCollider(playerCollider);
 		player.setDxDy(Vector2.Zero());
 		player.setBulletManagerListener(bulletStore);
 		gameTimer.addListener(player);
@@ -132,8 +138,9 @@ public class GameConsole extends GraphicsProgram{
 		return this.player;
 	}
 	
-	public GameImage Shoot (int dmg, int spd, CollisionType bullet, float time, PhysXObject obj, Vector2 movementVector) {
-		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,movementVector);
+
+	public GameImage Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,sprite,movementVector);
 	}
 	
 	public void moveBullets() {

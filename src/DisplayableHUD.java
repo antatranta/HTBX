@@ -146,7 +146,7 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	public void updateStats() {
-		scaleStatsBar(speed_stat, (player.getStats().getSpeed() - 1) / 4);
+		scaleStatsBar(speed_stat, (player.getStats().getSpeedSetting() - 1) / 4);
 		scaleStatsBar(damage_stat, (player.getStats().getDamage() - 1) / 4);
 		scaleStatsBar(health_stat, (player.getStats().getHealthMax() - 1) / 4);
 		scaleStatsBar(shield_stat, (player.getStats().getShieldMax() - 1) / 4);

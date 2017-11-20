@@ -1,15 +1,15 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Ship extends Entity implements ActionListener {
+public class Ship extends Entity {
 
-	protected BulletManager bulletStore;
 	private static final int KB_FORCE = 7;
 	private static final float FRICTION = (float) 1.1;
 	protected int current_health;
 	protected ShipStats stats;
 	protected Vector2 external_force;
 	protected double dir = 90;
+	private ShipTriggers bulletStore;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
@@ -120,8 +120,9 @@ public class Ship extends Entity implements ActionListener {
 		return stats;
 	}
 	
-	public void shoot() {
-		// Auto-generated stub
+	protected void shoot(int damage, int speed, BulletType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		BulletFireEventData bfe = new BulletFireEventData(damage,speed,type, time, obj, sprite, movementVector);
+		bulletStore.onShipFire(bfe);
 	}
 	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
@@ -130,13 +131,8 @@ public class Ship extends Entity implements ActionListener {
 	protected void handleCollision(CollisionData data) {
 		takeDamage(data.getDamage());
 	}
-
 	
-	public void actionPerformed(ActionEvent e) {
-		// Auto-generated stub
-	}
-	
-	public void setBulletManagerListener(BulletManager b) {
+	public void setBulletManagerListener(ShipTriggers b) {
 		if (bulletStore == null) {
 			this.bulletStore = b;
 			System.out.println("Setting Bullet Manager");

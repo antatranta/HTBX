@@ -89,8 +89,12 @@ public class PhysXLibrary{
 	}
 	
 	public static boolean areObjectsInXRange(PhysXObject a, PhysXObject b, float range) {
-		if(Math.abs(a.getPosition().getX() - b.getPosition().getX()) < range
-				&& Math.abs(a.getPosition().getY() - b.getPosition().getY()) < range) {
+		return arePositionsInXRange(a.getPosition(), b.getPosition(), range);
+	}
+	
+	public static boolean arePositionsInXRange(Vector2 a, Vector2 b, float range) {
+		if(Math.abs(a.getX() - b.getX()) < range
+				&& Math.abs(a.getY() - b.getY()) < range) {
 			return true;
 		}
 		return false;

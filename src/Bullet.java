@@ -1,15 +1,19 @@
 import java.awt.Color;
 
+import acm.graphics.GObject;
 import acm.graphics.GOval;
+import rotations.GameImage;
 
 public class Bullet extends Entity {
 	private int bulletSpeed;
 	private BulletType bulletType;
 	private float bulletDuration;
+	
 
 	private Vector2 movementVector;
 	private float bulletDX;
 	private float bulletDY;
+	private GOval oval;
 	private boolean dead;
 	
 	private Vector2 GOval_Pos;
@@ -17,13 +21,24 @@ public class Bullet extends Entity {
 	
 	private int steps = 0;
 	
-	public Bullet(int dmg, int spd, CollisionType bullet, float time, PhysXObject obj, Vector2 movementVector) {
-		super (obj, "RedCircle.png", new CollisionData(dmg, bullet));
+
+	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
+		super(physObj, sprite, new CollisionData(10, CollisionType.blank));
+		
 		this.bulletSpeed = spd;
+		this.bulletType = bullet;
 		this.bulletDuration = time;
 		this.physObj.addSubscriber(this);
 		this.movementVector = movementVector;
-//		physObj.setHost(this);
+		
+		this.physObj.addSubscriber(this);
+		
+		CollisionType collType = CollisionType.enemy_bullet;
+		if (bullet == BulletType.PLAYER_BULLET) {
+			collType = CollisionType.player_bullet;
+		}
+		
+		physObj.setCollisionData(new CollisionData(dmg, collType));
 		this.bulletTrajectory();
 	}
 	
@@ -92,6 +107,7 @@ public class Bullet extends Entity {
 	
 	public void destroy() {
 		dead = true;
+		this.setCollisionData(CollisionData.Blank());
 	}
 	
 	public boolean checkIfDead() {
@@ -115,18 +131,28 @@ public class Bullet extends Entity {
 		return this.GOval_Pos;
 	}
 	
+	public GameImage getSprite() {
+		return sprite;
+	}	
+	
+	public GOval getGOval() {
+		return oval;
+	}
+	
 
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub
-		if (physObj.getCollisionData().getType() == CollisionType.enemy_bullet && data.getType() == CollisionType.enemyShip) {
-			return;
-		}
-		else {
-			destroy();
-		}
-
+		handleCollision(data);
 	}
 	
+	protected void handleCollision(CollisionData data) {
+		if(data.getType() != CollisionType.player_bullet || data.getType() != CollisionType.blank
+				|| data.getType() == CollisionType.enemy_bullet || data.getType() == CollisionType.enemyShip) {
+			return;
+		} else {
+			destroy();
+		}
+	}
 	
 }

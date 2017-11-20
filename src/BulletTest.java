@@ -84,7 +84,8 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void shoot() {
 		PhysXObject currentLocation = new PhysXObject();
 		currentLocation.setPosition(new Vector2(400, 300));
-		GameImage bullet = bulletStore.onShootEvent(1, 1, CollisionType.enemy_bullet, 1000, currentLocation, Camera.frontendToBackend(last_mouse_loc) );
+
+		GameImage bullet = bulletStore.onShootEvent(1, 1, BulletType.ENEMY_BULLET, 1000, currentLocation, "Cursor.png", Camera.frontendToBackend(last_mouse_loc) );
 //		bullet.setFilled(true);
 //		bullet.setFillColor(Color.orange);
 //		bullet.setColor(Color.orange);

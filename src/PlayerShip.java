@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
-public class PlayerShip extends Ship {
+public class PlayerShip extends Ship implements ActionListener{
 	
 	public static int INV_CAP = 120;
 	public static int REGEN_CAP = 240;
@@ -76,10 +76,6 @@ public class PlayerShip extends Ship {
 		if (i_frames > 0) {
 			i_frames -= 1;
 		}
-	}
-	
-	public void shoot(int damage, int speed, CollisionType type, int duration, PhysXObject obj, Vector2 target) {
-		bulletStore.onShootEvent(damage, speed, type, duration, obj, target);
 	}
 	
 	@Override

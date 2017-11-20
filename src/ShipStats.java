@@ -13,11 +13,45 @@ public class ShipStats {
 	}
 	
 	public static ShipStats EnemyStats_01() {
-		return new ShipStats(1, 0, 50, 1);
+		return new ShipStats(3, 0, 50, 1);
 	}
 	
-	public int getSpeed() {
-		return speed;
+	public float getTurningSpeed() {
+		switch(this.speed) {
+		case 0:
+			return 1f;
+		case 1:
+			return 2f;
+		case 2:
+			return 5f;
+		case 3:
+			return 10f;
+		case 4:
+			return 15f;
+		case 5:
+			return 20f;
+		default:
+			return 1;
+		}
+	}
+	
+	public int getSpeedSetting() {
+		return this.speed;
+	}
+	
+	public float getSpeedValue() {
+		switch(this.speed) {
+		case 0:
+			return 5;
+		case 1:
+			return 5f;
+		case 2:
+			return 6f;
+		case 3:
+			return 7f;
+		default:
+			return 8;
+		}
 	}
 	public void setSpeed(int speed) {
 		this.speed = speed;

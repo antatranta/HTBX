@@ -12,36 +12,31 @@ import java.awt.*;
 
 public class MapCreator {
 	private static float min_distance_between_objects=400.0f;
-	private float SEED=200.0f;
 	private final int MAX_ENEMIES_IN_QUAD = 2;
 	private final int MAX_ASTEROIDS_IN_QUAD = 4;
 	private final float BORDER_X = 100f;
 	private final float BORDER_Y = 100f;
 	private int max_quad=0;
-	private Random rand;
 	private Quadrant player_spawn_quad;
 	private Quadrant boss_spawn_quad;
 	private int player_spawn_quad_order;
 	private int boss_spawn_quad_order;
 	
-	public MapCreator () {
-		init();
-	}
-	
-	public void init() {
-		rand = new Random((long) SEED);
-		System.out.println("Creating MAP using seed: "+SEED);
+	public MapCreator() {
+		LavaLamp.setup(System.currentTimeMillis());
+//		LavaLamp.setup(LavaLamp.randomNumber(0, 500));
 	}
 	
 	public void setPlayerAndBossQuadPositions() {
 		int totalQuads = (PhysXLibrary.MAP_WIDTH * PhysXLibrary.MAP_HEIGHT);
 		max_quad = totalQuads;
-		int player_quad = randomNumber(0, totalQuads-1);
-		int boss_quad = randomNumber(0, totalQuads-1);
+		int player_quad = LavaLamp.randomNumber(0, totalQuads-1);
+		int boss_quad = LavaLamp.randomNumber(0, totalQuads-1);
 		System.out.println("player quad:"+player_quad+" boss_quad: "+boss_quad);
-		while((player_quad == boss_quad)) {
-			player_quad = randomNumber(0, totalQuads-1);
-			boss_quad   = randomNumber(0, totalQuads-1);
+		while(player_quad == boss_quad) {
+			player_quad = LavaLamp.randomNumber(0, totalQuads -1);
+			boss_quad   = LavaLamp.randomNumber(0, totalQuads -1);
+
 		}
 		this.player_spawn_quad_order = player_quad;
 		this.boss_spawn_quad_order = boss_quad;
@@ -93,8 +88,8 @@ public class MapCreator {
 		return new Quadrant(new QuadrantID(x,y,order));
 	}
 	public void fillQuadrant(Quadrant quad) {
-		int numberOfEnemies = randomNumber(0, MAX_ENEMIES_IN_QUAD);
-		int numberOfAsteroids = randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
+		int numberOfEnemies = LavaLamp.randomNumber(0, MAX_ENEMIES_IN_QUAD);
+		int numberOfAsteroids = LavaLamp.randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
 		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
 		
@@ -226,27 +221,19 @@ public class MapCreator {
 		}*/
 		return null;
 	}
-
-	private int randomNumber(int min, int max) {		
-		if (min >= max) {
-			throw new IllegalArgumentException("max must be greater than min");
-		}
-		int rtrn = rand.nextInt((max - min) + 1) + min;
-		return rtrn;
-	}
 	
 	public PhysXObject createPhysXObjectInQuad (QuadrantID quad) {
 		float startingX = ((quad.getX() + 1)* PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2);
 		float startingY = ((quad.getY() + 1)* PhysXLibrary.QUADRANT_HEIGHT) -  (PhysXLibrary.QUADRANT_HEIGHT / 2);
 		
-		float randomMultiplierX = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
-		float randomMultiplierY = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
+		float randomMultiplierX = LavaLamp.nextFloat() * LavaLamp.randomNumber(-1, 1); // -1.0 - 1.0
+		float randomMultiplierY = LavaLamp.nextFloat() * LavaLamp.randomNumber(-1, 1); // -1.0 - 1.0
 		//the possibility of a float number is 0.0f is too big-wenrui 
 		while (randomMultiplierX==0.0f) {
-			randomMultiplierX = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
+			randomMultiplierX = LavaLamp.nextFloat() * LavaLamp.randomNumber(-1, 1); // -1.0 - 1.0
 		}
 		while (randomMultiplierY==0.0f) {
-			randomMultiplierY = rand.nextFloat() * randomNumber(-1, 1); // -1.0 - 1.0
+			randomMultiplierY = LavaLamp.nextFloat() * LavaLamp.randomNumber(-1, 1); // -1.0 - 1.0
 		}
 //		float x_pos = randomMultiplierX * ((PhysXLibrary.QUADRANT_WIDTH - BORDER_X) / 2);
 //		float y_pos = randomMultiplierY * ((PhysXLibrary.QUADRANT_HEIGHT - BORDER_Y) / 2);
@@ -264,7 +251,8 @@ public class MapCreator {
 			CircleCollider collider = new CircleCollider(Vector2.Zero(), 15);
 			PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
 			shipPhysXObj.addCollider(collider);
-			EnemyShip new_ship = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
+			int level = LavaLamp.randomNumber(1,2);
+			EnemyShip new_ship = new EnemyShip(shipPhysXObj, "Enemy_"+level+"_S.png", 10, ShipStats.EnemyStats_01(), level);
 			EnemyShips.add(new_ship);
 		}
 		return EnemyShips;
@@ -274,7 +262,8 @@ public class MapCreator {
 		CircleCollider collider = new CircleCollider(Vector2.Zero(), 15);
 		PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
 		shipPhysXObj.addCollider(collider);
-		EnemyShip enemy = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
+		int level = LavaLamp.randomNumber(1,2);
+		EnemyShip enemy = new EnemyShip(shipPhysXObj, "Enemy_"+level+"_S.png", 10, ShipStats.EnemyStats_01(), level);
 		return enemy; // Temporary
 	}
 	
@@ -286,6 +275,11 @@ public class MapCreator {
 			Asteroids.add(new_rock);
 		}
 		return Asteroids;
+	}
+	
+	public PlayerShip placePlayer (QuadrantID quad) {
+		PhysXObject physObj = createPhysXObjectInQuad(quad);
+		return new PlayerShip(physObj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
 	}
 	
 	public Asteroid placeAsteroid (QuadrantID quad) {

@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
@@ -322,7 +323,21 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+
 		
+		Vector2 mousePos = new Vector2(e.getX(), e.getY());
+        if (e.getButton() == MouseEvent.BUTTON3)
+        {
+        		Vector2 newPos = Camera.frontendToBackend(mousePos);
+        		
+            if(console.physx().isPositionSafe(newPos, 100)) {
+                player.getPhysObj().setPosition(newPos);
+                
+        			Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition());
+        			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
+            }
+        }
+        
 		if (console.IS_DEBUGGING) {
 			if(!DO_POINT_TEST) {
 				isShooting = true;
@@ -340,14 +355,26 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		else {
 //			System.out.println("Clicked empty space");
 		}
+		
+//		isPositionSafe
 	}
 	
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-//		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
-//		program.add(bullet);
-		player.shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc));
+
+		GImage bullet = console.Shoot(1, 25, BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "Cursor.png",  Camera.frontendToBackend(last_mouse_loc) );
+		
+		if(bullet != null) {
+//			bullet.setFilled(true);
+//			bullet.setFillColor(Color.orange);
+//			bullet.setColor(Color.orange);
+			program.add(bullet);
+		}
+////		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
+////		program.add(bullet);
+//		player.shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc));
+
 	}
 	
 	@Override
@@ -381,9 +408,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		console.testCollisions(player);
 		console.moveBullets();
+
 		for(GameImage bullet : console.cullBullets()) {
 			program.remove(bullet);
 		}
+
+		debugUpdate();		
 
 		HUD.updateHUD();
 		HUD.updateStats();
@@ -551,14 +581,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		double angle = -Math.toRadians(player.getAngle());
-		float speed = (float) ((player.getStats().getSpeed() + 4) * final_forward);
-		
+
+		float speed = (float) player.getStats().getSpeedValue() * final_forward;
 		
 		float cos = (float) Math.cos(angle) * speed;
 		float sin = (float) Math.sin(angle) * speed;
 
-		player_img.rotate(TURN_POWER * final_turn);
-		player.adjustAngle(TURN_POWER * -final_turn);
+		player_img.rotate((int)player.getStats().getTurningSpeed() * final_turn);
+		player.adjustAngle((int)player.getStats().getTurningSpeed() * -final_turn);
 		player_img.setDegrees(-player.getAngle() + 90);
 		
 //		float dia = player.getPhysObj().getColliders()[0].getRadius() * 2;
