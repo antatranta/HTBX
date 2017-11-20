@@ -24,16 +24,17 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	public void init() {
 		setSize(800, 600);
 		setBackground(Color.white);
-		
+		last_mouse_loc = new Vector2(0, 0);
+		bulletStore = new BulletManager();
+		currentLocation = new PhysXObject();
+		currentLocation.setPosition(new Vector2(400, 300));
 	}
 	
 	public void run() {
 		isShooting = false;
 		shotCount = 0;
-		last_mouse_loc = new Vector2(0, 0);
-		bulletStore = new BulletManager();
-		currentLocation = new PhysXObject();
-		currentLocation.setPosition(new Vector2(400, 300));
+
+
 		
 		gameTimer = new Timer(15, this);
 		gameTimer.start();
