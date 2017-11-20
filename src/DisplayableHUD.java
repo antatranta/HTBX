@@ -94,7 +94,7 @@ public class DisplayableHUD implements Displayable {
 		stats_back.setFilled(true);
 		stats_back.setColor(Color.WHITE);
 		
-		iframes = new GRect(status_bar_shield.getX(), status_back.getY(), bar_max_x, status_back.getHeight());
+		iframes = new GRect(status_bar_shield.getX(), status_back.getY() + 1, bar_max_x, status_back.getHeight() - 2);
 		iframes.setFillColor(new Color(1, 1, 1, 35));
 		iframes.setFilled(true);
 		iframes.setColor(new Color(1, 1, 1, 0));

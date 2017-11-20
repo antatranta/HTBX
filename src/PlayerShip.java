@@ -5,8 +5,8 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
 public class PlayerShip extends Ship {
-
-	public static int INV_CAP = 90;
+	
+	public static int INV_CAP = 120;
 	public static int REGEN_CAP = 240;
 	private int current_shield;
 	private int shield_regen = REGEN_CAP;
@@ -76,7 +76,6 @@ public class PlayerShip extends Ship {
 	
 	@Override
 	public void shoot() {
-		// TODO Auto-generated method stub
 		
 	}
 	

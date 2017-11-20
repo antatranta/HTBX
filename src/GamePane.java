@@ -79,6 +79,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <Integer> pressed_keys;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <EnemyShip> drawn_ships;
+	private ArrayList <Bullet> drawn_bullets;
 	
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_OBJECTS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
