@@ -24,15 +24,15 @@ public class MainApplication extends GraphicsApplication {
 	
 	
 	public void init() {
-		console = new GameConsole();
-		gameTimer = console.getTimer();
+		//console = new GameConsole();
+		//gameTimer = console.getTimer();
 		setTitle("HTBX");
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setBackground(Color.white);
 	}
 	
 	public void run() {
-		game = new GamePane(this);
+		//game = new GamePane(this);
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
 		control = new ControlsPane(this);
@@ -40,7 +40,7 @@ public class MainApplication extends GraphicsApplication {
 		pause = new PausePane(this);
 		gameOver = new GameOverPane(this);
 		audio = AudioPlayer.getInstance();
-		gameTimer.addListener(game);
+		//gameTimer.addListener(game);
 		musicToggle = true;
 		sfxToggle = true;
 		isPaused = false;
@@ -72,8 +72,12 @@ public class MainApplication extends GraphicsApplication {
 	public void switchToGame() {
 		if(!isPaused) {
 			removeAll();
-			init();
-			run();
+			console = new GameConsole();
+			gameTimer = console.getTimer();
+			game = new GamePane(this);
+			gameTimer.addListener(game);
+			//init();
+			//run();
 		}
 		if(musicToggle) {
 			audio.stopSound("sounds", "3A1W - Menu.wav");
