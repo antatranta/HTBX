@@ -2,17 +2,14 @@ import java.awt.Color;
 
 import acm.graphics.GOval;
 
-public class Bullet implements Collision {
-	private int bulletDamage;
+public class Bullet extends Entity {
 	private int bulletSpeed;
 	private BulletType bulletType;
 	private float bulletDuration;
-	private PhysXObject physObj;
 
 	private Vector2 movementVector;
 	private float bulletDX;
 	private float bulletDY;
-	private GOval sprite;
 	private boolean dead;
 	
 	private Vector2 GOval_Pos;
@@ -20,24 +17,18 @@ public class Bullet implements Collision {
 	
 	private int steps = 0;
 	
-	public Bullet(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
-		this.bulletDamage = dmg;
+	public Bullet(int dmg, int spd, CollisionType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+		super (obj, "RedCircle.png", new CollisionData(dmg, bullet));
 		this.bulletSpeed = spd;
-		this.bulletType = bullet;
 		this.bulletDuration = time;
-		this.physObj = obj;
 		this.physObj.addSubscriber(this);
 		this.movementVector = movementVector;
-		physObj.setCollisionData(new CollisionData(bulletDamage, CollisionType.bullet));
 //		physObj.setHost(this);
 		this.bulletTrajectory();
-		sprite = new GOval(0, 0, 10, 10);
-		sprite.setFillColor(Color.yellow);
-		sprite.setFilled(true);
 	}
 	
 	public void setBulletDamage(int dmg) {
-		this.bulletDamage = dmg;
+		this.physObj.getCollisionData().setDamage(dmg);
 	}
 	
 	public void setBulletSpeed(int spd) {
@@ -62,7 +53,7 @@ public class Bullet implements Collision {
 	}
 	
 	public int getBulletDamage() {
-		return this.bulletDamage;
+		return this.physObj.getCollisionData().getDamage();
 	}
 	
 	public int getBulletSpeed() {
@@ -124,14 +115,17 @@ public class Bullet implements Collision {
 		return this.GOval_Pos;
 	}
 	
-	public GOval getSprite() {
-		return sprite;
-	}
 
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub
-		destroy();
+		if (physObj.getCollisionData().getType() == CollisionType.enemy_bullet && data.getType() == CollisionType.enemyShip) {
+			return;
+		}
+		else {
+			destroy();
+		}
+
 	}
 	
 	

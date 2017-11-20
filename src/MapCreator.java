@@ -261,7 +261,9 @@ public class MapCreator {
 	public ArrayList<EnemyShip> placeEnemies(QuadrantID quad, int numToCreate) {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		for(int i =0; i < numToCreate; ++i) {
+			CircleCollider collider = new CircleCollider(Vector2.Zero(), 15);
 			PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
+			shipPhysXObj.addCollider(collider);
 			EnemyShip new_ship = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());
 			EnemyShips.add(new_ship);
 		}
@@ -269,7 +271,7 @@ public class MapCreator {
 	}
 	
 	public EnemyShip placeEnemy (QuadrantID quad) {
-		CircleCollider collider = new CircleCollider(Vector2.Zero(), 25);
+		CircleCollider collider = new CircleCollider(Vector2.Zero(), 15);
 		PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
 		shipPhysXObj.addCollider(collider);
 		EnemyShip enemy = new EnemyShip(shipPhysXObj, 10, ShipStats.EnemyStats_01());

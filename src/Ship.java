@@ -1,13 +1,11 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import rotations.GameImage;
-
 public class Ship extends Entity implements ActionListener {
 
+	protected BulletManager bulletStore;
 	private static final int KB_FORCE = 7;
 	private static final float FRICTION = (float) 1.1;
-	protected BulletManager manager;
 	protected int current_health;
 	protected ShipStats stats;
 	protected Vector2 external_force;
@@ -18,7 +16,7 @@ public class Ship extends Entity implements ActionListener {
 	
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType) {
 		super(physObj, sprite, new CollisionData(10, shipType));
-//		this.physObj = physObj;
+//		this.physObj = physObj;s
 		this.external_force = new Vector2(0, 0);
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
@@ -138,7 +136,10 @@ public class Ship extends Entity implements ActionListener {
 		// Auto-generated stub
 	}
 	
-	public void addBulletManagerListener(BulletManager b) {
-		this.manager = b;
+	public void setBulletManagerListener(BulletManager b) {
+		if (bulletStore == null) {
+			this.bulletStore = b;
+			System.out.println("Setting Bullet Manager");
+		}
 	}
 }

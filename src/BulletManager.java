@@ -6,16 +6,17 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import acm.graphics.*;
+import rotations.GameImage;
 
 public class BulletManager implements Shoot {
 	private ArrayList<Bullet> bullets;
-	private ArrayList<GOval> deadBullets;
+	private ArrayList<GameImage> deadBullets;
 	
 	private BulletPattern pattern;
 	
 	public BulletManager() {
 		this.bullets = new ArrayList<Bullet>();
-		this.deadBullets = new ArrayList<GOval>();
+		this.deadBullets = new ArrayList<GameImage>();
 		pattern = new BulletPattern();
 	}
 	
@@ -27,17 +28,17 @@ public class BulletManager implements Shoot {
 		return bullets;
 	}
 	
-	public GOval onShootEvent(int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+	public GameImage onShootEvent(int dmg, int spd, CollisionType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		Bullet shot = new Bullet(dmg, spd, bullet, time, obj, movementVector);
 		this.bullets.add(shot);
 //		this.gOvals.add(shot.getSprite());
 		
-		System.out.println(bullets.size() + " <- Bullets");
+//		System.out.println(bullets.size() + " <- Bullets");
 		
 		return shot.getSprite();
 	}
 	
-	public ArrayList<GOval> getDeadBullets(){
+	public ArrayList<GameImage> getDeadBullets(){
 		return this.deadBullets;
 	}
 	

@@ -4,6 +4,7 @@ import java.util.*;
 
 import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
+import rotations.GameImage;
 
 public class GameConsole extends GraphicsProgram{
 	
@@ -32,18 +33,18 @@ public class GameConsole extends GraphicsProgram{
 		// create an object to handle physX
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
 		
-		// create a new map
-		mapCreator = new MapCreator();
-		
-		// populate the PhysX sim
-		physx.addQuadrants(mapCreator.createMap());
+		// create a new bullet manager
+		bulletStore = new BulletManager();
 		
 		// setup a new camera
 		camera = new Camera();
 		camera.setupCamera(1, 1);
 		
-		// create a new bullet manager
-		bulletStore = new BulletManager();
+		// create a new map
+		mapCreator = new MapCreator();
+		
+		// populate the PhysX sim
+		physx.addQuadrants(mapCreator.createMap());
 		
 		// get the player spawn point
 		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
@@ -55,7 +56,7 @@ public class GameConsole extends GraphicsProgram{
 		System.out.println("player starting position = " + pos_x + ", " + pos_y);
 		
 		// create a new collider for the player
-		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 25);
+		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 15);
 		
 		// create a new physXobject for the player
 		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
@@ -63,6 +64,7 @@ public class GameConsole extends GraphicsProgram{
 		// create the player
 		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
 		player.setDxDy(Vector2.Zero());
+		player.setBulletManagerListener(bulletStore);
 		gameTimer.addListener(player);
 		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
@@ -130,7 +132,7 @@ public class GameConsole extends GraphicsProgram{
 		return this.player;
 	}
 	
-	public GOval Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, Vector2 movementVector) {
+	public GameImage Shoot (int dmg, int spd, CollisionType bullet, float time, PhysXObject obj, Vector2 movementVector) {
 		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,movementVector);
 	}
 	
@@ -138,7 +140,7 @@ public class GameConsole extends GraphicsProgram{
 		this.bulletStore.moveBullets();
 	}
 	
-	public ArrayList<GOval> cullBullets() {
+	public ArrayList<GameImage> cullBullets() {
 		return this.bulletStore.getDeadBullets();
 	}
 	
@@ -146,6 +148,9 @@ public class GameConsole extends GraphicsProgram{
 		return gameTimer;
 	}
 	
+	public BulletManager getBulletManager() {
+		return bulletStore;
+	}
 }
 
 

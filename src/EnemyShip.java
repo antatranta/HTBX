@@ -1,15 +1,20 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EnemyShip extends Ship implements ActionListener{
+public class EnemyShip extends Ship implements ActionListener {
 	protected static EnemyType type;
 	private int orgin_degree = -90;
 	private Vector2 target = new Vector2(500,500);
 	private float interactionDistance = 500f;
+	private int shoot_cd;
+	private int weapon_cd;
 	
 	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats) {
 		super(physObj, current_health, stats, "PlayerShip-Small.png", CollisionType.enemyShip);
 		// TODO Auto-generated constructor stub
+		shoot_cd = 30;
+		weapon_cd = 60;
 	}
 	
 	public void setInteractionDistance(float interactionDistance) {
@@ -41,8 +46,8 @@ public class EnemyShip extends Ship implements ActionListener{
 		float angle = (float)Math.atan2(differentY,differentX);
 //		System.out.println("Angle: "+angle);
 		
-		thisX+= this.getStats().getSpeed()*Math.cos(angle);
-		thisY+= this.getStats().getSpeed()*Math.sin(angle);
+		thisX+= this.getStats().getSpeed() * Math.cos(angle);
+		thisY+= this.getStats().getSpeed() * Math.sin(angle);
 		
 		//Set enemy backend position
 		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
@@ -50,6 +55,19 @@ public class EnemyShip extends Ship implements ActionListener{
 		//Set enemy image position
 //		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
 		Rotate2Player(angle);
+		if (bulletStore == null) {
+			System.out.println("No bulletStore!");
+		}
+		else {
+			if (weapon_cd > 0) {
+				weapon_cd -= 1;
+			}
+			if (weapon_cd == 0) {
+				weapon_cd = shoot_cd;
+				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
+				bulletStore.onShootEvent(1, 7, CollisionType.enemy_bullet, 60 * 10, obj, new Vector2((float)Math.cos(angle), (float)Math.sin(angle)));
+			}
+		}
 	}
 	
 	public void Rotate2Player(float angle) {
@@ -78,7 +96,7 @@ public class EnemyShip extends Ship implements ActionListener{
 			calculateCollisionForce(pos);
 		}
 		if (data.getType() == CollisionType.asteroid ||
-				data.getType() == CollisionType.bullet) {
+				data.getType() == CollisionType.player_bullet) {
 			takeDamage(data.getDamage());
 		}
 	}

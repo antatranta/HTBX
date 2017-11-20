@@ -34,6 +34,15 @@ public class PhysXObject {
 		this.position = Vector2.Zero();
 	}
 	
+	public PhysXObject(QuadrantID QUID, CircleCollider collider) {
+		this.subscribers = new ArrayList<Collision>();
+		CircleCollider[] colliders = new CircleCollider[1];
+		colliders[0] = collider;
+		this.colliders[0] = new CircleCollider();
+		this.QUID = new QuadrantID(QUID);
+		this.position = Vector2.Zero();
+	}
+	
 	public PhysXObject(QuadrantID QUID, Vector2 position) {
 		this.subscribers = new ArrayList<Collision>();
 		this.colliders = new CircleCollider[1];

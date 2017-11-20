@@ -25,7 +25,7 @@ public class PlayerShip extends Ship {
 	}
 	
 	private void regenerateShield() {
-		if (shield_regen == 0 && current_shield < getStats().getShieldMax()) {
+		if (shield_regen == 0 && current_shield < getStats().getShieldMax() && current_health > 0) {
 			chargeShield(1);
 		}
 		else {
@@ -44,11 +44,15 @@ public class PlayerShip extends Ship {
 			System.out.println("Got hit!");
 			if (data.getType() == CollisionType.asteroid || data.getType() == CollisionType.enemyShip) {
 				calculateCollisionForce(pos);
-				
+				takeDamage(data.getDamage());
 			}
 		}
 		
-		takeDamage(data.getDamage());
+		if (i_frames == 0) {
+			if (data.getType() == CollisionType.enemy_bullet) {
+				takeDamage(data.getDamage());
+			}
+		}
 	}
 	
 	@Override
@@ -74,9 +78,8 @@ public class PlayerShip extends Ship {
 		}
 	}
 	
-	@Override
-	public void shoot() {
-		
+	public void shoot(int damage, int speed, CollisionType type, int duration, PhysXObject obj, Vector2 target) {
+		bulletStore.onShootEvent(damage, speed, type, duration, obj, target);
 	}
 	
 	@Override
