@@ -6,8 +6,8 @@ import javafx.beans.Observable;
 
 public class PlayerShip extends Ship {
 
-	private static int INV_CAP = 90;
-	private static int REGEN_CAP = 240;
+	public static int INV_CAP = 90;
+	public static int REGEN_CAP = 240;
 	private int current_shield;
 	private int shield_regen = REGEN_CAP;
 	private int i_frames = INV_CAP;
@@ -75,6 +75,12 @@ public class PlayerShip extends Ship {
 	}
 	
 	@Override
+	public void shoot() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void takeDamage(int amount) {
 		if (i_frames > 0) {
 			return;
@@ -87,9 +93,11 @@ public class PlayerShip extends Ship {
 		else {
 			current_health -= amount;
 			if (current_health < 0) {
+				i_frames = 0;
 				current_health = 0;
 			}
 		}
+
 	}
 
 	public int getCurrentShield() {
@@ -98,6 +106,10 @@ public class PlayerShip extends Ship {
 
 	public void setCurrentShield(int current_shield) {
 		this.current_shield = current_shield;
+	}
+	
+	public int getIFrames() {
+		return i_frames;
 	}
 
 	@Override
@@ -109,4 +121,5 @@ public class PlayerShip extends Ship {
 
 		// TODO: Charges the shield. Use a timer to check for hits before charge, and when charging starts
 	}
+
 }

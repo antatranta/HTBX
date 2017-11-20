@@ -31,6 +31,9 @@ public class EnemyShip extends Ship implements ActionListener{
 	}
 	
 	public void AIUpdate(Vector2 playerPos) {
+		if (current_health <= 0) {
+			return;
+		}
 		
 		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance())
 			return;

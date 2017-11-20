@@ -43,8 +43,11 @@ public class Ship extends Entity implements ActionListener {
 	protected void takeDamage(int damage) {
 		if(getCurrentHealth() > 0) {
 			setCurrentHealth(getCurrentHealth() - damage);
-		} else {
+		} 
+		else {
 			setCurrentHealth(0);
+			sprite.setImage("Aiming_Reticle.png");
+			sprite.rotate(0);
 		}
 	}
 
@@ -111,6 +114,10 @@ public class Ship extends Entity implements ActionListener {
 		return stats;
 	}
 	
+	public void shoot() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		// TODO Auto-generated method stub

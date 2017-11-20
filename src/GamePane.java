@@ -384,14 +384,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		setOffset();
+		
 		if (CAN_ALIGN && !ALIGNMENT_LOCK) {
 			ALIGNMENT_LOCK = true;
 			alignReticle(last_mouse_loc);
 		}
-		
-
-		
-		drawSprites();
 		
 		if(isShooting) {
 			if(shotCount % 5 == 0) {
@@ -421,23 +418,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		moveEnemyShips();
-		/*
-		ArrayList <Quadrant> quads = console.physx().getQuadrants();
-		for (int i = 0; i < quads.size(); i++) {
-			if (quads.get(i).getAsteroids().size() > 0) {
-//				System.out.println(quads.get(i));
-//				for (Asteroid rock : quads.get(i).getAsteroids()) {
-//					System.out.println(rock);
-//					if (rock.getSprite() == null) {
-//						System.out.println("No sprite!");
-//					}
-//				}
-				drawAsteroids(quads.get(i).getAsteroids());
-			}
-		}
-		*/
-		
-		
+		drawSprites();
 	}
 	
 	public void debugUpdate() {
@@ -519,8 +500,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		for(EnemyShip ship: ships) {
 			ship.AIUpdate(player.physObj.getPosition());
 		}
-		HUD.updateHUD();
-		layerSprites();
 		/*
 		ArrayList <Quadrant> quads = console.physx().getQuadrants();
 		for (int i = 0; i < quads.size(); i++) {

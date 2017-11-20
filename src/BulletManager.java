@@ -7,7 +7,7 @@ import javax.swing.Timer;
 
 import acm.graphics.*;
 
-public class BulletManager {
+public class BulletManager implements Shoot {
 	private ArrayList<Bullet> bullets;
 	private ArrayList<GImage> deadBullets;
 	
@@ -15,6 +15,7 @@ public class BulletManager {
 	
 	public BulletManager() {
 		this.bullets = new ArrayList<Bullet>();
+		this.deadBullets = new ArrayList<GImage>();
 		pattern = new BulletPattern();
 	}
 	
@@ -104,5 +105,11 @@ public class BulletManager {
 	public void moveZigZagTop() {
 		pattern.zigZagTop(this);
 		moveBullets();
+	}
+	
+	@Override
+	public void onShootEvent(Bullet shot, Vector2 origin, Vector2 target_pos) {
+		this.bullets.add(shot);
+		
 	}
 }

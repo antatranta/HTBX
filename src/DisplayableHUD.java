@@ -19,6 +19,7 @@ public class DisplayableHUD implements Displayable {
 	private GRect status_bar_shield;
 	private GRect status_bar_shield_back;
 	//private GLabel shield_label;
+	private GRect iframes;
 	private GRect compass_back;
 	private GRect inner_compass_back;
 	private GameImage compass_sprite;
@@ -93,6 +94,11 @@ public class DisplayableHUD implements Displayable {
 		stats_back.setFilled(true);
 		stats_back.setColor(Color.WHITE);
 		
+		iframes = new GRect(status_bar_shield.getX(), status_back.getY(), bar_max_x, status_back.getHeight());
+		iframes.setFillColor(new Color(1, 1, 1, 35));
+		iframes.setFilled(true);
+		iframes.setColor(new Color(1, 1, 1, 0));
+		
 		double startx = stats_back.getX() + 6;
 		double starty = stats_back.getY() + 28;
 		double unity = 21;
@@ -135,6 +141,7 @@ public class DisplayableHUD implements Displayable {
 	public void updateHUD() {
 		scaleStatusBar(status_bar_hp, (double)player.getCurrentHealth() / (double)player.getStats().getHealthMax());
 		scaleStatusBar(status_bar_shield, (double)player.getCurrentShield() / (double)player.getStats().getShieldMax());
+		scaleStatusBar(iframes, (double)player.getIFrames() / (double)PlayerShip.INV_CAP);
 		aimCompass(compass_sprite, new Vector2(0,0));
 	}
 	
@@ -146,6 +153,7 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	public void layerSprites() {
+		iframes.sendToBack();
 		status_bar_hp.sendToBack();
 		status_bar_hp_back.sendToBack();
 		status_bar_shield.sendToBack();
@@ -169,6 +177,8 @@ public class DisplayableHUD implements Displayable {
 		program.add(status_bar_hp);
 		program.add(status_bar_shield_back);
 		program.add(status_bar_shield);
+		program.add(iframes);
+		
 		program.add(compass_back);
 		program.add(inner_compass_back);
 		program.add(compass_sprite);
@@ -188,7 +198,10 @@ public class DisplayableHUD implements Displayable {
 		program.remove(status_bar_hp_back);
 		program.remove(status_bar_shield);
 		program.remove(status_bar_shield_back);
+		program.remove(iframes);
+		
 		program.remove(compass_back);
+		program.remove(inner_compass_back);
 		program.remove(compass_sprite);
 		
 		program.remove(stats_back);
