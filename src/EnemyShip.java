@@ -13,8 +13,8 @@ public class EnemyShip extends Ship implements ActionListener {
 	public EnemyShip(PhysXObject physObj, int current_health, ShipStats stats) {
 		super(physObj, current_health, stats, "PlayerShip-Small.png", CollisionType.enemyShip);
 		// TODO Auto-generated constructor stub
-		shoot_cd = 30;
-		weapon_cd = 60;
+		shoot_cd = 60;
+		weapon_cd = 90;
 	}
 	
 	public void setInteractionDistance(float interactionDistance) {
@@ -35,6 +35,7 @@ public class EnemyShip extends Ship implements ActionListener {
 		
 		float MovetoX = playerPos.getX();
 		float MovetoY = playerPos.getY();
+		target = playerPos;
 		
 //		System.out.println("MovetoX: "+ MovetoX+" MovetoY: "+MovetoY);
 		float thisX = this.getPhysObj().getPosition().getX();
@@ -65,7 +66,7 @@ public class EnemyShip extends Ship implements ActionListener {
 			if (weapon_cd == 0) {
 				weapon_cd = shoot_cd;
 				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-				bulletStore.onShootEvent(1, 7, CollisionType.enemy_bullet, 60 * 10, obj, new Vector2((float)Math.cos(angle), (float)Math.sin(angle)));
+				bulletStore.onShootEvent(1, 4, CollisionType.enemy_bullet, 60 * 5, obj, target);
 			}
 		}
 	}
