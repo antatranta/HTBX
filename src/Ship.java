@@ -44,7 +44,8 @@ public class Ship extends Entity {
 		setCurrentHealth(0);
 		
 		// TEMPORARY solution to "kill" enemies
-		physObj.setPosition(new Vector2(0, 0));
+		//physObj.setPosition(new Vector2(0, 0));
+		physObj = new PhysXObject();
 		
 		sprite.rotate(0);
 		
