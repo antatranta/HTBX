@@ -87,6 +87,9 @@ public class PlayerShip extends Ship implements ActionListener{
 		shield_regen = REGEN_CAP;
 		if (current_shield > 0) {
 			current_shield -= amount;
+			if (current_shield < 0) {
+				current_shield = 0;
+			}
 		}
 		else {
 			current_health -= amount;

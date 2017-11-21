@@ -128,7 +128,7 @@ public class Bullet extends Entity {
 	
 	protected void handleCollision(CollisionData data) {
 		if(data.getType() != CollisionType.player_bullet || data.getType() != CollisionType.blank
-				|| data.getType() == CollisionType.enemy_bullet || data.getType() == CollisionType.enemyShip) {
+				|| data.getType() == CollisionType.enemy_bullet || data.getType() != CollisionType.enemyShip) {
 			return;
 		} else {
 			destroy();

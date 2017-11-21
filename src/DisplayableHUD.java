@@ -29,8 +29,10 @@ public class DisplayableHUD implements Displayable {
 	private double stats_x = 21;
 	private double stats_y = 19;
 	
-	private int last_shield;
-	private int last_hp;
+	private int last_shield = -1;
+	private double shield_diff = 0;
+	private int last_hp = -1;
+	private double hp_diff = 0;
 
 	public DisplayableHUD(MainApplication program, PlayerShip player) {
 		this.program = program;
@@ -136,10 +138,27 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	public void updateHUD() {
-		scaleStatusBar(status_bar_hp, (double)player.getCurrentHealth() / (double)player.getStats().getHealthMax());
-		scaleStatusBar(status_bar_shield, (double)player.getCurrentShield() / (double)player.getStats().getShieldMax());
+		if (player.getCurrentShield() != last_shield) {
+			shield_diff = recalculateDifference(player.getCurrentShield(), last_shield);
+			System.out.println("shield_diff = " + shield_diff + ", last_shield = " + last_shield);
+			last_shield = player.getCurrentShield();
+		}
+		if (player.getCurrentHealth() != last_hp) {
+			hp_diff = recalculateDifference(player.getCurrentHealth(), last_hp);
+			System.out.println("hp_diff = " + hp_diff + ", last_hp = " + last_hp);
+			last_hp = player.getCurrentHealth();
+		}
+		
+		scaleStatusBar(status_bar_shield, (double)player.getCurrentShield() - shield_diff / (double)player.getStats().getShieldMax());
+		scaleStatusBar(status_bar_hp, (double)player.getCurrentHealth() - hp_diff / (double)player.getStats().getHealthMax());
 		scaleStatusBar(iframes, (double)player.getIFrames() / (double)PlayerShip.INV_CAP);
+		shield_diff /= 1.1;
+		hp_diff /= 1.1;
 		aimCompass(compass_sprite, new Vector2(0,0));
+	}
+	
+	public int recalculateDifference(int cur, int last) {
+		return cur - last;
 	}
 	
 	public void updateStats() {
@@ -206,8 +225,6 @@ public class DisplayableHUD implements Displayable {
 
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+//		if (e.getElementAt(e.getX(), e.getY()));
 	}
-
-
 }
