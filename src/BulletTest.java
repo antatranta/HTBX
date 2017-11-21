@@ -41,8 +41,8 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 	}
 	
 	public void moveBullets() {
-		//bulletStore.moveClockwiseSpiralPattern();
-		bulletStore.moveSunBurstBottom();
+		bulletStore.moveClockwiseSpiralPattern();
+		//bulletStore.moveSunBurstBottom();
 		//bulletStore.moveSunBurstTop();
 		//bulletStore.moveZigZagBottom();
 		//bulletStore.moveZigZagTop();
@@ -85,7 +85,7 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 		PhysXObject currentLocation = new PhysXObject();
 		currentLocation.setPosition(new Vector2(400, 300));
 
-		GameImage bullet = bulletStore.onShootEvent(1, 1, CollisionType.enemy_bullet, 1000, currentLocation, "Cursor.png", Camera.frontendToBackend(last_mouse_loc) );
+		GameImage bullet = bulletStore.onShootEvent(1, 1, CollisionType.enemy_bullet, 1000, currentLocation, "RedCircle.png", Camera.frontendToBackend(last_mouse_loc) );
 //		bullet.setFilled(true);
 //		bullet.setFillColor(Color.orange);
 //		bullet.setColor(Color.orange);

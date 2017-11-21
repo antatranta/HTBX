@@ -337,25 +337,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
             }
         }
         
-		if (console.IS_DEBUGGING) {
-			if(!DO_POINT_TEST) {
-				isShooting = true;
-			} else {
-				pointTest(new Vector2(e.getX(), e.getY()));
-			}
-		} else {
-			isShooting = true;
-		}
-				
-		GObject obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == player_img) {
-			program.switchToMenu();
-		}
-		else {
-//			System.out.println("Clicked empty space");
-		}
-		
-//		isPositionSafe
+        if(e.getButton() == MouseEvent.BUTTON1) {
+        	if (console.IS_DEBUGGING) {
+    			if(!DO_POINT_TEST) {
+    				isShooting = true;
+    			} else {
+    				pointTest(new Vector2(e.getX(), e.getY()));
+    			}
+    		} else {
+    			isShooting = true;
+    		}
+        }
 	}
 	
 	private void shoot() {
