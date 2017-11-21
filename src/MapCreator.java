@@ -27,7 +27,7 @@ public class MapCreator {
 	public MapCreator() {
 		LavaLamp.setup(System.currentTimeMillis());
 		
-//		FileInput file = new FileInput();
+		file = new FileInput();
 		file.decodeFile("Test.txt");
 //		LavaLamp.setup(LavaLamp.randomNumber(0, 500));
 	}
