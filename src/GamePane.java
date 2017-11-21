@@ -337,32 +337,24 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
             }
         }
         
-		if (console.IS_DEBUGGING) {
-			if(!DO_POINT_TEST) {
-				isShooting = true;
-			} else {
-				pointTest(new Vector2(e.getX(), e.getY()));
-			}
-		} else {
-			isShooting = true;
-		}
-				
-		GObject obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == player_img) {
-			program.switchToMenu();
-		}
-		else {
-//			System.out.println("Clicked empty space");
-		}
-		
-//		isPositionSafe
+        if(e.getButton() == MouseEvent.BUTTON1) {
+        	if (console.IS_DEBUGGING) {
+    			if(!DO_POINT_TEST) {
+    				isShooting = true;
+    			} else {
+    				pointTest(new Vector2(e.getX(), e.getY()));
+    			}
+    		} else {
+    			isShooting = true;
+    		}
+        }
 	}
 	
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
 
-		GImage bullet = console.Shoot(1, 15, BulletType.OSCILLATE, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
+		GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
 		
 		if(bullet != null) {
 //			bullet.setFilled(true);

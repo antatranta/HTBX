@@ -28,10 +28,10 @@ public class BulletManager implements ShipTriggers {
 		return bullets;
 	}
 	
-	public GameImage onShootEvent(int dmg, int spd, BulletType pattern, CollisionType bullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+	public GameImage onShootEvent(int dmg, int spd, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		// Variable Verification
 		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {
-			Bullet shot = new Bullet(dmg, spd, pattern, bullet, time, obj, sprite, movementVector);
+			Bullet shot = new Bullet(dmg, spd, collision, time, obj, sprite, movementVector);
 			this.bullets.add(shot);
 			return shot.getSprite();
 		}		
@@ -51,7 +51,7 @@ public class BulletManager implements ShipTriggers {
 
 			current.getSprite().setLocation(pos.getX() - (current.getSprite().getWidth() / 2), pos.getY() - (current.getSprite().getHeight() / 2));
 
-			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 60 || this.bullets.get(i).checkIfDead()) {
+			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 100 || this.bullets.get(i).checkIfDead()) {
 				this.deadBullets.add(bullets.get(i).getSprite());
 				this.bullets.remove(bullets.get(i));
 			}
@@ -105,9 +105,9 @@ public class BulletManager implements ShipTriggers {
 	}
 
 	@Override
-	public void onShipFire(BulletFireEventData data, CollisionType bulletType) {
+	public void onShipFire(BulletFireEventData data, CollisionType collision) {
 		if(data != null)
-			onShootEvent(data.getDamage(), data.getSpeed(), data.getBulletType(), bulletType, data.getTime(), data.getPhysXObject(), data.getSprite(), data.getMovementVector());
+			onShootEvent(data.getDamage(), data.getSpeed(), data.getCollisionType(), data.getTime(), data.getPhysXObject(), data.getSprite(), data.getMovementVector());
 	}
 	
 	@Override
