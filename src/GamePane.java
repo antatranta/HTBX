@@ -94,7 +94,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private DisplayableHUD HUD;
 	
-	
 	private boolean TRACKING_SET = false;
 	private Vector2 TRACKING_POSITION;
 	private Vector2 tracking_offset;

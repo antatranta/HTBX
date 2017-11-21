@@ -3,8 +3,6 @@ import java.awt.event.MouseEvent;
 
 import acm.graphics.GImage;
 import acm.graphics.GRect;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import rotations.GameImage;
 
 public class DisplayableHUD implements Displayable {
@@ -12,12 +10,13 @@ public class DisplayableHUD implements Displayable {
 	private MainApplication program;
 	private PlayerShip player;
 	
+	private GameImage status_front;
 	private GRect status_back;
 	private GRect status_bar_hp;
-	private GRect status_bar_hp_back;
+//	private GRect status_bar_hp_back;
 	//private GLabel hp_label;
 	private GRect status_bar_shield;
-	private GRect status_bar_shield_back;
+//	private GRect status_bar_shield_back;
 	//private GLabel shield_label;
 	private GRect iframes;
 	private GRect compass_back;
@@ -47,54 +46,58 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	private void init() {
-		status_back = new GRect(10, MainApplication.WINDOW_HEIGHT - 10 - 75, 300, 75);
-		//Vector2 status_origin = new Vector2((float)status_back.getX(), (float)status_back.getY());
-		bar_max_y = status_back.getHeight() - 20 - ((status_back.getHeight() - 10) / 2);
-		bar_max_x = status_back.getWidth() - 20;
+		status_front = new GameImage("Artboard 10.png", 5, MainApplication.WINDOW_HEIGHT - 5);
+		status_front.move(0, -status_front.getHeight());
 		
-		status_back.setFillColor(Color.BLACK);
+		status_back = new GRect(status_front.getX(), status_front.getY(), status_front.getWidth(), status_front.getHeight());
+		status_back.setFillColor(Color.WHITE);
 		status_back.setFilled(true);
-		status_back.setColor(Color.WHITE);
+		status_back.setColor(new Color(0,0,0,0));
 		
-		status_bar_hp_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y + bar_max_y + 10, bar_max_x, bar_max_y);
-		status_bar_hp_back.setFillColor(Color.WHITE);
-		status_bar_hp_back.setFilled(true);
-		status_bar_hp_back.setColor(Color.WHITE);
+		bar_max_x = 156;
+		bar_max_y = 29;
+
+//		status_bar_hp_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y + bar_max_y + 10, bar_max_x, bar_max_y);
+//		status_bar_hp_back.setFillColor(Color.WHITE);
+//		status_bar_hp_back.setFilled(true);
+//		status_bar_hp_back.setColor(Color.WHITE);
+//		
+//		status_bar_shield_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y, bar_max_x, bar_max_y);
+//		status_bar_shield_back.setFillColor(Color.WHITE);
+//		status_bar_shield_back.setFilled(true);
+//		status_bar_shield_back.setColor(Color.WHITE);
 		
-		status_bar_shield_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y, bar_max_x, bar_max_y);
-		status_bar_shield_back.setFillColor(Color.WHITE);
-		status_bar_shield_back.setFilled(true);
-		status_bar_shield_back.setColor(Color.WHITE);
+//		compass_back = new GRect(status_back.getX() + status_back.getWidth() + 5, status_back.getY(), status_back.getHeight(), status_back.getHeight());
+//		compass_back.setFillColor(Color.BLACK);
+//		compass_back.setFilled(true);
+//		compass_back.setColor(Color.WHITE);
 		
-		compass_back = new GRect(status_back.getX() + status_back.getWidth() + 5, status_back.getY(), status_back.getHeight(), status_back.getHeight());
-		compass_back.setFillColor(Color.BLACK);
-		compass_back.setFilled(true);
-		compass_back.setColor(Color.WHITE);
+//		inner_compass_back = new GRect(status_back.getX() + status_back.getWidth() + 15, status_back.getY() + 10, status_back.getHeight() - 20, status_back.getHeight() - 20);
+//		inner_compass_back.setFillColor(Color.WHITE);
+//		inner_compass_back.setFilled(true);
+//		inner_compass_back.setColor(Color.WHITE);
 		
-		inner_compass_back = new GRect(status_back.getX() + status_back.getWidth() + 15, status_back.getY() + 10, status_back.getHeight() - 20, status_back.getHeight() - 20);
-		inner_compass_back.setFillColor(Color.WHITE);
-		inner_compass_back.setFilled(true);
-		inner_compass_back.setColor(Color.WHITE);
+		compass_sprite = new GameImage("Compass.png", status_front.getX() + 166, status_front.getY() + 4);
 		
-		compass_sprite = new GameImage("Compass2.png", compass_back.getX() + 15, compass_back.getY() + 15);
-		
-		status_bar_hp = new GRect(status_bar_hp_back.getLocation().getX(), status_bar_hp_back.getY(), status_bar_hp_back.getWidth(), status_bar_hp_back.getHeight());
-		status_bar_hp.setFillColor(Color.GREEN);
-		status_bar_hp.setFilled(true);
-		status_bar_hp.setColor(Color.YELLOW);
-		
-		status_bar_shield = new GRect(status_bar_shield_back.getLocation().getX(), status_bar_shield_back.getY(), status_bar_shield_back.getWidth(), status_bar_shield_back.getHeight());
-		status_bar_shield.setFillColor(Color.BLUE);
+		Color shield = new Color(131, 255, 254);
+		status_bar_shield = new GRect(status_front.getX() + 5, status_front.getY() + 4, bar_max_x, bar_max_y);
+		status_bar_shield.setFillColor(shield);
 		status_bar_shield.setFilled(true);
-		status_bar_shield.setColor(Color.CYAN);
+		status_bar_shield.setColor(shield);
 		
+		Color hp = new Color(184, 255, 199);
+		status_bar_hp = new GRect(status_front.getX() + 5, status_front.getY() + 4 + 29 + 4, bar_max_x, bar_max_y);
+		status_bar_hp.setFillColor(hp);
+		status_bar_hp.setFilled(true);
+		status_bar_hp.setColor(hp);
+
 		stats_display = new GImage("Stats_Display.png", 5, 5);
 		stats_back = new GRect(stats_display.getX(), stats_display.getY(), stats_display.getWidth(), stats_display.getHeight());
 		stats_back.setFillColor(Color.BLACK);
 		stats_back.setFilled(true);
 		stats_back.setColor(Color.WHITE);
 		
-		iframes = new GRect(status_bar_shield.getX(), status_back.getY() + 1, bar_max_x, status_back.getHeight() - 2);
+		iframes = new GRect(status_back.getX(), status_back.getY() + 1, bar_max_x, status_back.getHeight() - 2);
 		iframes.setFillColor(new Color(1, 1, 1, 35));
 		iframes.setFilled(true);
 		iframes.setColor(new Color(1, 1, 1, 0));
@@ -153,15 +156,17 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	public void layerSprites() {
+		status_front.sendToBack();
 		iframes.sendToBack();
 		status_bar_hp.sendToBack();
-		status_bar_hp_back.sendToBack();
+//		status_bar_hp_back.sendToBack();
 		status_bar_shield.sendToBack();
-		status_bar_shield_back.sendToBack();
-		status_back.sendToBack();
+//		status_bar_shield_back.sendToBack();
 		compass_sprite.sendToBack();
-		inner_compass_back.sendToBack();
-		compass_back.sendToBack();
+		status_back.sendToBack();
+
+//		inner_compass_back.sendToBack();
+//		compass_back.sendToBack();
 		stats_display.sendToBack();
 		speed_stat.sendToBack();
 		damage_stat.sendToBack();
@@ -173,14 +178,15 @@ public class DisplayableHUD implements Displayable {
 	@Override
 	public void showContents() {
 		program.add(status_back);
-		program.add(status_bar_hp_back);
+//		program.add(status_bar_hp_back);
 		program.add(status_bar_hp);
-		program.add(status_bar_shield_back);
+//		program.add(status_bar_shield_back);
 		program.add(status_bar_shield);
 		program.add(iframes);
+		program.add(status_front);
 		
-		program.add(compass_back);
-		program.add(inner_compass_back);
+//		program.add(compass_back);
+//		program.add(inner_compass_back);
 		program.add(compass_sprite);
 		
 		program.add(stats_back);
@@ -195,13 +201,14 @@ public class DisplayableHUD implements Displayable {
 	public void hideContents() {
 		program.remove(status_back);
 		program.remove(status_bar_hp);
-		program.remove(status_bar_hp_back);
+//		program.remove(status_bar_hp_back);
 		program.remove(status_bar_shield);
-		program.remove(status_bar_shield_back);
+//		program.remove(status_bar_shield_back);
 		program.remove(iframes);
+		program.remove(status_front);
 		
-		program.remove(compass_back);
-		program.remove(inner_compass_back);
+//		program.remove(compass_back);
+//		program.remove(inner_compass_back);
 		program.remove(compass_sprite);
 		
 		program.remove(stats_back);
