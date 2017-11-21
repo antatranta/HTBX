@@ -500,7 +500,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void moveEnemyShips() {
 		ArrayList<EnemyShip> ships = console.getActiveShips();
 		for(EnemyShip ship: ships) {
-			ship.setBulletManagerListener(bulletStore);
+			ship.addSubscriber(bulletStore);
 			ship.AIUpdate(player.physObj.getPosition());
 		}
 		/*
