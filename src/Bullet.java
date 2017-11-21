@@ -138,15 +138,21 @@ public class Bullet extends Entity {
 			// WAVE: Bullet moves back and forth in its path
 			else if (bulletType == BulletType.WAVE) {
 				if (bulletOscIts == 0) {
-					bulletWaveIts += WAVE_DELTA ;
-					if (bulletWaveIts > WAVE_OFFSET) {
-						bulletOscIts = 1;
+					bulletWaveIts += WAVE_DELTA;
+					if (bulletWaveIts > WAVE_OFFSET / 2) {
+						bulletOscIts = 2;
 					}
 				}
-				else {
+				else if (bulletOscIts == 1) {
+					bulletWaveIts += WAVE_DELTA ;
+					if (bulletWaveIts > WAVE_OFFSET) {
+						bulletOscIts = 2;
+					}
+				}
+				else if (bulletOscIts == 2){
 					bulletWaveIts -= WAVE_DELTA ;
 					if (bulletWaveIts < -WAVE_OFFSET) {
-						bulletOscIts = 0;
+						bulletOscIts = 1;
 					}
 				}
 			
