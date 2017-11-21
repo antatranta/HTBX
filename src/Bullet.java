@@ -5,53 +5,28 @@ import acm.graphics.GOval;
 import rotations.GameImage;
 
 public class Bullet extends Entity {
-	public static final int OSCILLATION_OFFSET = 5;
-	public static final int WAVE_OFFSET = 50;
-	public static final int WAVE_DELTA = 5;
-	
 	private int bulletSpeed;
-	private int originalSpeed;
-	private BulletType bulletType;
-	private float bulletDuration;		// Time in SECONDS; BulletManager checks for 60 ticks per
-	private int bulletOscIts;		// Used for oscillation and wave
-	private int bulletWaveIts;
-
+	private float bulletDuration;
 	private Vector2 movementVector;
-	private double originalAngle;
-	private double angle;
 	private float bulletDX;
 	private float bulletDY;
 	private GOval oval;
 	private boolean dead;
-	
 	private Vector2 GOval_Pos;
 	private Vector2 GOval_Size;
-	
 	private int steps = 0;
 	
-	public Bullet(int dmg, int spd, BulletType pattern, CollisionType bullet, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
-		super(physObj, sprite, new CollisionData(10, bullet));
+
+	public Bullet(int dmg, int spd, CollisionType collision, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
+		super(physObj, sprite, new CollisionData(10, CollisionType.blank));
 		
-		this.originalSpeed = spd;
-		this.bulletSpeed = originalSpeed;
-		this.bulletType = pattern;
+		this.bulletSpeed = spd;
 		this.bulletDuration = time;
 		this.physObj.addSubscriber(this);
 		this.movementVector = movementVector;
-		this.originalAngle = Math.atan2(movementVector.getY() - physObj.getPosition().getY(), movementVector.getX() - physObj.getPosition().getX());
-		this.angle = originalAngle;
 		this.physObj.addSubscriber(this);
-		this.bulletOscIts = 0;
-		this.bulletWaveIts = 0;
 		
-		if (bulletType == BulletType.ACCEL) {
-			bulletSpeed = 1;
-		}
-		else if (bulletType == BulletType.WAVE) {
-			angle = originalAngle;
-		}
-		
-		physObj.setCollisionData(new CollisionData(dmg, bullet));
+		physObj.setCollisionData(new CollisionData(dmg, collision));
 		this.bulletTrajectory();
 	}
 	
@@ -61,10 +36,6 @@ public class Bullet extends Entity {
 	
 	public void setBulletSpeed(int spd) {
 		this.bulletSpeed = spd;
-	}
-	
-	public void setBulletType(BulletType bullet) {
-		this.bulletType = bullet;
 	}
 	
 	public void setBulletDuration(float time) {
@@ -88,10 +59,6 @@ public class Bullet extends Entity {
 		return this.bulletSpeed;
 	}
 	
-	public BulletType getBulletType() {
-		return this.bulletType;
-	}
-	
 	public float getBulletDuration() {
 		return this.bulletDuration;
 	}
@@ -113,67 +80,9 @@ public class Bullet extends Entity {
 	}
 	
 	public void move() {
-		steps ++;
-		// DO NOT need a case for straight bullets
-		if (bulletType != BulletType.STRAIGHT) {
-			// ACCEL: Bullet increases in speed (self explanatory)
-			if (bulletType == BulletType.ACCEL) {
-				bulletSpeed += 1;
-			}
-			// OSCILLATE: Bullet fluctuates in its path
-			else if (bulletType == BulletType.OSCILLATE) {
-				if (bulletSpeed > -OSCILLATION_OFFSET && bulletOscIts == 0) {
-					bulletSpeed -= 1;
-				}
-				if (bulletSpeed == 0) {
-					bulletOscIts = 1;
-				}
-				if (bulletSpeed < originalSpeed + OSCILLATION_OFFSET && bulletOscIts == 1) {
-					bulletSpeed += 1;
-				}
-				if (bulletSpeed >= originalSpeed + OSCILLATION_OFFSET) {
-					bulletOscIts = 0;
-				}
-			}
-			// WAVE: Bullet moves back and forth in its path
-			else if (bulletType == BulletType.WAVE) {
-				if (bulletOscIts == 0) {
-					bulletWaveIts += WAVE_DELTA;
-					if (bulletWaveIts > WAVE_OFFSET / 2) {
-						bulletOscIts = 2;
-					}
-				}
-				else if (bulletOscIts == 1) {
-					bulletWaveIts += WAVE_DELTA ;
-					if (bulletWaveIts > WAVE_OFFSET) {
-						bulletOscIts = 2;
-					}
-				}
-				else if (bulletOscIts == 2){
-					bulletWaveIts -= WAVE_DELTA ;
-					if (bulletWaveIts < -WAVE_OFFSET) {
-						bulletOscIts = 1;
-					}
-				}
-			
-				angle = originalAngle + Math.toRadians(bulletWaveIts);
-				this.bulletTrajectory();
-			}
-			// SWERVE_CLOCKWISE: Bullet will swerve clockwise
-			else if (bulletType == BulletType.SWERVE_CW) {
-				angle -= Math.toRadians(1);
-				this.bulletTrajectory();
-			}
-			// SWERVE_COUNTER_CLOCKWISE: Bullet will serve counter clockwise
-			else if (bulletType == BulletType.SWERVE_CCW) {
-				angle += Math.toRadians(1);
-				this.bulletTrajectory();
-			}
-			
-		}
 		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
 		this.physObj.setPosition(movement);
-
+		steps ++;
 	}
 	
 	public void destroy() {
@@ -190,11 +99,8 @@ public class Bullet extends Entity {
 	}
 	
 	public void bulletTrajectory() {
-		// Calculate unit x and y
-		this.bulletDX = (float)Math.cos(angle);
-		this.bulletDY = (float)Math.sin(angle);
-//		this.bulletDX = physObj.getPosition().normalize(movementVector).getX();
-//		this.bulletDY = physObj.getPosition().normalize(movementVector).getY();
+		this.bulletDX = physObj.getPosition().normalize(movementVector).getX();
+		this.bulletDY = physObj.getPosition().normalize(movementVector).getY();
 	}
 	
 	public Vector2 getGOvalSize() {

@@ -3,13 +3,13 @@ public class BulletFireEventData {
 	
 	private int damage;
 	private int speed;
-	private BulletType type;
+	private CollisionType type;
 	private float time;
 	private PhysXObject obj;
 	private String sprite;
 	private Vector2 movementVector;
 	
-	public BulletFireEventData(int damage, int speed, BulletType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+	public BulletFireEventData(int damage, int speed, CollisionType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		this.damage = damage;
 		this.speed = speed;
 		this.type = type;
@@ -29,7 +29,7 @@ public class BulletFireEventData {
 		return this.speed;
 	}
 
-	public BulletType getBulletType() {
+	public CollisionType getCollisionType() {
 		// TODO Auto-generated method stub
 		return this.type;
 	}

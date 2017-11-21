@@ -86,7 +86,7 @@ public class EnemyShip extends Ship implements ActionListener {
 		if (weapon_cd == 0) {
 			weapon_cd = shoot_cd;
 			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-			shoot(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Cursor.png",target);
+			shoot(1, 4, CollisionType.enemy_bullet, 5, obj, "Cursor.png",target);
 		}
 		
 	}

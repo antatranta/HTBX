@@ -118,8 +118,8 @@ public class Ship extends Entity {
 		return stats;
 	}
 	
-	protected void shoot(int damage, int speed, BulletType type, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-		BulletFireEventData bfe = new BulletFireEventData(damage,speed,type, time, obj, sprite, movementVector);
+	protected void shoot(int damage, int speed, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		BulletFireEventData bfe = new BulletFireEventData(damage,speed, enemyBullet, time, obj, sprite, movementVector);
 		bulletStore.onShipFire(bfe, enemyBullet);
 	}
 	
