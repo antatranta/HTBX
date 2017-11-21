@@ -109,4 +109,9 @@ public class BulletManager implements ShipTriggers {
 		if(data != null)
 			onShootEvent(data.getDamage(), data.getSpeed(), data.getCollisionType(), data.getTime(), data.getPhysXObject(), data.getSprite(), data.getMovementVector());
 	}
+	
+	@Override
+	public void onShipDeath(Vector2 position) {
+		// Sun burst emitter
+	}
 }

@@ -1,8 +1,1 @@
-Hello World!
-Ayee lmao.
-Osvaldo's pretty cool, I guess.
-Roy's our boy!
-We tech those.
-ZA WARUDO!!!
-Here come DAT BOI.
-YEA BOIIII
+#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Buddy_1.png
