@@ -336,8 +336,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
             }
         }
-        
-        if(e.getButton() == MouseEvent.BUTTON1) {
+        else if(e.getButton() == MouseEvent.BUTTON1) {
         	if (console.IS_DEBUGGING) {
     			if(!DO_POINT_TEST) {
     				isShooting = true;
