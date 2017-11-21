@@ -13,14 +13,8 @@ public class DisplayableHUD implements Displayable {
 	private GameImage status_front;
 	private GRect status_back;
 	private GRect status_bar_hp;
-//	private GRect status_bar_hp_back;
-	//private GLabel hp_label;
 	private GRect status_bar_shield;
-//	private GRect status_bar_shield_back;
-	//private GLabel shield_label;
 	private GRect iframes;
-	private GRect compass_back;
-	private GRect inner_compass_back;
 	private GameImage compass_sprite;
 	
 	private GImage stats_display;
@@ -159,14 +153,10 @@ public class DisplayableHUD implements Displayable {
 		status_front.sendToBack();
 		iframes.sendToBack();
 		status_bar_hp.sendToBack();
-//		status_bar_hp_back.sendToBack();
 		status_bar_shield.sendToBack();
-//		status_bar_shield_back.sendToBack();
 		compass_sprite.sendToBack();
 		status_back.sendToBack();
-
-//		inner_compass_back.sendToBack();
-//		compass_back.sendToBack();
+		
 		stats_display.sendToBack();
 		speed_stat.sendToBack();
 		damage_stat.sendToBack();
@@ -178,16 +168,11 @@ public class DisplayableHUD implements Displayable {
 	@Override
 	public void showContents() {
 		program.add(status_back);
-//		program.add(status_bar_hp_back);
+		program.add(compass_sprite);
 		program.add(status_bar_hp);
-//		program.add(status_bar_shield_back);
 		program.add(status_bar_shield);
 		program.add(iframes);
 		program.add(status_front);
-		
-//		program.add(compass_back);
-//		program.add(inner_compass_back);
-		program.add(compass_sprite);
 		
 		program.add(stats_back);
 		program.add(stats_display);

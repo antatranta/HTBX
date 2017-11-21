@@ -17,22 +17,23 @@ public class ShipStats {
 	}
 	
 	public float getTurningSpeed() {
-		switch(this.speed) {
-		case 0:
-			return 1f;
-		case 1:
-			return 2f;
-		case 2:
-			return 5f;
-		case 3:
-			return 10f;
-		case 4:
-			return 15f;
-		case 5:
-			return 20f;
-		default:
-			return 1;
-		}
+		return 5f;
+//		switch(this.speed) {
+//		case 0:
+//			return 5f;
+//		case 1:
+//			return 5f;
+//		case 2:
+//			return 5f;
+//		case 3:
+//			return 5;
+//		case 4:
+//			return 5;
+//		case 5:
+//			return 5;
+//		default:
+//			return 1;
+//		}
 	}
 	
 	public int getSpeedSetting() {

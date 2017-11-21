@@ -3,8 +3,8 @@ import java.awt.event.ActionListener;
 
 public class Ship extends Entity {
 
-	private static final int KB_FORCE = 7;
-	private static final float FRICTION = (float) 1.1;
+	private static final int KB_FORCE = 10;
+	private static final float FRICTION = (float) 1.15;
 	protected int current_health;
 	protected ShipStats stats;
 	protected Vector2 external_force;
@@ -16,13 +16,11 @@ public class Ship extends Entity {
 	
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType) {
 		super(physObj, sprite, new CollisionData(10, shipType));
-//		this.physObj = physObj;s
 		this.external_force = new Vector2(0, 0);
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
-		this.stats = stats;//speed, shield_max, health_max, damage
-//		super.createSprite(sprite);
-//		super.setCollisionData(new CollisionData(10, CollisionType.enemyShip));
+		this.stats = stats;
+
 	}
 	
 	public double getAngle() {
@@ -120,9 +118,9 @@ public class Ship extends Entity {
 		return stats;
 	}
 	
-	protected void shoot(int damage, int speed, BulletType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+	protected void shoot(int damage, int speed, BulletType type, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		BulletFireEventData bfe = new BulletFireEventData(damage,speed,type, time, obj, sprite, movementVector);
-		bulletStore.onShipFire(bfe);
+		bulletStore.onShipFire(bfe, enemyBullet);
 	}
 	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {

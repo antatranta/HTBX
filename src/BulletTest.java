@@ -14,6 +14,10 @@ import acm.graphics.*;
 import rotations.GameImage;
 
 public class BulletTest extends GraphicsApplication implements ActionListener {
+	
+	// To Anthony: Change the BulletType enum to get some funky bullet movement :)
+	private static BulletType bulletType = BulletType.STRAIGHT;
+	
 	private Vector2 last_mouse_loc;
 	private BulletManager bulletStore;
 	private Timer gameTimer;
@@ -85,7 +89,7 @@ public class BulletTest extends GraphicsApplication implements ActionListener {
 		PhysXObject currentLocation = new PhysXObject();
 		currentLocation.setPosition(new Vector2(400, 300));
 
-		GameImage bullet = bulletStore.onShootEvent(1, 1, BulletType.ENEMY_BULLET, 1000, currentLocation, "Cursor.png", Camera.frontendToBackend(last_mouse_loc) );
+		GameImage bullet = bulletStore.onShootEvent(1, 8, bulletType, CollisionType.player_bullet, 3, currentLocation, "RedCircle.png", Camera.frontendToBackend(last_mouse_loc) );
 //		bullet.setFilled(true);
 //		bullet.setFillColor(Color.orange);
 //		bullet.setColor(Color.orange);

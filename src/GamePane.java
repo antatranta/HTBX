@@ -362,7 +362,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
 
-		GImage bullet = console.Shoot(1, 25, BulletType.PLAYER_BULLET, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "Cursor.png",  Camera.frontendToBackend(last_mouse_loc) );
+		GImage bullet = console.Shoot(1, 15, BulletType.OSCILLATE, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
 		
 		if(bullet != null) {
 //			bullet.setFilled(true);
@@ -370,8 +370,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //			bullet.setColor(Color.orange);
 			program.add(bullet);
 		}
-////		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
-////		program.add(bullet);
+//		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
+//		program.add(bullet);
 //		player.shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc));
 
 	}
@@ -551,6 +551,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Big rocks have priority next
 		for (int i = 0; i < drawn_rocks.size(); i++) {
 			drawn_rocks.get(i).getSprite().sendToBack();
+		}
+		
+		// Finally, bullets
+		for (int i = 0; i < drawn_bullets.size(); i++) {
+			drawn_bullets.get(i).getSprite().sendToBack();
 		}
 		
 	}

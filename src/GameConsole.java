@@ -139,8 +139,8 @@ public class GameConsole extends GraphicsProgram{
 	}
 	
 
-	public GameImage Shoot (int dmg, int spd, BulletType bullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-		return this.bulletStore.onShootEvent(dmg,spd,bullet,time,obj,sprite,movementVector);
+	public GameImage Shoot (int dmg, int spd, BulletType bullet, CollisionType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		return this.bulletStore.onShootEvent(dmg,spd,bullet,type,time,obj,sprite,movementVector);
 	}
 	
 	public void moveBullets() {
