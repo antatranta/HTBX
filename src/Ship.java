@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 
 public class Ship extends Entity {
 
@@ -9,7 +11,7 @@ public class Ship extends Entity {
 	protected ShipStats stats;
 	protected Vector2 external_force;
 	protected double dir = 90;
-	private ShipTriggers bulletStore;
+	private ArrayList<ShipTriggers> subscribers;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
@@ -20,6 +22,7 @@ public class Ship extends Entity {
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
 		this.stats = stats;
+		this.subscribers = new ArrayList<ShipTriggers>();
 
 	}
 	
@@ -41,9 +44,16 @@ public class Ship extends Entity {
 		setCurrentHealth(0);
 		
 		// TEMPORARY solution to "kill" enemies
-		physObj.setPosition(new Vector2(0, 0));
+		//physObj.setPosition(new Vector2(0, 0));
+		physObj = new PhysXObject();
 		
 		sprite.rotate(0);
+		
+		if(subscribers != null && subscribers.size() > 0) {
+			for(ShipTriggers sub : subscribers) {
+				sub.onShipDeath(physObj.getPosition());
+			}
+		}
 	}
 	
 	protected void takeDamage(int damage) {
@@ -120,7 +130,11 @@ public class Ship extends Entity {
 	
 	protected void shoot(int damage, int speed, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		BulletFireEventData bfe = new BulletFireEventData(damage,speed, enemyBullet, time, obj, sprite, movementVector);
-		bulletStore.onShipFire(bfe, enemyBullet);
+		if(subscribers != null && subscribers.size() > 0) {
+			for(ShipTriggers sub: subscribers) {
+				sub.onShipFire(bfe, enemyBullet);
+			}
+		}
 	}
 	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
@@ -130,10 +144,9 @@ public class Ship extends Entity {
 		takeDamage(data.getDamage());
 	}
 	
-	public void setBulletManagerListener(ShipTriggers b) {
-		if (bulletStore == null) {
-			this.bulletStore = b;
-			System.out.println("Setting Bullet Manager");
+	public void addSubscriber(ShipTriggers sub) {
+		if(sub != null) {
+			this.subscribers.add(sub);
 		}
 	}
 }

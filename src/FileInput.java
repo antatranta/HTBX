@@ -7,11 +7,19 @@ public class FileInput {
 	public static final String ROOT_PATH = new File("").getAbsolutePath(); // Leave this
 	private String last_file;
 	
-	private Map<String, Asteroid> AsteroidDictionary;
+//	private Map<String, Asteroid> AsteroidDictionary;
+	private ArrayList<PhysXObject> asteroidObjects = new ArrayList<PhysXObject>();
+	private ArrayList<String> asteroidSprites = new ArrayList<String>();
+	
+	private ArrayList<PhysXObject> shipObjects = new ArrayList<PhysXObject>();
+	private ArrayList<String> shipSprites = new ArrayList<String>();
+	private ArrayList<Integer> shipLevels = new ArrayList<Integer>();
 	
 	public FileInput() {
 		last_file = null;
-		AsteroidDictionary = new HashMap<String, Asteroid>();
+		asteroidObjects = new ArrayList<PhysXObject>();
+		asteroidSprites = new ArrayList<String>();
+		shipLevels = new ArrayList<Integer>();
 	}
 
 	// Give this the file path and file name, ie, "C:\\Place1\\Place2\File.txt"
@@ -38,30 +46,99 @@ public class FileInput {
 		
 	}
 	
-	public void decodeFile(ArrayList<String> lines) {
+	public void decodeFile(String file) {
+		
+		ArrayList<String> lines = readFile(file);
+		
 		for(String line : lines) {
 			
+			System.out.println("Line: "+ line);
+			
 			// Remove spaces
-			String Reader = line.replace(" ", "");
+			String Reader = line.replaceAll("\\s", "");
+			
+			System.out.println("Reader: "+ Reader);
+			String[] sections = Reader.split("!");
+			
+			PhysXObject physObj = new PhysXObject(QuadrantID.unassigned());
+			String sprite = "";
+			Integer level = 0;
+			
+			
+			
+			for(String section: sections) {
+				
+				System.out.println("Section: "+ section);
+				
+				if(section.contains("$COLL")) {
+					
+					// Remove header
+					String readLine = section.replace("$COLL", "");
+					CircleCollider[] colliders = readColliders(readLine);
+					
+					for(CircleCollider coll : colliders) {
+						physObj.addCollider(coll);
+					}
+				} else if(section.contains("$SPRITE")) {
+					
+					// Remove header
+					String readLine = section.replace("$SPRITE", "");
+					sprite = readLine;
+				} else if(section.contains("$LEVEL")) {
+					
+					// Remove header
+					String readLine = section.replace("$LEVEL", "");
+					level = Integer.parseInt(readLine);
+				} else {
+//					System.out.println("String not formated correctly");
+				}
+			}
 			
 			if(Reader.contains("#ASTER#")) {
-				readAsteroid(line);
-
+				asteroidObjects.add(physObj);
+				asteroidSprites.add(sprite);
+			} else if (Reader.contains("#SHIP#")) {
+				shipObjects.add(physObj);
+				shipSprites.add(sprite);
+				shipLevels.add(level);
+			} else {
+				System.out.println("String not formated correctly");
 			}
 		}
 	}
 	
-	public void readAsteroid(String asteroidLine) {
+	public CircleCollider[] readColliders(String colliderLine) {
+
 		// Split
-		String[] values = asteroidLine.split("/");
-		
+		String[] values = colliderLine.split(",");
 		int numColliders = Integer.parseInt(values[0]);
 		
-		for(int i =0; i < numColliders; i+=3) {
-			float colliderX 		= Integer.parseInt(values[i]);
-			float colliderY 		= Integer.parseInt(values[i]);
-			float colliderRadius = Integer.parseInt(values[i]);
+		CircleCollider[] readColliders = new CircleCollider[numColliders];
+		
+		int currentCollider = 0;
+		for(int i =1; i < values.length; i+=2) {
+			if(i + 2 < values.length && currentCollider <= numColliders) {
+				
+				float colliderX 		= Float.parseFloat(values[i]);
+				float colliderY 		= Float.parseFloat(values[i+1]);
+				float colliderRadius = Float.parseFloat(values[i+2]);
+				
+				// data verification
+				Vector2 pos = new Vector2(colliderX, colliderY);
+				if(colliderRadius > 0 && PhysXLibrary.distance(pos, Vector2.Zero()) <= colliderRadius) {
+					readColliders[currentCollider] = new CircleCollider(pos, colliderRadius);
+				} else {
+					System.out.println("Collider values invalid");
+					System.out.println(values[i]);
+				}
+				
+				currentCollider++;
+			} else {
+				System.out.println("COLLIDER: String not formated correctly");
+			}
 		}
+		
+		return readColliders;
 	}
 	
 	// Read the previous file. REQUIRES FileInput to be implemented as composition of objects

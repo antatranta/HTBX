@@ -22,6 +22,9 @@ public class GameConsole extends GraphicsProgram{
 	private Camera camera;
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
+	
+	private ShipManagement shipManager;
+	
 //	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
@@ -70,13 +73,18 @@ public class GameConsole extends GraphicsProgram{
 		player.physObj.removeColliders();
 		player.physObj.addCollider(playerCollider);
 		player.setDxDy(Vector2.Zero());
-		player.setBulletManagerListener(bulletStore);
+		player.addSubscriber(bulletStore);
 		gameTimer.addListener(player);
+		
+		shipManager = new ShipManagement();
+		
+		for(EnemyShip ship: getAllShips()) {
+			ship.addSubscriber(shipManager);
+		}
 		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
 		System.out.println("Made a new game console");
 	}
-	
 	
 	public void startDebugView() {
 		IS_DEBUGGING = true;
@@ -120,14 +128,21 @@ public class GameConsole extends GraphicsProgram{
 			Asteroids.addAll(quad.getAsteroids());
 		}
 		
-//		Asteroids.add(new Asteroid(player.getPhysObj()));
-		
 		return Asteroids;
 	}
 	
 	public ArrayList<EnemyShip> getActiveShips() {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
+		for (Quadrant quad : quads) {
+			EnemyShips.addAll(quad.getShips());
+		}
+		return EnemyShips;
+	}
+	
+	public ArrayList<EnemyShip> getAllShips() {
+		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
+		ArrayList<Quadrant> quads = physx.getQuadrants();
 		for (Quadrant quad : quads) {
 			EnemyShips.addAll(quad.getShips());
 		}

@@ -22,8 +22,13 @@ public class MapCreator {
 	private int player_spawn_quad_order;
 	private int boss_spawn_quad_order;
 	
+	private FileInput file;
+	
 	public MapCreator() {
 		LavaLamp.setup(System.currentTimeMillis());
+		
+		file = new FileInput();
+		file.decodeFile("Test.txt");
 //		LavaLamp.setup(LavaLamp.randomNumber(0, 500));
 	}
 	

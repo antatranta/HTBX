@@ -18,6 +18,10 @@ public class QuadrantID {
 		this.order = toCopy.Order();
 	}
 	
+	public static QuadrantID unassigned() {
+		return new QuadrantID (-404, -404, -404);
+	}
+	
 	public int Order() {
 		return order;
 	}
