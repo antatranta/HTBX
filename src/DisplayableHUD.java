@@ -140,17 +140,17 @@ public class DisplayableHUD implements Displayable {
 	public void updateHUD() {
 		if (player.getCurrentShield() != last_shield) {
 			shield_diff = recalculateDifference(player.getCurrentShield(), last_shield);
-			System.out.println("shield_diff = " + shield_diff + ", last_shield = " + last_shield);
+//			System.out.println("shield_diff = " + shield_diff + ", last_shield = " + last_shield + " | max_shield: " + player.getStats().getShieldMax());
 			last_shield = player.getCurrentShield();
 		}
 		if (player.getCurrentHealth() != last_hp) {
 			hp_diff = recalculateDifference(player.getCurrentHealth(), last_hp);
-			System.out.println("hp_diff = " + hp_diff + ", last_hp = " + last_hp);
+//			System.out.println("hp_diff = " + hp_diff + ", last_hp = " + last_hp + " | max_hp: " + player.getStats().getHealthMax());
 			last_hp = player.getCurrentHealth();
 		}
 		
-		scaleStatusBar(status_bar_shield, (double)player.getCurrentShield() - shield_diff / (double)player.getStats().getShieldMax());
-		scaleStatusBar(status_bar_hp, (double)player.getCurrentHealth() - hp_diff / (double)player.getStats().getHealthMax());
+		scaleStatusBar(status_bar_shield, (double)(player.getCurrentShield() - shield_diff) / (double)player.getStats().getShieldMax());
+		scaleStatusBar(status_bar_hp, (double)(player.getCurrentHealth() - hp_diff) / (double)player.getStats().getHealthMax());
 		scaleStatusBar(iframes, (double)player.getIFrames() / (double)PlayerShip.INV_CAP);
 		shield_diff /= 1.1;
 		hp_diff /= 1.1;
