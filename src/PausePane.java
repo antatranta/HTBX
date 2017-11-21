@@ -70,36 +70,35 @@ public class PausePane extends MenuPane {
 		for(GLabel pause:pauseMenu) {
 			pause.setColor(Color.black);
 		}
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
+		
 		obj = program.getElementAt(e.getX(), e.getY());
-		for(GLabel pause:pauseMenu) {
-			if(obj == pause) {
-				switch(pause.getLabel()) {
-					case "CONTINUE":
-						program.switchToGame();
-						break;
-						
-					case "SETTINGS":
-						program.switchToSettings();
-						break;
-						
-					case "SCORES":
-						program.switchToScores();
-						break;
-						
-					case "CONTROLS":
-						program.switchToControls();
-						break;
-						
-					case "EXIT TO MENU":
-						program.switchToMenu();
-						break;
-						
-					default:
-						break;
+		if(obj != whiteBG() || obj != title()) {
+			for(GLabel pause:pauseMenu) {
+				if(obj == pause) {
+					switch(pause.getLabel()) {
+						case "CONTINUE":
+							program.switchToGame();
+							break;
+							
+						case "SETTINGS":
+							program.switchToSettings();
+							break;
+							
+						case "SCORES":
+							program.switchToScores();
+							break;
+							
+						case "CONTROLS":
+							program.switchToControls();
+							break;
+							
+						case "EXIT TO MENU":
+							program.switchToMenu();
+							break;
+							
+						default:
+							break;
+					}
 				}
 			}
 		}

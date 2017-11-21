@@ -42,19 +42,6 @@ public class ControlsPane extends GraphicsPane {
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == back) {
-			if(!program.isPaused()) {
-				program.switchToMenu();
-			}
-			else {
-				program.switchToPause();
-			}
-		}
-	}
-	
-	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {
@@ -65,6 +52,16 @@ public class ControlsPane extends GraphicsPane {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		back.setColor(Color.black);
+		
+		obj = program.getElementAt(e.getX(), e.getY());
+		if(obj == back) {
+			if(!program.isPaused()) {
+				program.switchToMenu();
+			}
+			else {
+				program.switchToPause();
+			}
+		}
 	}
 	
 	@Override

@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
-public class ScoresPane extends GraphicsPane{
+public class ScoresPane extends GraphicsPane {
 	private MainApplication program;
 	private GLabel back;
 	private GObject obj;
@@ -36,19 +36,6 @@ public class ScoresPane extends GraphicsPane{
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == back) {
-			if(!program.isPaused()) {
-				program.switchToMenu();
-			}
-			else {
-				program.switchToPause();
-			}
-		}
-	}
-	
-	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {
@@ -59,6 +46,15 @@ public class ScoresPane extends GraphicsPane{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		back.setColor(Color.black);
+		obj = program.getElementAt(e.getX(), e.getY());
+		if(obj == back) {
+			if(!program.isPaused()) {
+				program.switchToMenu();
+			}
+			else {
+				program.switchToPause();
+			}
+		}
 	}
 	
 	@Override

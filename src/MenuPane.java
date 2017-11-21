@@ -73,36 +73,35 @@ public class MenuPane extends GraphicsPane {
 		for(GLabel menu:mainMenu) {
 			menu.setColor(Color.black);
 		}
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
+		
 		obj = program.getElementAt(e.getX(), e.getY());
-		for(GLabel menu:mainMenu) {
-			if(obj == menu) {
-				switch(menu.getLabel()) {
-					case "NEW GAME":
-						program.switchToGame();
-						break;
-						
-					case "SETTINGS":
-						program.switchToSettings();
-						break;
-						
-					case "SCORES":
-						program.switchToScores();
-						break;
-						
-					case "CONTROLS":
-						program.switchToControls();
-						break;
-						
-					case "QUIT":
-						System.exit(0);
-						break;
-						
-					default:
-						break;
+		if(obj != whiteBG() || obj != title()) {
+			for(GLabel menu:mainMenu) {
+				if(obj == menu) {
+					switch(menu.getLabel()) {
+						case "NEW GAME":
+							program.switchToGame();
+							break;
+							
+						case "SETTINGS":
+							program.switchToSettings();
+							break;
+							
+						case "SCORES":
+							program.switchToScores();
+							break;
+							
+						case "CONTROLS":
+							program.switchToControls();
+							break;
+							
+						case "QUIT":
+							System.exit(0);
+							break;
+							
+						default:
+							break;
+					}
 				}
 			}
 		}
