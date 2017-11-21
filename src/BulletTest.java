@@ -16,7 +16,7 @@ import rotations.GameImage;
 public class BulletTest extends GraphicsApplication implements ActionListener {
 	
 	// To Anthony: Change the BulletType enum to get some funky bullet movement :)
-	private static BulletType bulletType = BulletType.STRAIGHT;
+	private static BulletType bulletType = BulletType.SWERVE_CW;
 	
 	private Vector2 last_mouse_loc;
 	private BulletManager bulletStore;

@@ -155,12 +155,12 @@ public class Bullet extends Entity {
 			}
 			// SWERVE_CLOCKWISE: Bullet will swerve clockwise
 			else if (bulletType == BulletType.SWERVE_CW) {
-				angle -= 1;
+				angle -= Math.toRadians(1);
 				this.bulletTrajectory();
 			}
 			// SWERVE_COUNTER_CLOCKWISE: Bullet will serve counter clockwise
 			else if (bulletType == BulletType.SWERVE_CCW) {
-				angle += 1;
+				angle += Math.toRadians(1);
 				this.bulletTrajectory();
 			}
 			
