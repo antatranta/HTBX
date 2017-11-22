@@ -286,9 +286,6 @@ public class MapCreator {
 	public Asteroid buildAsteroid(PhysXObject physObj) {
 		int preset = LavaLamp.randomNumber(0,file.numberOfAsteroidPresets()-1);
 		PhysXObject presetPhysObj = new PhysXObject(file.getAsteroidObject(preset));
-//		for(CircleCollider coll: presetPhysObj.getColliders()) {
-//			physObj.addCollider(new CircleCollider(coll));
-//		}
 		presetPhysObj.setPosition(physObj.getPosition());
 		presetPhysObj.setQUID(physObj.getQUID());
 		

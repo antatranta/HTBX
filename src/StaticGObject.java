@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import acm.graphics.*;
 
 public class StaticGObject {
@@ -29,12 +31,12 @@ public class StaticGObject {
 		this.imageSize = size;
 	}
 	
-	public void setup(double ColliderSize) {
+	public void setup(ArrayList<Double> ColliderSizes) {
 		this.objects = new GOval[physObj.getColliders().length];
 		for(int i =0; i<this.objects.length; ++i) {
 			Vector2 center = Camera.backendToFrontend(physObj.getColliders()[i].getCenter().add(physObj.getPosition()));
 			float halfsize = physObj.getColliders()[i].getRadius();
-			this.objects[i] = new GOval(center.getX() + halfsize, center.getY() + halfsize, ColliderSize, ColliderSize);
+			this.objects[i] = new GOval(center.getX() + halfsize, center.getY() + halfsize, ColliderSizes.get(i), ColliderSizes.get(i));
 		}
 	}
 	

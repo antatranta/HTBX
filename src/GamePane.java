@@ -110,18 +110,22 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		setOffset();
 	}
 	
-	public double debuggingColliderSize(PhysXObject object) {
-		float size = object.getColliders()[0].getRadius() * 2;
-		
-		Vector2 testPoint0 = Camera.backendToFrontend(object.getPosition());
-	    Vector2 testPoint1 = Camera.backendToFrontend(object.getPosition().add(new Vector2(0f, size)));
-	    return PhysXLibrary.distance(testPoint0, testPoint1);
+	public ArrayList<Double> debuggingColliderSizes(PhysXObject object) {
+		ArrayList<Double> sizes = new ArrayList<Double>();
+		for(CircleCollider coll : object.getColliders()) {
+			float size = coll.getRadius() * 2;
+			
+			Vector2 testPoint0 = Camera.backendToFrontend(object.getPosition());
+		    Vector2 testPoint1 = Camera.backendToFrontend(object.getPosition().add(new Vector2(0f, size)));
+		    sizes.add(PhysXLibrary.distance(testPoint0, testPoint1));
+		}
+		return sizes;
 	}
 	
 	public void setupDebug() {
 		
-		double dist = debuggingColliderSize(player.getPhysObj());
-		playerCollider = new GOval(0,0,dist,dist);
+		ArrayList<Double> dist = debuggingColliderSizes(player.getPhysObj());
+		playerCollider = new GOval(0,0,dist.get(0),dist.get(0));
 		
    		program.add(CURRENT_QUID_LABEL);
 		program.add(DEBUGGING_BOX);
@@ -213,7 +217,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				program.add(DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1));
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setColor(Color.pink);
 				DEBUGGING_QUID_LABELS.get(DEBUGGING_QUID_LABELS.size() - 1).setLabel(statics.get(i).getPhysObj().getQUID().toString());
-				statics.get(i).setup(debuggingColliderSize(statics.get(i).getPhysObj()));
+				
+				statics.get(i).setup(debuggingColliderSizes(statics.get(i).getPhysObj()));
 				
 			
 				for(GOval col : statics.get(i).getObjects()) {

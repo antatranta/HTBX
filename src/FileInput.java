@@ -120,27 +120,42 @@ public class FileInput {
 		CircleCollider[] readColliders = new CircleCollider[numColliders];
 		
 		int currentCollider = 0;
-		for(int i =1; i < values.length; i+=2) {
-			if(i + 2 < values.length && currentCollider <= numColliders) {
-				
+		int i = 1;
+		boolean loop = true;
+		while(loop) {
+			if (i + 2 < values.length && currentCollider < numColliders) {
+//		for(int i =1; i < values.length; i+=3) {
+//			if(i + 2 < values.length && currentCollider < numColliders) {
+				System.out.println("i: " + i + " currentCollider: "+ currentCollider +".");
 				float colliderX 		= Float.parseFloat(values[i]);
-				float colliderY 		= Float.parseFloat(values[i+1]);
-				float colliderRadius = Float.parseFloat(values[i+2]);
+				System.out.println("colliderX: " + colliderX);
+				float colliderY 		= Float.parseFloat(values[i + 1]);
+				System.out.println("colliderY: " + colliderY);
+				float colliderRadius = Float.parseFloat(values[i + 2]);
+				System.out.println("colliderRadius: " + colliderRadius);
 				
 				// data verification
 				Vector2 pos = new Vector2(colliderX, colliderY);
-				if(colliderRadius > 0 && PhysXLibrary.distance(pos, Vector2.Zero()) <= colliderRadius) {
+				if(colliderRadius > 0) {
 					readColliders[currentCollider] = new CircleCollider(pos, colliderRadius);
 				} else {
 					System.out.println("Collider values invalid");
 					System.out.println(values[i]);
 				}
 				
-				currentCollider++;
-			} else {
+			} else if (currentCollider != numColliders){
+				System.out.println("");
 				System.out.println("COLLIDER: String not formated correctly");
 			}
+			i+=3;
+			currentCollider++;
+			if(i >= values.length-1) {
+				loop = false;
+			}
+
 		}
+		
+
 		
 		return readColliders;
 	}
