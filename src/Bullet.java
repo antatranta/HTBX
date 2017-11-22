@@ -1,6 +1,3 @@
-import java.awt.Color;
-
-import acm.graphics.GObject;
 import acm.graphics.GOval;
 import rotations.GameImage;
 

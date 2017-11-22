@@ -366,7 +366,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		isShooting = false;
 		shotCount= 0;
 //		auto_fire.stop();
-		System.out.println("Stopped shooting");
+//		System.out.println("Stopped shooting");
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary

@@ -10,12 +10,13 @@ public class DisplayableHUD implements Displayable {
 	private MainApplication program;
 	private PlayerShip player;
 	
-	private GameImage status_front;
+	private GImage status_front;
 	private GRect status_back;
 	private GRect status_bar_hp;
 	private GRect status_bar_shield;
 	private GRect iframes;
 	private GameImage compass_sprite;
+	private GImage skill_msg;
 	
 	private GImage stats_display;
 	private GRect stats_back;
@@ -33,7 +34,13 @@ public class DisplayableHUD implements Displayable {
 	private double shield_diff = 0;
 	private int last_hp = -1;
 	private double hp_diff = 0;
-
+	private boolean have_pts;
+	private double msg_diff;
+	
+	double startx = 0;
+	double starty = 0;
+	double unity = 0;
+	
 	public DisplayableHUD(MainApplication program, PlayerShip player) {
 		this.program = program;
 		this.player = player;
@@ -98,9 +105,9 @@ public class DisplayableHUD implements Displayable {
 		iframes.setFilled(true);
 		iframes.setColor(new Color(1, 1, 1, 0));
 		
-		double startx = stats_back.getX() + 6;
-		double starty = stats_back.getY() + 28;
-		double unity = 21;
+		startx = stats_back.getX() + 6;
+		starty = stats_back.getY() + 28;
+		unity = 21;
 		
 		speed_stat = new GRect(startx, starty, 0, 0);
 		speed_stat.setFilled(true);
@@ -121,6 +128,8 @@ public class DisplayableHUD implements Displayable {
 		shield_stat.setFilled(true);
 		shield_stat.setFillColor(Color.WHITE);
 		shield_stat.setColor(Color.WHITE);
+		
+		skill_msg = new GImage("SkillMsg.png", 0, 0);
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
