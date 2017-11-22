@@ -39,17 +39,17 @@ public class PlayerShip extends Ship implements ActionListener{
 	
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-
 		if (i_frames == 0) {
-			System.out.println("Got hit!");
-			if (data.getType() == CollisionType.asteroid || data.getType() == CollisionType.enemyShip) {
-				calculateCollisionForce(pos);
+			if (data.getType() == CollisionType.asteroid
+					|| data.getType() == CollisionType.enemyShip) {
+				PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 				takeDamage(data.getDamage());
 			}
 		}
 		
 		if (i_frames == 0) {
 			if (data.getType() == CollisionType.enemy_bullet) {
+				System.out.println("Got hit!");
 				takeDamage(data.getDamage());
 			}
 		}
@@ -57,6 +57,7 @@ public class PlayerShip extends Ship implements ActionListener{
 	
 	@Override
 	protected void handleCollision(CollisionData data) {
+		
 		// TODO Auto-generated method stub
 		takeDamage(data.getDamage());
 	}

@@ -8,7 +8,7 @@ public class EnemyShip extends Ship implements ActionListener {
 	private Vector2 target = new Vector2(500,500);
 	private float interactionDistance = 500f;
 
-	private float stoppingDistance = 100f;
+	private float stoppingDistance = 200f;
 	private EnemyShipStats stats;
 	
 	private boolean inFlyby = false;
@@ -20,19 +20,23 @@ public class EnemyShip extends Ship implements ActionListener {
 	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
 		super(physObj, current_health, stats, sprite, CollisionType.enemyShip);
 		this.stats = new EnemyShipStats(stats, aggression);
+		System.out.println("Stats: " + stats);
+		System.out.println("Aggression: " +aggression);
+		System.out.println("Int. Dist: " + this.stats.getInteractionDistance());
+		System.out.println("Stp. Dist: " + this.stats.getStoppingDistance());
 		// TODO Auto-generated constructor stub
 		shoot_cd = 60;
 		weapon_cd = 90;
 	}
 	
-	public void setInteractionDistance(float interactionDistance) {
-		this.interactionDistance = interactionDistance;
-	}
+//	public void setInteractionDistance(float interactionDistance) {
+//		this.interactionDistance = interactionDistance;
+//	}
 
 	
-	public void setStoppingDistance(float stoppingDistance) {
-		this.stoppingDistance = stoppingDistance;
-	}
+//	public void setStoppingDistance(float stoppingDistance) {
+//		this.stoppingDistance = stoppingDistance;
+//	}
 	
 	public EnemyType getEnemyType() {
 		return type;
@@ -47,20 +51,20 @@ public class EnemyShip extends Ship implements ActionListener {
 			return;
 		
 		if (PhysXLibrary.distance(this.physObj.getPosition(), playerPos) < stats.getStoppingDistance()){
-			inFlyby = true;
-		} else if (PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getStoppingDistance() *1.5f ) {
-			inFlyby = false;
+			return;
 		}
 		
 		float MovetoX = playerPos.getX();
 		float MovetoY = playerPos.getY();
 		target = playerPos;
 		
+		/*
 		if(inFlyby) {
 			flybyOffset.setXY(LavaLamp.randomNumber(0, 10), LavaLamp.randomNumber(0, 10));
 		} else {
 //			flybyOffset = Vector2.Zero();
 		}
+		*/
 		
 		float thisX = this.getPhysObj().getPosition().getX() + flybyOffset.getX();
 		float thisY = this.getPhysObj().getPosition().getY() + flybyOffset.getY();
@@ -80,14 +84,16 @@ public class EnemyShip extends Ship implements ActionListener {
 //		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
 		Rotate2Player(angle);
 		
-		if (weapon_cd > 0) {
-			weapon_cd -= 1;
-		}
-		if (weapon_cd == 0) {
-			weapon_cd = shoot_cd;
+		
+//		if (weapon_cd > 0) {
+//			weapon_cd -= 1;
+//		}
+//		if (weapon_cd == 0) {
+//			weapon_cd = shoot_cd;
 			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-			shoot(1, 4, CollisionType.enemy_bullet, 5, obj, "Cursor.png",target);
-		}
+			shoot(1, 4, CollisionType.enemy_bullet, 5, obj, "RedCircle.png",target);
+//		}
+		
 		
 	}
 	
@@ -118,9 +124,9 @@ public class EnemyShip extends Ship implements ActionListener {
 	
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-
+//		System.out.println("Dam: "+data.getDamage());
 		if (data.getType() == CollisionType.playerShip) {
-			calculateCollisionForce(pos);
+			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 		}
 		if (data.getType() == CollisionType.asteroid ||
 				data.getType() == CollisionType.player_bullet) {

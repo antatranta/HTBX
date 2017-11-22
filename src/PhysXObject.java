@@ -134,13 +134,12 @@ public class PhysXObject {
 	}
 	
 	public void setCollisionData(CollisionData coll) {
-		this.collisionData = coll;
+		this.collisionData = new CollisionData(coll);
 	}
 	
 	public void sendCollisionData(CollisionData data, Vector2 pos) {
 		
 		if (subscribers.size() < 1) {
-			//System.out.println("No subscribers!");
 			return;
 		}
 		for(Collision sub : subscribers) {
@@ -151,6 +150,6 @@ public class PhysXObject {
 	}
 	
 	public CollisionData getCollisionData() {
-		return collisionData;
+		return this.collisionData;
 	}
 }

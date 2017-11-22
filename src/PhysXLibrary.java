@@ -15,6 +15,8 @@ public class PhysXLibrary{
 	
 	public static final float COLLISION_CONSTANT = 1000f;
 	
+	public static final float FRICTION = (float) 1.15;
+	
 	public static float getMapHeight() {
 		return QUADRANT_HEIGHT * MAP_HEIGHT;
 	}
@@ -54,8 +56,7 @@ public class PhysXLibrary{
 		}
 		return false;
 	}
-	
-	
+		
 	public static QuadrantPlacement getPositionInQuadrant(PhysXObject a) {
 		
 		// First we offset the position of the object
@@ -119,5 +120,12 @@ public class PhysXLibrary{
 		}
 		*/
 		return areObjectsInXRange(a, b, COLLISION_CONSTANT);
+	}
+	
+	public static Vector2 calculateCollisionForce(Vector2 pos, PhysXObject physObj, float KB_FORCE) {
+		double theta_rad = Math.atan2(pos.getY() - physObj.getPosition().getY(), pos.getX() - physObj.getPosition().getX());
+		float unit_x = (float)(Math.cos(theta_rad));
+		float unit_y = (float)(Math.sin(theta_rad));
+		return new Vector2(unit_x * -KB_FORCE, unit_y * -KB_FORCE);
 	}
 }

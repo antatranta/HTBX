@@ -7,13 +7,15 @@ import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
 import rotations.GameImage;
 
-public class GameConsole extends GraphicsProgram{
+public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public static boolean IS_DEBUGGING;
 	private int TIMER_INTERVAL = 16;
 	private int INITIAL_DELAY = 0;
 	
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
+	
+	private ArrayList<BulletEmitter> emitters = new ArrayList<BulletEmitter>();
 	//private PlayerShip player;
 	private PlayerShip player;
 	private MapCreator mapCreator;
@@ -106,10 +108,15 @@ public class GameConsole extends GraphicsProgram{
 	}
 	
 	public void testCollisions(PlayerShip player) {
+		
+		physx.checkForCollisionsInQuads();
+		
 		if(player.getPhysObj() != null) {
 			physx.checkForCollisions(player.getPhysObj());
+			
 		}
 		if(bulletStore.getBullets() != null) {
+			physx.checkForCollisions(player.getPhysObj(),bulletStore.getPhysXObjects());
 			for(Bullet bullet:bulletStore.getBullets()) {
 				physx.checkForCollisions(bullet.getPhysObj());
 			}
@@ -154,8 +161,8 @@ public class GameConsole extends GraphicsProgram{
 	}
 	
 
-	public void Shoot (int dmg, int spd, CollisionType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-		this.bulletStore.onShootEvent(dmg,spd,type,time,obj,sprite,movementVector);
+	public GameImage Shoot (int dmg, int spd, CollisionType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		return this.bulletStore.onShootEvent(dmg,spd,type,time,obj,sprite,movementVector);
 	}
 	
 	public void moveBullets() {
@@ -172,6 +179,30 @@ public class GameConsole extends GraphicsProgram{
 	
 	public BulletManager getBulletManager() {
 		return bulletStore;
+	}
+	
+	public BulletEmitter createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
+		BulletEmitter be = new BulletEmitter(health, rate, physObj, sprite, data);
+		be.addSubscriber(getBulletManager());
+		emitters.add(be);
+		return be;
+	}
+
+	public ArrayList<BulletEmitter> getActiveBulletEmitters() {
+		ArrayList<BulletEmitter> bulletEmitters = new ArrayList<BulletEmitter>(); 
+		for(int i=0; i < emitters.size(); i++) {
+			if(PhysXLibrary.arePositionsInXRange(emitters.get(i).getPhysObj().getPosition(), player.getPhysObj().getPosition(), 750)) {
+				bulletEmitters.add(emitters.get(i));
+			}
+		}
+		return bulletEmitters;
+	}
+
+	@Override
+	public void onShipDeath(Vector2 pos) {
+		// TODO Auto-generated method stub
+		
+		createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
 	}
 }
 

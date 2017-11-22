@@ -253,7 +253,7 @@ public class MapCreator {
 	public ArrayList<EnemyShip> placeEnemies(QuadrantID quad, int numToCreate) {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		for(int i =0; i < numToCreate; ++i) {
-			CircleCollider collider = new CircleCollider(Vector2.Zero(), 15);
+			CircleCollider collider = new CircleCollider(Vector2.Zero(), 10);
 			PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
 			shipPhysXObj.addCollider(collider);
 			int level = LavaLamp.randomNumber(1,2);

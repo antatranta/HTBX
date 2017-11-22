@@ -24,11 +24,12 @@ public class Entity implements Collision {
 		
 	protected void setCollisionData(CollisionData data) {
 		this.physObj.setCollisionData(new CollisionData(data));
+//		this.physObj.getCollisionData().setDamage(45);
 	}
 	
 	public CollisionData getCollisionData() {
-		System.out.println(this.physObj.getCollisionData().toString());
-		return new CollisionData(this.physObj.getCollisionData());
+//		System.out.println(this.physObj.getCollisionData().toString());
+		return physObj.getCollisionData();
 	}
 
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
