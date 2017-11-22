@@ -28,6 +28,14 @@ public class BulletManager implements ShipTriggers {
 		return bullets;
 	}
 	
+	public ArrayList<PhysXObject> getPhysXObjects(){
+		ArrayList<PhysXObject> objs = new ArrayList<PhysXObject>();
+		for(Bullet bullet : bullets) {
+			objs.add(bullet.getPhysObj());
+		}
+		return objs;
+	}
+	
 	public GameImage onShootEvent(int dmg, int spd, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		// Variable Verification
 //		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {

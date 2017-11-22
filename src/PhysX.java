@@ -239,9 +239,7 @@ public class PhysX {
 			COLLISION_LOCK = true;
 			
 			checkForCollisionsOnObject(player);
-			for(Quadrant quad : this.Quadrants) {
-				quad.checkForCollisions();
-			}
+			
 			COLLISION_LOCK = false;
 		} else {
 			COLLISION_LOCK = false;
@@ -251,9 +249,13 @@ public class PhysX {
 		}
 	}
 	
-	private void checkForCollisionsOnObject(PhysXObject obj) {
-		ArrayList<PhysXObject> objects = getNearbyPhysXObjects(obj, 1000);
-		
+	public void checkForCollisionsInQuads() {
+		for(Quadrant quad : this.Quadrants) {
+			quad.checkForCollisions();
+		}
+	}
+	
+	public void checkForCollisions(PhysXObject obj, ArrayList<PhysXObject> objects) {
 		for(PhysXObject coll : objects) {
 			if(PhysXLibrary.areObjectsInCollisionRange(obj, coll)) {
 				if (PhysXLibrary.isCollision(obj, coll)) {
@@ -278,7 +280,13 @@ public class PhysX {
 				}
 			}
 		}
-}
+	}
+	
+	public void checkForCollisionsOnObject(PhysXObject obj) {
+		ArrayList<PhysXObject> objects = getNearbyPhysXObjects(obj, 1000);
+		checkForCollisions(obj, objects);
+	}
+
 	
 	public ArrayList<Quadrant> getQuadrants() {
 		return Quadrants;

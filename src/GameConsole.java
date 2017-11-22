@@ -108,10 +108,15 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	}
 	
 	public void testCollisions(PlayerShip player) {
+		
+		physx.checkForCollisionsInQuads();
+		
 		if(player.getPhysObj() != null) {
 			physx.checkForCollisions(player.getPhysObj());
+			
 		}
 		if(bulletStore.getBullets() != null) {
+			physx.checkForCollisions(player.getPhysObj(),bulletStore.getPhysXObjects());
 			for(Bullet bullet:bulletStore.getBullets()) {
 				physx.checkForCollisions(bullet.getPhysObj());
 			}

@@ -84,16 +84,16 @@ public class EnemyShip extends Ship implements ActionListener {
 //		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
 		Rotate2Player(angle);
 		
-		/*
-		if (weapon_cd > 0) {
-			weapon_cd -= 1;
-		}
-		if (weapon_cd == 0) {
-			weapon_cd = shoot_cd;
+		
+//		if (weapon_cd > 0) {
+//			weapon_cd -= 1;
+//		}
+//		if (weapon_cd == 0) {
+//			weapon_cd = shoot_cd;
 			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-			shoot(1, 4, CollisionType.enemy_bullet, 5, obj, "Cursor.png",target);
-		}
-		*/
+			shoot(1, 4, CollisionType.enemy_bullet, 5, obj, "RedCircle.png",target);
+//		}
+		
 		
 	}
 	
@@ -124,13 +124,12 @@ public class EnemyShip extends Ship implements ActionListener {
 	
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-		System.out.println("Dam: "+data.getDamage());
+//		System.out.println("Dam: "+data.getDamage());
 		if (data.getType() == CollisionType.playerShip) {
 			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 		}
 		if (data.getType() == CollisionType.asteroid ||
-				data.getType() == CollisionType.player_bullet
-				|| data.getType() == CollisionType.enemy_bullet) {
+				data.getType() == CollisionType.player_bullet) {
 			takeDamage(data.getDamage());
 		}
 	}
