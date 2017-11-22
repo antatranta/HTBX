@@ -1,6 +1,4 @@
 import java.awt.Color;
-import java.awt.event.MouseEvent;
-
 import acm.graphics.GImage;
 import acm.graphics.GRect;
 import rotations.GameImage;
@@ -24,6 +22,10 @@ public class DisplayableHUD implements Displayable {
 	private GRect damage_stat;
 	private GRect health_stat;
 	private GRect shield_stat;
+	private LevelUpButton speed_up;
+	private LevelUpButton damage_up;
+	private LevelUpButton health_up;
+	private LevelUpButton shield_up;
 	
 	private double bar_max_x;
 	private double bar_max_y;
@@ -34,7 +36,7 @@ public class DisplayableHUD implements Displayable {
 	private double shield_diff = 0;
 	private int last_hp = -1;
 	private double hp_diff = 0;
-	private boolean have_pts;
+	private boolean have_sp;
 	private double msg_diff;
 	
 	double startx = 0;
@@ -107,7 +109,7 @@ public class DisplayableHUD implements Displayable {
 		
 		startx = stats_back.getX() + 6;
 		starty = stats_back.getY() + 28;
-		unity = 21;
+		unity = 22;
 		
 		speed_stat = new GRect(startx, starty, 0, 0);
 		speed_stat.setFilled(true);
@@ -129,8 +131,13 @@ public class DisplayableHUD implements Displayable {
 		shield_stat.setFillColor(Color.WHITE);
 		shield_stat.setColor(Color.WHITE);
 		
-		skill_msg = new GImage("SkillMsg.png", MainApplication.WINDOW_WIDTH , MainApplication.WINDOW_HEIGHT);
-		skill_msg.move(-(skill_msg.getWidth() / 2), -(skill_msg.getHeight() * 2));
+		speed_up = new LevelUpButton("Plus_Button.png", -100, speed_stat.getY(), LevelUpEnum.speed);
+		damage_up = new LevelUpButton("Plus_Button.png", -100, damage_stat.getY(), LevelUpEnum.damage);
+		health_up = new LevelUpButton("Plus_Button.png", -100, health_stat.getY(), LevelUpEnum.health);
+		shield_up = new LevelUpButton("Plus_Button.png", -100, shield_stat.getY(), LevelUpEnum.shield);
+		
+		skill_msg = new GImage("SkillMsg.png", 0, 0);
+		skill_msg.setLocation((MainApplication.WINDOW_WIDTH / 2) -(skill_msg.getWidth() / 2), MainApplication.WINDOW_HEIGHT);
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -165,6 +172,32 @@ public class DisplayableHUD implements Displayable {
 		shield_diff /= 1.1;
 		hp_diff /= 1.1;
 		aimCompass(compass_sprite, new Vector2(0,0));
+		
+		// Skills
+		
+		if (program.getGameConsole().getSP() > 0) {
+			if (have_sp == false) {
+				have_sp = true;
+				msg_diff = skill_msg.getHeight();
+			}
+			speed_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff, speed_stat.getY());
+			damage_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff, damage_stat.getY());
+			health_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff, health_stat.getY());
+			shield_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff, shield_stat.getY());
+			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 1.35) + (msg_diff * 5));
+		}
+		else {
+			if (have_sp == true) {
+				have_sp = false;
+				msg_diff = skill_msg.getHeight();
+			}
+			speed_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff - skill_msg.getHeight(), speed_stat.getY());
+			damage_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff - skill_msg.getHeight(), damage_stat.getY());
+			health_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff - skill_msg.getHeight(), health_stat.getY());
+			shield_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff - skill_msg.getHeight(), shield_stat.getY());
+			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT + (skill_msg.getHeight() * 1.35) + (msg_diff * 5));
+		}
+		msg_diff /= 1.1;
 	}
 	
 	public int recalculateDifference(int cur, int last) {
@@ -172,10 +205,10 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	public void updateStats() {
-		scaleStatsBar(speed_stat, (player.getStats().getSpeedSetting() - 1) / 4);
-		scaleStatsBar(damage_stat, (player.getStats().getDamage() - 1) / 4);
-		scaleStatsBar(health_stat, (player.getStats().getHealthMax() - 1) / 4);
-		scaleStatsBar(shield_stat, (player.getStats().getShieldMax() - 1) / 4);
+		scaleStatsBar(speed_stat, (player.getStats().getSpeedSetting() - 1) );
+		scaleStatsBar(damage_stat, (player.getStats().getDamage() - 1) );
+		scaleStatsBar(health_stat, (player.getStats().getHealthMax() - 1));
+		scaleStatsBar(shield_stat, (player.getStats().getShieldMax() - 1));
 	}
 	
 	public void layerSprites() {
@@ -191,6 +224,10 @@ public class DisplayableHUD implements Displayable {
 		damage_stat.sendToBack();
 		health_stat.sendToBack();
 		shield_stat.sendToBack();
+		speed_up.sendToBack();
+		damage_up.sendToBack();
+		health_up.sendToBack();
+		shield_up.sendToBack();
 		stats_back.sendToBack();
 	}
 	
@@ -204,11 +241,15 @@ public class DisplayableHUD implements Displayable {
 		program.add(status_front);
 		
 		program.add(stats_back);
-		program.add(stats_display);
 		program.add(speed_stat);
 		program.add(damage_stat);
 		program.add(health_stat);
 		program.add(shield_stat);
+		program.add(speed_up);
+		program.add(damage_up);
+		program.add(health_up);
+		program.add(shield_up);
+		program.add(stats_display);
 		
 		program.add(skill_msg);
 	}
@@ -217,14 +258,9 @@ public class DisplayableHUD implements Displayable {
 	public void hideContents() {
 		program.remove(status_back);
 		program.remove(status_bar_hp);
-//		program.remove(status_bar_hp_back);
 		program.remove(status_bar_shield);
-//		program.remove(status_bar_shield_back);
 		program.remove(iframes);
 		program.remove(status_front);
-		
-//		program.remove(compass_back);
-//		program.remove(inner_compass_back);
 		program.remove(compass_sprite);
 		
 		program.remove(stats_back);
@@ -233,12 +269,11 @@ public class DisplayableHUD implements Displayable {
 		program.remove(damage_stat);
 		program.remove(health_stat);
 		program.remove(shield_stat);
+		program.remove(speed_up);
+		program.remove(damage_up);
+		program.remove(health_up);
+		program.remove(shield_up);
 		
 		program.remove(skill_msg);
-	}
-
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-//		if (e.getElementAt(e.getX(), e.getY()));
 	}
 }

@@ -22,7 +22,6 @@ public class Ship extends Entity {
 		this.setCurrentHealth(current_health);
 		this.stats = stats;
 		this.subscribers = new ArrayList<ShipTriggers>();
-
 	}
 	
 	public double getAngle() {

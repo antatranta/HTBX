@@ -20,7 +20,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private PlayerShip player;
 	private MapCreator mapCreator;
 	private PhysX physx; // The controller for all things
-	private int skillPoints;
+	private int skill_points;
 	private Camera camera;
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
@@ -31,7 +31,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public GameConsole() {
 		endDebugView();
-		
+		skill_points = 1;
 		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
@@ -201,8 +201,38 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	@Override
 	public void onShipDeath(Vector2 pos) {
 		// TODO Auto-generated method stub
-		
+		skill_points += 1;
+		System.out.println("SP: " + skill_points);
 		createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
+	}
+	
+	public int getSP() {
+		return skill_points;
+	}
+	
+	public void levelUpSkill(LevelUpEnum stat) {
+		if (skill_points == 0) {
+			return;
+		}
+		skill_points -= 1;
+		switch(stat) {
+		case speed:
+			player.getStats().incSpeed(1);
+			break;
+		case damage:
+			player.getStats().incDamage(1);
+			break;
+		case health:
+			player.getStats().incHealthMax(1);
+			player.setCurrentHealth(player.getCurrentHealth() + 1);
+			break;
+		case shield:
+			player.getStats().incShieldMax(1);
+			break;
+		default:
+			break;
+		}
+		//System.out.println("Stats are now:\n Speed: " + player.getStats().getSpeedSetting() + "\n Damage: " + player.getStats().getDamage() + "\n Max_HP: " + player.getStats().getHealthMax() + "\n Max_Shield: " + player.getStats().getShieldMax());
 	}
 }
 
