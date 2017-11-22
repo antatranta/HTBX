@@ -88,6 +88,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS;
 	
 	private ArrayList <EnemyShip> DEBUGGING_COLLIDERS_SHIPS;
+	private boolean DEBUGGING_DRAW_BULLETS = false;
 	private ArrayList <Bullet> DEBUGGING_COLLIDERS_BULLETS;
 	
 	private ArrayList <GLabel> DEBUGGING_QUID_LABELS;
@@ -524,16 +525,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 							draw ++;
 						}
 					}
-					
-					for(Bullet bullet : drawn_bullets) {
-						if(draw >= MAXDRAW) {
-							break;
-						}
-						if(!DEBUGGING_COLLIDERS_BULLETS.contains(bullet)) {
-							DEBUGGING_COLLIDERS_BULLETS.add(bullet);
-							Vector2 imageSize = new Vector2((float)bullet.getSprite().getWidth(), (float)bullet.getSprite().getHeight());
-							DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(bullet.getPhysObj(), imageSize));
-							draw ++;
+					if(DEBUGGING_DRAW_BULLETS) {
+						for(Bullet bullet : drawn_bullets) {
+							if(draw >= MAXDRAW) {
+								break;
+							}
+							if(!DEBUGGING_COLLIDERS_BULLETS.contains(bullet)) {
+								DEBUGGING_COLLIDERS_BULLETS.add(bullet);
+								Vector2 imageSize = new Vector2((float)bullet.getSprite().getWidth(), (float)bullet.getSprite().getHeight());
+								DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(bullet.getPhysObj(), imageSize));
+								draw ++;
+							}
 						}
 					}
 					

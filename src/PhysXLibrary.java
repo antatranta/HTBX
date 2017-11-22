@@ -34,6 +34,10 @@ public class PhysXLibrary{
 		return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
 	}
 	
+	public static Vector2 midpoint(Vector2 a, Vector2 b) {
+		return new Vector2((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
+	}
+	
 	public static boolean isCollision(PhysXObject a, PhysXObject b) {
 		CircleCollider[] colliderSetA = a.getColliders();
 		CircleCollider[] colliderSetB = b.getColliders();
