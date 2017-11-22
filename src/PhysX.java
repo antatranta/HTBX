@@ -74,7 +74,7 @@ public class PhysX {
 		ArrayList<Quadrant> quads = new ArrayList<Quadrant>();
 		
 		if(QUID.Order() != -45 && QUID.Order() < Quadrants.size()) {
-		quads.add(Quadrants.get(QUID.Order()));
+			quads.add(Quadrants.get(QUID.Order()));
 		} else {
 			if(GameConsole.IS_DEBUGGING) {
 				System.out.println("- - OUT OF BOUNDS - -");
@@ -85,49 +85,13 @@ public class PhysX {
 		
 		for(Quadrant quad : Quadrants) {
 			QuadrantID testQUID = quad.getQUID();
-			
-			if(testQUID.getX() == QUID.getX() -1
-					|| testQUID.getX() == QUID.getX() + 1) {
-				if(testQUID.getY() == QUID.getY() - 1
-						|| testQUID.getY() == QUID.getY() + 1) {
-					
-					if (Quadrants.size() > testQUID.Order() - 1 &&
-							0 < testQUID.Order() - 1) {
-						quads.add(Quadrants.get(testQUID.Order() - 1));
-					}
-					if (Quadrants.size() > testQUID.Order() + 1 &&
-							0 < testQUID.Order() + 1) {
-						quads.add(Quadrants.get(testQUID.Order() + 1));
-					}
-					
-					if (Quadrants.size() > testQUID.Order()) {
-						quads.add(Quadrants.get(testQUID.Order()));
-					}
-				}
-			}
-			/*
-			// Test if the quad is Above or Below
-			if(Math.abs(testQUID.getY() - QUID.getY()) < 2) {
-				if (Quadrants.size() > testQUID.Order()) {
+
+			if(Math.abs(testQUID.getX() - QUID.getX()) < 2
+					&& Math.abs(testQUID.getY() - QUID.getY()) < 2) {
+				if(testQUID.Order() != -45 && testQUID.Order() < Quadrants.size()) {
 					quads.add(Quadrants.get(testQUID.Order()));
 				}
-				
-				// Doesn't work for corner cases!
-//				quads.add(Quadrants.get(testQUID.Order() - 1));
-//				quads.add(Quadrants.get(testQUID.Order() + 1));
 			}
-			
-			// Test if the quad is Left or Right
-			if(Math.abs(testQUID.getX() - QUID.getX()) < 2) {
-				if (Quadrants.size() > testQUID.Order()) {
-					quads.add(Quadrants.get(testQUID.Order()));
-				}
-				
-				// Doesn't work for corner cases!
-//				quads.add(Quadrants.get(testQUID.Order() - 1));
-//				quads.add(Quadrants.get(testQUID.Order() + 1));
-			}
-			*/
 		}
 		
 		return quads;
