@@ -13,6 +13,7 @@ public class ShipManagement implements ShipTriggers {
 	@Override
 	public void onShipDeath(Vector2 position) {
 		// TODO Auto-generated method stub
+//		System.out.println("Ship died");
 	}
 
 }
