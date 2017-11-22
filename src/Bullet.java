@@ -20,15 +20,19 @@ public class Bullet extends Entity {
 	public Bullet(int dmg, int spd, CollisionType collision, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
 		super(physObj, sprite, new CollisionData(10, CollisionType.enemy_bullet));
 		
+		System.out.println("Damage: "+ dmg);
+		
 		this.bulletSpeed = spd;
 		this.bulletDuration = time;
 		this.physObj.addSubscriber(this);
 		this.movementVector = movementVector;
 		this.physObj.addSubscriber(this);
 		
-		physObj.setCollisionData(new CollisionData(dmg, collision));
-		setBulletDamage(dmg);
+		this.physObj.setCollisionData(new CollisionData(dmg, collision));
+//		setBulletDamage(dmg);
 		this.bulletTrajectory();
+		
+		System.out.println("Damage - : "+ this.physObj.getCollisionData().getDamage());
 	}
 	
 	public void setBulletDamage(int dmg) {
@@ -88,7 +92,7 @@ public class Bullet extends Entity {
 	
 	public void destroy() {
 		dead = true;
-		this.setCollisionData(CollisionData.Blank());
+//		this.setCollisionData(CollisionData.Blank());
 	}
 	
 	public boolean checkIfDead() {
