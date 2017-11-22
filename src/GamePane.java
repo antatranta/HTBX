@@ -789,14 +789,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
     			isShooting = true;
     		}
         }
+        
 		GObject item = program.getElementAt(e.getX(), e.getY());
 		System.out.println(item.getClass());
-		if (item instanceof LevelUpButton) {
-			System.out.println("Found level up button");
+		if (item instanceof LevelUpButton && player.getCurrentHealth() > 0 && console.getSP() > 0) {
 			program.getGameConsole().levelUpSkill(((LevelUpButton) item).getStatUpType());
-		}
-		else {
-			System.out.println("Didn't get LU button");
 		}
 	}
 	
@@ -878,6 +875,25 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         
         if (key == KeyEvent.VK_ESCAPE) {
         		program.switchToPause();
+        }
+        
+        if (console.getSP() > 0 && player.getCurrentHealth() > 0) {
+        	switch(key) {
+        	case KeyEvent.VK_1:
+        		console.levelUpSkill(LevelUpEnum.speed);
+        		break;
+        	case KeyEvent.VK_2:
+        		console.levelUpSkill(LevelUpEnum.damage);
+        		break;
+        	case KeyEvent.VK_3:
+        		console.levelUpSkill(LevelUpEnum.health);
+        		break;
+        	case KeyEvent.VK_4:
+        		console.levelUpSkill(LevelUpEnum.shield);
+        		break;
+        	default:
+        		break;
+        	}
         }
 
     }

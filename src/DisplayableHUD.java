@@ -36,8 +36,17 @@ public class DisplayableHUD implements Displayable {
 	private double shield_diff = 0;
 	private int last_hp = -1;
 	private double hp_diff = 0;
+	
 	private boolean have_sp;
-	private double msg_diff;
+	private double msg_diff_box;
+	private boolean delta_spd;
+	private double msg_diff_spd;
+	private boolean delta_dmg;
+	private double msg_diff_dmg;
+	private boolean delta_hp;
+	private double msg_diff_hp;
+	private boolean delta_shd;
+	private double msg_diff_shd;
 	
 	double startx = 0;
 	double starty = 0;
@@ -178,26 +187,85 @@ public class DisplayableHUD implements Displayable {
 		if (program.getGameConsole().getSP() > 0) {
 			if (have_sp == false) {
 				have_sp = true;
-				msg_diff = skill_msg.getHeight();
+				msg_diff_box = skill_msg.getHeight() * 1.35;
 			}
-			speed_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff, speed_stat.getY());
-			damage_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff, damage_stat.getY());
-			health_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff, health_stat.getY());
-			shield_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff, shield_stat.getY());
-			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 1.35) + (msg_diff * 5));
+			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 1.35) + (msg_diff_box));
 		}
 		else {
 			if (have_sp == true) {
 				have_sp = false;
-				msg_diff = skill_msg.getHeight();
+				msg_diff_box = skill_msg.getHeight() * 1.35;
 			}
-			speed_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff - skill_msg.getHeight(), speed_stat.getY());
-			damage_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff - skill_msg.getHeight(), damage_stat.getY());
-			health_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff - skill_msg.getHeight(), health_stat.getY());
-			shield_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff - skill_msg.getHeight(), shield_stat.getY());
-			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT + (skill_msg.getHeight() * 1.35) + (msg_diff * 5));
+			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (msg_diff_box));
 		}
-		msg_diff /= 1.1;
+		
+		if (have_sp && player.getStats().getSpeedSetting() < 5) {
+			if (delta_spd == false) {
+				delta_spd = true;
+				msg_diff_spd = skill_msg.getHeight();
+			}
+			speed_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff_spd, speed_stat.getY());
+		}
+		else {
+			if (delta_spd == true) {
+				delta_spd = false;
+				msg_diff_spd = skill_msg.getHeight();
+			}
+			speed_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_spd - skill_msg.getHeight(), speed_stat.getY());
+		}
+		
+		if (have_sp && player.getStats().getDamage() < 5) {
+			if (delta_dmg == false) {
+				delta_dmg = true;
+				msg_diff_dmg = skill_msg.getHeight();
+			}
+			damage_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff_dmg, damage_stat.getY());
+		}
+		else {
+			if (delta_dmg == true) {
+				delta_dmg = false;
+				msg_diff_dmg = skill_msg.getHeight();
+			}
+			damage_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_dmg - skill_msg.getHeight(), damage_stat.getY());
+		}
+		
+		if (have_sp && player.getStats().getHealthMax() < 5) {
+			if (delta_hp == false) {
+				delta_hp = true;
+				msg_diff_hp = skill_msg.getHeight();
+			}
+			health_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff_hp, health_stat.getY());
+		}
+		else {
+			if (delta_hp == true) {
+				delta_hp = false;
+				msg_diff_hp = skill_msg.getHeight();
+			}
+			health_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_hp - skill_msg.getHeight(), health_stat.getY());
+		}
+		
+		if (have_sp && player.getStats().getShieldMax() < 5) {
+			if (delta_shd == false) {
+				delta_shd = true;
+				msg_diff_shd = skill_msg.getHeight();
+			}
+			shield_up.setLocation(stats_display.getX() + stats_display.getWidth() - msg_diff_shd, shield_stat.getY());
+
+		}
+		else {
+			if (delta_shd == true) {
+				delta_shd = false;
+				msg_diff_shd = skill_msg.getHeight();
+			}
+			shield_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_shd - skill_msg.getHeight(), shield_stat.getY());
+		}
+		
+
+		msg_diff_box /= 1.1;
+		msg_diff_spd /= 1.1;
+		msg_diff_dmg /= 1.1;
+		msg_diff_hp /= 1.1;
+		msg_diff_shd /= 1.1;
 	}
 	
 	public int recalculateDifference(int cur, int last) {
