@@ -129,7 +129,8 @@ public class DisplayableHUD implements Displayable {
 		shield_stat.setFillColor(Color.WHITE);
 		shield_stat.setColor(Color.WHITE);
 		
-		skill_msg = new GImage("SkillMsg.png", MainApplication.WINDOW_WIDTH - skill_msg.getWidth(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 2));
+		skill_msg = new GImage("SkillMsg.png", MainApplication.WINDOW_WIDTH , MainApplication.WINDOW_HEIGHT);
+		skill_msg.move(-(skill_msg.getWidth() / 2), -(skill_msg.getHeight() * 2));
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -208,6 +209,7 @@ public class DisplayableHUD implements Displayable {
 		program.add(damage_stat);
 		program.add(health_stat);
 		program.add(shield_stat);
+		
 		program.add(skill_msg);
 	}
 
