@@ -56,8 +56,7 @@ public class PhysXLibrary{
 		}
 		return false;
 	}
-	
-	
+		
 	public static QuadrantPlacement getPositionInQuadrant(PhysXObject a) {
 		
 		// First we offset the position of the object

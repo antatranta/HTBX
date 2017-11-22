@@ -18,7 +18,7 @@ public class Bullet extends Entity {
 	
 
 	public Bullet(int dmg, int spd, CollisionType collision, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
-		super(physObj, sprite, new CollisionData(10, CollisionType.blank));
+		super(physObj, sprite, new CollisionData(10, CollisionType.enemy_bullet));
 		
 		this.bulletSpeed = spd;
 		this.bulletDuration = time;
@@ -27,6 +27,7 @@ public class Bullet extends Entity {
 		this.physObj.addSubscriber(this);
 		
 		physObj.setCollisionData(new CollisionData(dmg, collision));
+		setBulletDamage(dmg);
 		this.bulletTrajectory();
 	}
 	
@@ -127,11 +128,18 @@ public class Bullet extends Entity {
 	}
 	
 	protected void handleCollision(CollisionData data) {
-		if(data.getType() != CollisionType.player_bullet || data.getType() != CollisionType.blank
-				|| data.getType() == CollisionType.enemy_bullet || data.getType() != CollisionType.enemyShip) {
-			return;
-		} else {
+		
+		if(data.getType() == CollisionType.asteroid) {
 			destroy();
+		}
+		if(getCollisionData().getType() == CollisionType.enemy_bullet) {
+			if(data.getType() == CollisionType.playerShip) {
+				destroy();
+			}
+		} else if(getCollisionData().getType() == CollisionType.player_bullet) {
+			if(data.getType() == CollisionType.enemyShip) {
+				destroy();
+			}
 		}
 	}
 	

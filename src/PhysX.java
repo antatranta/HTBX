@@ -266,24 +266,6 @@ public class PhysX {
 
 					}
 					
-					/*
-					// Bulets hitting things
-					if (obj.getHost() instanceof Bullet) {
-						if (coll.getHost() instanceof Ship) {
-							Bullet item = (Bullet)obj.getHost();
-							Ship target = (Ship)coll.getHost();
-							// Don't collide with the source!
-							if ((item.getBulletType() == BulletType.PLAYER_BULLET && coll.getHost() instanceof PlayerShip) ||
-									(item.getBulletType() == BulletType.ENEMY_BULLET && coll.getHost() instanceof EnemyShip)) {
-								return;
-							}
-							item.destroy();
-							target.takeDamage(item.getBulletDamage());
-							System.out.println("Target HP: " + target.getCurrentHealth());
-							
-						}				
-					}
-					*/
 					if (GameConsole.IS_DEBUGGING) {
 						/*
 						System.out.println(" - - ");

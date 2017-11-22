@@ -30,12 +30,12 @@ public class BulletManager implements ShipTriggers {
 	
 	public GameImage onShootEvent(int dmg, int spd, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		// Variable Verification
-		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {
+//		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {
 			Bullet shot = new Bullet(dmg, spd, collision, time, obj, sprite, movementVector);
 			this.bullets.add(shot);
 			return shot.getSprite();
-		}		
-		return null;
+//		}		
+//		return null;
 	}
 	
 	public ArrayList<GameImage> getDeadBullets(){

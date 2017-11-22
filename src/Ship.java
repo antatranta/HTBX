@@ -56,6 +56,7 @@ public class Ship extends Entity {
 	}
 	
 	protected void takeDamage(int damage) {
+		System.out.println("Health: " + getCurrentHealth() + " Dam: " + damage);
 		if(getCurrentHealth() > 0) {
 			setCurrentHealth(getCurrentHealth() - damage);
 		} 
@@ -137,6 +138,7 @@ public class Ship extends Entity {
 	}
 	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
+		takeDamage(data.getDamage());
 	}
 	
 	protected void handleCollision(CollisionData data) {
@@ -144,7 +146,7 @@ public class Ship extends Entity {
 	}
 	
 	public void addSubscriber(ShipTriggers sub) {
-		if(sub != null) {
+		if(sub != null && !this.subscribers.contains(sub)) {
 			this.subscribers.add(sub);
 		}
 	}

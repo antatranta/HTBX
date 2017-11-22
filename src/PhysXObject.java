@@ -151,6 +151,6 @@ public class PhysXObject {
 	}
 	
 	public CollisionData getCollisionData() {
-		return collisionData;
+		return this.collisionData;
 	}
 }

@@ -5,15 +5,15 @@ public class ShipStats {
 	private int health_max;
 	private int damage;
 	
-	public ShipStats(int speed, int shield_max, int health_max, int damage) {
+	public ShipStats(int speed, int damage, int health_max, int shield_max) {
 		this.speed = speed;
-		this.shield_max = shield_max;
-		this.health_max = health_max;
 		this.damage = damage;
+		this.health_max = health_max;
+		this.shield_max = shield_max;
 	}
 	
 	public static ShipStats EnemyStats_01() {
-		return new ShipStats(3, 0, 50, 1);
+		return new ShipStats(3, 1, 10, 0);
 	}
 	
 	public float getTurningSpeed() {

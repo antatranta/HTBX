@@ -27,7 +27,7 @@ public class Entity implements Collision {
 	}
 	
 	public CollisionData getCollisionData() {
-		System.out.println(this.physObj.getCollisionData().toString());
+//		System.out.println(this.physObj.getCollisionData().toString());
 		return new CollisionData(this.physObj.getCollisionData());
 	}
 

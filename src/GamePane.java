@@ -351,13 +351,24 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
+		GImage bullet = console.Shoot(5, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
+		/*
 		double theta_rad = 0;
 		double unit_x = Math.cos(theta_rad);
 		double unit_y = -Math.sin(theta_rad);
+
+//		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
+
+//		console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
+
 		
+
 		for (int i =0; i < 10; i++) {
-			Vector2 pos = new Vector2(player.getPhysObj().getPosition().getX(),  player.getPhysObj().getPosition().getY());
-			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
+			Vector2 pos = new Vector2(player.getPhysObj().getPosition().getX(), player.getPhysObj().getPosition().getY());
+			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
+//			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
+//			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc).add(offset));
+			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), Camera.frontendToBackend(last_mouse_loc)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc).add(offset));
 			theta_rad += Math.toRadians(360 / 10);
 			unit_x = Math.cos(theta_rad);
 			unit_y = -Math.sin(theta_rad);
@@ -369,8 +380,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //		if(bullet != null) {
 //			program.add(bullet);
 //		}
+		*/
 		
-		
+
 //		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
 //		program.add(bullet);
 //		player.shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc));
@@ -512,21 +524,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			ship.addSubscriber(bulletStore);
 			ship.AIUpdate(player.physObj.getPosition());
 		}
-		/*
-		ArrayList <Quadrant> quads = console.physx().getQuadrants();
-		for (int i = 0; i < quads.size(); i++) {
-			if (quads.get(i).getAsteroids().size() > 0) {
-//				System.out.println(quads.get(i));
-//				for (Asteroid rock : quads.get(i).getAsteroids()) {
-//					System.out.println(rock);
-//					if (rock.getSprite() == null) {
-//						System.out.println("No sprite!");
-//					}
-//				}
-				drawAsteroids(quads.get(i).getAsteroids());
-			}
+	}
+	
+	public void updateBulletEmitters () {
+		ArrayList<BulletEmitter> bulletEmitters = console.getActiveBulletEmitters();
+		for(BulletEmitter bulletEmitter: bulletEmitters) {
+			bulletEmitter.addSubscriber(bulletStore);
+			bulletEmitter.Update(player.physObj.getPosition());
 		}
-		*/
 	}
 	
 	// TODO
