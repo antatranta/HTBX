@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
+import acm.graphics.GObject;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
 import rotations.GameImage;
@@ -319,34 +320,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-
-		
-		Vector2 mousePos = new Vector2(e.getX(), e.getY());
-        if (e.getButton() == MouseEvent.BUTTON3)
-        {
-        		Vector2 newPos = Camera.frontendToBackend(mousePos);
-        		
-            if(console.physx().isPositionSafe(newPos, 100)) {
-                player.getPhysObj().setPosition(newPos);
-                
-        			Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition());
-        			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
-            }
-        }
-        else if(e.getButton() == MouseEvent.BUTTON1) {
-        	if (console.IS_DEBUGGING) {
-    			if(!DO_POINT_TEST) {
-    				isShooting = true;
-    			} else {
-    				pointTest(new Vector2(e.getX(), e.getY()));
-    			}
-    		} else {
-    			isShooting = true;
-    		}
-        }
-	}
 	
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
@@ -386,14 +359,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //		program.add(bullet);
 //		player.shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc));
 
-	}
-	
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		isShooting = false;
-		shotCount= 0;
-//		auto_fire.stop();
-//		System.out.println("Stopped shooting");
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary
@@ -536,12 +501,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	// TODO
 	private void layerSprites() {
 		// First, put aiming reticles in front
-		aiming_edge.sendToBack();
-		aiming_head.sendToBack();
+
 		
 		// Then dynamic parts of the HUD
 		HUD.layerSprites();
-
+		aiming_edge.sendToBack();
+		aiming_head.sendToBack();
 		player_img.sendToBack();
 		
 		// FX Layer
@@ -799,6 +764,50 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		return true;
 	}
 
+	@Override
+	public void mousePressed(MouseEvent e) {
+		Vector2 mousePos = new Vector2(e.getX(), e.getY());
+        if (e.getButton() == MouseEvent.BUTTON3)
+        {
+        		Vector2 newPos = Camera.frontendToBackend(mousePos);
+        		
+            if(console.physx().isPositionSafe(newPos, 100)) {
+                player.getPhysObj().setPosition(newPos);
+                
+        			Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition());
+        			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
+            }
+        }
+        else if(e.getButton() == MouseEvent.BUTTON1) {
+        	if (console.IS_DEBUGGING) {
+    			if(!DO_POINT_TEST) {
+    				isShooting = true;
+    			} else {
+    				pointTest(new Vector2(e.getX(), e.getY()));
+    			}
+    		} else {
+    			isShooting = true;
+    		}
+        }
+		GObject item = program.getElementAt(e.getX(), e.getY());
+		System.out.println(item.getClass());
+		if (item instanceof LevelUpButton) {
+			System.out.println("Found level up button");
+			program.getGameConsole().levelUpSkill(((LevelUpButton) item).getStatUpType());
+		}
+		else {
+			System.out.println("Didn't get LU button");
+		}
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		isShooting = false;
+		shotCount= 0;
+//		auto_fire.stop();
+//		System.out.println("Stopped shooting");
+	}
+	
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		last_mouse_loc.setXY(e.getX(), e.getY()); 
