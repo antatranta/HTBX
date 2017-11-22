@@ -98,7 +98,7 @@ public class PhysXObject {
 	}
 	
 	public void removeColliders() {
-		colliders = null;
+		colliders = new CircleCollider[0];
 	}
 	
 	public void addCollider(CircleCollider newCollider) {

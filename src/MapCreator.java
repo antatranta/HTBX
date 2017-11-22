@@ -8,8 +8,6 @@ import acm.program.*;
 import acm.util.*;
 import java.awt.*;
 
-
-
 public class MapCreator {
 	private static float min_distance_between_objects=400.0f;
 	private final int MAX_ENEMIES_IN_QUAD = 2;
@@ -275,9 +273,7 @@ public class MapCreator {
 	public ArrayList<Asteroid> placeAsteroids(QuadrantID quad, int numToCreate) {
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		for(int i =0; i < numToCreate; ++i) {
-			PhysXObject newAsteroid = createPhysXObjectInQuad(quad);
-			Asteroid new_rock = new Asteroid(newAsteroid);
-			Asteroids.add(new_rock);
+			Asteroids.add(buildAsteroid(createPhysXObjectInQuad(quad)));
 		}
 		return Asteroids;
 	}
@@ -287,9 +283,21 @@ public class MapCreator {
 		return new PlayerShip(physObj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
 	}
 	
+	public Asteroid buildAsteroid(PhysXObject physObj) {
+		int preset = LavaLamp.randomNumber(0,file.numberOfAsteroidPresets()-1);
+		PhysXObject presetPhysObj = new PhysXObject(file.getAsteroidObject(preset));
+//		for(CircleCollider coll: presetPhysObj.getColliders()) {
+//			physObj.addCollider(new CircleCollider(coll));
+//		}
+		presetPhysObj.setPosition(physObj.getPosition());
+		presetPhysObj.setQUID(physObj.getQUID());
+		
+		System.out.println("[" + file.getAsteroidSprite(preset) + "]");
+		return new Asteroid(presetPhysObj, file.getAsteroidSprite(preset));
+	}
+	
 	public Asteroid placeAsteroid (QuadrantID quad) {
-		PhysXObject newAsteroid = createPhysXObjectInQuad(quad);
-		return new Asteroid(newAsteroid);
+		return buildAsteroid(createPhysXObjectInQuad(quad));
 	}
 	
 	public void placeBoss(Quadrant quad, Boss boss) {
