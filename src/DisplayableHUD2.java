@@ -97,6 +97,13 @@ public class DisplayableHUD2 implements Displayable {
 		aimCompass(compass_sprite, new Vector2(0,0));
 	}
 	
+//	public void updateStats() {
+//		scaleStatsBar(speed_stat, (player.getStats().getSpeedSetting() - 1) / 4);
+//		scaleStatsBar(damage_stat, (player.getStats().getDamage() - 1) / 4);
+//		scaleStatsBar(health_stat, (player.getStats().getHealthMax() - 1) / 4);
+//		scaleStatsBar(shield_stat, (player.getStats().getShieldMax() - 1) / 4);
+//	}
+	
 	public void layerSprites() {
 		status_bar_hp.sendToBack();
 //		status_bar_hp_back.sendToBack();

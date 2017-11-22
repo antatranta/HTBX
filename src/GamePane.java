@@ -83,9 +83,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <EnemyShip> drawn_ships;
 	private ArrayList <Bullet> drawn_bullets;
 	
-	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_OBJECTS;
+	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_ASTEROIDS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS;
+	
+	private ArrayList <EnemyShip> DEBUGGING_COLLIDERS_SHIPS;
+	private ArrayList <Bullet> DEBUGGING_COLLIDERS_BULLETS;
 	
 	private ArrayList <GLabel> DEBUGGING_QUID_LABELS;
 	private float xAxis = 0;
@@ -160,7 +163,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		DEBUGGING_QUID_LABELS = new ArrayList<GLabel>();
 		
 		DEBUGGING_COLLIDERS = new ArrayList<StaticGObject>();
-		DEBUGGING_COLLIDERS_OBJECTS = new ArrayList<Asteroid>();
+		DEBUGGING_COLLIDERS_ASTEROIDS = new ArrayList<Asteroid>();
+		DEBUGGING_COLLIDERS_SHIPS = new ArrayList<EnemyShip>();
+		DEBUGGING_COLLIDERS_BULLETS = new ArrayList<Bullet>();
 		DEBUGGING_COLLIDERS_OBJECTS_ref = new ArrayList<StaticGObject>();
 		
 		tracking_offset = new Vector2(0, 0);
@@ -265,7 +270,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawn_bullets = new ArrayList <Bullet>();
 		
 		DEBUGGING_COLLIDERS = new ArrayList<StaticGObject>();
-		DEBUGGING_COLLIDERS_OBJECTS = new ArrayList<Asteroid>();
+		DEBUGGING_COLLIDERS_ASTEROIDS = new ArrayList<Asteroid>();
 		DEBUGGING_COLLIDERS_OBJECTS_ref = new ArrayList<StaticGObject>();
 		
 		CURRENT_QUID_LABEL = new GLabel("Current QUID", 15, 25);
@@ -500,13 +505,38 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 						if(draw >= MAXDRAW) {
 							break;
 						}
-						if(!DEBUGGING_COLLIDERS_OBJECTS.contains(aster)) {
-							DEBUGGING_COLLIDERS_OBJECTS.add(aster);
+						if(!DEBUGGING_COLLIDERS_ASTEROIDS.contains(aster)) {
+							DEBUGGING_COLLIDERS_ASTEROIDS.add(aster);
 							Vector2 imageSize = new Vector2((float)aster.getSprite().getWidth(), (float)aster.getSprite().getHeight());
 							DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(aster.getPhysObj(), imageSize));
 							draw ++;
 						}
 					}
+					
+					for(EnemyShip ship : drawn_ships) {
+						if(draw >= MAXDRAW) {
+							break;
+						}
+						if(!DEBUGGING_COLLIDERS_SHIPS.contains(ship)) {
+							DEBUGGING_COLLIDERS_SHIPS.add(ship);
+							Vector2 imageSize = new Vector2((float)ship.getSprite().getWidth(), (float)ship.getSprite().getHeight());
+							DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(ship.getPhysObj(), imageSize));
+							draw ++;
+						}
+					}
+					
+					for(Bullet bullet : drawn_bullets) {
+						if(draw >= MAXDRAW) {
+							break;
+						}
+						if(!DEBUGGING_COLLIDERS_BULLETS.contains(bullet)) {
+							DEBUGGING_COLLIDERS_BULLETS.add(bullet);
+							Vector2 imageSize = new Vector2((float)bullet.getSprite().getWidth(), (float)bullet.getSprite().getHeight());
+							DEBUGGING_COLLIDERS_OBJECTS_ref.add(new StaticGObject(bullet.getPhysObj(), imageSize));
+							draw ++;
+						}
+					}
+					
 					drawPhysXObjects(DEBUGGING_COLLIDERS_OBJECTS_ref);
 					} catch (java.lang.NullPointerException e1) {
 						System.out.println("Dropped frame " + e1.getMessage());
