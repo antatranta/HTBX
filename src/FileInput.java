@@ -19,6 +19,9 @@ public class FileInput {
 		last_file = null;
 		asteroidObjects = new ArrayList<PhysXObject>();
 		asteroidSprites = new ArrayList<String>();
+		
+		shipObjects = new ArrayList<PhysXObject>();
+		shipSprites = new ArrayList<String>();
 		shipLevels = new ArrayList<Integer>();
 	}
 
@@ -76,6 +79,7 @@ public class FileInput {
 					String readLine = section.replace("$COLL", "");
 					CircleCollider[] colliders = readColliders(readLine);
 					
+					physObj.removeColliders();
 					for(CircleCollider coll : colliders) {
 						physObj.addCollider(coll);
 					}
@@ -211,5 +215,17 @@ public class FileInput {
 		for (String line : list) {
 			System.out.println(line);
 		}
+	}
+
+	public int numberOfAsteroidPresets() {
+		return asteroidObjects.size();
+	}
+	
+	public PhysXObject getAsteroidObject(int index) {
+		return asteroidObjects.get(index);
+	}
+	
+	public String getAsteroidSprite(int index) {
+		return asteroidSprites.get(index);
 	}
 };

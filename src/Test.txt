@@ -1,1 +1,7 @@
-#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Buddy_1.png
+#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Asteroid_0.png
+#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Asteroid_1.png
+#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Asteroid_2.png
+#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Asteroid_3.png
+#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Asteroid_4.png
+#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Asteroid_5.png
+#ASTER# ! $COLL 1, 0, 0, 2 ! $SPRITE Asteroid_6.png

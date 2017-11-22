@@ -20,6 +20,11 @@ public class CircleCollider {
 		this.radius = radius;
 	}
 	
+	public CircleCollider(CircleCollider toCopy) {
+		this.center = toCopy.getCenter();
+		this.radius = toCopy.getRadius();
+	}
+	
 	public float getRadius() {
 		return radius;
 	}
