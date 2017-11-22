@@ -351,16 +351,26 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
-		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-
-		GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
+		double theta_rad = 0;
+		double unit_x = Math.cos(theta_rad);
+		double unit_y = -Math.sin(theta_rad);
 		
-		if(bullet != null) {
-//			bullet.setFilled(true);
-//			bullet.setFillColor(Color.orange);
-//			bullet.setColor(Color.orange);
-			program.add(bullet);
+		for (int i =0; i < 10; i++) {
+			Vector2 pos = new Vector2(player.getPhysObj().getPosition().getX(),  player.getPhysObj().getPosition().getY());
+			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
+			theta_rad += Math.toRadians(360 / 10);
+			unit_x = Math.cos(theta_rad);
+			unit_y = -Math.sin(theta_rad);
 		}
+		//		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
+//
+//		GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
+//		
+//		if(bullet != null) {
+//			program.add(bullet);
+//		}
+		
+		
 //		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
 //		program.add(bullet);
 //		player.shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc));
@@ -372,7 +382,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		isShooting = false;
 		shotCount= 0;
 //		auto_fire.stop();
-		System.out.println("Stopped shooting");
+//		System.out.println("Stopped shooting");
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary

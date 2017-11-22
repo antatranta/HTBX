@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 public class Ship extends Entity {
 
-	private static final int KB_FORCE = 10;
-	private static final float FRICTION = (float) 1.15;
+	protected int KB_FORCE = 10;
 	protected int current_health;
 	protected ShipStats stats;
 	protected Vector2 external_force;
@@ -95,16 +94,16 @@ public class Ship extends Entity {
 	protected void moveExternalForce() {
 		Vector2 currentPosition = physObj.getPosition();
 		this.physObj.setPosition(currentPosition.add(external_force));
-		external_force = external_force.div(new Vector2(FRICTION, FRICTION));
+		external_force = external_force.div(new Vector2(PhysXLibrary.FRICTION, PhysXLibrary.FRICTION));
 	}
 
-	protected void calculateCollisionForce(Vector2 pos) {
-		double theta_rad = Math.atan2(pos.getY() - physObj.getPosition().getY(), pos.getX() - physObj.getPosition().getX());
-		float unit_x = (float)(Math.cos(theta_rad));
-		float unit_y = (float)(Math.sin(theta_rad));
-		external_force.setXY(unit_x * -KB_FORCE, unit_y * -KB_FORCE);
-
-	}
+//	protected void calculateCollisionForce(Vector2 pos) {
+//		double theta_rad = Math.atan2(pos.getY() - physObj.getPosition().getY(), pos.getX() - physObj.getPosition().getX());
+//		float unit_x = (float)(Math.cos(theta_rad));
+//		float unit_y = (float)(Math.sin(theta_rad));
+//		external_force.setXY(unit_x * -KB_FORCE, unit_y * -KB_FORCE);
+//
+//	}
 	
 	public float getDx() {
 		return dx;

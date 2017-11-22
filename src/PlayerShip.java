@@ -43,7 +43,7 @@ public class PlayerShip extends Ship implements ActionListener{
 		if (i_frames == 0) {
 			System.out.println("Got hit!");
 			if (data.getType() == CollisionType.asteroid || data.getType() == CollisionType.enemyShip) {
-				calculateCollisionForce(pos);
+				PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 				takeDamage(data.getDamage());
 			}
 		}

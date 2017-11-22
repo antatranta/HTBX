@@ -120,7 +120,7 @@ public class EnemyShip extends Ship implements ActionListener {
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 
 		if (data.getType() == CollisionType.playerShip) {
-			calculateCollisionForce(pos);
+			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 		}
 		if (data.getType() == CollisionType.asteroid ||
 				data.getType() == CollisionType.player_bullet) {
