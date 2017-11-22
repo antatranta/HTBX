@@ -129,8 +129,8 @@ public class DisplayableHUD implements Displayable {
 		shield_stat.setFillColor(Color.WHITE);
 		shield_stat.setColor(Color.WHITE);
 		
-		skill_msg = new GImage("SkillMsg.png", MainApplication.WINDOW_WIDTH , MainApplication.WINDOW_HEIGHT);
-		skill_msg.move(-(skill_msg.getWidth() / 2), -(skill_msg.getHeight() * 2));
+		skill_msg = new GImage("SkillMsg.png", 0, 0);
+		skill_msg.setLocation((MainApplication.WINDOW_WIDTH / 2) -(skill_msg.getWidth() / 2), MainApplication.WINDOW_HEIGHT);
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -165,6 +165,15 @@ public class DisplayableHUD implements Displayable {
 		shield_diff /= 1.1;
 		hp_diff /= 1.1;
 		aimCompass(compass_sprite, new Vector2(0,0));
+		
+		// Skills
+		
+		if (program.getGameConsole().getSP() > 0) {
+			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 1.5));
+		}
+		else {
+			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT);
+		}
 	}
 	
 	public int recalculateDifference(int cur, int last) {

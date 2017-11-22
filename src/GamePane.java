@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
-import acm.graphics.GObject;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
 import rotations.GameImage;

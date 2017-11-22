@@ -20,7 +20,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private PlayerShip player;
 	private MapCreator mapCreator;
 	private PhysX physx; // The controller for all things
-	private int skillPoints;
+	private int skill_points;
 	private Camera camera;
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
@@ -31,7 +31,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public GameConsole() {
 		endDebugView();
-		
+		skill_points = 0;
 		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
@@ -201,8 +201,13 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	@Override
 	public void onShipDeath(Vector2 pos) {
 		// TODO Auto-generated method stub
-		
+		skill_points += 1;
+		System.out.println("SP: " + skill_points);
 		createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
+	}
+	
+	public int getSP() {
+		return skill_points;
 	}
 }
 
