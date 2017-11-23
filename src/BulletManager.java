@@ -25,7 +25,9 @@ public class BulletManager implements ShipTriggers {
 	}
 	
 	public ArrayList<Bullet> getBullets() {
-		return bullets;
+		ArrayList<Bullet> r_bullets = new ArrayList<Bullet>();
+		r_bullets.addAll(bullets);
+		return r_bullets;
 	}
 	
 	public ArrayList<PhysXObject> getPhysXObjects(){
@@ -119,8 +121,23 @@ public class BulletManager implements ShipTriggers {
 	}
 	
 	@Override
-	public void onShipDeath(Vector2 position) {
-		// Sun burst emitter
+	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
+		emitBurst(position, currentQUID, 10);
+	}
+	
+	public void emitBurst(Vector2 position, QuadrantID currentQUID, int num) {
+		double theta_rad = 0;
+		double unit_x = Math.cos(theta_rad);
+		double unit_y = -Math.sin(theta_rad);
+
+		for (int i =0; i < num; i++) {
+			Vector2 pos = new Vector2(position.getX(), position.getY());
+			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
+			GImage bullet = onShootEvent(1, 1, CollisionType.enemy_bullet, 4, new PhysXObject(currentQUID, pos), "RedCircle.png",  pos.add(offset));
+			theta_rad += Math.toRadians(360 / num);
+			unit_x = Math.cos(theta_rad);
+			unit_y = -Math.sin(theta_rad);
+		}
 	}
 
 	@Override

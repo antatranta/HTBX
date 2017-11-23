@@ -75,6 +75,7 @@ public class MainApplication extends GraphicsApplication {
 			gameTimer = console.getTimer();
 			game = new GamePane(this);
 			gameTimer.addListener(game);
+			console.addGraphicsSubscriber(game);
 			//init();
 			//run();
 		}

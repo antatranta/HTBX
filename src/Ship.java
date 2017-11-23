@@ -13,6 +13,7 @@ public class Ship extends Entity {
 	protected ArrayList<ShipTriggers> subscribers;
 	protected ShipTriggers mangementSubscriber;
 	protected ShipTriggers bulletSubscriber;
+	protected GameConsoleEvents gameConsoleSubscriber;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
@@ -56,17 +57,19 @@ public class Ship extends Entity {
 	private void destroyShip() {
 		setCurrentHealth(0);
 		
+		if(subscribers != null && subscribers.size() > 0) {
+			for(ShipTriggers sub : subscribers) {
+				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
+			}
+		}
+		
 		// TEMPORARY solution to "kill" enemies
 		//physObj.setPosition(new Vector2(0, 0));
 		physObj = new PhysXObject();
 		
 		sprite.rotate(0);
 		
-		if(subscribers != null && subscribers.size() > 0) {
-			for(ShipTriggers sub : subscribers) {
-				sub.onShipDeath(physObj.getPosition());
-			}
-		}
+
 	}
 	
 	protected void takeDamage(int damage) {
@@ -168,5 +171,9 @@ public class Ship extends Entity {
 		if(sub != null && !this.subscribers.contains(sub)) {
 			this.subscribers.add(sub);
 		}
+	}
+	
+	public void addGameConsole(GameConsoleEvents sub) {
+		gameConsoleSubscriber = sub;
 	}
 }

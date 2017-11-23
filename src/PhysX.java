@@ -73,11 +73,11 @@ public class PhysX {
 		// Create our returning object
 		ArrayList<Quadrant> quads = new ArrayList<Quadrant>();
 		
-		if(QUID.Order() != -45 && QUID.Order() < Quadrants.size()) {
+		if(QUID.Order() != -45 && QUID.Order() < Quadrants.size() && QUID.Order() != -99) {
 			quads.add(Quadrants.get(QUID.Order()));
 		} else {
 			if(GameConsole.IS_DEBUGGING) {
-				System.out.println("- - OUT OF BOUNDS - -");
+//				System.out.println("- - OUT OF BOUNDS - -");
 			}
 			return new ArrayList<Quadrant>();
 		}

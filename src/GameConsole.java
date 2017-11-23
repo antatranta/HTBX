@@ -26,7 +26,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private BulletManager bulletStore;
 	
 	private ShipManagement shipManager;
-	
+	private GamePaneEvents gamePane_ref;
 //	private GameTimer clock = new GameTimer();
 	
 	public GameConsole() {
@@ -144,6 +144,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		for (Quadrant quad : quads) {
 			EnemyShips.addAll(quad.getShips());
 		}
+		
+		for(EnemyShip ship : EnemyShips) {
+			ship.addGameConsole(this);
+		}
 		return EnemyShips;
 	}
 	
@@ -162,6 +166,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 
 	public GameImage Shoot (int dmg, int spd, CollisionType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+//		this.bulletStore.onShipDeath(obj.getPosition(), obj.getQUID());
+//		this.bulletStore.emitBurst(movementVector, obj.getQUID(), 25);
 		return this.bulletStore.onShootEvent(dmg,spd,type,time,obj,sprite,movementVector);
 	}
 	
@@ -240,8 +246,30 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 
 	@Override
 	public boolean physXRequest_isAreaSafe(Vector2 pos, float range) {
-		// TODO Auto-generated method stub
 		return physx.isPositionSafe(pos, range);
+	}
+
+	@Override
+	public void programRequest_drawGOval(PhysXObject obj, GOval oval) {
+		StaticGObject sgo = new StaticGObject(obj);
+		sgo.setSingleObject(oval);
+		sgo.setSize(new Vector2((float)oval.getWidth(), (float)oval.getHeight()));
+		gamePane_ref.eventRequest_addStaticGObject(sgo);
+	}
+
+	public void addGraphicsSubscriber(GamePaneEvents game) {
+		gamePane_ref = game;
+	}
+	
+	public void emitBurst(ShipDeathData data) {
+		this.bulletStore.emitBurst(data.getPos(), data.getQUID(), 25);
+	}
+
+	@Override
+	public void bulletRequest_burst(Vector2 pos, QuadrantID QUID) {
+//		gamePane_ref.eventRequest_addDeathEvent(new ShipDeathData(pos,QUID));
+		// TODO Auto-generated method stub
+//		this.bulletStore.emitBurst(pos, new QuadrantID(), 25);
 	}
 }
 

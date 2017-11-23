@@ -53,4 +53,9 @@ public class StaticGObject {
 	public void setObjects(GOval[] objects) {
 		this.objects = objects;
 	}
+	
+	public void setSingleObject(GOval object) {
+		this.objects = new GOval[1];
+		this.objects[0] = object;
+	}
 }
