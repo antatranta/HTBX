@@ -125,8 +125,12 @@ public class Blinker extends EnemyShip {
 				Vector2 randomOffset = new Vector2(LavaLamp.randomSignedInt(minDist, maxDist), LavaLamp.randomSignedInt(minDist, maxDist));
 				currentTarget = playerPos.add(randomOffset);
 				this.getPhysObj().setPosition(currentTarget);
+				
+				
 			}
-
+			AudioPlayer myAudio = AudioPlayer.getInstance();
+			myAudio.playSound("sounds", "BlinkerTeleport.wav");
+			
 			// Set the charger pos
 			Vector2 pos = Camera.backendToFrontend(this.physObj.getPosition());
 			this.charger.setLocation(pos.getX() - (this.charger.getWidth() / 2 ), pos.getY() - (this.charger.getHeight()/ 2));
@@ -139,6 +143,9 @@ public class Blinker extends EnemyShip {
 				// Shoot
 				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
 				shoot(1, 6, CollisionType.enemy_bullet, 5, obj, "RedCircle.png", playerPos);
+				
+				AudioPlayer myAudio = AudioPlayer.getInstance();
+				myAudio.playSound("sounds", "BlinkerShoot.wav");
 			} else {
 				
 				this.targetColor = new Color(205, 58, 42);
