@@ -1,15 +1,15 @@
 
-public class EnemyShipStats extends ShipStats{
+public class EnemyShipStats extends ShipStats {
 	private int aggression = 1;
 	private int fireRate = 2;
-	public EnemyShipStats(int speed, int shield_max, int health_max, int damage, int aggression, int fireRate) {
-		super(speed, shield_max, health_max, damage);
+	
+	public EnemyShipStats(int speed, int damage, int health_max, int shield_max, int aggression, int fireRate) {
+		super(speed, damage, health_max, shield_max);
 		this.aggression = aggression;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public EnemyShipStats(ShipStats stats, int aggression) {
-		super(stats.getSpeedSetting(), stats.getShieldMax(), stats.getHealthMax(), stats.getDamage());
+		super(stats.getSpeedSetting(), stats.getDamage(), stats.getHealthMax(), stats.getShieldMax());
 		this.aggression = aggression;
 	}
 

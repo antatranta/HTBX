@@ -26,7 +26,6 @@ public class EnemyShip extends Ship implements ActionListener {
 		System.out.println("Aggression: " +aggression);
 		System.out.println("Int. Dist: " + this.stats.getInteractionDistance());
 		System.out.println("Stp. Dist: " + this.stats.getStoppingDistance());
-		// TODO Auto-generated constructor stub
 		shoot_cd = 60;
 		weapon_cd = 90;
 	}

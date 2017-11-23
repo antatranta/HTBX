@@ -7,9 +7,11 @@ import javafx.beans.Observable;
 public class PlayerShip extends Ship implements ActionListener{
 	
 	public static int INV_CAP = 120;
-	public static int REGEN_CAP = 240;
+	public static int REGEN_BETWEEN = 30;
+	public int REGEN_CAP = 240;
 	private int current_shield;
 	private int shield_regen = REGEN_CAP;
+	private int shield_between = REGEN_BETWEEN;
 	private int i_frames = INV_CAP;
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
@@ -19,27 +21,32 @@ public class PlayerShip extends Ship implements ActionListener{
 
 	public void chargeShield(int amount) {
 		current_shield += amount;
+		shield_between = REGEN_BETWEEN;
 		if (current_shield > getStats().getShieldMax()) {
 			current_shield = getStats().getShieldMax();
 		}
 	}
 	
 	private void regenerateShield() {
-		if (shield_regen == 0 && current_shield < getStats().getShieldMax() && current_health > 0) {
+		if (shield_regen == 0 && shield_between == 0 && current_shield < getStats().getShieldMax() && current_health > 0) {
+			REGEN_CAP = 240 + ((stats.getShieldMax() - 1) * 30);
 			chargeShield(1);
 		}
 		else {
-			if (shield_regen > 0) {
+			if (shield_regen == 0) {
+				if (shield_between > 0) {
+					shield_between -= 1;
+				}
+			}
+			else if (shield_regen > 0) {
 				shield_regen -= 1;
 			}
 		}
-		
 		//System.out.println("Shield regen cd at: " + shield_regen + " | Current shield: " + current_shield + " / " + getStats().getShieldMax());
 	}
 	
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-
 		if (data.getType() == CollisionType.asteroid
 				|| data.getType() == CollisionType.enemyShip) {
 			if (data.getType() == CollisionType.asteroid) {
@@ -53,12 +60,8 @@ public class PlayerShip extends Ship implements ActionListener{
 			}
 		}
 		
-		
-		if (i_frames == 0) {
-			if (data.getType() == CollisionType.enemy_bullet) {
-				System.out.println("Got hit!");
-				takeDamage(data.getDamage());
-			}
+		if (data.getType() == CollisionType.enemy_bullet && i_frames == 0) {
+			takeDamage(data.getDamage());
 		}
 	}
 	

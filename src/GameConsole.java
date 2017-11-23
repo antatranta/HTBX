@@ -222,34 +222,33 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		}
 		switch(stat) {
 		case speed:
-			if (player.getStats().getSpeedSetting() == 5) {
-				break;
+			if (player.getStats().getSpeedSetting() < 5) {
+				player.getStats().incSpeed(1);
+				skill_points -= 1;
 			}
-			player.getStats().incSpeed(1);
 			break;
 		case damage:
-			if (player.getStats().getDamage() == 5) {
-				break;
+			if (player.getStats().getDamage() < 5) {
+				player.getStats().incDamage(1);
+				skill_points -= 1;
 			}
-			player.getStats().incDamage(1);
 			break;
 		case health:
-			if (player.getStats().getHealthMax() == 5) {
-				break;
+			if (player.getStats().getHealthMax() < 5) {
+				player.getStats().incHealthMax(1);
+				player.setCurrentHealth(player.getCurrentHealth() + 1);
+				skill_points -= 1;
 			}
-			player.getStats().incHealthMax(1);
-			player.setCurrentHealth(player.getCurrentHealth() + 1);
 			break;
 		case shield:
-			if (player.getStats().getShieldMax() == 5) {
-				break;
+			if (player.getStats().getShieldMax() < 5) {
+				player.getStats().incShieldMax(1);
+				skill_points -= 1;
 			}
-			player.getStats().incShieldMax(1);
 			break;
 		default:
 			break;
 		}
-		skill_points -= 1;
 		//System.out.println("Stats are now:\n Speed: " + player.getStats().getSpeedSetting() + "\n Damage: " + player.getStats().getDamage() + "\n Max_HP: " + player.getStats().getHealthMax() + "\n Max_Shield: " + player.getStats().getShieldMax());
 	}
 
