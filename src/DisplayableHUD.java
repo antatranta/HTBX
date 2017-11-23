@@ -35,7 +35,7 @@ public class DisplayableHUD implements Displayable {
 	
 	private double bar_max_x;
 	private double bar_max_y;
-	private double stats_x = 21;
+	private double stats_x = 19;
 	private double stats_y = 19;
 	
 	private int last_shield = -1;
@@ -106,8 +106,8 @@ public class DisplayableHUD implements Displayable {
 		iframes.setFilled(true);
 		iframes.setColor(new Color(1, 1, 1, 0));
 		
-		startx = stats_back.getX() + 6;
-		starty = stats_back.getY() + 28;
+		startx = stats_back.getX() + 5;
+		starty = stats_back.getY() + 32;
 		unity = 22;
 		
 		speed_stat = new GRect(startx, starty, 0, 0);
