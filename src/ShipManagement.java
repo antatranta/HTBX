@@ -2,6 +2,7 @@
 public class ShipManagement implements ShipTriggers {
 	
 	private GameConsoleEvents gameConsole_ref;
+//	private ShipTriggers bulletManager_ref;
 	
 	public ShipManagement(GameConsoleEvents ref) {
 		gameConsole_ref = ref;
@@ -13,14 +14,16 @@ public class ShipManagement implements ShipTriggers {
 	}
 
 	@Override
-	public void onShipDeath(Vector2 position) {
+	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
 		// TODO Auto-generated method stub
 //		System.out.println("Ship died");
+//		bulletManager_ref.onShipDeath(position, currentQUID);
+		gameConsole_ref.bulletRequest_burst(position, currentQUID);
 	}
 
 	@Override
 	public int isAreaSafe(Vector2 pos, float range) {
-		boolean return_value= gameConsole_ref.physXRequest_isAreaSafe(pos, range);
+		boolean return_value=gameConsole_ref.physXRequest_isAreaSafe(pos, range);
 		if(return_value) {
 			return 1;
 		} else {

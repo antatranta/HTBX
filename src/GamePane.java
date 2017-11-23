@@ -13,7 +13,7 @@ import acm.graphics.GOval;
 import acm.graphics.GRect;
 import rotations.GameImage;
 
-public class GamePane extends GraphicsPane implements ActionListener, KeyListener {
+public class GamePane extends GraphicsPane implements ActionListener, KeyListener, GamePaneEvents {
 	// LAYER DATA: 0 Is the front, above 0 puts things behind
 	private static final int DEBUG_LAYER 		= 0;
 	private static final int CURSOR_LAYER 		= 1;
@@ -86,6 +86,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_ASTEROIDS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS;
+	
+	private ArrayList <StaticGObject> BlinkerEyes;
+	private ArrayList <StaticGObject> DrawnBlinkerEyes;
+	private ArrayList <ShipDeathData> deathEvents;
 	
 	private ArrayList <EnemyShip> DEBUGGING_COLLIDERS_SHIPS;
 	private boolean DEBUGGING_DRAW_BULLETS = false;
@@ -269,6 +273,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <EnemyShip>();
 		drawn_bullets = new ArrayList <Bullet>();
+		BlinkerEyes = new ArrayList <StaticGObject>();
+		DrawnBlinkerEyes = new ArrayList<StaticGObject>();
+		
+		deathEvents = new ArrayList <ShipDeathData>();
 		
 		DEBUGGING_COLLIDERS = new ArrayList<StaticGObject>();
 		DEBUGGING_COLLIDERS_ASTEROIDS = new ArrayList<Asteroid>();
@@ -335,27 +343,27 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void shoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		GImage bullet = console.Shoot(5, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
-		/*
-		double theta_rad = 0;
-		double unit_x = Math.cos(theta_rad);
-		double unit_y = -Math.sin(theta_rad);
-
-//		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-
-//		console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
-
 		
-
-		for (int i =0; i < 10; i++) {
-			Vector2 pos = new Vector2(player.getPhysObj().getPosition().getX(), player.getPhysObj().getPosition().getY());
-			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
-//			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
-//			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc).add(offset));
-			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), Camera.frontendToBackend(last_mouse_loc)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc).add(offset));
-			theta_rad += Math.toRadians(360 / 10);
-			unit_x = Math.cos(theta_rad);
-			unit_y = -Math.sin(theta_rad);
-		}
+//		double theta_rad = 0;
+//		double unit_x = Math.cos(theta_rad);
+//		double unit_y = -Math.sin(theta_rad);
+//
+////		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
+//
+////		console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
+//
+//		
+//
+//		for (int i =0; i < 10; i++) {
+//			Vector2 pos = new Vector2(player.getPhysObj().getPosition().getX(), player.getPhysObj().getPosition().getY());
+//			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
+////			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
+////			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc).add(offset));
+//			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), Camera.frontendToBackend(last_mouse_loc)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc).add(offset));
+//			theta_rad += Math.toRadians(360 / 10);
+//			unit_x = Math.cos(theta_rad);
+//			unit_y = -Math.sin(theta_rad);
+//		}
 		//		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
 //
 //		GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
@@ -363,7 +371,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //		if(bullet != null) {
 //			program.add(bullet);
 //		}
-		*/
+		
 		
 
 //		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
@@ -375,6 +383,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	// Every tick of the global game clock calls all visual drawing necessary
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		if(deathEvents.size() > 1) {
+			for(ShipDeathData data: deathEvents) {
+				console.emitBurst(data);
+			}
+			deathEvents = new ArrayList<ShipDeathData>();
+		}
+		
 		if(!TRACKING_SET) {
 			TRACKING_POSITION = player.getPhysObj().getPosition();
 		}
@@ -517,6 +533,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
 		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
 		drawBullets(bulletStore.getBullets(), drawn_bullets);
+		drawBlinkerEyes(BlinkerEyes);
 	}
 	
 	public void moveEnemyShips() {
@@ -563,6 +580,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Finally, bullets
 		for (int i = 0; i < drawn_bullets.size(); i++) {
 			drawn_bullets.get(i).getSprite().sendToBack();
+		}
+		
+		for(int i =0; i < DrawnBlinkerEyes.size(); i++) {
+			for(GOval oval : DrawnBlinkerEyes.get(i).getObjects()) {
+				oval.sendToBack();
+			}
 		}
 		
 	}
@@ -685,6 +708,33 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			// Set its location according to the offset
 			if (DEBUGGING_LINES.contains(rect)) {
 				rect.getRect().setLocation(final_off.getX(), final_off.getY());
+			}
+			
+		}
+	}
+	
+	private void drawBlinkerEyes(ArrayList<StaticGObject> objects) {
+		for (int i = 0; i < objects.size(); i++) {
+			// Get the offset
+			StaticGObject rect = objects.get(i);
+
+			// Are we already drawing that rect?
+			if (!DrawnBlinkerEyes.contains(rect)) {
+				DrawnBlinkerEyes.add(rect);
+				for(GOval oval: rect.getObjects()) {
+					program.add(oval);
+				}	
+			}
+			// Set its location according to the offset
+			if (DrawnBlinkerEyes.contains(rect)) {
+//				
+				GOval[] ovals = rect.getObjects();
+				for(int e =0; e < ovals.length; e++) {
+					// Make a proper vector2 location according to the camera zoom scale
+					Vector2 final_off = Camera.backendToFrontend(rect.getPhysObj().getPosition(), new Vector2((float)ovals[e].getWidth(), (float)ovals[e].getHeight()));
+					rect.setLocationRespectSize(e, final_off);
+//					ovals[e].setLocation(final_off.getX(), final_off.getY());
+				}
 			}
 			
 		}
@@ -946,6 +996,25 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	        	}
         }
     }
+
+	// ========================================= //
+	// ============ EVENT REQUESTS ============= //
+	// ========================================= //
+	
+	@Override
+	public void eventRequest_drawGOval(GOval oval) {
+		program.add(oval);
+	}
+
+	@Override
+	public void eventRequest_addStaticGObject(StaticGObject obj) {
+		this.BlinkerEyes.add(obj);
+	}
+	
+	@Override
+	public void eventRequest_addDeathEvent(ShipDeathData data) {
+		this.deathEvents.add(data);
+	}
 	
 	
 }

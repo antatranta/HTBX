@@ -17,6 +17,8 @@ public class Blinker extends EnemyShip {
 	protected Color prevColor;
 	
 	protected GOval charger;
+	
+	private boolean BlinkerGOvalAdded = false;
 
 	
 	public Blinker(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
@@ -34,7 +36,7 @@ public class Blinker extends EnemyShip {
 		
 		this.targetColor = Color.WHITE;
 		this.prevColor = Color.WHITE;
-		this.mangementSubscriber = null;
+		this.BlinkerGOvalAdded = false;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -88,6 +90,13 @@ public class Blinker extends EnemyShip {
 	
 	@Override
 	public void AIUpdate(Vector2 playerPos) {
+		
+		if(!BlinkerGOvalAdded) {
+			this.gameConsoleSubscriber.programRequest_drawGOval(this.getPhysObj(), this.charger);
+			BlinkerGOvalAdded = true;
+		}
+
+		
 		int chargeTime = 2;		
 	
 		// Current position
