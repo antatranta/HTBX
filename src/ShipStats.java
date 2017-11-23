@@ -13,7 +13,7 @@ public class ShipStats {
 	}
 	
 	public static ShipStats EnemyStats_01() {
-		return new ShipStats(1, 1, 10, 0);
+		return new ShipStats(1, 1, 15, 0);
 	}
 	
 	public float getTurningSpeed() {
@@ -45,13 +45,13 @@ public class ShipStats {
 		case 0:
 			return 5;
 		case 1:
-			return 5f;
+			return 5.5f;
 		case 2:
 			return 6f;
 		case 3:
-			return 7f;
+			return 6.5f;
 		default:
-			return 8;
+			return 7;
 		}
 	}
 	

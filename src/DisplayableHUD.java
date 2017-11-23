@@ -171,8 +171,8 @@ public class DisplayableHUD implements Displayable {
 			last_hp = player.getCurrentHealth();
 		}
 		
-		scaleStatusBar(status_bar_shield, (double)(player.getCurrentShield() - shield_diff) / (double)player.getStats().getShieldMax());
-		scaleStatusBar(status_bar_hp, (double)(player.getCurrentHealth() - hp_diff) / (double)player.getStats().getHealthMax());
+		scaleStatusBar(status_bar_shield, (double)(player.getCurrentShield() - shield_diff) / (double)(player.getStats().getShieldMax() + player.getBonusStats().getShieldMax()));
+		scaleStatusBar(status_bar_hp, (double)(player.getCurrentHealth() - hp_diff) / (double)(player.getStats().getHealthMax() + player.getBonusStats().getHealthMax()));
 		scaleStatusBar(iframes, (double)player.getIFrames() / (double)PlayerShip.INV_CAP);
 		shield_diff /= 1.1;
 		hp_diff /= 1.1;
@@ -269,10 +269,10 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	public void updateStats() {
-		scaleStatsBar(speed_stat, (player.getStats().getSpeedSetting() - 1) );
-		scaleStatsBar(damage_stat, (player.getStats().getDamage() - 1) );
-		scaleStatsBar(health_stat, (player.getStats().getHealthMax() - 1));
-		scaleStatsBar(shield_stat, (player.getStats().getShieldMax() - 1));
+		scaleStatsBar(speed_stat, player.getBonusStats().getSpeedSetting());
+		scaleStatsBar(damage_stat, player.getBonusStats().getDamage());
+		scaleStatsBar(health_stat, player.getBonusStats().getHealthMax());
+		scaleStatsBar(shield_stat, player.getBonusStats().getShieldMax());
 		sp_label.setLabel("" + program.getGameConsole().getSP());
 	}
 	

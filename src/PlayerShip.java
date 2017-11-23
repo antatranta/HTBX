@@ -8,28 +8,37 @@ public class PlayerShip extends Ship implements ActionListener{
 	
 	public static int INV_CAP = 120;
 	public static int REGEN_BETWEEN = 30;
-	public int REGEN_CAP = 240;
+	public static int REGEN_CAP = 300;
 	private int current_shield;
 	private int shield_regen = REGEN_CAP;
 	private int shield_between = REGEN_BETWEEN;
 	private int i_frames = INV_CAP;
+	private ShipStats bonus_stats;
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
 		super(physObj, current_health, stats, sprite, CollisionType.playerShip);
 		this.current_shield = 0;//stats.getShield_max();
+		this.bonus_stats = new ShipStats(0, 0, 0, 0);
 	}
 
 	public void chargeShield(int amount) {
 		current_shield += amount;
 		shield_between = REGEN_BETWEEN;
-		if (current_shield > getStats().getShieldMax()) {
-			current_shield = getStats().getShieldMax();
+		if (current_shield > getStats().getShieldMax() + bonus_stats.getShieldMax()) {
+			current_shield = getStats().getShieldMax() + bonus_stats.getShieldMax();
+		}
+	}
+	
+	public void restoreHealth(int amount) {
+		current_health += amount;
+		if (current_health > getStats().getHealthMax() + bonus_stats.getHealthMax()) {
+			current_health =  getStats().getHealthMax() + bonus_stats.getHealthMax();
 		}
 	}
 	
 	private void regenerateShield() {
-		if (shield_regen == 0 && shield_between == 0 && current_shield < getStats().getShieldMax() && current_health > 0) {
-			REGEN_CAP = 240 + ((stats.getShieldMax() - 1) * 30);
+		if (shield_regen == 0 && shield_between == 0 && (current_shield < getStats().getShieldMax() + bonus_stats.getShieldMax()) && current_health > 0) {
+			//REGEN_CAP = 240 + ((stats.getShieldMax() - 1) * 30);
 			chargeShield(1);
 		}
 		else {
@@ -45,31 +54,8 @@ public class PlayerShip extends Ship implements ActionListener{
 		//System.out.println("Shield regen cd at: " + shield_regen + " | Current shield: " + current_shield + " / " + getStats().getShieldMax());
 	}
 	
-	@Override
-	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-		if (data.getType() == CollisionType.asteroid
-				|| data.getType() == CollisionType.enemyShip) {
-			if (data.getType() == CollisionType.asteroid) {
-				external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
-			}
-			if (data.getType() == CollisionType.enemyShip && i_frames == 0) {
-				external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
-			}
-			if (i_frames == 0) {
-				takeDamage(data.getDamage());
-			}
-		}
-		
-		if (data.getType() == CollisionType.enemy_bullet && i_frames == 0) {
-			takeDamage(data.getDamage());
-		}
-	}
-	
-	@Override
-	protected void handleCollision(CollisionData data) {
-		
-		// TODO Auto-generated method stub
-		takeDamage(data.getDamage());
+	public ShipStats getBonusStats() {
+		return bonus_stats;
 	}
 	
 	/*
@@ -87,6 +73,18 @@ public class PlayerShip extends Ship implements ActionListener{
 		if (i_frames > 0) {
 			i_frames -= 1;
 		}
+	}
+
+	public int getCurrentShield() {
+		return current_shield;
+	}
+
+	public void setCurrentShield(int current_shield) {
+		this.current_shield = current_shield;
+	}
+	
+	public int getIFrames() {
+		return i_frames;
 	}
 	
 	@Override
@@ -109,29 +107,40 @@ public class PlayerShip extends Ship implements ActionListener{
 				current_health = 0;
 			}
 		}
-
-	}
-
-	public int getCurrentShield() {
-		return current_shield;
-	}
-
-	public void setCurrentShield(int current_shield) {
-		this.current_shield = current_shield;
 	}
 	
-	public int getIFrames() {
-		return i_frames;
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		processInvincibility();
 		regenerateShield();
 		moveExternalForce();
-
-		// TODO: Charges the shield. Use a timer to check for hits before charge, and when charging starts
 	}
-
+	
+	@Override
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
+		if (data.getType() == CollisionType.asteroid
+				|| data.getType() == CollisionType.enemyShip) {
+			if (data.getType() == CollisionType.asteroid) {
+				external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
+			}
+			if (data.getType() == CollisionType.enemyShip && i_frames == 0) {
+				external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
+			}
+			if (i_frames == 0) {
+				System.out.println("Took " + data.getDamage() + " collision damage");
+				takeDamage(data.getDamage());
+			}
+		}
+		
+		if (data.getType() == CollisionType.enemy_bullet && i_frames == 0) {
+			takeDamage(data.getDamage());
+		}
+	}
+	
+	@Override
+	protected void handleCollision(CollisionData data) {
+		
+		// TODO Auto-generated method stub
+		takeDamage(data.getDamage());
+	}
 }

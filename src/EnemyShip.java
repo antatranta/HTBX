@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 public class EnemyShip extends Ship implements ActionListener {
 	protected static EnemyType type;
-	private int orgin_degree = -90;
+	private int origin_degree = -90;
 	private Vector2 target = new Vector2(500,500);
 	private float interactionDistance = 500f;
 
@@ -103,14 +103,14 @@ public class EnemyShip extends Ship implements ActionListener {
 		Rotate2Player(angle);
 		
 		
-//		if (weapon_cd > 0) {
-//			weapon_cd -= 1;
-//		}
-//		if (weapon_cd == 0) {
-//			weapon_cd = shoot_cd;
+		if (weapon_cd > 0) {
+			weapon_cd -= 1;
+		}
+		if (weapon_cd == 0) {
+			weapon_cd = shoot_cd;
 			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
 			shoot(1, 4, CollisionType.enemy_bullet, 5, obj, "RedCircle.png",target);
-//		}
+		}
 		
 		
 	}
@@ -122,19 +122,19 @@ public class EnemyShip extends Ship implements ActionListener {
 //		if(isClose < 0) {
 //			target_degree += stats.getTurningSpeed();
 //		}
-		int different = orgin_degree - target_degree;
+		int different = origin_degree - target_degree;
 		if(Math.abs(different)>180) {
 			different+=different>0?-360:360;
 		}
 		if(different<0) {
 			this.getSprite().rotate(-(int)stats.getTurningSpeed());
 			adjustAngle(stats.getTurningSpeed());
-			orgin_degree++;
+			origin_degree++;
 		}
 		else if(different>0) {
 			adjustAngle(-stats.getTurningSpeed());
 			this.getSprite().rotate(-(int)stats.getTurningSpeed());
-			orgin_degree--;
+			origin_degree--;
 		}
 //		System.out.println("target_degree: "+target_degree); 
 //		System.out.println("orgin_degree: "+orgin_degree); 
