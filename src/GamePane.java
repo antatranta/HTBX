@@ -856,13 +856,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		Vector2 mousePos = new Vector2(e.getX(), e.getY());
         if (e.getButton() == MouseEvent.BUTTON3)
         {
-        		Vector2 newPos = Camera.frontendToBackend(mousePos);
-        		
+        	Vector2 newPos = Camera.frontendToBackend(mousePos);
+        	
             if(console.physx().isPositionSafe(newPos, 100)) {
                 player.getPhysObj().setPosition(newPos);
-                
-        			Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition());
-        			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
+        		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition());
+        		player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
             }
         }
         else if(e.getButton() == MouseEvent.BUTTON1) {
@@ -878,7 +877,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         }
         
 		GObject item = program.getElementAt(e.getX(), e.getY());
-		System.out.println(item.getClass());
 		if (item instanceof LevelUpButton && player.getCurrentHealth() > 0 && console.getSP() > 0) {
 			program.getGameConsole().levelUpSkill(((LevelUpButton) item).getStatUpType());
 		}
