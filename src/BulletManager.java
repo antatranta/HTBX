@@ -128,4 +128,10 @@ public class BulletManager implements ShipTriggers {
 		// TODO Auto-generated method stub
 		return -404;
 	}
+
+	@Override
+	public int identify() {
+		// TODO Auto-generated method stub
+		return 20;
+	}
 }

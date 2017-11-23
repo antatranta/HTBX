@@ -28,4 +28,10 @@ public class ShipManagement implements ShipTriggers {
 		}
 	}
 
+	@Override
+	public int identify() {
+		// TODO Auto-generated method stub
+		return 10;
+	}
+
 }

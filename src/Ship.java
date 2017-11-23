@@ -11,6 +11,8 @@ public class Ship extends Entity {
 	protected Vector2 external_force;
 	protected double dir = 90;
 	protected ArrayList<ShipTriggers> subscribers;
+	protected ShipTriggers mangementSubscriber;
+	protected ShipTriggers bulletSubscriber;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
@@ -22,6 +24,19 @@ public class Ship extends Entity {
 		this.setCurrentHealth(current_health);
 		this.stats = stats;
 		this.subscribers = new ArrayList<ShipTriggers>();
+	}
+	
+	public void identifySubscribers() {
+		if(subscribers != null && subscribers.size() > 0) {
+			for(ShipTriggers sub: subscribers) {
+				int tag = sub.identify();
+				if(tag == 10) {
+					mangementSubscriber = sub;
+				} else if (tag == 20) {
+					bulletSubscriber = sub;
+				}
+			}
+		}
 	}
 	
 	public double getAngle() {
@@ -129,10 +144,15 @@ public class Ship extends Entity {
 	
 	protected void shoot(int damage, int speed, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		BulletFireEventData bfe = new BulletFireEventData(damage,speed, enemyBullet, time, obj, sprite, movementVector);
-		if(subscribers != null && subscribers.size() > 0) {
-			for(ShipTriggers sub: subscribers) {
-				sub.onShipFire(bfe, enemyBullet);
+		
+		if(bulletSubscriber == null) {
+			if(subscribers != null && subscribers.size() > 0) {
+				for(ShipTriggers sub: subscribers) {
+					sub.onShipFire(bfe, enemyBullet);
+				}
 			}
+		} else {
+			bulletSubscriber.onShipFire(bfe, enemyBullet);
 		}
 	}
 	

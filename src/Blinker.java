@@ -17,8 +17,7 @@ public class Blinker extends EnemyShip {
 	protected Color prevColor;
 	
 	protected GOval charger;
-	protected ShipTriggers mangementSubscriber;
-	protected ShipTriggers graphicsSubscriber;
+
 	
 	public Blinker(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
 		super(physObj, sprite, current_health, stats, aggression);
@@ -98,22 +97,9 @@ public class Blinker extends EnemyShip {
 		}
 		
 		if(count >= blinkRate) {
-			if(mangementSubscriber == null) {
-				int canPreformCalc = -404;
-				ShipTriggers caller = null;
-				while(canPreformCalc==-404) {
-					if(subscribers != null && subscribers.size() > 0) {
-						for(ShipTriggers sub: subscribers) {
-							caller = sub;
-							canPreformCalc = sub.isAreaSafe(Vector2.Zero(), 1);
-						}
-						break;
-					}
-				}
-				if(canPreformCalc != -404) {
-					mangementSubscriber = caller; 
-				}
-			} else if (mangementSubscriber != null) {
+			if (mangementSubscriber != null) {
+				
+				// Test and make sure it's safe
 				Vector2 randomOffset = new Vector2(LavaLamp.randomSignedInt(minDist, maxDist), LavaLamp.randomSignedInt(minDist, maxDist));
 				currentTarget = playerPos.add(randomOffset);
 				int test = mangementSubscriber.isAreaSafe(currentTarget, this.getPhysObj().getColliders()[0].getRadius() * 2);
@@ -124,14 +110,14 @@ public class Blinker extends EnemyShip {
 					test = mangementSubscriber.isAreaSafe(currentTarget, this.getPhysObj().getColliders()[0].getRadius() * 2);
 				}
 				this.getPhysObj().setPosition(currentTarget);
+			} else {
+				
+				// We gotta wing it!
+				Vector2 randomOffset = new Vector2(LavaLamp.randomSignedInt(minDist, maxDist), LavaLamp.randomSignedInt(minDist, maxDist));
+				currentTarget = playerPos.add(randomOffset);
+				this.getPhysObj().setPosition(currentTarget);
 			}
-			
-	
-			
-			Vector2 randomOffset = new Vector2(LavaLamp.randomSignedInt(minDist, maxDist), LavaLamp.randomSignedInt(minDist, maxDist));
-			currentTarget = playerPos.add(randomOffset);
-			this.getPhysObj().setPosition(currentTarget);
-			
+
 			// Set the charger pos
 			Vector2 pos = Camera.backendToFrontend(this.physObj.getPosition());
 			this.charger.setLocation(pos.getX() - (this.charger.getWidth() / 2 ), pos.getY() - (this.charger.getHeight()/ 2));
