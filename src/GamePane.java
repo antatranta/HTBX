@@ -791,7 +791,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         }
         
 		GObject item = program.getElementAt(e.getX(), e.getY());
-		System.out.println(item.getClass());
 		if (item instanceof LevelUpButton && player.getCurrentHealth() > 0 && console.getSP() > 0) {
 			program.getGameConsole().levelUpSkill(((LevelUpButton) item).getStatUpType());
 		}

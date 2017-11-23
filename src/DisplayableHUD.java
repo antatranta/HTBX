@@ -1,5 +1,6 @@
 import java.awt.Color;
 import acm.graphics.GImage;
+import acm.graphics.GLabel;
 import acm.graphics.GRect;
 import rotations.GameImage;
 
@@ -7,6 +8,8 @@ public class DisplayableHUD implements Displayable {
 
 	private MainApplication program;
 	private PlayerShip player;
+	
+	// Things to draw
 	
 	private GImage status_front;
 	private GRect status_back;
@@ -16,8 +19,8 @@ public class DisplayableHUD implements Displayable {
 	private GameImage compass_sprite;
 	private GImage skill_msg;
 	
+	private GLabel sp_label;
 	private GImage stats_display;
-	private GRect stats_back;
 	private GRect speed_stat;
 	private GRect damage_stat;
 	private GRect health_stat;
@@ -26,6 +29,9 @@ public class DisplayableHUD implements Displayable {
 	private LevelUpButton damage_up;
 	private LevelUpButton health_up;
 	private LevelUpButton shield_up;
+	private GRect stats_back;
+	
+	// Numerical variables for control of the HUD
 	
 	private double bar_max_x;
 	private double bar_max_y;
@@ -60,6 +66,8 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	private void init() {
+		// Ship Status HUD
+		
 		status_front = new GameImage("Artboard 10.png", 5, MainApplication.WINDOW_HEIGHT - 5);
 		status_front.move(0, -status_front.getHeight());
 		
@@ -71,26 +79,6 @@ public class DisplayableHUD implements Displayable {
 		bar_max_x = 156;
 		bar_max_y = 29;
 
-//		status_bar_hp_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y + bar_max_y + 10, bar_max_x, bar_max_y);
-//		status_bar_hp_back.setFillColor(Color.WHITE);
-//		status_bar_hp_back.setFilled(true);
-//		status_bar_hp_back.setColor(Color.WHITE);
-//		
-//		status_bar_shield_back = new GRect(status_back.getLocation().getX() + 10, status_back.getY() - 10 + bar_max_y, bar_max_x, bar_max_y);
-//		status_bar_shield_back.setFillColor(Color.WHITE);
-//		status_bar_shield_back.setFilled(true);
-//		status_bar_shield_back.setColor(Color.WHITE);
-		
-//		compass_back = new GRect(status_back.getX() + status_back.getWidth() + 5, status_back.getY(), status_back.getHeight(), status_back.getHeight());
-//		compass_back.setFillColor(Color.BLACK);
-//		compass_back.setFilled(true);
-//		compass_back.setColor(Color.WHITE);
-		
-//		inner_compass_back = new GRect(status_back.getX() + status_back.getWidth() + 15, status_back.getY() + 10, status_back.getHeight() - 20, status_back.getHeight() - 20);
-//		inner_compass_back.setFillColor(Color.WHITE);
-//		inner_compass_back.setFilled(true);
-//		inner_compass_back.setColor(Color.WHITE);
-		
 		compass_sprite = new GameImage("Compass.png", status_front.getX() + 166, status_front.getY() + 4);
 		
 		Color shield = new Color(131, 255, 254);
@@ -104,6 +92,8 @@ public class DisplayableHUD implements Displayable {
 		status_bar_hp.setFillColor(hp);
 		status_bar_hp.setFilled(true);
 		status_bar_hp.setColor(hp);
+		
+		// Skills display
 
 		stats_display = new GImage("Stats_Display.png", 5, 5);
 		stats_back = new GRect(stats_display.getX(), stats_display.getY(), stats_display.getWidth(), stats_display.getHeight());
