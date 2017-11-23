@@ -63,6 +63,7 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 				break;				
 		}
 		story.setLocation(CENTER_WIDTH - (story.getWidth() / 2), CENTER_HEIGHT - (story.getHeight() / 2));
+		switchStory++;
 		
 		program.add(blackBG);
 		program.add(story);

@@ -38,7 +38,6 @@ public class MainApplication extends GraphicsApplication {
 		score = new ScoresPane(this);
 		pause = new PausePane(this);
 		gameOver = new GameOverPane(this);
-		story = new StoryPane(this);
 		audio = AudioPlayer.getInstance();
 		musicToggle = true;
 		sfxToggle = true;
@@ -68,9 +67,10 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToMenu() {
+		story = new StoryPane(this);
 		isPaused = false;
-		audio.stopSound("sounds", "Credits.mp3");
 		
+		audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
 		}
@@ -79,6 +79,10 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToStory() {
+		if(gameTimer != null) {
+			gameTimer.stopTimer();
+		}
+		
 		switchToScreen(story);
 	}
 	
