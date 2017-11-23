@@ -31,7 +31,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public GameConsole() {
 		endDebugView();
-		skill_points = 5;
+		skill_points = 16;
 		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
@@ -228,13 +228,22 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 			player.getStats().incSpeed(1);
 			break;
 		case damage:
+			if (player.getStats().getDamage() == 5) {
+				break;
+			}
 			player.getStats().incDamage(1);
 			break;
 		case health:
+			if (player.getStats().getHealthMax() == 5) {
+				break;
+			}
 			player.getStats().incHealthMax(1);
 			player.setCurrentHealth(player.getCurrentHealth() + 1);
 			break;
 		case shield:
+			if (player.getStats().getShieldMax() == 5) {
+				break;
+			}
 			player.getStats().incShieldMax(1);
 			break;
 		default:

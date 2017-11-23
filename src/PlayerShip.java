@@ -39,13 +39,20 @@ public class PlayerShip extends Ship implements ActionListener{
 	
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-		if (i_frames == 0) {
-			if (data.getType() == CollisionType.asteroid
-					|| data.getType() == CollisionType.enemyShip) {
+
+		if (data.getType() == CollisionType.asteroid
+				|| data.getType() == CollisionType.enemyShip) {
+			if (data.getType() == CollisionType.asteroid) {
 				external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
+			}
+			if (data.getType() == CollisionType.enemyShip && i_frames == 0) {
+				external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
+			}
+			if (i_frames == 0) {
 				takeDamage(data.getDamage());
 			}
 		}
+		
 		
 		if (i_frames == 0) {
 			if (data.getType() == CollisionType.enemy_bullet) {
