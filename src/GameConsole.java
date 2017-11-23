@@ -78,7 +78,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		player.addSubscriber(bulletStore);
 		gameTimer.addListener(player);
 		
-		shipManager = new ShipManagement();
+		shipManager = new ShipManagement(this);
 		
 		for(EnemyShip ship: getAllShips()) {
 			ship.addSubscriber(shipManager);
@@ -236,6 +236,12 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		}
 		skill_points -= 1;
 		//System.out.println("Stats are now:\n Speed: " + player.getStats().getSpeedSetting() + "\n Damage: " + player.getStats().getDamage() + "\n Max_HP: " + player.getStats().getHealthMax() + "\n Max_Shield: " + player.getStats().getShieldMax());
+	}
+
+	@Override
+	public boolean physXRequest_isAreaSafe(Vector2 pos, float range) {
+		// TODO Auto-generated method stub
+		return physx.isPositionSafe(pos, range);
 	}
 }
 

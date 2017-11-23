@@ -15,6 +15,14 @@ public class LavaLamp {
 		return rtrn;
 	}
 	
+	public static int randomSignedInt(int min, int max) {
+		int sign = 0;
+		while(sign == 0) {
+			sign = randomNumber(-1,1);
+		}
+		return randomNumber(min, max) * sign;
+	}
+	
 	public static float nextFloat() {
 		return rand.nextFloat();
 	}

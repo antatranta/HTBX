@@ -1,7 +1,8 @@
 
 public class EnemyShipStats extends ShipStats{
 	private int aggression = 1;
-	public EnemyShipStats(int speed, int shield_max, int health_max, int damage, int aggression) {
+	private int fireRate = 2;
+	public EnemyShipStats(int speed, int shield_max, int health_max, int damage, int aggression, int fireRate) {
 		super(speed, shield_max, health_max, damage);
 		this.aggression = aggression;
 		// TODO Auto-generated constructor stub
@@ -72,6 +73,29 @@ public class EnemyShipStats extends ShipStats{
 	
 	public int getAggresionSetting() {
 		return this.aggression;
+	}
+	
+	public int getFireRateValue() {
+		switch(this.fireRate) {
+		case 0:
+			return 1;
+		case 1:
+			return 2;
+		case 2:
+			return 5;
+		case 3:
+			return 10;
+		case 4:
+			return 15;
+		case 5:
+			return 20;
+		default:
+			return 1;
+		}
+	}
+	
+	public int getFireRateSetting() {
+		return this.fireRate;
 	}
 
 }

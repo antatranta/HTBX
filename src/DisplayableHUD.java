@@ -95,7 +95,7 @@ public class DisplayableHUD implements Displayable {
 		
 		// Skills display
 
-		stats_display = new GImage("Stats_Display.png", 5, 5);
+		stats_display = new GImage("Skills.png", 5, 5);
 		stats_back = new GRect(stats_display.getX(), stats_display.getY(), stats_display.getWidth(), stats_display.getHeight());
 		stats_back.setFillColor(Color.BLACK);
 		stats_back.setFilled(true);

@@ -78,8 +78,14 @@ public class Quadrant{
 	public void setShips(ArrayList<EnemyShip> ships) {
 		this.ships = ships;
 	}
+	
+	public void setBlinkers(ArrayList<Blinker> blinkers) {
+		this.ships.addAll(blinkers);
+	}
 
 	public void setQUID(QuadrantID qUID) {
 		QUID = qUID;
 	}
+
+
 }

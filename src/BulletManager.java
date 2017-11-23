@@ -122,4 +122,16 @@ public class BulletManager implements ShipTriggers {
 	public void onShipDeath(Vector2 position) {
 		// Sun burst emitter
 	}
+
+	@Override
+	public int isAreaSafe(Vector2 pos, float range) {
+		// TODO Auto-generated method stub
+		return -404;
+	}
+
+	@Override
+	public int identify() {
+		// TODO Auto-generated method stub
+		return 20;
+	}
 }

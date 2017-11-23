@@ -9,13 +9,15 @@ public class EnemyShip extends Ship implements ActionListener {
 	private float interactionDistance = 500f;
 
 	private float stoppingDistance = 200f;
-	private EnemyShipStats stats;
+	protected EnemyShipStats stats;
 	
 	private boolean inFlyby = false;
 	private Vector2 flybyOffset = Vector2.Zero();
 
 	private int shoot_cd;
 	private int weapon_cd;
+	
+	protected Vector2 currentTarget = new Vector2(-99, -99);
 	
 	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
 		super(physObj, current_health, stats, sprite, CollisionType.enemyShip);
@@ -43,21 +45,38 @@ public class EnemyShip extends Ship implements ActionListener {
 	}
 	
 	public void AIUpdate(Vector2 playerPos) {
-		if (current_health <= 0) {
+		
+		
+		// Is the player within range?
+		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance()) {
+			currentTarget = playerPos;
 			return;
 		}
 		
-		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance())
-			return;
+		// Are we too close to the player?
+//		if (PhysXLibrary.distance(this.physObj.getPosition(), playerPos) < stats.getStoppingDistance()){
+//			return;
+//		}
 		
+		
+//		target = playerPos;
+		// || PhysXLibrary.distance(this.getPhysObj().getPosition(), currentTarget) < stats.getStoppingDistance()
+		if(PhysXLibrary.distance(this.getPhysObj().getPosition(), currentTarget) < stats.getInteractionDistance() / 4
+				|| currentTarget == new Vector2(-99, 99)) {
+			currentTarget = PhysXLibrary.midpoint(playerPos, this.getPhysObj().getPosition());
+			
+//			currentTarget = playerPos;
+		}
+		if(PhysXLibrary.distance(playerPos, currentTarget) < this.stats.getStoppingDistance()) {
+			return;
+		}
+		/*
 		if (PhysXLibrary.distance(this.physObj.getPosition(), playerPos) < stats.getStoppingDistance()){
-			return;
-		}
+			currentTarget = currentTarget.add(new Vector2(LavaLamp.randomNumber(-500, 500), LavaLamp.randomNumber(-500, 500)));
+		}*/
 		
-		float MovetoX = playerPos.getX();
-		float MovetoY = playerPos.getY();
-		target = playerPos;
-		
+		float MovetoX = currentTarget.getX();
+		float MovetoY = currentTarget.getY();
 		/*
 		if(inFlyby) {
 			flybyOffset.setXY(LavaLamp.randomNumber(0, 10), LavaLamp.randomNumber(0, 10));
@@ -66,16 +85,16 @@ public class EnemyShip extends Ship implements ActionListener {
 		}
 		*/
 		
-		float thisX = this.getPhysObj().getPosition().getX() + flybyOffset.getX();
-		float thisY = this.getPhysObj().getPosition().getY() + flybyOffset.getY();
+		float thisX = this.getPhysObj().getPosition().getX();
+		float thisY = this.getPhysObj().getPosition().getY();
 		float differentX = MovetoX - thisX;
 		float differentY = MovetoY - thisY;
 		
 		float angle = (float)Math.atan2(differentY,differentX);
 		
 
-		thisX+= (stats.getSpeedValue()*Math.cos(angle));
-		thisY+= (stats.getSpeedValue()*Math.sin(angle));
+		thisX+= (stats.getSpeedValue()*Math.cos(angle)*(1/PhysXLibrary.distance(playerPos, currentTarget)));
+		thisY+= (stats.getSpeedValue()*Math.sin(angle)*((1/PhysXLibrary.distance(playerPos, currentTarget))));
 		
 		//Set back-end position
 		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
