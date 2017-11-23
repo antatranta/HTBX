@@ -80,7 +80,7 @@ public class MenuPane extends GraphicsPane {
 				if(obj == menu) {
 					switch(menu.getLabel()) {
 						case "NEW GAME":
-							program.switchToGame();
+							program.switchToStory();
 							break;
 							
 						case "SETTINGS":
