@@ -10,7 +10,7 @@ public class Ship extends Entity {
 	protected ShipStats stats;
 	protected Vector2 external_force;
 	protected double dir = 90;
-	private ArrayList<ShipTriggers> subscribers;
+	protected ArrayList<ShipTriggers> subscribers;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.

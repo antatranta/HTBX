@@ -15,6 +15,10 @@ public class FileInput {
 	private ArrayList<String> shipSprites = new ArrayList<String>();
 	private ArrayList<Integer> shipLevels = new ArrayList<Integer>();
 	
+	private ArrayList<PhysXObject> blinkObjects = new ArrayList<PhysXObject>();
+	private ArrayList<String> blinkSprites = new ArrayList<String>();
+	private ArrayList<Integer> blinkLevels = new ArrayList<Integer>();
+	
 	public FileInput() {
 		last_file = null;
 		asteroidObjects = new ArrayList<PhysXObject>();
@@ -23,6 +27,10 @@ public class FileInput {
 		shipObjects = new ArrayList<PhysXObject>();
 		shipSprites = new ArrayList<String>();
 		shipLevels = new ArrayList<Integer>();
+		
+		blinkObjects = new ArrayList<PhysXObject>();
+		blinkSprites = new ArrayList<String>();
+		blinkLevels = new ArrayList<Integer>();
 	}
 
 	// Give this the file path and file name, ie, "C:\\Place1\\Place2\File.txt"
@@ -105,6 +113,10 @@ public class FileInput {
 				shipObjects.add(physObj);
 				shipSprites.add(sprite);
 				shipLevels.add(level);
+			} else if (Reader.contains("#BLINK#")) {
+				blinkObjects.add(physObj);
+				blinkSprites.add(sprite);
+				blinkLevels.add(level);
 			} else {
 				System.out.println("String not formated correctly");
 			}
@@ -242,5 +254,36 @@ public class FileInput {
 	
 	public String getAsteroidSprite(int index) {
 		return asteroidSprites.get(index);
+	}
+	
+	public int numberOfShipPresets() {
+		return shipObjects.size();
+	}
+	
+	public PhysXObject getShipObject(int index) {
+		return shipObjects.get(index);
+	}
+	
+	public String getShipSprite(int index) {
+		return shipSprites.get(index);
+	}
+	
+	public int getShipLevel(int index) {
+		return shipLevels.get(index);
+	}
+	
+	public int numberOfBlinkPresets() {
+		return blinkObjects.size();
+	}
+	
+	public PhysXObject getBlinkObject(int index) {
+		return blinkObjects.get(index);
+	}
+	
+	public String getBlinkSprite(int index) {
+		return blinkSprites.get(index);
+	}
+	public int getBlinkLevel(int index) {
+		return blinkLevels.get(index);
 	}
 };

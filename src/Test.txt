@@ -5,3 +5,7 @@
 #ASTER# ! $COLL 3, 10, 0, 35,  10, 50, 25,  0, -50, 25 ! $SPRITE Asteroid_4.png
 #ASTER# ! $COLL 3,  25, 0, 35, -15, 0, 15, -45, 0, 15 ! $SPRITE Asteroid_5.png
 #ASTER# ! $COLL 2, 0, 25, 25,  0, 25, 25 ! $SPRITE Asteroid_6.png
+#SHIP#  ! $COLL 1, 0, 0, 50 ! $SPRITE Enemy_1_S.png ! $LEVEL 1
+#SHIP#  ! $COLL 1, 0, 0, 50 ! $SPRITE Enemy_2_S.png ! $LEVEL 2
+#BLINK# ! $COLL 1, 0, 0, 50 ! $SPRITE Blinker.png ! $Level 1
+#BLINK# ! $COLL 1, 0, 0, 50 ! $SPRITE Blinker.png ! $Level 2
