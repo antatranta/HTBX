@@ -31,7 +31,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public GameConsole() {
 		endDebugView();
-		skill_points = 15;
+		skill_points = 16;
 		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);

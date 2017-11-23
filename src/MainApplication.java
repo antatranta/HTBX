@@ -8,6 +8,7 @@ public class MainApplication extends GraphicsApplication {
 	public static final int WINDOW_HEIGHT = 600;
 	public static final Vector2 WINDOW_CENTER = new Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 	
+	private StoryPane story;
 	private GamePane game;
 	private MenuPane menu;
 	private SettingsPane setting;
@@ -31,15 +32,14 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void run() {
-		//game = new GamePane(this);
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
 		control = new ControlsPane(this);
 		score = new ScoresPane(this);
 		pause = new PausePane(this);
 		gameOver = new GameOverPane(this);
+		story = new StoryPane(this);
 		audio = AudioPlayer.getInstance();
-		//gameTimer.addListener(game);
 		musicToggle = true;
 		sfxToggle = true;
 		isPaused = false;
@@ -59,13 +59,27 @@ public class MainApplication extends GraphicsApplication {
 		return isPaused;
 	}
 	
+	public void pauseGameTimer() {
+		gameTimer.stopTimer();
+	}
+	
+	public void startGameTimer() {
+		gameTimer.startTimer();
+	}
+	
 	public void switchToMenu() {
 		isPaused = false;
 		audio.stopSound("sounds", "Credits.mp3");
+		
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
 		}
+		
 		switchToScreen(menu);
+	}
+	
+	public void switchToStory() {
+		switchToScreen(story);
 	}
 	
 	public void switchToGame() {
@@ -76,14 +90,13 @@ public class MainApplication extends GraphicsApplication {
 			game = new GamePane(this);
 			gameTimer.addListener(game);
 			console.addGraphicsSubscriber(game);
-			//init();
-			//run();
 		}
+		
 		if(musicToggle) {
 			audio.stopSound("sounds", "3A1W - Menu.wav");
 			audio.playSound("sounds", "01 Misconection_1.mp3", true);
 		}
-
+		
 		gameTimer.startTimer();
 		switchToScreen(game);
 	}

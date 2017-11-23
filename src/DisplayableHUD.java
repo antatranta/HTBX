@@ -1,7 +1,10 @@
 import java.awt.Color;
+import java.io.Console;
+
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GRect;
+import javafx.scene.text.Font;
 import rotations.GameImage;
 
 public class DisplayableHUD implements Displayable {
@@ -93,18 +96,21 @@ public class DisplayableHUD implements Displayable {
 		status_bar_hp.setFilled(true);
 		status_bar_hp.setColor(hp);
 		
+		iframes = new GRect(status_back.getX(), status_back.getY() + 1, bar_max_x, status_back.getHeight() - 2);
+		iframes.setFillColor(new Color(1, 1, 1, 35));
+		iframes.setFilled(true);
+		iframes.setColor(new Color(1, 1, 1, 0));
+		
 		// Skills display
-
+		
 		stats_display = new GImage("Skills.png", 5, 5);
 		stats_back = new GRect(stats_display.getX(), stats_display.getY(), stats_display.getWidth(), stats_display.getHeight());
 		stats_back.setFillColor(Color.BLACK);
 		stats_back.setFilled(true);
 		stats_back.setColor(Color.WHITE);
 		
-		iframes = new GRect(status_back.getX(), status_back.getY() + 1, bar_max_x, status_back.getHeight() - 2);
-		iframes.setFillColor(new Color(1, 1, 1, 35));
-		iframes.setFilled(true);
-		iframes.setColor(new Color(1, 1, 1, 0));
+		sp_label = new GLabel("0", stats_display.getX() + 80, stats_display.getY() + 23);
+		sp_label.setColor(Color.WHITE);
 		
 		startx = stats_back.getX() + 5;
 		starty = stats_back.getY() + 32;
@@ -267,6 +273,7 @@ public class DisplayableHUD implements Displayable {
 		scaleStatsBar(damage_stat, (player.getStats().getDamage() - 1) );
 		scaleStatsBar(health_stat, (player.getStats().getHealthMax() - 1));
 		scaleStatsBar(shield_stat, (player.getStats().getShieldMax() - 1));
+		sp_label.setLabel("" + program.getGameConsole().getSP());
 	}
 	
 	public void layerSprites() {
@@ -277,6 +284,7 @@ public class DisplayableHUD implements Displayable {
 		compass_sprite.sendToBack();
 		status_back.sendToBack();
 		
+		sp_label.sendToBack();
 		stats_display.sendToBack();
 		speed_stat.sendToBack();
 		damage_stat.sendToBack();
@@ -308,6 +316,7 @@ public class DisplayableHUD implements Displayable {
 		program.add(health_up);
 		program.add(shield_up);
 		program.add(stats_display);
+		program.add(sp_label);
 		
 		program.add(skill_msg);
 	}
@@ -331,6 +340,7 @@ public class DisplayableHUD implements Displayable {
 		program.remove(damage_up);
 		program.remove(health_up);
 		program.remove(shield_up);
+		program.remove(sp_label);
 		
 		program.remove(skill_msg);
 	}
