@@ -86,26 +86,43 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		clickToContinue.setColor(new Color(colorRed, colorGreen, colorBlue));
         
-        if(colorRed % 256 == 255) {
-            i = -1;
-        }
-        else if(colorRed % 256 == 0) {
-            i = 1;
-        }
-        
-        if(colorGreen % 256 == 255) {
-            j = -1;
-        }
-        else if(colorGreen % 256 == 0) {
-            j = 1;
-        }
-        
-        if(colorBlue % 256 == 255) {
-            k = -1;
-        }
-        else if(colorBlue % 256 == 0) {
-            k = 1;
-        }
+		
+		switch(colorRed % 256) {
+			case 0:
+				i = 1;
+				break;
+				
+			case 255:
+				i = -1;
+				break;
+				
+			default:
+				break;
+		}
+		switch(colorGreen % 256) {
+			case 0:
+				j = 1;
+				break;
+			
+			case 255:
+				j = -1;
+				break;
+				
+			default:
+				break;
+		}
+		switch(colorBlue % 256) {
+			case 0:
+				k = 1;
+				break;
+				
+			case 255:
+				k = -1;
+				break;
+				
+			default:
+				break;
+		}
         
         colorRed += i;
         colorGreen += j;
