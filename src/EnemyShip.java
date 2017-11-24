@@ -4,18 +4,15 @@ import java.awt.event.ActionListener;
 
 public class EnemyShip extends Ship implements ActionListener {
 	protected static EnemyType type;
-	private int origin_degree = -90;
-	private Vector2 target = new Vector2(500,500);
-	private float interactionDistance = 500f;
 
-	private float stoppingDistance = 200f;
+	private static int min_dist = 250;
+	private static int max_dist = 350;
 	protected EnemyShipStats stats;
 	
-	private boolean inFlyby = false;
-	private Vector2 flybyOffset = Vector2.Zero();
-
-	private int shoot_cd;
+	private static int max_cd = 180;
 	private int weapon_cd;
+	private int checkpoint;
+	private int auto_reset = 0;
 	
 	protected Vector2 currentTarget = new Vector2(-99, -99);
 	
@@ -26,118 +23,92 @@ public class EnemyShip extends Ship implements ActionListener {
 		System.out.println("Aggression: " +aggression);
 		System.out.println("Int. Dist: " + this.stats.getInteractionDistance());
 		System.out.println("Stp. Dist: " + this.stats.getStoppingDistance());
-		shoot_cd = 60;
 		weapon_cd = 90;
 	}
 	
-//	public void setInteractionDistance(float interactionDistance) {
-//		this.interactionDistance = interactionDistance;
-//	}
-
-	
-//	public void setStoppingDistance(float stoppingDistance) {
-//		this.stoppingDistance = stoppingDistance;
-//	}
 	
 	public EnemyType getEnemyType() {
 		return type;
 	}
 	
 	public void AIUpdate(Vector2 playerPos) {
-		
-		
+
 		// Is the player within range?
 		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance()) {
-			currentTarget = playerPos;
+			currentTarget = physObj.getPosition();
 			return;
 		}
-		
-		// Are we too close to the player?
-//		if (PhysXLibrary.distance(this.physObj.getPosition(), playerPos) < stats.getStoppingDistance()){
-//			return;
-//		}
-		
-		
-//		target = playerPos;
-		// || PhysXLibrary.distance(this.getPhysObj().getPosition(), currentTarget) < stats.getStoppingDistance()
-		if(PhysXLibrary.distance(this.getPhysObj().getPosition(), currentTarget) < stats.getInteractionDistance() / 4
-				|| currentTarget == new Vector2(-99, 99)) {
-			currentTarget = PhysXLibrary.midpoint(playerPos, this.getPhysObj().getPosition());
+		else {
+			if (checkpoint == 0) {
+				checkpoint = 1;
+				double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));
+				theta_deg += randomRange(-15, 15);
+				double unit_x = -Math.cos(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
+				double unit_y = Math.sin(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
+				currentTarget = playerPos.add(new Vector2((float)unit_x, (float)unit_y));
+			}
+			else if (checkpoint == 1) {
+				auto_reset += 1;
+				if (auto_reset >= 300) {
+					auto_reset = 0;
+					checkpoint = 0;
+				}
+				if (PhysXLibrary.distance(physObj.getPosition(), currentTarget) <= 5) {
+					checkpoint = 0;
+				}
+				
+			}
 			
-//			currentTarget = playerPos;
+			rotateToPoint(currentTarget);
+			
+			this.sprite.setDegrees(dir + 90);
+			if (checkpoint < 2) {
+				this.physObj.setPosition(this.physObj.getPosition().add(new Vector2((float)Math.cos(Math.toRadians(dir)) * stats.getSpeedSetting(), (float)Math.sin(Math.toRadians(dir)) * stats.getSpeedSetting())));
+			}
+			
+			moveExternalForce();
+			
+			Vector2 weapon_target = playerPos;
+			if (weapon_cd > 0) {
+				weapon_cd -= 1;
+			}
+			if (weapon_cd == 0) {
+				weapon_cd = max_cd + randomRange(-15, 15);
+				double theta_deg = Math.toDegrees(Math.atan2(weapon_target.getY() - physObj.getPosition().getY(), weapon_target.getX() - physObj.getPosition().getX()));
+				int deg_spread = 25;
+				theta_deg -= deg_spread;
+				double unit_x = Math.cos(Math.toRadians(theta_deg));
+				double unit_y = Math.sin(Math.toRadians(theta_deg));
+				for (int i = 0; i < 3; i++) {
+					PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
+					shoot(1, 3, CollisionType.enemy_bullet, 5, obj, "RedCircle.png", new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y)));
+					theta_deg += deg_spread;
+					unit_x = Math.cos(Math.toRadians(theta_deg));
+					unit_y = Math.sin(Math.toRadians(theta_deg));
+				}
+				
+				// Use these two lines if you just want one bullet shot
+//				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
+//				shoot(1, 4, CollisionType.enemy_bullet, 3, obj, "RedCircle.png", weapon_target);
+			}
 		}
-		if(PhysXLibrary.distance(playerPos, currentTarget) < this.stats.getStoppingDistance()) {
-			return;
-		}
-		/*
-		if (PhysXLibrary.distance(this.physObj.getPosition(), playerPos) < stats.getStoppingDistance()){
-			currentTarget = currentTarget.add(new Vector2(LavaLamp.randomNumber(-500, 500), LavaLamp.randomNumber(-500, 500)));
-		}*/
-		
-		float MovetoX = currentTarget.getX();
-		float MovetoY = currentTarget.getY();
-		/*
-		if(inFlyby) {
-			flybyOffset.setXY(LavaLamp.randomNumber(0, 10), LavaLamp.randomNumber(0, 10));
-		} else {
-//			flybyOffset = Vector2.Zero();
-		}
-		*/
-		
-		float thisX = this.getPhysObj().getPosition().getX();
-		float thisY = this.getPhysObj().getPosition().getY();
-		float differentX = MovetoX - thisX;
-		float differentY = MovetoY - thisY;
-		
-		float angle = (float)Math.atan2(differentY,differentX);
-		
-
-		thisX+= (stats.getSpeedValue()*Math.cos(angle)*(1/PhysXLibrary.distance(playerPos, currentTarget)));
-		thisY+= (stats.getSpeedValue()*Math.sin(angle)*((1/PhysXLibrary.distance(playerPos, currentTarget))));
-		
-		//Set back-end position
-		this.getPhysObj().setPosition(new Vector2(thisX,thisY));
-		moveExternalForce();
-		//Set enemy image position
-//		this.getSprite().setLocationRespectSize(this.getPhysObj().getPosition().getX(),this.getPhysObj().getPosition().getY());
-		Rotate2Player(angle);
-		
-		
-		if (weapon_cd > 0) {
-			weapon_cd -= 1;
-		}
-		if (weapon_cd == 0) {
-			weapon_cd = shoot_cd;
-			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-			shoot(1, 4, CollisionType.enemy_bullet, 5, obj, "RedCircle.png",target);
-		}
-		
-		
 	}
 	
-	public void Rotate2Player(float angle) {
-		//Angle: 3.14 & -3.14 = 360'.     -1.57 = 90'.    1.57=270'
-		int target_degree = (int) (angle * 57.32);
-		
-//		if(isClose < 0) {
-//			target_degree += stats.getTurningSpeed();
-//		}
-		int different = origin_degree - target_degree;
+	// Thanks Wenrui
+	public void rotateToPoint(Vector2 target) {
+		Vector2 origin = physObj.getPosition();
+		double target_angle = Math.atan2(target.getY() - origin.getY(), target.getX() - origin.getX());
+		int target_degree = (int) (target_angle * 57.32);
+		int different = (int) (dir - target_degree);
 		if(Math.abs(different)>180) {
 			different+=different>0?-360:360;
 		}
 		if(different<0) {
-			this.getSprite().rotate(-(int)stats.getTurningSpeed());
-			adjustAngle(stats.getTurningSpeed());
-			origin_degree++;
+			adjustAngle(1);
 		}
 		else if(different>0) {
-			adjustAngle(-stats.getTurningSpeed());
-			this.getSprite().rotate(-(int)stats.getTurningSpeed());
-			origin_degree--;
+			adjustAngle(-1);
 		}
-//		System.out.println("target_degree: "+target_degree); 
-//		System.out.println("orgin_degree: "+orgin_degree); 
 	}
 	
 	@Override
@@ -159,20 +130,19 @@ public class EnemyShip extends Ship implements ActionListener {
 	// WARNING: THIS IS NEVER ACCESSED IN THE GAME LOOP (GAMEPANE CALLS AIUPDATE)
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// Detect target
-		Move();
-		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
-		
+		// Stub
 	}
 	
 	// WARNING: THIS IS NEVER ACCESSED IN THE GAME LOOP (GAMEPANE CALLS AIUPDATE)
 	@Override
 	public void Move() {
-		if(getCurrentHealth() > 0) {
-			//move to player
-			AIUpdate(target);
-			//avoid asteroid method?
-		}
+		// Stub
+	}
+
+	public static int randomRange(int min, int max)
+	{
+	   int range = (max - min) + 1;     
+	   return (int)(Math.random() * range) + min;
 	}
 	
 }
