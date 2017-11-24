@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 
 import acm.graphics.GImage;
+import acm.graphics.GObject;
 import acm.graphics.GOval;
 import acm.program.GraphicsProgram;
 import rotations.GameImage;
@@ -278,6 +279,12 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 //		gamePane_ref.eventRequest_addDeathEvent(new ShipDeathData(pos,QUID));
 		// TODO Auto-generated method stub
 //		this.bulletStore.emitBurst(pos, new QuadrantID(), 25);
+	}
+
+	@Override
+	public void programRequest_removeObject(EnemyShip obj) {
+		// TODO Auto-generated method stub
+		this.gamePane_ref.eventRequest_removeShip(obj);
 	}
 }
 

@@ -149,6 +149,7 @@ public class EnemyShip extends Ship implements ActionListener {
 		if (data.getType() == CollisionType.asteroid ||
 				data.getType() == CollisionType.player_bullet) {
 			AudioPlayer myAudio = AudioPlayer.getInstance();
+			myAudio.stopSound("sounds", "BlinkerHit.wav");
 			myAudio.playSound("sounds", "BlinkerHit.wav");
 			takeDamage(data.getDamage());
 		}
