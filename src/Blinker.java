@@ -134,6 +134,11 @@ public class Blinker extends EnemyShip {
 			// Set the charger pos
 			Vector2 pos = Camera.backendToFrontend(this.physObj.getPosition());
 			this.charger.setLocation(pos.getX() - (this.charger.getWidth() / 2 ), pos.getY() - (this.charger.getHeight()/ 2));
+			
+			
+			this.gameConsoleSubscriber.programRequest_removeObject(this);
+			
+			this.createSprite("BlinkerGifRev.gif");
 			count = 0;
 		} else if (count < blinkRate - (float)(blinkRate / chargeTime)){
 			

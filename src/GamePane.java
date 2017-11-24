@@ -81,6 +81,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <Integer> pressed_keys;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <EnemyShip> drawn_ships;
+	private ArrayList <EnemyShip> drawn_ship_gifs;
 	private ArrayList <Bullet> drawn_bullets;
 	
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_ASTEROIDS;
@@ -272,6 +273,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		pressed_keys = new ArrayList <Integer>();
 		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <EnemyShip>();
+		drawn_ship_gifs = new ArrayList <EnemyShip>();
 		drawn_bullets = new ArrayList <Bullet>();
 		BlinkerEyes = new ArrayList <StaticGObject>();
 		DrawnBlinkerEyes = new ArrayList<StaticGObject>();
@@ -532,6 +534,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void drawSprites() {
 		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
 		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
+//		drawGifs(console.getActiveShips(), drawn_ship_gifs, ROCK_LAYER);
 		drawBullets(bulletStore.getBullets(), drawn_bullets);
 		drawBlinkerEyes(BlinkerEyes);
 	}
@@ -763,8 +766,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			CURRENT_ASTEROIDS_LABEL.setLabel("Current ASTER: " + objects.size());
 		}
 		for (int i = 0; i < objects.size(); i++) {
+			
 			// Get the offset
 			Item obj = objects.get(i);
+			
+			if(obj.getSpriteName().contains("gif")) {
+				drawGif(obj, storage, layer);
+				continue;
+			}
 //			Vector2 offset = asteroid.getPhysObj().getPosition().minus(player.getPhysObj().getPosition());
 //			float offset_x = asteroid.getPhysObj().getPosition().getX() - player.getPhysObj().getPosition().getX();
 //			float offset_y = asteroid.getPhysObj().getPosition().getY() - player.getPhysObj().getPosition().getY();
@@ -795,6 +804,23 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				storage.remove(obj);
 				program.remove(obj.getSprite());
 			}
+		}
+	}
+	
+	public <Item extends Entity> void drawGif (Item obj, ArrayList<Item> storage, int layer) {
+		Vector2 frontEndPos = Camera.backendToFrontend(obj.getPhysObj().getPosition());
+
+		// Are we already drawing that rock?
+		if (!storage.contains(obj)) {
+			storage.add(obj);
+			program.add(obj.getGif());
+		}
+		
+		// Set its location according to the offset
+		if (storage.contains(obj)) {
+			obj.getGif().setLocation(frontEndPos.getX() - (obj.getGif().getWidth() / 2), frontEndPos.getY() - (obj.getGif().getHeight() / 2));
+//			super.setLocation(x - (getWidth() / 2 ), y - (getHeight()/ 2));
+//			obj.getGif().setLocationRespectSize(frontEndPos.getX(), frontEndPos.getY());
 		}
 	}
 	
@@ -1015,6 +1041,20 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	@Override
 	public void eventRequest_addDeathEvent(ShipDeathData data) {
 		this.deathEvents.add(data);
+	}
+	
+//	@Override
+//	public void eventRequest_addObject(GObject sprite) {
+//		// TODO Auto-generated method stub
+//		program.remove(sprite);
+//	}
+
+	@Override
+	public void eventRequest_removeShip(EnemyShip obj) {
+		// TODO Auto-generated method stub
+		
+		drawn_ships.remove(obj);
+		program.remove(obj.getSprite());
 	}
 	
 	
