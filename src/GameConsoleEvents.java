@@ -9,4 +9,6 @@ public interface GameConsoleEvents {
 	public void bulletRequest_burst(Vector2 pos, QuadrantID QUID);
 //	void programRequest_drawGOval(PhysXObject obj, GOval oval);
 	public void programRequest_removeObject(EnemyShip obj);
+	public void programRequest_removeDrawnObject(GObject obj);
+	public void programRequest_drawObject(GObject obj);
 }

@@ -283,8 +283,17 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 
 	@Override
 	public void programRequest_removeObject(EnemyShip obj) {
-		// TODO Auto-generated method stub
 		this.gamePane_ref.eventRequest_removeShip(obj);
+	}
+
+	@Override
+	public void programRequest_removeDrawnObject(GObject obj) {
+		this.gamePane_ref.eventRequest_removeObject(obj);
+	}
+
+	@Override
+	public void programRequest_drawObject(GObject obj) {
+		this.gamePane_ref.eventRequest_addObject(obj);
 	}
 }
 
