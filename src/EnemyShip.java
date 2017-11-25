@@ -74,18 +74,7 @@ public class EnemyShip extends Ship implements ActionListener {
 			}
 			if (weapon_cd == 0) {
 				weapon_cd = max_cd + randomRange(-15, 15);
-				double theta_deg = Math.toDegrees(Math.atan2(weapon_target.getY() - physObj.getPosition().getY(), weapon_target.getX() - physObj.getPosition().getX()));
-				int deg_spread = 25;
-				theta_deg -= deg_spread;
-				double unit_x = Math.cos(Math.toRadians(theta_deg));
-				double unit_y = Math.sin(Math.toRadians(theta_deg));
-				for (int i = 0; i < 3; i++) {
-					PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-					shoot(1, 3, CollisionType.enemy_bullet, 5, obj, "RedCircle.png", new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y)));
-					theta_deg += deg_spread;
-					unit_x = Math.cos(Math.toRadians(theta_deg));
-					unit_y = Math.sin(Math.toRadians(theta_deg));
-				}
+				shootSpread(BulletType.STRAIGHT, weapon_target, 3, 45);
 				
 				// Use these two lines if you just want one bullet shot
 //				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
