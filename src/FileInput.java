@@ -19,6 +19,12 @@ public class FileInput {
 	private ArrayList<String> blinkSprites = new ArrayList<String>();
 	private ArrayList<Integer> blinkLevels = new ArrayList<Integer>();
 	
+	private ArrayList<PhysXObject> fencerObjects = new ArrayList<PhysXObject>();
+	private ArrayList<String> fencerSprites = new ArrayList<String>();
+	private ArrayList<Integer> fencerLevels = new ArrayList<Integer>();
+	
+	
+	
 	public FileInput() {
 		last_file = null;
 		asteroidObjects = new ArrayList<PhysXObject>();
@@ -117,6 +123,10 @@ public class FileInput {
 				blinkObjects.add(physObj);
 				blinkSprites.add(sprite);
 				blinkLevels.add(level);
+			} else if (Reader.contains("#FENCER#")) {
+				fencerObjects.add(physObj);
+				fencerSprites.add(sprite);
+				fencerLevels.add(level);
 			} else {
 				System.out.println("String not formated correctly");
 			}
@@ -244,6 +254,10 @@ public class FileInput {
 		}
 	}
 
+	// ==============================
+	// =========== ASTER ============
+	// ==============================
+	
 	public int numberOfAsteroidPresets() {
 		return asteroidObjects.size();
 	}
@@ -255,6 +269,10 @@ public class FileInput {
 	public String getAsteroidSprite(int index) {
 		return asteroidSprites.get(index);
 	}
+	
+	// ==============================
+	// ============ SHIP ============
+	// ==============================
 	
 	public int numberOfShipPresets() {
 		return shipObjects.size();
@@ -272,6 +290,10 @@ public class FileInput {
 		return shipLevels.get(index);
 	}
 	
+	// ==============================
+	// =========== BLINKR ===========
+	// ==============================
+	
 	public int numberOfBlinkPresets() {
 		return blinkObjects.size();
 	}
@@ -285,5 +307,24 @@ public class FileInput {
 	}
 	public int getBlinkLevel(int index) {
 		return blinkLevels.get(index);
+	}
+	
+	// ==============================
+	// =========== FENCER ===========
+	// ==============================
+	
+	public int numberOfFencerPresets() {
+		return fencerObjects.size();
+	}
+	
+	public PhysXObject getFencerObject(int index) {
+		return fencerObjects.get(index);
+	}
+	
+	public String getFencerprite(int index) {
+		return fencerSprites.get(index);
+	}
+	public int getFencerLevel(int index) {
+		return fencerLevels.get(index);
 	}
 };
