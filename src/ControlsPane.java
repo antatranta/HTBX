@@ -14,12 +14,12 @@ public class ControlsPane extends GraphicsPane {
 	public ControlsPane(MainApplication app) {
 		program = app;
 		controls = new GImage("controls.gif", 0, 0);
-		controls.setLocation((CENTER_WIDTH - (controls.getWidth() / 2) - 10), (CENTER_HEIGHT - (controls.getHeight() / 2) + 25));
+		controls.setLocation((CENTER_WIDTH - (controls.getWidth() / 2)), (CENTER_HEIGHT - (controls.getHeight() / 2) + 60));
 		
 		back = new GLabel("BACK");
 		back.setFont(font);
 		back.setColor(Color.black);
-		back.setLocation(CENTER_WIDTH - (back.getWidth() / 2), CENTER_HEIGHT - (back.getHeight() / 2) + 205);
+		back.setLocation(CENTER_WIDTH - (back.getWidth() / 2), CENTER_HEIGHT - (back.getHeight() / 2) + 250);
 	}
 	
 	@Override
