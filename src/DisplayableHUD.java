@@ -195,7 +195,7 @@ public class DisplayableHUD implements Displayable {
 			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (msg_diff_box));
 		}
 		
-		if (have_sp && player.getStats().getSpeedSetting() < 5) {
+		if (have_sp && player.getBonusStats().getSpeedSetting() < 4) {
 			if (delta_spd == false) {
 				delta_spd = true;
 				msg_diff_spd = skill_msg.getHeight();
@@ -210,7 +210,7 @@ public class DisplayableHUD implements Displayable {
 			speed_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_spd - skill_msg.getHeight(), speed_stat.getY());
 		}
 		
-		if (have_sp && player.getStats().getDamage() < 5) {
+		if (have_sp && player.getBonusStats().getDamage() < 4) {
 			if (delta_dmg == false) {
 				delta_dmg = true;
 				msg_diff_dmg = skill_msg.getHeight();
@@ -225,7 +225,7 @@ public class DisplayableHUD implements Displayable {
 			damage_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_dmg - skill_msg.getHeight(), damage_stat.getY());
 		}
 		
-		if (have_sp && player.getStats().getHealthMax() < 5) {
+		if (have_sp && player.getBonusStats().getHealthMax() < 4) {
 			if (delta_hp == false) {
 				delta_hp = true;
 				msg_diff_hp = skill_msg.getHeight();
@@ -240,7 +240,7 @@ public class DisplayableHUD implements Displayable {
 			health_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_hp - skill_msg.getHeight(), health_stat.getY());
 		}
 		
-		if (have_sp && player.getStats().getShieldMax() < 5) {
+		if (have_sp && player.getBonusStats().getShieldMax() < 4) {
 			if (delta_shd == false) {
 				delta_shd = true;
 				msg_diff_shd = skill_msg.getHeight();
