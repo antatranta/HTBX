@@ -1056,6 +1056,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawn_ships.remove(obj);
 		program.remove(obj.getSprite());
 	}
+
+	@Override
+	public void eventRequest_addObject(GObject obj) {
+		// TODO Auto-generated method stub
+		program.add(obj);
+	}
+
+	@Override
+	public void eventRequest_removeObject(GObject obj) {
+		// TODO Auto-generated method stub
+		program.remove(obj);
+	}
 	
 	
 }

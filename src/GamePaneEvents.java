@@ -6,4 +6,6 @@ public interface GamePaneEvents {
 	public void eventRequest_addStaticGObject(StaticGObject obj);
 	void eventRequest_addDeathEvent(ShipDeathData data);
 	public void eventRequest_removeShip(EnemyShip obj);
+	public void eventRequest_addObject(GObject obj);
+	public void eventRequest_removeObject(GObject obj);
 }

@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 
 import acm.graphics.GImage;
+import rotations.GameImage;
 
 public class LaserLine {
 	ArrayList<LaserSegment> segments;
 	private double segmentHeight, segmentWidth;
+	private Vector2 endPoint;
+	private Vector2 origin;
 	
 	public LaserLine() {
 		init();
@@ -25,34 +28,59 @@ public class LaserLine {
 	    return (int)(distance / segmentHeight);
 	}
 	
-	private void createBeam(Vector2 origin, Vector2 endPoint) {
+	public ArrayList<GameImage> updateBeam(Vector2 origin, Vector2 endPoint) {
+		segments = new ArrayList<LaserSegment>();
+		
 		int numberOfSegments = calculateNumberOfRequiredSegments(origin, endPoint);
+		
 		Vector2 currentPosition = new Vector2(origin);
 		Vector2 movementVector = calcutlateTrajectory(origin, endPoint);
+		
 		for(int i =0; i < numberOfSegments; ++i) {
 			
-//			PhysXObject physObj, String sprite, CollisionData data
 			CircleCollider newCollider = new CircleCollider((float)segmentHeight);
 			PhysXObject newPhysObj = new PhysXObject(new QuadrantID(), newCollider);
 			newPhysObj.setPosition(currentPosition);
 			
-			LaserSegment newSegment = new LaserSegment(newPhysObj, "Laser segment.png", new CollisionData());
+			LaserSegment newSegment = new LaserSegment(newPhysObj, "Laser segment.png", new CollisionData(), endPoint);
 			segments.add(newSegment);
 			
 			currentPosition = currentPosition.add(movementVector.mult(new Vector2((float)segmentHeight, (float)segmentHeight)));
-//			segments.add(e);
-//			Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
-//			this.physObj.setPosition(movement);
+			
 		}
+		this.origin = origin;
+		this.endPoint = endPoint;
+		
+//		// Create an array list of the objects to be removed
+		ArrayList<GameImage> gameImages = new ArrayList<GameImage>();
+		for(int i=0; i < segments.size(); ++i) {
+			gameImages.add(segments.get(i).getSprite());
+		}
+		
+		return gameImages;
 	}
 	
 	private Vector2 calcutlateTrajectory(Vector2 origin, Vector2 endPoint) {
 		return origin.normalize(endPoint);
 	}
 	
-	private void updatePositions() {
+	public void updatePositions() {
 		for(LaserSegment segment: segments) {
-//			segment.getSprite().setLocationRespectSize(x, y);
+			Vector2 pos = segment.getPhysObj().getPosition();
+			segment.getSprite().setLocationRespectSize(pos.getX(), pos.getY());
+			segment.rotateToPoint(this.endPoint);
 		}
+	}
+	
+	public ArrayList<GameImage> updateEndPoint(Vector2 newOrigin, Vector2 newEndPoint) {
+		return updateBeam(newOrigin, newEndPoint);
+	}
+	
+	public ArrayList<GameImage> getSprites (){
+		ArrayList<GameImage> sprites = new ArrayList<GameImage>();
+		for(LaserSegment segment: segments) {
+			sprites.add(segment.getSprite());
+		}
+		return sprites;
 	}
 }
