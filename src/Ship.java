@@ -160,7 +160,6 @@ public class Ship extends Entity {
 	}
 	
 	// FIRING METHODS
-	
 	protected void shootSpread(BulletType type, Vector2 target, int bullets, int max_spread) {
 		double theta_deg = Math.toDegrees(Math.atan2(target.getY() - physObj.getPosition().getY(), target.getX() - physObj.getPosition().getX()));
 		if (bullets > 1) {

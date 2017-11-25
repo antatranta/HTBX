@@ -75,10 +75,6 @@ public class EnemyShip extends Ship implements ActionListener {
 			if (weapon_cd == 0) {
 				weapon_cd = max_cd + randomRange(-15, 15);
 				shootSpread(BulletType.STRAIGHT, weapon_target, 3, 45);
-				
-				// Use these two lines if you just want one bullet shot
-//				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-//				shoot(1, 4, CollisionType.enemy_bullet, 3, obj, "RedCircle.png", weapon_target);
 			}
 		}
 	}
@@ -102,7 +98,6 @@ public class EnemyShip extends Ship implements ActionListener {
 	
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-//		System.out.println("Dam: "+data.getDamage());
 		if (data.getType() == CollisionType.playerShip) {
 			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 		}
