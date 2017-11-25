@@ -81,7 +81,7 @@ public class EnemyShip extends Ship implements ActionListener {
 				double unit_y = Math.sin(Math.toRadians(theta_deg));
 				for (int i = 0; i < 3; i++) {
 					PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-					shoot(1, 3, CollisionType.enemy_bullet, 5, obj, "RedCircle.png", new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y)));
+					shoot(1, 3, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y)));
 					theta_deg += deg_spread;
 					unit_x = Math.cos(Math.toRadians(theta_deg));
 					unit_y = Math.sin(Math.toRadians(theta_deg));

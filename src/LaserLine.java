@@ -9,6 +9,7 @@ public class LaserLine {
 	private Vector2 endPoint;
 	private Vector2 origin;
 	
+	
 	public LaserLine() {
 		init();
 	}
@@ -66,7 +67,7 @@ public class LaserLine {
 	
 	public void updatePositions() {
 		for(LaserSegment segment: segments) {
-			Vector2 pos = segment.getPhysObj().getPosition();
+			Vector2 pos = Camera.backendToFrontend(segment.getPhysObj().getPosition());
 			segment.getSprite().setLocationRespectSize(pos.getX(), pos.getY());
 			segment.rotateToPoint(this.endPoint);
 		}

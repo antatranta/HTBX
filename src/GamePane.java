@@ -344,7 +344,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private void playerShoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
-		console.Shoot(3, 8, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
+		console.Shoot(3, 8, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Bullet Large.png",  Camera.frontendToBackend(last_mouse_loc));
 		
 //		double theta_rad = 0;
 //		double unit_x = Math.cos(theta_rad);
@@ -1058,13 +1058,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 
 	@Override
-	public void eventRequest_addObject(GObject obj) {
+	public void eventRequest_addObject(GameImage obj) {
 		// TODO Auto-generated method stub
 		program.add(obj);
 	}
 
 	@Override
-	public void eventRequest_removeObject(GObject obj) {
+	public void eventRequest_removeObject(GameImage obj) {
 		// TODO Auto-generated method stub
 		program.remove(obj);
 	}

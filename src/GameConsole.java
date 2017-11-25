@@ -287,12 +287,12 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	}
 
 	@Override
-	public void programRequest_removeDrawnObject(GObject obj) {
+	public void programRequest_removeDrawnObject(GameImage obj) {
 		this.gamePane_ref.eventRequest_removeObject(obj);
 	}
 
 	@Override
-	public void programRequest_drawObject(GObject obj) {
+	public void programRequest_drawObject(GameImage obj) {
 		this.gamePane_ref.eventRequest_addObject(obj);
 	}
 }

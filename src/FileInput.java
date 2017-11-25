@@ -321,7 +321,7 @@ public class FileInput {
 		return fencerObjects.get(index);
 	}
 	
-	public String getFencerprite(int index) {
+	public String getFencerSprite(int index) {
 		return fencerSprites.get(index);
 	}
 	public int getFencerLevel(int index) {

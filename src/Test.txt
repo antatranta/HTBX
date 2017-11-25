@@ -9,3 +9,5 @@
 #SHIP#  ! $COLL 1, 0, 0, 50 ! $SPRITE Enemy_2_S.png ! $LEVEL 2
 #BLINK# ! $COLL 1, 0, 0, 50 ! $SPRITE Blinker.png ! $Level 1
 #BLINK# ! $COLL 1, 0, 0, 50 ! $SPRITE Blinker.png ! $Level 2
+#FENCER# ! $COLL 1, 0, 0, 50 ! $SPRITE Buddy_2.png ! $Level 1
+#FENCER# ! $COLL 1, 0, 0, 50 ! $SPRITE Buddy_2.png ! $Level 2

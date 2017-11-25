@@ -83,6 +83,10 @@ public class Quadrant{
 		this.ships.addAll(blinkers);
 	}
 
+	public void setFencers(ArrayList<Fencer> fencers) {
+		this.ships.addAll(fencers);
+	}
+	
 	public void setQUID(QuadrantID qUID) {
 		QUID = qUID;
 	}
