@@ -166,10 +166,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	}
 	
 
-	public GameImage Shoot (int dmg, int spd, CollisionType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+	public void Shoot (int dmg, int spd, CollisionType type, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 //		this.bulletStore.onShipDeath(obj.getPosition(), obj.getQUID());
 //		this.bulletStore.emitBurst(movementVector, obj.getQUID(), 25);
-		return this.bulletStore.onShootEvent(dmg,spd,type,time,obj,sprite,movementVector);
+		bulletStore.onShootEvent(dmg,spd,type,time,obj,sprite,movementVector);
 	}
 	
 	public void moveBullets() {

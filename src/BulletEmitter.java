@@ -46,9 +46,10 @@ public class BulletEmitter extends Entity{
 		double unit_y = -Math.sin(theta_rad);
 
 		for (int i =0; i < 10; i++) {
-			Vector2 pos = new Vector2(physObj.getPosition().getX(), physObj.getPosition().getY());
+			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
+			//Vector2 pos = new Vector2(physObj.getPosition().getX(), physObj.getPosition().getY());
 			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
-			shoot(1, 4, CollisionType.enemy_bullet, 4, new PhysXObject(physObj.getQUID(), physObj.getPosition()), "RedCircle.png",  physObj.getPosition().add(offset));
+			shoot(1, 4, CollisionType.enemy_bullet, 4, obj, "RedCircle.png",  physObj.getPosition().add(offset));
 			theta_rad += Math.toRadians(360 / 10);
 			unit_x = Math.cos(theta_rad);
 			unit_y = -Math.sin(theta_rad);
