@@ -31,7 +31,7 @@ public class Entity implements Collision {
 	}
 	
 	protected void createSprite(String file) {
-		this.sprite = new GameImage(file, 0, 0);
+		this.sprite = new GameImage(file);
 		//System.out.println("Asteroid at: " + physObj.getPosition().getX() + ", " + physObj.getPosition().getY());
 	}
 	
