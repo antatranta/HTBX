@@ -146,17 +146,37 @@ public class Ship extends Entity {
 		return stats;
 	}
 	
-	protected void shoot(int damage, int speed, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-		BulletFireEventData bfe = new BulletFireEventData(damage,speed, enemyBullet, time, obj, sprite, movementVector);
+	protected void shoot(int damage, int speed, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		BulletFireEventData bfe = new BulletFireEventData(damage,speed, type, collision, time, obj, sprite, movementVector);
 		
 		if(bulletSubscriber == null) {
 			if(subscribers != null && subscribers.size() > 0) {
 				for(ShipTriggers sub: subscribers) {
-					sub.onShipFire(bfe, enemyBullet);
+					sub.onShipFire(bfe, collision);
 				}
 			}
 		} else {
-			bulletSubscriber.onShipFire(bfe, enemyBullet);
+			bulletSubscriber.onShipFire(bfe, collision);
+		}
+	}
+	
+	// FIRING METHODS
+	protected void shootSpread(BulletType type, Vector2 target, int bullets, int max_spread) {
+		double theta_deg = Math.toDegrees(Math.atan2(target.getY() - physObj.getPosition().getY(), target.getX() - physObj.getPosition().getX()));
+		if (bullets > 1) {
+			theta_deg -= (max_spread / 2);
+		}
+		double delta_deg = max_spread / (bullets - 1);
+		double unit_x = Math.cos(Math.toRadians(theta_deg));
+		double unit_y = Math.sin(Math.toRadians(theta_deg));
+		for (int i = 0; i < bullets; i++) {
+			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
+			shoot(1, 3, type, CollisionType.enemy_bullet, 5, obj, "RedCircle.png", new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y)));
+			if (bullets > 1) {
+				theta_deg += delta_deg;
+				unit_x = Math.cos(Math.toRadians(theta_deg));
+				unit_y = Math.sin(Math.toRadians(theta_deg));
+			}
 		}
 	}
 	

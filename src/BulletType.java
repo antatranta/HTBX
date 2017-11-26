@@ -1,4 +1,8 @@
 public enum BulletType {
-	PLAYER_BULLET,
-	ENEMY_BULLET
+	STRAIGHT,
+	ACCEL,
+	OSCILLATE,
+	WAVE,
+	SWERVE_CW,
+	SWERVE_CCW
 }

@@ -38,10 +38,10 @@ public class BulletManager implements ShipTriggers {
 		return objs;
 	}
 	
-	public GameImage onShootEvent(int dmg, int spd, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+	public GameImage onShootEvent(int dmg, int spd, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		// Variable Verification
 //		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {
-			Bullet shot = new Bullet(dmg, spd, collision, time, obj, sprite, movementVector);
+			Bullet shot = new Bullet(dmg, spd, type, collision, time, obj, sprite, movementVector);
 			this.bullets.add(shot);
 			return shot.getSprite();
 //		}		
@@ -117,7 +117,7 @@ public class BulletManager implements ShipTriggers {
 	@Override
 	public void onShipFire(BulletFireEventData data, CollisionType collision) {
 		if(data != null)
-			onShootEvent(data.getDamage(), data.getSpeed(), data.getCollisionType(), data.getTime(), data.getPhysXObject(), data.getSprite(), data.getMovementVector());
+			onShootEvent(data.getDamage(), data.getSpeed(), data.getBulletType(), data.getCollisionType(), data.getTime(), data.getPhysXObject(), data.getSprite(), data.getMovementVector());
 	}
 	
 	@Override
@@ -133,7 +133,7 @@ public class BulletManager implements ShipTriggers {
 		for (int i =0; i < num; i++) {
 			Vector2 pos = new Vector2(position.getX(), position.getY());
 			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
-			GImage bullet = onShootEvent(1, 1, CollisionType.enemy_bullet, 4, new PhysXObject(currentQUID, pos), "RedCircle.png",  pos.add(offset));
+			GImage bullet = onShootEvent(1, 1, BulletType.STRAIGHT, CollisionType.enemy_bullet, 4, new PhysXObject(currentQUID, pos), "RedCircle.png",  pos.add(offset));
 			theta_rad += Math.toRadians(360 / num);
 			unit_x = Math.cos(theta_rad);
 			unit_y = -Math.sin(theta_rad);

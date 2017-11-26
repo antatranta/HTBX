@@ -104,7 +104,7 @@ public class Fencer extends EnemyShip{
 //			}
 			if(count <= laserDelay + laserDuration && isAiming) {
 				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-				shoot(4, 25, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
+				shoot(4, 25, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
 				count = 0;
 				isAiming = false;
 			} else if(!isAiming) {

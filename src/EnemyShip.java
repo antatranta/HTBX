@@ -42,7 +42,7 @@ public class EnemyShip extends Ship implements ActionListener {
 			if (checkpoint == 0) {
 				checkpoint = 1;
 				double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));
-				theta_deg += randomRange(-15, 15);
+				theta_deg += randomRange(-45, 45);
 				double unit_x = -Math.cos(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
 				double unit_y = Math.sin(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
 				currentTarget = playerPos.add(new Vector2((float)unit_x, (float)unit_y));
@@ -53,7 +53,7 @@ public class EnemyShip extends Ship implements ActionListener {
 					auto_reset = 0;
 					checkpoint = 0;
 				}
-				if (PhysXLibrary.distance(physObj.getPosition(), currentTarget) <= 5) {
+				if (PhysXLibrary.distance(physObj.getPosition(), currentTarget) <= 15) {
 					checkpoint = 0;
 				}
 				
@@ -74,22 +74,8 @@ public class EnemyShip extends Ship implements ActionListener {
 			}
 			if (weapon_cd == 0) {
 				weapon_cd = max_cd + randomRange(-15, 15);
-				double theta_deg = Math.toDegrees(Math.atan2(weapon_target.getY() - physObj.getPosition().getY(), weapon_target.getX() - physObj.getPosition().getX()));
-				int deg_spread = 25;
-				theta_deg -= deg_spread;
-				double unit_x = Math.cos(Math.toRadians(theta_deg));
-				double unit_y = Math.sin(Math.toRadians(theta_deg));
-				for (int i = 0; i < 3; i++) {
-					PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-					shoot(1, 3, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y)));
-					theta_deg += deg_spread;
-					unit_x = Math.cos(Math.toRadians(theta_deg));
-					unit_y = Math.sin(Math.toRadians(theta_deg));
-				}
-				
-				// Use these two lines if you just want one bullet shot
-//				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-//				shoot(1, 4, CollisionType.enemy_bullet, 3, obj, "RedCircle.png", weapon_target);
+				shootSpread(BulletType.STRAIGHT, weapon_target, 3, 45);
+
 			}
 		}
 	}
@@ -113,7 +99,6 @@ public class EnemyShip extends Ship implements ActionListener {
 	
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-//		System.out.println("Dam: "+data.getDamage());
 		if (data.getType() == CollisionType.playerShip) {
 			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 		}

@@ -24,8 +24,6 @@ public class MainApplication extends GraphicsApplication {
 	private boolean isPaused;
 	
 	public void init() {
-		//console = new GameConsole();
-		//gameTimer = console.getTimer();
 		setTitle("HTBX");
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setBackground(Color.white);

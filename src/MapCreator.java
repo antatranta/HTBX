@@ -13,7 +13,7 @@ public class MapCreator {
 	private final int MAX_ENEMIES_IN_QUAD = 2;
 	private final int MAX_BLINKERS_IN_QUAD = 2;
 	private final int MAX_ASTEROIDS_IN_QUAD = 4;
-	private final int MAX_FENCERS_IN_QUAD = 1;
+	private final int MAX_FENCERS_IN_QUAD = 0;
 	private final float BORDER_X = 100f;
 	private final float BORDER_Y = 100f;
 	private int max_quad=0;
@@ -86,12 +86,12 @@ public class MapCreator {
 		int numberOfEnemies = LavaLamp.randomNumber(0, MAX_ENEMIES_IN_QUAD);
 		int numberOfAsteroids = LavaLamp.randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
 		int numberOfBlinkers = LavaLamp.randomNumber(0, MAX_BLINKERS_IN_QUAD);
-		int numberOfFencers = LavaLamp.randomNumber(0, MAX_FENCERS_IN_QUAD);
+//		int numberOfFencers = LavaLamp.randomNumber(0, MAX_FENCERS_IN_QUAD);
 		
 		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
 		ArrayList<Blinker> Blinkers = placeBlinkers(quad.getQUID(), numberOfBlinkers);
-		ArrayList<Fencer> Fencers = placeFencers(quad.getQUID(), numberOfFencers);
+//		ArrayList<Fencer> Fencers = placeFencers(quad.getQUID(), numberOfFencers);
 		
 		//objects verification
 		boolean check=true;
@@ -126,13 +126,15 @@ public class MapCreator {
 				blinkerIndex = checkObjects(Blinkers);
 			}
 			
+			/*
 			int fencerIndex = checkObjects(Fencers);
 			while(fencerIndex != -404) {
 				Fencers.remove(fencerIndex);
 				Fencers.add(placeFencer(quad.getQUID()));
 				fencerIndex = checkObjects(Fencers);
 			}
-			
+			*/
+			/*
 			int check_asteroid_and_fencer = checkBothObjects(Asteroids, Fencers);
 			int check_asteroid_and_fencer_runs = -1;
 			while(check_asteroid_and_fencer != -404) {
@@ -146,6 +148,7 @@ public class MapCreator {
 				Asteroids.add(placeAsteroid(quad.getQUID()));
 				check_asteroid_and_fencer = checkBothObjects(Asteroids,EnemyShips);
 			}
+			*/
 			
 			int check_asteroid_and_blink = checkBothObjects(Asteroids, Blinkers);
 			int check_asteroid_and_blink_runs = -1;
@@ -175,7 +178,8 @@ public class MapCreator {
 				check_both = checkBothObjects(Asteroids,EnemyShips);
 			}
 			
-			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && check_asteroid_and_fencer == -404) {
+//			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && check_asteroid_and_fencer == -404) {
+			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404) {
 				System.out.println("asteroid:" + Asteroids.toString());
 				System.out.println("Enemies:" + EnemyShips.toString());
 				check=false;
@@ -184,7 +188,7 @@ public class MapCreator {
 		quad.setAsteroids(Asteroids);
 		quad.setShips(EnemyShips);
 		quad.setBlinkers(Blinkers);
-		quad.setFencers(Fencers);
+//		quad.setFencers(Fencers);
 	}
 	
 	public static Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {

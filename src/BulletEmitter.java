@@ -49,15 +49,15 @@ public class BulletEmitter extends Entity{
 			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
 			//Vector2 pos = new Vector2(physObj.getPosition().getX(), physObj.getPosition().getY());
 			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
-			shoot(1, 4, CollisionType.enemy_bullet, 4, obj, "RedCircle.png",  physObj.getPosition().add(offset));
+			shoot(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, 4, obj, "RedCircle.png",  physObj.getPosition().add(offset));
 			theta_rad += Math.toRadians(360 / 10);
 			unit_x = Math.cos(theta_rad);
 			unit_y = -Math.sin(theta_rad);
 		}
 	}
 	
-	protected void shoot(int damage, int speed, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-		BulletFireEventData bfe = new BulletFireEventData(damage,speed, enemyBullet, time, obj, sprite, movementVector);
+	protected void shoot(int damage, int speed, BulletType type, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+		BulletFireEventData bfe = new BulletFireEventData(damage, speed, type, enemyBullet, time, obj, sprite, movementVector);
 		if(subscribers != null && subscribers.size() > 0) {
 			for(ShipTriggers sub: subscribers) {
 				sub.onShipFire(bfe, enemyBullet);
