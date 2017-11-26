@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import org.omg.CORBA.SystemException;
+
 import acm.graphics.GImage;
 import rotations.GameImage;
 
@@ -8,9 +10,44 @@ public class LaserLine {
 	private double segmentHeight, segmentWidth;
 	private Vector2 endPoint;
 	private Vector2 origin;
+	private boolean isDead = false;
+	private int time;
+	
+	private boolean Tracking = false;
+	private PhysXObject p_origin;
 	
 	public LaserLine() {
 		init();
+	}
+	
+	public LaserLine(int time) {
+		init();
+		this.time = time;
+	}
+	
+	public LaserLine(PhysXObject a, int t) {
+		p_origin = a;
+		this.time = t;
+	}
+
+	public void incrementTime() {
+		time--; 
+	}
+	
+	public int getTimeRemaining() {
+		return time;
+	}
+	
+	public boolean isTracking() {
+		return Tracking;
+	}
+	
+	public Vector2 getOrigin() {
+		return origin;
+	}
+	
+	public PhysXObject getPhysXOrigin() {
+		return this.p_origin;
 	}
 	
 	public void init() {
@@ -41,9 +78,13 @@ public class LaserLine {
 			CircleCollider newCollider = new CircleCollider((float)segmentHeight);
 			PhysXObject newPhysObj = new PhysXObject(new QuadrantID(), newCollider);
 			newPhysObj.setPosition(currentPosition);
-			
-			LaserSegment newSegment = new LaserSegment(newPhysObj, "Laser segment.png", new CollisionData(), endPoint);
-			segments.add(newSegment);
+
+			try {
+				LaserSegment newSegment = new LaserSegment(newPhysObj, "Laser segment.png", new CollisionData(), endPoint);
+				segments.add(newSegment);
+			} catch (SystemException e) {
+				System.out.println("Lag");
+			}
 			
 			currentPosition = currentPosition.add(movementVector.mult(new Vector2((float)segmentHeight, (float)segmentHeight)));
 			
@@ -66,7 +107,7 @@ public class LaserLine {
 	
 	public void updatePositions() {
 		for(LaserSegment segment: segments) {
-			Vector2 pos = segment.getPhysObj().getPosition();
+			Vector2 pos = Camera.backendToFrontend(segment.getPhysObj().getPosition());
 			segment.getSprite().setLocationRespectSize(pos.getX(), pos.getY());
 			segment.rotateToPoint(this.endPoint);
 		}
@@ -77,10 +118,15 @@ public class LaserLine {
 	}
 	
 	public ArrayList<GameImage> getSprites (){
+
 		ArrayList<GameImage> sprites = new ArrayList<GameImage>();
 		for(LaserSegment segment: segments) {
 			sprites.add(segment.getSprite());
 		}
 		return sprites;
+	}
+
+	public ArrayList<LaserSegment> getSegments(){
+		return segments;
 	}
 }

@@ -14,6 +14,7 @@ public class Ship extends Entity {
 	protected ShipTriggers mangementSubscriber;
 	protected ShipTriggers bulletSubscriber;
 	protected GameConsoleEvents gameConsoleSubscriber;
+	protected LaserManagerEvents laserManagerSubscriber;
 	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
@@ -195,5 +196,9 @@ public class Ship extends Entity {
 	
 	public void addGameConsole(GameConsoleEvents sub) {
 		gameConsoleSubscriber = sub;
+	}
+	
+	public void addLaserManager(LaserManagerEvents sub) {
+		laserManagerSubscriber = sub;
 	}
 }

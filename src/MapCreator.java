@@ -13,6 +13,7 @@ public class MapCreator {
 	private final int MAX_ENEMIES_IN_QUAD = 2;
 	private final int MAX_BLINKERS_IN_QUAD = 2;
 	private final int MAX_ASTEROIDS_IN_QUAD = 4;
+	private final int MAX_FENCERS_IN_QUAD = 0;
 	private final float BORDER_X = 100f;
 	private final float BORDER_Y = 100f;
 	private int max_quad=0;
@@ -47,27 +48,16 @@ public class MapCreator {
 		System.out.print("player_spawn_quad_order: "+ player_spawn_quad_order);
 		System.out.print("boss_spawn_quad_order: "+ boss_spawn_quad_order);
 	}
-/*	
-	public void createNoiseMap() {
-		//use perlin noise.
-		//https://stackoverflow.com/questions/17440865/using-perlin-noise-to-generate-a-2d-tile-map
-	}
-	*/
 	
 	public ArrayList<Quadrant> createMap(){
 		// Create a new array to hold the quads
 		ArrayList<Quadrant> Quadrants = new ArrayList<Quadrant>();
 		setPlayerAndBossQuadPositions();
-		
-		// Store the current position in the Array
-//		int order = 0;
 	
 		int order = (PhysXLibrary.MAP_HEIGHT * PhysXLibrary.MAP_WIDTH) - 1;
 		for(int a = PhysXLibrary.MAP_WIDTH; a > 0; --a) {
 			for(int b = PhysXLibrary.MAP_HEIGHT; b > 0; --b) {
-				
-//				int quad_width = (int) Math.round(b*PhysXLibrary.QUADRANT_WIDTH);
-//				int quad_height = (int) Math.round(a*PhysXLibrary.QUADRANT_HEIGHT);
+
 				Quadrant quad = createQuadrant(b-1,a-1,order);
 				fillQuadrant(quad);
 				Quadrants.add(quad);
@@ -88,7 +78,6 @@ public class MapCreator {
 		
 	}
 	public Quadrant createQuadrant(int x,int y, int order) {
-//		System.out.println("x:"+x+" y: "+y+" order: "+order);
 		return new Quadrant(new QuadrantID(x,y,order));
 	}
 	
@@ -97,30 +86,16 @@ public class MapCreator {
 		int numberOfEnemies = LavaLamp.randomNumber(0, MAX_ENEMIES_IN_QUAD);
 		int numberOfAsteroids = LavaLamp.randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
 		int numberOfBlinkers = LavaLamp.randomNumber(0, MAX_BLINKERS_IN_QUAD);
+//		int numberOfFencers = LavaLamp.randomNumber(0, MAX_FENCERS_IN_QUAD);
 		
 		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
 		ArrayList<Blinker> Blinkers = placeBlinkers(quad.getQUID(), numberOfBlinkers);
+//		ArrayList<Fencer> Fencers = placeFencers(quad.getQUID(), numberOfFencers);
 		
 		//objects verification
 		boolean check=true;
 		while(check) {//return the object that has collision, remove that object.
-		
-			/*
-			Asteroid check_ast = checkAsteroid(Asteroids);//check only asteroids
-			while(check_ast!=null) {
-				Asteroids.remove(check_ast);
-				Asteroids.add(placeAsteroid(quad.getQUID()));
-				check_ast = checkAsteroid(Asteroids);
-			}
-			
-			EnemyShip check_enemy = checkEnemy(EnemyShips);//check only enemies
-			while(check_enemy!=null) {
-				EnemyShips.remove(check_enemy);
-				EnemyShips.add(placeEnemy(quad.getQUID()));
-				check_enemy = checkEnemy(EnemyShips);
-			}
-			*/
 			
 			int asteroidIndex = checkObjects(Asteroids);
 			int asteroidRuns = -1;
@@ -144,13 +119,36 @@ public class MapCreator {
 			
 			System.out.println("Ship runs: "+ shipRuns);
 			
-			
 			int blinkerIndex = checkObjects(Blinkers);
 			while(blinkerIndex != -404) {
 				Blinkers.remove(blinkerIndex);
 				Blinkers.add(placeBlinker(quad.getQUID()));
 				blinkerIndex = checkObjects(Blinkers);
 			}
+			
+			/*
+			int fencerIndex = checkObjects(Fencers);
+			while(fencerIndex != -404) {
+				Fencers.remove(fencerIndex);
+				Fencers.add(placeFencer(quad.getQUID()));
+				fencerIndex = checkObjects(Fencers);
+			}
+			*/
+			/*
+			int check_asteroid_and_fencer = checkBothObjects(Asteroids, Fencers);
+			int check_asteroid_and_fencer_runs = -1;
+			while(check_asteroid_and_fencer != -404) {
+				check_asteroid_and_fencer_runs++;
+				
+				Asteroids.remove(check_asteroid_and_fencer);
+				if(check_asteroid_and_fencer_runs > 10) {
+					break;
+				}
+				
+				Asteroids.add(placeAsteroid(quad.getQUID()));
+				check_asteroid_and_fencer = checkBothObjects(Asteroids,EnemyShips);
+			}
+			*/
 			
 			int check_asteroid_and_blink = checkBothObjects(Asteroids, Blinkers);
 			int check_asteroid_and_blink_runs = -1;
@@ -170,9 +168,9 @@ public class MapCreator {
 			int check_both = checkBothObjects(Asteroids,EnemyShips);//comparing asteroids with enemies.
 //			int checkRuns = -1;
 			while(check_both != -404) {
-//				checkRuns++;
-//				System.out.println("X: "+check_both.getPhysObj().getPosition().getX()+" Y: "+check_both.getPhysObj().getPosition().getY());
+
 				Asteroids.remove(check_both);
+				
 				//these two codes take some times:-wenrui
 				Asteroids.add(placeAsteroid(quad.getQUID()));
 				
@@ -180,10 +178,7 @@ public class MapCreator {
 				check_both = checkBothObjects(Asteroids,EnemyShips);
 			}
 			
-//			System.out.println("Check runs: "+ checkRuns);
-//			System.out.println("asteroidIndex: "+ asteroidIndex);
-//			System.out.println("shipIndex: "+ shipIndex);
-//			System.out.println("check_both: "+ check_both);
+//			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && check_asteroid_and_fencer == -404) {
 			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404) {
 				System.out.println("asteroid:" + Asteroids.toString());
 				System.out.println("Enemies:" + EnemyShips.toString());
@@ -193,6 +188,7 @@ public class MapCreator {
 		quad.setAsteroids(Asteroids);
 		quad.setShips(EnemyShips);
 		quad.setBlinkers(Blinkers);
+//		quad.setFencers(Fencers);
 	}
 	
 	public static Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {
@@ -378,29 +374,17 @@ public class MapCreator {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		for(int i =0; i < numToCreate; ++i) {
 			EnemyShips.add(buildShip(createPhysXObjectInQuad(quad)));
-			/*
-			CircleCollider collider = new CircleCollider(Vector2.Zero(), 10);
-			PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
-			shipPhysXObj.addCollider(collider);
-			int level = LavaLamp.randomNumber(1,2);
-			EnemyShip new_ship = new EnemyShip(shipPhysXObj, "Enemy_"+level+"_S.png", 10, ShipStats.EnemyStats_01(), level);
-			EnemyShips.add(new_ship);
-			*/
 		}
 		return EnemyShips;
 	}
 	
 	public EnemyShip placeEnemy (QuadrantID quad) {
-		/*
-		CircleCollider collider = new CircleCollider(Vector2.Zero(), 15);
-		PhysXObject shipPhysXObj = createPhysXObjectInQuad(quad);
-		shipPhysXObj.addCollider(collider);
-		int level = LavaLamp.randomNumber(1,2);
-		EnemyShip enemy = new EnemyShip(shipPhysXObj, "Enemy_"+level+"_S.png", 10, ShipStats.EnemyStats_01(), level);
-		return enemy; // Temporary
-		*/
 		return buildShip(createPhysXObjectInQuad(quad));
 	}
+	
+	// ===============================
+	// ============ ASTER ============
+	// ===============================
 	
 	public Asteroid buildAsteroid(PhysXObject physObj) {
 		int preset = LavaLamp.randomNumber(0,file.numberOfAsteroidPresets()-1);
@@ -424,6 +408,10 @@ public class MapCreator {
 		return buildAsteroid(createPhysXObjectInQuad(quad));
 	}
 	
+	// ===============================
+	// =========== BLINKER ===========
+	// ===============================
+	
 	public Blinker buildBlinker(PhysXObject physObj) {
 		int preset = LavaLamp.randomNumber(0,file.numberOfBlinkPresets()-1);
 		PhysXObject presetPhysObj = new PhysXObject(file.getBlinkObject(preset));
@@ -446,6 +434,35 @@ public class MapCreator {
 	public Blinker placeBlinker (QuadrantID quad) {
 		return buildBlinker(createPhysXObjectInQuad(quad));
 	}
+	
+	// ===============================
+	// ========== FENCER =============
+	// ===============================
+	
+	public Fencer buildFencer (PhysXObject physObj) {
+		int preset = LavaLamp.randomNumber(0,file.numberOfFencerPresets()-1);
+		PhysXObject presetPhysObj = new PhysXObject(file.getFencerObject(preset));
+		presetPhysObj.setPosition(physObj.getPosition());
+		presetPhysObj.setQUID(physObj.getQUID());
+		
+		System.out.println("[" + file.getFencerSprite(preset) + "]");
+		return new Fencer(presetPhysObj, file.getFencerSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getFencerLevel(preset));
+	}
+	
+	public ArrayList<Fencer> placeFencers (QuadrantID quad, int numToCreate) {
+		ArrayList<Fencer> fencers = new ArrayList<Fencer>();
+		for(int i =0; i < numToCreate; ++i) {
+			fencers.add(buildFencer(createPhysXObjectInQuad(quad)));
+		}
+		return fencers;
+	}
+	
+	public Fencer placeFencer (QuadrantID quad) {
+		return buildFencer(createPhysXObjectInQuad(quad));
+	}
+	
+	
+	
 
 	public PlayerShip placePlayer (QuadrantID quad) {
 		PhysXObject physObj = createPhysXObjectInQuad(quad);

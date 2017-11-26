@@ -147,7 +147,7 @@ public class Blinker extends EnemyShip {
 				
 				// Shoot
 				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-				shoot(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "RedCircle.png", playerPos);
+				shoot(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
 				
 				AudioPlayer myAudio = AudioPlayer.getInstance();
 				myAudio.playSound("sounds", "BlinkerShoot.wav");

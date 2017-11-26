@@ -75,6 +75,7 @@ public class EnemyShip extends Ship implements ActionListener {
 			if (weapon_cd == 0) {
 				weapon_cd = max_cd + randomRange(-15, 15);
 				shootSpread(BulletType.STRAIGHT, weapon_target, 3, 45);
+
 			}
 		}
 	}

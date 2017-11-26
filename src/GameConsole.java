@@ -25,6 +25,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private Camera camera;
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
+	private LaserManager laserStore;
 	
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
@@ -42,6 +43,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		
 		// create a new bullet manager
 		bulletStore = new BulletManager();
+		
+		laserStore = new LaserManager(this);
 		
 		// setup a new camera
 		camera = new Camera();
@@ -148,6 +151,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		
 		for(EnemyShip ship : EnemyShips) {
 			ship.addGameConsole(this);
+			ship.addLaserManager(laserStore);
 		}
 		return EnemyShips;
 	}
@@ -186,6 +190,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public BulletManager getBulletManager() {
 		return bulletStore;
+	}
+	
+	public LaserManager getLaserManager() {
+		return laserStore;
 	}
 	
 	public BulletEmitter createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
@@ -287,14 +295,21 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	}
 
 	@Override
-	public void programRequest_removeDrawnObject(GObject obj) {
-		this.gamePane_ref.eventRequest_removeObject(obj);
+	public void programRequest_removeDrawnObjects(ArrayList<GameImage> objects) {
+		this.gamePane_ref.eventRequest_removeObjects(objects);
 	}
 
 	@Override
-	public void programRequest_drawObject(GObject obj) {
-		this.gamePane_ref.eventRequest_addObject(obj);
+	public void programRequest_drawObjects(ArrayList<GameImage> objects) {
+		this.gamePane_ref.eventRequest_addObjects(objects);
 	}
+
+	@Override
+	public PhysXObject physXRequest_getPlayer() {
+		return player.getPhysObj();
+	}
+
+
 }
 
 
