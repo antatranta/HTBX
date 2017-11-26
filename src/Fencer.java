@@ -10,14 +10,7 @@ public class Fencer extends EnemyShip{
 	private int laserDelay;
 	private int shots;
 	private int shotCount;
-	private boolean hasTrajectories;
-	
-	private int numLasers = 2;
-	
-	Vector2[] trajectories;
-	Vector2[] positions;
-	
-	LaserLine[] lasers;
+	private boolean isAiming;
 
 	public Fencer(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
 		super(physObj, sprite, current_health, stats, aggression);
@@ -26,22 +19,13 @@ public class Fencer extends EnemyShip{
 		this.shotCount = 0;
 		this.laserDuration = 500;
 		this.laserDelay = 100;
-		this.hasTrajectories = false;
-		
-		trajectories = new Vector2[0];
-		positions = new Vector2[0];
-		lasers = new LaserLine[numLasers];
-		for(int i =0; i< numLasers; i++) {
-			lasers[i] = new LaserLine();
-		}
 	}
 	
+	/*
 	private void removeLasers() {		
 		for(int i =0; i < numLasers; ++i) {
 			for(LaserLine laser : lasers) {
-				for(GameImage sprite : laser.getSprites()) {
-					this.gameConsoleSubscriber.programRequest_removeDrawnObject(sprite);
-				}
+				this.gameConsoleSubscriber.programRequest_removeDrawnObjects(laser.getSprites());
 			}
 		}
 	}
@@ -84,62 +68,52 @@ public class Fencer extends EnemyShip{
 			}
 			System.out.println(curr_laser+" < curr_laser | lasers.length: "+ lasers.length);
 			System.out.println(i+" < i | positions.length: "+ positions.length);
-			for(GameImage sprite : lasers[curr_laser].updateBeam(this.positions[i], this.positions[i+1])) {
-				this.gameConsoleSubscriber.programRequest_drawObject(sprite);
-			}
+
+			this.gameConsoleSubscriber.programRequest_drawObjects(lasers[curr_laser].updateBeam(this.positions[i], this.positions[i+1]));
+			
 			lasers[curr_laser].updatePositions();
 			curr_laser ++;
 			i++;
 		}
 	}
+	*/
 	
 	@Override
 	public void AIUpdate(Vector2 playerPos) {
 		
-//		moveProjectiles();
+		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > 500) {
+			count = laserDelay - 10;
+			return;
+		}
 		
 		// If the laser is supposed to be active
 		if(count > laserDelay) { 
 			
-			if(shotCount > shots) {
-				
-				// Blink to a new pos
-//				blink(playerPos);
-				
-				// Reset the counter
-				shotCount = 0;
-				
-				// Reset the counter
+//			if(shotCount > shots) {
+//				
+//				// Blink to a new pos
+////				blink(playerPos);
+//				
+//				// Reset the counter
+//				shotCount = 0;
+//				
+//				// Reset the counter
+//				count = 0;
+//				
+//				return;
+//			}
+			if(count <= laserDelay + laserDuration && isAiming) {
+				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
+				shoot(4, 25, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
 				count = 0;
-				
-				return;
+				isAiming = false;
+			} else if(!isAiming) {
+				isAiming = true;
+				laserManagerSubscriber.createAdvancedLaserAtPlayer(this.physObj, laserDuration);
+//				shotCount ++;
+//				count = 0;
 			}
 			
-			// If the laser is active, Draw
-			if(count < laserDelay + laserDuration) {
-				if(!hasTrajectories) {
-					calculateTrajectories(playerPos);
-					hasTrajectories = true;
-				}
-				
-				if(count %5 == 0) {
-					removeLasers();
-					moveProjectiles();
-					moveSprites();
-				}
-			} else {
-				
-				// Remove the laser
-				removeLasers();
-				
-				hasTrajectories = false;
-				
-				// Reset the counter
-				count = 0;
-				
-				// Increase the shot count
-				shotCount++;
-			}
 		}
 		
 		count++;

@@ -34,16 +34,20 @@ public class Boss extends EnemyShip implements ActionListener {
 	
 	private void removeLaser() {
 		// Remove old laser
+		/*
 		for(GameImage sprite : laser.getSprites()) {
 			this.gameConsoleSubscriber.programRequest_removeDrawnObject(sprite);
 		}
+		*/
 	}
 	
 	private void drawLaser(Vector2 pos) {
 		// Draw
+		/*
 		for(GameImage sprite : fireLaser(this.physObj.getPosition(), pos)) {
 			this.gameConsoleSubscriber.programRequest_drawObject(sprite);
 		}
+		*/
 	}
 
 	@Override

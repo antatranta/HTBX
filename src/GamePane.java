@@ -38,6 +38,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private MainApplication program; // You will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
 	private BulletManager bulletStore;
+	private LaserManager laserStore;
 
 	private PlayerShip player;
 	private Vector2 last_mouse_loc;
@@ -90,6 +91,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private ArrayList <StaticGObject> BlinkerEyes;
 	private ArrayList <StaticGObject> DrawnBlinkerEyes;
+	
+//	private ArrayList <LaserSegment> laserSegments;
+	private ArrayList <LaserSegment> drawnLaserSegments;
+	
 	private ArrayList <ShipDeathData> deathEvents;
 	
 	private ArrayList <EnemyShip> DEBUGGING_COLLIDERS_SHIPS;
@@ -277,6 +282,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawn_bullets = new ArrayList <Bullet>();
 		BlinkerEyes = new ArrayList <StaticGObject>();
 		DrawnBlinkerEyes = new ArrayList<StaticGObject>();
+//		lasers = new ArrayList<LaserLine>();
+//		drawnLasers = new ArrayList<LaserLine>();
+		drawnLaserSegments = new ArrayList<LaserSegment>();
 		
 		deathEvents = new ArrayList <ShipDeathData>();
 		
@@ -294,6 +302,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		console = program.getGameConsole();
 		player = console.getPlayer();
 		bulletStore = console.getBulletManager();
+		laserStore = console.getLaserManager();
 
 
 		aiming_edge = new GameImage("rectile.png", 0, 0);
@@ -413,6 +422,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		console.testCollisions(player);
 		console.moveBullets();
+		laserStore.updateLasers();
 
 		for(GameImage bullet : console.cullBullets()) {
 			program.remove(bullet);
@@ -536,6 +546,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
 //		drawGifs(console.getActiveShips(), drawn_ship_gifs, ROCK_LAYER);
 		drawBullets(bulletStore.getBullets(), drawn_bullets);
+		drawSprites(laserStore.getSegments(), drawnLaserSegments, ROCK_LAYER);
 		drawBlinkerEyes(BlinkerEyes);
 	}
 	
@@ -743,6 +754,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 	
+	private void removeObjects(ArrayList<GameImage> objects) {
+		for(GameImage sprite : objects) {
+			program.remove(sprite);
+		}
+	}
+	
+	private void addObjects(ArrayList<GameImage> objects) {
+		for(GameImage sprite : objects) {
+			program.add(sprite);
+		}
+	}
 	private void drawBullets(ArrayList<Bullet> objects, ArrayList<Bullet> storage) {
 		for (int i = 0; i < objects.size(); i++) {
 			Bullet bullet = objects.get(i);
@@ -760,7 +782,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			}
 		}
 	}
-	
+
 	private <Item extends Entity> void drawSprites(ArrayList<Item> objects, ArrayList<Item> storage, int layer) {
 		if(console.IS_DEBUGGING) {
 			CURRENT_ASTEROIDS_LABEL.setLabel("Current ASTER: " + objects.size());
@@ -983,6 +1005,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         				DEBUGGING_MOVE_LOCK = false;
         			}
         		}
+        		
+        		if(key == KeyEvent.VK_N) {
+        			if(DEBUGGING_DRAW_BULLETS) {
+        				System.out.println("DRAW BULLETS --- OFF");
+        				DEBUGGING_DRAW_BULLETS = false;
+        			} else {
+        				System.out.println("DRAW BULLETS --- ON");
+        				DEBUGGING_DRAW_BULLETS = true;
+        			}
+        		}
         }
         
         if (key == KeyEvent.VK_ESCAPE) {
@@ -1058,16 +1090,23 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 
 	@Override
-	public void eventRequest_addObject(GameImage obj) {
+	public void eventRequest_addObjects(ArrayList<GameImage> objects) {
 		// TODO Auto-generated method stub
-		program.add(obj);
+//		program.add(obj);
+		this.addObjects(objects);
 	}
 
 	@Override
-	public void eventRequest_removeObject(GameImage obj) {
+	public void eventRequest_removeObjects(ArrayList<GameImage> objects) {
 		// TODO Auto-generated method stub
-		program.remove(obj);
+//		program.remove(obj);
+		this.removeObjects(objects);
 	}
 	
+	
+	@Override
+	public void eventRequest_addLaserLine(LaserLine line) {
+//		lasers.add(line);
+	}
 	
 }
