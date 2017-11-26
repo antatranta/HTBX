@@ -309,6 +309,12 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		return player.getPhysObj();
 	}
 
+	@Override
+	public void programRequest_removeGOval(PhysXObject obj, GOval oval) {
+		// TODO Auto-generated method stub
+		this.gamePane_ref.eventRequest_removeObject(oval);
+	}
+
 
 }
 

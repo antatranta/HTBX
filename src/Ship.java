@@ -55,7 +55,9 @@ public class Ship extends Entity {
 		}
 	}
 	
-	private void destroyShip() {
+	protected void destroyShip() {
+		
+		playDeathSound();
 		setCurrentHealth(0);
 		
 		if(subscribers != null && subscribers.size() > 0) {
@@ -71,6 +73,10 @@ public class Ship extends Entity {
 		sprite.rotate(0);
 		
 
+	}
+	
+	protected void playDeathSound() {
+		
 	}
 	
 	protected void takeDamage(int damage) {

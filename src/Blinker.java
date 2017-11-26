@@ -168,5 +168,15 @@ public class Blinker extends EnemyShip {
 		}
 		count++;
 	}
-
+	
+	@Override
+	protected void playDeathSound() {
+		
+		// Remove the eye
+		this.gameConsoleSubscriber.programRequest_removeGOval(this.getPhysObj(), this.charger);
+		
+		AudioPlayer myAudio = AudioPlayer.getInstance();
+		myAudio.stopSound("sounds", "BlinkerHit.wav");
+		myAudio.playSound("sounds", "BlinkerHit.wav");
+	}
 }

@@ -12,4 +12,5 @@ public interface GamePaneEvents {
 	public void eventRequest_addObjects(ArrayList<GameImage> obj);
 	public void eventRequest_removeObjects(ArrayList<GameImage> obj);
 	void eventRequest_addLaserLine(LaserLine line);
+	public void eventRequest_removeObject(GOval oval);
 }

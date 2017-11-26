@@ -1110,5 +1110,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void eventRequest_addLaserLine(LaserLine line) {
 //		lasers.add(line);
 	}
+
+	@Override
+	public void eventRequest_removeObject(GOval oval) {
+		program.remove(oval);
+	}
 	
 }
