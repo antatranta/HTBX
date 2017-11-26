@@ -132,7 +132,7 @@ public class MainApplication extends GraphicsApplication {
 		gameTimer.stopTimer();
 		switchToScreen(pause);
 	}
-	
+		
 	public GameConsole getGameConsole() {
 		return console;
 	}
