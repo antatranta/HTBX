@@ -79,9 +79,17 @@ public class SettingsPane extends GraphicsPane {
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj != null) {
-			for(GLabel setting:settings) {
-				if(obj == setting) {
-					setting.setColor(Color.gray);
+			if(obj == toggle1) {
+				toggle1.setColor(Color.gray);
+			}
+			else if(obj == toggle2) {
+				toggle2.setColor(Color.gray);
+			}
+			else {
+				for(GLabel setting:settings) {
+					if(obj == setting) {
+						setting.setColor(Color.gray);
+					}
 				}
 			}
 		}
@@ -92,6 +100,9 @@ public class SettingsPane extends GraphicsPane {
 		for(GLabel setting:settings) {
 			setting.setColor(Color.black);
 		}
+		
+		toggle1.setColor(Color.black);
+		toggle2.setColor(Color.black);
 		
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj != whiteBG() || obj != title()) {
@@ -183,6 +194,14 @@ public class SettingsPane extends GraphicsPane {
 					selection.setVisible(true);
 					selection.setLocation(setting.getX() - 25, setting.getY());
 				}
+			}
+			if(obj == toggle1) {
+				selection.setVisible(true);
+				selection.setLocation(343.5, toggle1.getY());
+			}
+			if(obj == toggle2) {
+				selection.setVisible(true);
+				selection.setLocation(343.5, toggle2.getY());
 			}
 		}
 		else{
