@@ -3,7 +3,7 @@ import java.awt.Color;
 public class PaintToolbox {
 	public static Color blend(Color b, Color a, float blending) {
 		
-		if(0 >= blending || .999f <= blending) {
+		if(0 >= blending || .9999999999999f <= blending) {
 //			System.out.println("0-1");
 			return Color.MAGENTA;
 		}

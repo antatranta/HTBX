@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.io.Console;
+import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
@@ -38,6 +39,9 @@ public class DisplayableHUD implements Displayable {
 	private GRect threat_right;
 	private GRect threat_up;
 	private GRect threat_down;
+	
+	private ArrayList<Direction> threats;
+	private float[] threatLevels;
 	
 	private float threatWidth = 100;
 	
@@ -155,6 +159,9 @@ public class DisplayableHUD implements Displayable {
 		threat_right = new GRect(MainApplication.WINDOW_WIDTH - 40, (MainApplication.WINDOW_HEIGHT / 2) - (threatWidth / 2), 10, threatWidth);
 		threat_up = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), 10, threatWidth, 10);
 		threat_down = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), MainApplication.WINDOW_HEIGHT - 20, threatWidth, 10);
+	
+		threats = new ArrayList<Direction>();
+		threatLevels = new float[4];
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -274,6 +281,69 @@ public class DisplayableHUD implements Displayable {
 		msg_diff_dmg /= 1.1;
 		msg_diff_hp /= 1.1;
 		msg_diff_shd /= 1.1;
+		
+		// Handle threats
+		updateThreatBar(threat_up, threatLevels[0]);
+		updateThreatBar(threat_down, threatLevels[1]);
+		updateThreatBar(threat_left, threatLevels[2]);
+		updateThreatBar(threat_right, threatLevels[3]);
+		
+		// Reset the levels
+		threats = new ArrayList<Direction>();
+		threatLevels = new float[4];
+	}
+	
+	private void updateThreatBar(GRect bar, float value) {
+		if(value > 0) {
+			bar.setFilled(true);
+			Color color = PaintToolbox.blend(Color.WHITE, Color.RED, value);
+			bar.setFillColor(color);
+			bar.setColor(color);
+		} else {
+			bar.setFilled(false);
+			bar.setColor(Color.WHITE);
+		}
+	}
+	
+	public void updateThreats(Direction threatDirection) {
+		threats.add(threatDirection);
+		
+		if(threatDirection == Direction.up
+				|| threatDirection == Direction.upper_left
+				|| threatDirection == Direction.upper_right) {
+			if(threatLevels[0] + .25f < .999f) {
+				threatLevels[0] += .25f;
+			} else {
+				threatLevels[0] = .999f;
+			}
+		}
+		if(threatDirection == Direction.down
+				|| threatDirection == Direction.lower_left
+				|| threatDirection == Direction.lower_right) {
+			if(threatLevels[1] + .25f < .999f) {
+				threatLevels[1] += .25f;
+			} else {
+				threatLevels[1] = .999f;
+			}
+		}
+		if(threatDirection == Direction.left
+				|| threatDirection == Direction.upper_left
+				|| threatDirection == Direction.lower_left) {
+			if(threatLevels[2] + .25f < .999f) {
+				threatLevels[2] += .25f;
+			} else {
+				threatLevels[2] = .999f;
+			}
+		}
+		if(threatDirection == Direction.right
+				|| threatDirection == Direction.upper_right
+				|| threatDirection == Direction.lower_right) {
+			if(threatLevels[3] + .25f < .999f) {
+				threatLevels[3] += .25f;
+			} else {
+				threatLevels[3] = .999f;
+			}
+		}
 	}
 	
 	public int recalculateDifference(int cur, int last) {
