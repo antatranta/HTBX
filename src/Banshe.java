@@ -20,39 +20,31 @@ public class Banshe extends EnemyShip{
 
 		// Is the player within range?
 		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance()) {
-			currentTarget = physObj.getPosition();
 			return;
 		}
-		else {
-			if (checkpoint == 0) {
-				checkpoint = 1;
-				double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));
-				theta_deg += randomRange(-45, 45);
-				double unit_x = -Math.cos(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
-				double unit_y = Math.sin(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
-				currentTarget = playerPos.add(new Vector2((float)unit_x, (float)unit_y));
-			}
-			else if (checkpoint == 1) {
-				auto_reset += 1;
-				if (auto_reset >= 300) {
-					auto_reset = 0;
-					checkpoint = 0;
-				}
-				if (PhysXLibrary.distance(physObj.getPosition(), currentTarget) <= 15) {
-					checkpoint = 0;
-				}
-				
-			}
-			
-			rotateToPoint(currentTarget);
-			
-			this.sprite.setDegrees(dir + 90);
-			if (checkpoint < 2) {
-				this.physObj.setPosition(this.physObj.getPosition().add(new Vector2((float)Math.cos(Math.toRadians(dir)) * stats.getSpeedSetting(), (float)Math.sin(Math.toRadians(dir)) * stats.getSpeedSetting())));
-			}
-			
-			moveExternalForce();
-		}
+
+		double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));
+//		theta_deg += randomRange(-45, 45);
+//		double unit_x = -Math.cos(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
+//		double unit_y = Math.sin(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
+//		currentTarget = playerPos.add(new Vector2((float)unit_x, (float)unit_y));
+		currentTarget = playerPos;
+//		auto_reset += 1;
+//		if (auto_reset >= 300) {
+//			auto_reset = 0;
+//			checkpoint = 0;
+//		}
+//		if (PhysXLibrary.distance(physObj.getPosition(), currentTarget) <= 15) {
+//			checkpoint = 0;
+//		}
+//			
+		rotateToPoint(currentTarget);
+		
+		this.sprite.setDegrees(dir + 90);
+		this.physObj.setPosition(this.physObj.getPosition().add(new Vector2((float)Math.cos(Math.toRadians(dir)) * stats.getSpeedSetting(), (float)Math.sin(Math.toRadians(dir)) * stats.getSpeedSetting())));
+
+		
+		moveExternalForce();
 	}
 
 }

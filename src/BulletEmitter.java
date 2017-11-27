@@ -73,7 +73,7 @@ public class BulletEmitter extends Entity{
 	}
 
 	public void addSubscriber(ShipTriggers sub) {
-		if(sub != null && !this.subscribers.contains(sub)) {
+		if(sub != null && this.subscribers != null && !this.subscribers.contains(sub)) {
 			this.subscribers.add(sub);
 		}
 	}

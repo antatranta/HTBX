@@ -66,6 +66,8 @@ public class Ship extends Entity {
 			}
 		}
 		
+		gameConsoleSubscriber.onShipDeath(physObj.getPosition());
+		
 		// TEMPORARY solution to "kill" enemies
 		//physObj.setPosition(new Vector2(0, 0));
 		physObj = new PhysXObject();

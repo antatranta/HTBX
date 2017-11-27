@@ -16,5 +16,4 @@ public interface GameConsoleEvents {
 	public void programRequest_drawObjects(ArrayList<GameImage> objects);
 	
 	public PhysXObject physXRequest_getPlayer();
-	
 }

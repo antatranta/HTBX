@@ -215,6 +215,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 
 	@Override
 	public void onShipDeath(Vector2 pos) {
+		
+		System.out.println("Hello");
 		// TODO Auto-generated method stub
 		skill_points += 1;
 		System.out.println("SP: " + skill_points);

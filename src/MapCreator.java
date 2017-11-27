@@ -14,6 +14,7 @@ public class MapCreator {
 	private final int MAX_BLINKERS_IN_QUAD = 2;
 	private final int MAX_ASTEROIDS_IN_QUAD = 4;
 	private final int MAX_FENCERS_IN_QUAD = 0;
+	private final int MAX_BANSHES_IN_QUAD = 1;
 	private final float BORDER_X = 100f;
 	private final float BORDER_Y = 100f;
 	private int max_quad=0;
@@ -87,11 +88,13 @@ public class MapCreator {
 		int numberOfAsteroids = LavaLamp.randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
 		int numberOfBlinkers = LavaLamp.randomNumber(0, MAX_BLINKERS_IN_QUAD);
 //		int numberOfFencers = LavaLamp.randomNumber(0, MAX_FENCERS_IN_QUAD);
+		int numberOfBanshes = LavaLamp.randomNumber(0, MAX_BANSHES_IN_QUAD);
 		
 		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
 		ArrayList<Blinker> Blinkers = placeBlinkers(quad.getQUID(), numberOfBlinkers);
 //		ArrayList<Fencer> Fencers = placeFencers(quad.getQUID(), numberOfFencers);
+		ArrayList<Banshe> Banshes = placeBanshes(quad.getQUID(), numberOfBanshes);
 		
 		//objects verification
 		boolean check=true;
@@ -150,6 +153,14 @@ public class MapCreator {
 			}
 			*/
 			
+			int bansheIndex = checkObjects(Banshes);
+			while(bansheIndex != -404) {
+				Banshes.remove(bansheIndex);
+				Banshes.add(placeBanshe(quad.getQUID()));
+				bansheIndex = checkObjects(Banshes);
+			}
+			
+			
 			int check_asteroid_and_blink = checkBothObjects(Asteroids, Blinkers);
 			int check_asteroid_and_blink_runs = -1;
 			while(check_asteroid_and_blink != -404) {
@@ -179,7 +190,7 @@ public class MapCreator {
 			}
 			
 //			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && check_asteroid_and_fencer == -404) {
-			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404) {
+			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && bansheIndex == -404) {
 				System.out.println("asteroid:" + Asteroids.toString());
 				System.out.println("Enemies:" + EnemyShips.toString());
 				check=false;
@@ -189,6 +200,7 @@ public class MapCreator {
 		quad.setShips(EnemyShips);
 		quad.setBlinkers(Blinkers);
 //		quad.setFencers(Fencers);
+		quad.setBanshes(Banshes);
 	}
 	
 	public static Asteroid checkAsteroid(ArrayList<Asteroid> Asteroids) {
@@ -459,6 +471,32 @@ public class MapCreator {
 	
 	public Fencer placeFencer (QuadrantID quad) {
 		return buildFencer(createPhysXObjectInQuad(quad));
+	}
+	
+	// ===============================
+	// ========== BANSHE =============
+	// ===============================
+	
+	public Banshe buildBanshe (PhysXObject physObj) {
+		int preset = LavaLamp.randomNumber(0,file.numberOfBanshePresets()-1);
+		PhysXObject presetPhysObj = new PhysXObject(file.getBansheObject(preset));
+		presetPhysObj.setPosition(physObj.getPosition());
+		presetPhysObj.setQUID(physObj.getQUID());
+		
+		System.out.println("[" + file.getBansheSprite(preset) + "]");
+		return new Banshe(presetPhysObj, file.getBansheSprite(preset), ShipStats.EnemyStats_Banshe().getHealthMax(), ShipStats.EnemyStats_Banshe(), file.getBansheLevel(preset));
+	}
+	
+	public ArrayList<Banshe> placeBanshes (QuadrantID quad, int numToCreate) {
+		ArrayList<Banshe> banshes = new ArrayList<Banshe>();
+		for(int i =0; i < numToCreate; ++i) {
+			banshes.add(buildBanshe(createPhysXObjectInQuad(quad)));
+		}
+		return banshes;
+	}
+	
+	public Banshe placeBanshe (QuadrantID quad) {
+		return buildBanshe(createPhysXObjectInQuad(quad));
 	}
 	
 	

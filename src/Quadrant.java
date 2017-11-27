@@ -91,5 +91,10 @@ public class Quadrant{
 		QUID = qUID;
 	}
 
+	public void setBanshes(ArrayList<Banshe> banshes) {
+		// TODO Auto-generated method stub
+		this.ships.addAll(banshes);
+	}
+
 
 }
