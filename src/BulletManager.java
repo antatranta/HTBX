@@ -11,6 +11,7 @@ import rotations.GameImage;
 public class BulletManager implements ShipTriggers {
 	private ArrayList<Bullet> bullets;
 	private ArrayList<GameImage> deadBullets;
+	private GameConsole console_ref;
 	
 	private BulletPattern pattern;
 	
@@ -18,6 +19,14 @@ public class BulletManager implements ShipTriggers {
 		this.bullets = new ArrayList<Bullet>();
 		this.deadBullets = new ArrayList<GameImage>();
 		pattern = new BulletPattern();
+		this.console_ref = null;
+	}
+	
+	public BulletManager(GameConsole console) {
+		this.bullets = new ArrayList<Bullet>();
+		this.deadBullets = new ArrayList<GameImage>();
+		pattern = new BulletPattern();
+		this.console_ref = console;
 	}
 	
 	public void setBullets(ArrayList<Bullet> bullets) {
@@ -57,31 +66,20 @@ public class BulletManager implements ShipTriggers {
 		for(int i=0; i < this.bullets.size(); i++) {
 			Bullet current = this.bullets.get(i);
 			current.move();
-			//Vector2 pos = Camera.backendToFrontend(current.getPhysObj().getPosition());
-
-			//current.getSprite().setLocation(pos.getX() - (current.getSprite().getWidth() / 2), pos.getY() - (current.getSprite().getHeight() / 2));
-
+			
+			// Take care of dead bullets: They die prematurely or reach the end of their travel time
 			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 100 || this.bullets.get(i).checkIfDead()) {
 				this.deadBullets.add(bullets.get(i).getSprite());
 				this.bullets.remove(bullets.get(i));
+				
+				// Check if the bullet has a particle effect or not
+				if (this.console_ref != null && current.getFX() != null && current.checkIfDead()) {
+					current.getFX().setPosition(current.getPhysObj().getPosition());
+					current.getFX().setDir(new Vector2(current.getBulletDX(), current.getBulletDY()));
+					this.console_ref.programRequest_makeFX(current.getFX().getPattern(), current.getFX().getType(), current.getFX());
+				}
 			}
 		}
-		
-		/*
-		for(int i=0; i< bullets.size(); ++i) {
-			Timer delete = new Timer((int)bullets.get(i).getBulletDuration() * 1000, new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					deadBullets.add(bullets.get(i));
-					
-					bullets.remove(bullets.get(i));
-				}
-			});
-			delete.setRepeats(false);
-			delete.start();
-		}
-		*/
 	}
 	
 	public void moveClockwiseSpiralPattern() {

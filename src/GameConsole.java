@@ -20,6 +20,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	//private PlayerShip player;
 	private PlayerShip player;
 	private MapCreator mapCreator;
+	private FXManager fx;
 	private PhysX physx; // The controller for all things
 	private int level;
 	private int next_level;
@@ -48,9 +49,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
 		
 		// create a new bullet manager
-		bulletStore = new BulletManager();
+		bulletStore = new BulletManager(this);
 		
 		laserStore = new LaserManager(this);
+		fx = new FXManager();
 		
 		// setup a new camera
 		camera = new Camera();
@@ -202,6 +204,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		return laserStore;
 	}
 	
+	public FXManager getFXManager() {
+		return fx;
+	}
+	
 	public void createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
 		BulletEmitter be = new BulletEmitter(health, rate, physObj, sprite, data);
 		be.addSubscriber(getBulletManager());
@@ -322,6 +328,18 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	@Override
 	public void UIRequest_addThreat(Vector2 pos) {
 		this.gamePane_ref.addThreat(pos);
+	}
+
+	@Override
+	public void programRequest_makeFX(FXPattern pattern, FXType type, FXParticle particle) {
+		switch(pattern) {
+		case SPARKS_DEFLECT:
+			fx.makeSparks(type, particle);
+			break;
+		default:
+			break;
+		}
+		
 	}
 
 

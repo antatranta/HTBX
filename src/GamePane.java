@@ -80,7 +80,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GameImage aiming_edge;
 
 	private ArrayList <Integer> pressed_keys;
-	private ArrayList <GameImage> drawn_fx;
+	private ArrayList <FXParticle> drawn_fx;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <EnemyShip> drawn_ships;
 	private ArrayList <EnemyShip> drawn_ship_gifs;
@@ -279,6 +279,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		last_mouse_loc = new Vector2(0,0);
 		pressed_keys = new ArrayList <Integer>();
+		drawn_fx = new ArrayList <FXParticle>();
 		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <EnemyShip>();
 		drawn_ship_gifs = new ArrayList <EnemyShip>();
@@ -306,7 +307,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player = console.getPlayer();
 		bulletStore = console.getBulletManager();
 		laserStore = console.getLaserManager();
-
+		console.getFXManager().setReferences(this);
 
 		aiming_edge = new GameImage("Player Rectile.png", 0, 0);
 		aiming_head = new GameImage("Player Cursor.png", 0, 0);
@@ -354,7 +355,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 
-		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage() + player.getBonusStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc));
+		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage() + player.getBonusStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc), FXManager.redParticle());
 		player.shoot(bfe);
 	}
 
@@ -515,6 +516,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 	
 	public void drawSprites() {
+		drawFX(console.getFXManager().getParticles(), drawn_fx);
 		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
 		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
 //		drawGifs(console.getActiveShips(), drawn_ship_gifs, ROCK_LAYER);
@@ -551,6 +553,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img.sendToBack();
 		
 		// FX Layer
+		for (int i = 0; i < drawn_fx.size(); i++) {
+			drawn_fx.get(i).getSprite().sendToBack();
+		}
 		
 		// Big rocks have priority next
 		for (int i = 0; i < drawn_rocks.size(); i++) {
@@ -795,6 +800,36 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		new_draw.addAll(storage);
 		// Remove asteroids
 		for (Item obj : new_draw) {
+			if (!objects.contains(obj)) {
+				storage.remove(obj);
+				program.remove(obj.getSprite());
+			}
+		}
+	}
+	
+	public void drawFX(ArrayList<FXParticle> objects, ArrayList<FXParticle> storage) {
+		for (int i = 0; i < objects.size(); i++) {
+			
+			// Get the offset
+			FXParticle obj = objects.get(i);
+			Vector2 frontEndPos = Camera.backendToFrontend(obj.getPosition());
+
+			// Are we already drawing that rock?
+			if (!storage.contains(obj)) {
+				storage.add(obj);
+				program.add(obj.getSprite());
+			}
+			
+			// Set its location according to the offset
+			if (storage.contains(obj)) {
+				obj.getSprite().setLocation(frontEndPos.getX(), frontEndPos.getY());
+			}
+			
+		}
+		
+		ArrayList<FXParticle> new_draw = new ArrayList<FXParticle>();
+		new_draw.addAll(storage);
+		for (FXParticle obj : new_draw) {
 			if (!objects.contains(obj)) {
 				storage.remove(obj);
 				program.remove(obj.getSprite());
