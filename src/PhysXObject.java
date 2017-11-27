@@ -133,7 +133,7 @@ public class PhysXObject {
 	}
 	
 	public void setCollisionData(CollisionData coll) {
-		this.collisionData = new CollisionData(coll);
+		this.collisionData = coll;
 	}
 	
 	public void sendCollisionData(CollisionData data, Vector2 pos) {

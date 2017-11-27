@@ -103,9 +103,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <Bullet> DEBUGGING_COLLIDERS_BULLETS;
 	
 	private ArrayList <GLabel> DEBUGGING_QUID_LABELS;
-	private float xAxis = 0;
-	private float yAxis = 0;
-	private int track_amount = 0;
 	
 	private DisplayableHUD HUD;
 	

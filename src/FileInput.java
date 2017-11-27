@@ -81,8 +81,6 @@ public class FileInput {
 			String sprite = "";
 			Integer level = 0;
 			
-			
-			
 			for(String section: sections) {
 				
 				System.out.println("Section: "+ section);

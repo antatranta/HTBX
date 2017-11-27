@@ -233,7 +233,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	}
 	
 	private void calculateNeededExp() {
-		next_level = (int)((level * 60) * 1.3);
+		int base = 60;
+		next_level = (int)(base + ((level - 1) * 20));
 	}
 	
 	public int getSP() {
