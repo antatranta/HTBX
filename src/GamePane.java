@@ -1012,7 +1012,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
         		break;
         	}
         }
-
+        
+        //GOD Mode = \ Pleb mode = P *ONLY FOR TESTING PURPOSES*
+        if(key == KeyEvent.VK_BACK_SLASH) {
+        	player.setCurrentHealth(9999999);
+        }
+        else if(key == KeyEvent.VK_P) {
+        	player.setCurrentHealth(1);
+        }
     }
 
 	@Override
