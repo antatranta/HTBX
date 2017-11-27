@@ -16,6 +16,11 @@ public class ShipStats {
 		return new ShipStats(1, 1, 15, 0);
 	}
 	
+	public static ShipStats EnemyStats_Banshe() {
+		return new ShipStats(5, 1, 15, 0);
+	}
+	
+	
 	public float getTurningSpeed() {
 		return 5f;
 //		switch(this.speed) {
