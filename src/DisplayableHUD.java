@@ -219,7 +219,7 @@ public class DisplayableHUD implements Displayable {
 				have_sp = true;
 				msg_diff_box = skill_msg.getHeight() * 1.35;
 			}
-			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 1.35) + (msg_diff_box));
+			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 1.5) + (msg_diff_box));
 		}
 		else {
 			if (have_sp == true) {
@@ -289,7 +289,6 @@ public class DisplayableHUD implements Displayable {
 			}
 			shield_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_shd - skill_msg.getHeight(), shield_stat.getY());
 		}
-		
 
 		msg_diff_box /= 1.1;
 		msg_diff_spd /= 1.1;
@@ -303,18 +302,15 @@ public class DisplayableHUD implements Displayable {
 		updateThreatBar(threat_left, threatLevels[2]);
 		updateThreatBar(threat_right, threatLevels[3]);
 		
-		
 		// Reset the levels
 		threats = new ArrayList<Direction>();
 		threatLevels = new float[4];
 	}
 	
-	
-	
 	private void updateThreatBar(GRect bar, float value) {
 		bar.setFilled(true);
 //			Color color = PaintToolbox.blend(Color.WHITE, Color.RED, value);
-		Color newColor = new Color(1.0f,0.0f, 0.0f, value);
+		Color newColor = new Color(1.0f, 0.0f, 0.0f, value);
 		Color color = PaintToolbox.blendAlpha(oldColor, newColor, 0.15f);
 		this.oldColor = color;
 		bar.setFillColor(color);
@@ -360,18 +356,6 @@ public class DisplayableHUD implements Displayable {
 				threatLevels[3] = .999f;
 			}
 		}
-//=======
-		// Threat Levels
-		
-		/*
-		float hue = 0;
-		float sat = 0;
-		float bri = 1;
-	
-		float left = (1 / (pane.getLeftThreat() + 1));
-		threat_left.setFillColor(new Color(1, left, left, (float) 0.5));
-//		threat_left.setFillColor(Color.getHSBColor(hue, (1 - (1 / (pane.getLeftThreat() + 1))), bri));
- * */
 	}
 	
 	public int recalculateDifference(int cur, int last) {

@@ -114,10 +114,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
 	
 	// THREAT LEVELS
-	private int left_threat = 0;
-	private int right_threat = 0;
-	private int down_threat = 0;
-	private int up_threat = 0;
+	private float left_threat = 0;
+	private float right_threat = 0;
+	private float down_threat = 0;
+	private float up_threat = 0;
 	
 	// Player STATUS HUD Stuffs
 
@@ -551,21 +551,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		// FX Layer
 		
-		// Bullets; needs to be redone
-		
-		// Enemy ships have priority next
-		for (int i = 0; i < drawn_ships.size(); i++) {
-			drawn_ships.get(i).getSprite().sendToBack();
-		}
-		
 		// Big rocks have priority next
 		for (int i = 0; i < drawn_rocks.size(); i++) {
 			drawn_rocks.get(i).getSprite().sendToBack();
 		}
 		
-		// Finally, bullets
-		for (int i = 0; i < drawn_bullets.size(); i++) {
-			drawn_bullets.get(i).getSprite().sendToBack();
+		// Enemy ships have priority next
+		for (int i = 0; i < drawn_ships.size(); i++) {
+			drawn_ships.get(i).getSprite().sendToBack();
 		}
 		
 		for(int i =0; i < DrawnBlinkerEyes.size(); i++) {
@@ -573,6 +566,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				oval.sendToBack();
 			}
 		}
+		
+		// Finally, bullets
+		for (int i = 0; i < drawn_bullets.size(); i++) {
+			drawn_bullets.get(i).getSprite().sendToBack();
+		}
+		
+
 		
 	}
 	
@@ -1093,61 +1093,5 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		// Lj's Method
 		HUD.updateThreats(dir);
-		
-		/*
-		// Kevin's Method
-		switch(dir) {
-		case left:
-			left_threat += 1;
-			break;
-		case lower_left:
-			left_threat += 1;
-			down_threat += 1;
-			break;
-		case upper_left:
-			left_threat += 1;
-			up_threat += 1;
-			break;
-		case right:
-			right_threat += 1;
-			break;
-		case lower_right:
-			right_threat += 1;
-			down_threat += 1;
-			break;
-		case upper_right:
-			right_threat += 1;
-			up_threat += 1;
-			break;
-		case up:
-			up_threat += 1;
-			break;
-		case down:
-			down_threat += 1;
-			break;
-		default:
-			break;
-		}
-		System.out.println("THREAT LEVELS: Left: " + left_threat + ", Right: " + right_threat + ", Down: " + down_threat + ", Up: " + up_threat);
-		*/
 	}
-	
-	/*
-	public int getLeftThreat() {
-		return left_threat;
-	}
-	
-	public int getRightThreat() {
-		return right_threat;
-	}
-	
-	public int getUpThreat() {
-		return up_threat;
-	}
-	
-	public int getDownThreat() {
-		return down_threat;
-	}
-	*/
-	
 }
