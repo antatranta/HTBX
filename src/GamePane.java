@@ -417,6 +417,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		moveEnemyShips();
+		console.getFXManager().moveParticles();
 		drawSprites();
 	}
 	

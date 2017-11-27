@@ -334,7 +334,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public void programRequest_makeFX(FXPattern pattern, FXType type, FXParticle particle) {
 		switch(pattern) {
 		case SPARKS_DEFLECT:
-			fx.makeSparks(type, particle);
+			fx.makeDeflectSparks(type, particle);
 			break;
 		default:
 			break;

@@ -23,7 +23,7 @@ public class FXParticle {
 	// ============================================================================
 	
 	public void move() {
-		pos.add(dir);
+		pos = pos.add(dir);
 		this.life -= 1;
 	}
 	

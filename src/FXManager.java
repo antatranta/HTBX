@@ -18,18 +18,29 @@ public class FXManager {
 		for (int i = 0; i < size; i++) {
 			FXParticle fx = particles.get(i);
 			fx.move();
+		}
+		
+		// CHECK FOR DEAD ONES AFTER
+		for (int i = 0; i < size; i++) {
+			FXParticle fx = particles.get(i);
 			if (fx.getLife() == 0) {
+				size -= 1;
 				particles.remove(fx);
 			}
 		}
 	}
 	
-	public void makeSparks(FXType type, FXParticle particle) {
-		for (int i = 0; i < 5; i++) {
-			FXParticle x = new FXParticle(particle);
+	public void makeDeflectSparks(FXType type, FXParticle particle) {
+		double theta = Math.toDegrees(Math.atan2(0 - particle.getPosition().getY(), 0 - particle.getPosition().getX())) - 90;
+		
+		for (int i = 0; i < 10; i++) {
+			FXParticle x = new FXParticle(particle.getSprite(), particle.getPattern(), particle.getType(), particle.getPosition(), particle.getDir(), particle.getLife());
+			double angle_off = theta + LavaLamp.randomRange(-45, 45);
+			float spd = LavaLamp.randomRange(3, 7);
+			x.setDir(new Vector2((float)Math.cos(Math.toRadians(angle_off)) * spd, (float)Math.sin(Math.toRadians(angle_off)) * spd));
 			particles.add(x);
-			
 		}
+		System.out.println(particles.size());
 	}
 	
 	public void setReferences(GamePane pane) {
