@@ -551,21 +551,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		// FX Layer
 		
-		// Bullets; needs to be redone
-		
-		// Enemy ships have priority next
-		for (int i = 0; i < drawn_ships.size(); i++) {
-			drawn_ships.get(i).getSprite().sendToBack();
-		}
-		
 		// Big rocks have priority next
 		for (int i = 0; i < drawn_rocks.size(); i++) {
 			drawn_rocks.get(i).getSprite().sendToBack();
 		}
 		
-		// Finally, bullets
-		for (int i = 0; i < drawn_bullets.size(); i++) {
-			drawn_bullets.get(i).getSprite().sendToBack();
+		// Enemy ships have priority next
+		for (int i = 0; i < drawn_ships.size(); i++) {
+			drawn_ships.get(i).getSprite().sendToBack();
 		}
 		
 		for(int i =0; i < DrawnBlinkerEyes.size(); i++) {
@@ -573,6 +566,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				oval.sendToBack();
 			}
 		}
+		
+		// Finally, bullets
+		for (int i = 0; i < drawn_bullets.size(); i++) {
+			drawn_bullets.get(i).getSprite().sendToBack();
+		}
+		
+
 		
 	}
 	
