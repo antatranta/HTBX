@@ -16,7 +16,7 @@ public class PlayerShip extends Ship implements ActionListener{
 	private ShipStats bonus_stats;
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
-		super(physObj, current_health, stats, sprite, CollisionType.playerShip);
+		super(physObj, current_health, stats, sprite, CollisionType.playerShip, 0);
 		this.current_shield = 0;//stats.getShield_max();
 		this.bonus_stats = new ShipStats(0, 0, 0, 0);
 	}
@@ -137,10 +137,4 @@ public class PlayerShip extends Ship implements ActionListener{
 		}
 	}
 	
-	@Override
-	protected void handleCollision(CollisionData data) {
-		
-		// TODO Auto-generated method stub
-		takeDamage(data.getDamage());
-	}
 }

@@ -51,10 +51,10 @@ public class LaserTest extends GraphicsApplication implements ActionListener {
 		QuadrantID id = new QuadrantID(0,0,0);
 
 		PhysXObject shipPhysXObj =  new PhysXObject(id, enemyVector);
-		enemy = new Fencer(shipPhysXObj, "Enemy_1_S.png",10, ShipStats.EnemyStats_01(), 1);
+		enemy = new Fencer(shipPhysXObj, "Enemy_1_S.png",10, ShipStats.EnemyStats_01(), 1, 20);
 		
 		PhysXObject TargetPhysXObj =  new PhysXObject(id, targetVector);
-		target1 = new EnemyShip(TargetPhysXObj, "Enemy_2_S.png",10,ShipStats.EnemyStats_01(), 1);
+		target1 = new EnemyShip(TargetPhysXObj, "Enemy_2_S.png",10,ShipStats.EnemyStats_01(), 1, 20);
 		
 		enemy.getSprite().setLocationRespectSize(enemyVector.getX(),enemyVector.getY());
 		target1.getSprite().setLocationRespectSize(targetVector.getX(),targetVector.getY());

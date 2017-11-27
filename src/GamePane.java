@@ -398,9 +398,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void actionPerformed(ActionEvent e) {
 		
 		if(deathEvents.size() > 1) {
-			for(ShipDeathData data: deathEvents) {
-				console.emitBurst(data);
-			}
+//			for(ShipDeathData data: deathEvents) {
+//				console.onShipDeath(data.getPos(), 0);
+//			}
 			deathEvents = new ArrayList<ShipDeathData>();
 		}
 		

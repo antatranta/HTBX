@@ -12,8 +12,8 @@ public class Fencer extends EnemyShip{
 	private int shotCount;
 	private boolean isAiming;
 
-	public Fencer(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
-		super(physObj, sprite, current_health, stats, aggression);
+	public Fencer(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, int exp) {
+		super(physObj, sprite, current_health, stats, aggression, exp);
 		this.count = 0;
 		this.shots = 1;
 		this.shotCount = 0;

@@ -14,11 +14,12 @@ public class ShipManagement implements ShipTriggers {
 	}
 
 	@Override
-	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
+	public void onShipDeath(Vector2 position, QuadrantID currentQUID, int exp) {
 		// TODO Auto-generated method stub
 //		System.out.println("Ship died");
 //		bulletManager_ref.onShipDeath(position, currentQUID);
 		gameConsole_ref.bulletRequest_burst(position, currentQUID);
+		gameConsole_ref.onShipDeath(position, exp);
 	}
 
 	@Override

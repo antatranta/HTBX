@@ -119,26 +119,6 @@ public class BulletManager implements ShipTriggers {
 		if(data != null)
 			onShootEvent(data.getDamage(), data.getSpeed(), data.getBulletType(), data.getCollisionType(), data.getTime(), data.getPhysXObject(), data.getSprite(), data.getMovementVector());
 	}
-	
-	@Override
-	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
-		emitBurst(position, currentQUID, 10);
-	}
-	
-	public void emitBurst(Vector2 position, QuadrantID currentQUID, int num) {
-		double theta_rad = 0;
-		double unit_x = Math.cos(theta_rad);
-		double unit_y = -Math.sin(theta_rad);
-
-		for (int i =0; i < num; i++) {
-			Vector2 pos = new Vector2(position.getX(), position.getY());
-			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
-			GImage bullet = onShootEvent(1, 1, BulletType.STRAIGHT, CollisionType.enemy_bullet, 4, new PhysXObject(currentQUID, pos), "RedCircle.png",  pos.add(offset));
-			theta_rad += Math.toRadians(360 / num);
-			unit_x = Math.cos(theta_rad);
-			unit_y = -Math.sin(theta_rad);
-		}
-	}
 
 	@Override
 	public int isAreaSafe(Vector2 pos, float range) {
@@ -150,5 +130,11 @@ public class BulletManager implements ShipTriggers {
 	public int identify() {
 		// TODO Auto-generated method stub
 		return 20;
+	}
+
+	@Override
+	public void onShipDeath(Vector2 position, QuadrantID currentQUID, int exp) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -4,5 +4,5 @@ public interface ShipTriggers {
 //	public void onShipDeath(Vector2 position);
 	public int isAreaSafe(Vector2 pos, float range);
 	public int identify();
-	void onShipDeath(Vector2 position, QuadrantID currentQUID);
+	void onShipDeath(Vector2 position, QuadrantID currentQUID, int exp);
 }

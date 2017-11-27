@@ -14,4 +14,5 @@ public class ShipDeathData {
 	public QuadrantID getQUID() {
 		return this.QUID;
 	}
+	
 }

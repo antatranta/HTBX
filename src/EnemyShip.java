@@ -16,8 +16,8 @@ public class EnemyShip extends Ship implements ActionListener {
 	
 	protected Vector2 currentTarget = new Vector2(-99, -99);
 	
-	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
-		super(physObj, current_health, stats, sprite, CollisionType.enemyShip);
+	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, int exp) {
+		super(physObj, current_health, stats, sprite, CollisionType.enemyShip, exp);
 		this.stats = new EnemyShipStats(stats, aggression);
 		System.out.println("Stats: " + stats);
 		System.out.println("Aggression: " +aggression);
@@ -75,11 +75,34 @@ public class EnemyShip extends Ship implements ActionListener {
 			if (weapon_cd == 0) {
 				weapon_cd = max_cd + randomRange(-15, 15);
 				shootSpread(BulletType.STRAIGHT, weapon_target, 3, 45);
-
 			}
 		}
 	}
 	
+
+	private void destroyShip() {
+		setCurrentHealth(0);
+		
+		if(subscribers != null && subscribers.size() > 0) {
+			for(ShipTriggers sub : subscribers) {
+				sub.onShipDeath(physObj.getPosition(), physObj.getQUID(), exp_value);
+			}
+		}
+		// TEMPORARY solution to "kill" enemies
+		physObj.setPosition(new Vector2(-1000, -1000));
+		
+		sprite.rotate(0);
+	}
+	
+	protected void takeDamage(int damage) {
+		if(getCurrentHealth() > 0) {
+			setCurrentHealth(getCurrentHealth() - damage);
+		} 
+		if (getCurrentHealth() <= 0) {
+			destroyShip();
+		}
+	}
+
 	// Thanks Wenrui
 	public void rotateToPoint(Vector2 target) {
 		Vector2 origin = physObj.getPosition();
