@@ -52,6 +52,17 @@ public class MainApplication extends GraphicsApplication {
 		sfxToggle = toggle;
 	}
 	
+	public void musicToggle(boolean toggle) {
+		musicToggle = toggle;
+		
+		if(musicToggle) {
+			audio.playSound("sounds", "3A1W - Menu.wav", true);
+		}
+		else {
+			audio.stopSound("sounds", "3A1W - Menu.wav");
+		}
+	}
+	
 	public void setLookedAtControls(boolean looked) {
 		lookedAtControls = looked;
 	}
@@ -62,6 +73,10 @@ public class MainApplication extends GraphicsApplication {
 	
 	public boolean isPaused() {
 		return isPaused;
+	}
+	
+	public boolean getMusicToggle() {
+		return musicToggle;
 	}
 	
 	public boolean lookedAtControls() {
@@ -156,16 +171,5 @@ public class MainApplication extends GraphicsApplication {
 		
 	public GameConsole getGameConsole() {
 		return console;
-	}
-	
-	public void musicToggle(boolean toggle) {
-		musicToggle = toggle;
-		
-		if(musicToggle) {
-			audio.playSound("sounds", "3A1W - Menu.wav", true);
-		}
-		else {
-			audio.stopSound("sounds", "3A1W - Menu.wav");
-		}
 	}
 }
