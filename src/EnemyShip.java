@@ -104,6 +104,7 @@ public class EnemyShip extends Ship implements ActionListener {
 		}
 	}
 	
+	@Override
 	protected void destroyShip() {
 		setCurrentHealth(0);
 		
@@ -121,13 +122,11 @@ public class EnemyShip extends Ship implements ActionListener {
 		sprite.rotate(0);
 	}
 	
-	protected void takeDamage(int damage) {
-		if(getCurrentHealth() > 0) {
-			setCurrentHealth(getCurrentHealth() - damage);
-		} 
-		if (getCurrentHealth() <= 0) {
-			destroyShip();
-		}
+	@Override
+	protected void playDamageSound() {
+		SFXAudioPlayer myAudio = SFXAudioPlayer.getInstance();
+//		myAudio.Sound("sounds", "BlinkerHit.wav");
+		myAudio.playSound("sounds", "BlinkerHit.wav");
 	}
 
 	// Thanks Wenrui

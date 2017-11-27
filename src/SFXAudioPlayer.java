@@ -17,11 +17,11 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-public class AudioPlayer {
+public class SFXAudioPlayer {
 	protected HashMap<String, MediaPlayer> players;
-	private static AudioPlayer somePlayer;
+	private static SFXAudioPlayer somePlayer;
 	
-	protected AudioPlayer() {
+	protected SFXAudioPlayer() {
 		JFXPanel fxPanel = new JFXPanel();
 		players = new HashMap<String, MediaPlayer>();
 	}
@@ -33,9 +33,9 @@ public class AudioPlayer {
 	 * 
 	 * @return instance of the AudioPlayer
 	 */
-	public static AudioPlayer getInstance() {
+	public static SFXAudioPlayer getInstance() {
 		if(somePlayer == null) {
-			somePlayer = new AudioPlayer();
+			somePlayer = new SFXAudioPlayer();
 		}
 		return somePlayer;
 	}
