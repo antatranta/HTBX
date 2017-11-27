@@ -302,18 +302,15 @@ public class DisplayableHUD implements Displayable {
 		updateThreatBar(threat_left, threatLevels[2]);
 		updateThreatBar(threat_right, threatLevels[3]);
 		
-		
 		// Reset the levels
 		threats = new ArrayList<Direction>();
 		threatLevels = new float[4];
 	}
 	
-	
-	
 	private void updateThreatBar(GRect bar, float value) {
 		bar.setFilled(true);
 //			Color color = PaintToolbox.blend(Color.WHITE, Color.RED, value);
-		Color newColor = new Color(1.0f,0.0f, 0.0f, value);
+		Color newColor = new Color(1.0f, 0.0f, 0.0f, value);
 		Color color = PaintToolbox.blendAlpha(oldColor, newColor, 0.15f);
 		this.oldColor = color;
 		bar.setFillColor(color);
