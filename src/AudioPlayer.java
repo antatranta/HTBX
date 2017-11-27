@@ -183,7 +183,7 @@ public class AudioPlayer {
 				players.remove(key);
 			}
 		}
-		
-		System.out.println("Removed " + keysToRemove.size() + " Audio Player(s).");
+		if(keysToRemove.size() > 0)
+			System.out.println("Removed " + keysToRemove.size() + " Audio Player(s).");
 	}
 }
