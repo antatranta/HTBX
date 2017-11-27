@@ -353,7 +353,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void playerShoot() {
 
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
-		BulletFireEventData bfe = new BulletFireEventData(1, 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "BlueCircle.png", Camera.frontendToBackend(last_mouse_loc));
+		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "BlueCircle.png", Camera.frontendToBackend(last_mouse_loc));
 		player.shoot(bfe);
 	}
 
