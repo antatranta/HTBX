@@ -174,7 +174,7 @@ public class PhysXLibrary{
 			return Direction.none;
 		}
 		
-		// ref --- point : Right
+//		 ref --- point : Right
 
 	}
 }

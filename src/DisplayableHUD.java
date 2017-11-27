@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.io.Console;
+import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
@@ -38,6 +39,11 @@ public class DisplayableHUD implements Displayable {
 	private GRect threat_right;
 	private GRect threat_up;
 	private GRect threat_down;
+	
+	private Color oldColor;
+	
+	private ArrayList<Direction> threats;
+	private float[] threatLevels;
 	
 	private float threatWidth = 100;
 	
@@ -160,7 +166,14 @@ public class DisplayableHUD implements Displayable {
 		threat_up = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), 10, threatWidth, 10);
 		threat_up.setFilled(true);
 		threat_down = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), MainApplication.WINDOW_HEIGHT - 20, threatWidth, 10);
+
+	
+		threats = new ArrayList<Direction>();
+		threatLevels = new float[4];
+
 		threat_down.setFilled(true);
+		oldColor = Color.WHITE;
+
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -282,18 +295,70 @@ public class DisplayableHUD implements Displayable {
 		msg_diff_dmg /= 1.1;
 		msg_diff_hp /= 1.1;
 		msg_diff_shd /= 1.1;
+
+		// Handle threats		
+		updateThreatBar(threat_up, threatLevels[0]);
+		updateThreatBar(threat_down, threatLevels[1]);
+		updateThreatBar(threat_left, threatLevels[2]);
+		updateThreatBar(threat_right, threatLevels[3]);
 		
-		// Threat Levels
 		
-		float left = (1 / (pane.getLeftThreat() + 1));
-		threat_left.setFillColor(new Color(1, left, left, (float) 0.5));
-		float right = (1 / (pane.getRightThreat() + 1));
-		threat_right.setFillColor(new Color(1, right, right, (float) 0.5));
-		float up = (1 / (pane.getUpThreat() + 1));
-		threat_up.setFillColor(new Color(1, up, up, (float) 0.5));
-		float down = (1 / (pane.getDownThreat() + 1));
-		threat_down.setFillColor(new Color(1, down, down, (float) 0.5));
+		// Reset the levels
+		threats = new ArrayList<Direction>();
+		threatLevels = new float[4];
+	}
+	
+	
+	
+	private void updateThreatBar(GRect bar, float value) {
+		bar.setFilled(true);
+//			Color color = PaintToolbox.blend(Color.WHITE, Color.RED, value);
+		Color newColor = new Color(1.0f,0.0f, 0.0f, value);
+		Color color = PaintToolbox.blendAlpha(oldColor, newColor, 0.15f);
+		this.oldColor = color;
+		bar.setFillColor(color);
+		bar.setColor(color);
+	}
+	
+	public void updateThreats(Direction threatDirection) {
+		threats.add(threatDirection);
 		
+		if(threatDirection == Direction.up
+				|| threatDirection == Direction.upper_left
+				|| threatDirection == Direction.upper_right) {
+			if(threatLevels[0] + .25f < .999f) {
+				threatLevels[0] += .25f;
+			} else {
+				threatLevels[0] = .999f;
+			}
+		}
+		if(threatDirection == Direction.down
+				|| threatDirection == Direction.lower_left
+				|| threatDirection == Direction.lower_right) {
+			if(threatLevels[1] + .25f < .999f) {
+				threatLevels[1] += .25f;
+			} else {
+				threatLevels[1] = .999f;
+			}
+		}
+		if(threatDirection == Direction.left
+				|| threatDirection == Direction.upper_left
+				|| threatDirection == Direction.lower_left) {
+			if(threatLevels[2] + .25f < .999f) {
+				threatLevels[2] += .25f;
+			} else {
+				threatLevels[2] = .999f;
+			}
+		}
+		if(threatDirection == Direction.right
+				|| threatDirection == Direction.upper_right
+				|| threatDirection == Direction.lower_right) {
+			if(threatLevels[3] + .25f < .999f) {
+				threatLevels[3] += .25f;
+			} else {
+				threatLevels[3] = .999f;
+			}
+		}
 	}
 	
 	public int recalculateDifference(int cur, int last) {

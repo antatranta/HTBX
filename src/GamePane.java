@@ -351,13 +351,19 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 
 	private void playerShoot() {
-		BulletFireEventData bfe = new BulletFireEventData(1, 8, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "BlueCircle.png", Camera.frontendToBackend(last_mouse_loc));
+
+		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
+		BulletFireEventData bfe = new BulletFireEventData(1, 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "BlueCircle.png", Camera.frontendToBackend(last_mouse_loc));
 		player.shoot(bfe);
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		if(player.getCurrentHealth() <= 0) {
+			program.switchToGameOver();
+		}
 		
 		if(deathEvents.size() > 1) {
 			deathEvents = new ArrayList<ShipDeathData>();
@@ -1084,55 +1090,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void addThreat(Vector2 pos) {
 		// TODO Auto-generated method stub
 		Direction dir = PhysXLibrary.directionOffPoint(pos, player.getPhysObj().getPosition(), 200);
-		switch(dir) {
-		case left:
-			left_threat += 1;
-			break;
-		case lower_left:
-			left_threat += 0.5;
-			down_threat += 0.5;
-			break;
-		case upper_left:
-			left_threat += 0.5;
-			up_threat += 0.5;
-			break;
-		case right:
-			right_threat += 1;
-			break;
-		case lower_right:
-			right_threat += 0.5;
-			down_threat += 0.5;
-			break;
-		case upper_right:
-			right_threat += 0.5;
-			up_threat += 0.5;
-			break;
-		case up:
-			up_threat += 1;
-			break;
-		case down:
-			down_threat += 1;
-			break;
-		default:
-			break;
-		}
-//		System.out.println("THREAT LEVELS: Left: " + left_threat + ", Right: " + right_threat + ", Down: " + down_threat + ", Up: " + up_threat);
+		
+		// Lj's Method
+		HUD.updateThreats(dir);
 	}
-	
-	public float getLeftThreat() {
-		return left_threat;
-	}
-	
-	public float getRightThreat() {
-		return right_threat;
-	}
-	
-	public float getUpThreat() {
-		return up_threat;
-	}
-	
-	public float getDownThreat() {
-		return down_threat;
-	}
-	
 }
