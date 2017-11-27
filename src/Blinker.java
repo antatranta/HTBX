@@ -134,7 +134,7 @@ public class Blinker extends EnemyShip {
 //			AudioPlayer myAudio = AudioPlayer.getInstance();
 //			myAudio.playSound("sounds", "BlinkerTeleport.wav");
 			
-			SFXAudioPlayer myAudio = SFXAudioPlayer.getInstance();
+			AudioPlayer myAudio = AudioPlayer.getInstance();
 			myAudio.playSound("sounds", "BlinkerTeleport.wav");
 			
 			// Set the charger pos
@@ -159,7 +159,7 @@ public class Blinker extends EnemyShip {
 //				AudioPlayer myAudio = AudioPlayer.getInstance();
 //				myAudio.playSound("sounds", "BlinkerShoot.wav");
 				
-				SFXAudioPlayer myAudio = SFXAudioPlayer.getInstance();
+				AudioPlayer myAudio = AudioPlayer.getInstance();
 				myAudio.playSound("sounds", "BlinkerShoot.wav");
 			} else {
 				

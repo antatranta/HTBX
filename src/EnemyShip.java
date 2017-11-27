@@ -127,7 +127,7 @@ public class EnemyShip extends Ship implements ActionListener {
 	
 	@Override
 	protected void playDamageSound() {
-		SFXAudioPlayer myAudio = SFXAudioPlayer.getInstance();
+		AudioPlayer myAudio = AudioPlayer.getInstance();
 //		myAudio.Sound("sounds", "BlinkerHit.wav");
 		myAudio.playSound("sounds", "BlinkerHit.wav");
 	}

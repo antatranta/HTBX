@@ -362,6 +362,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		// Audio
+		AudioPlayer myAudio = AudioPlayer.getInstance();
+		myAudio.updatePlayer();
+		
 		if(player.getCurrentHealth() <= 0) {
 			program.switchToGameOver();
 		}

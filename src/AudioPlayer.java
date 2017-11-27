@@ -18,12 +18,14 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public class AudioPlayer {
-	protected HashMap<String, MediaPlayer> players;
+	private HashMap<String, MediaPlayer> players;
 	private static AudioPlayer somePlayer;
+	private static ArrayList<String> playKeys;
 	
 	protected AudioPlayer() {
 		JFXPanel fxPanel = new JFXPanel();
 		players = new HashMap<String, MediaPlayer>();
+		playKeys = new ArrayList<String>();
 	}
 	
 	/**
@@ -64,9 +66,16 @@ public class AudioPlayer {
 		if(mPlayer == null || mPlayer.getCycleDuration().lessThanOrEqualTo(mPlayer.getCurrentTime())) {
 			mPlayer = createMediaPlayer(folder, filename);
 		}
-		mPlayer.play();
+//		mPlayer.play();
+		addKey(folder+filename);
 		if(shouldLoop) {
 			mPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		}
+	}
+	
+	private void addKey(String key) {
+		if(!playKeys.contains(key)) {
+			playKeys.add(key);
 		}
 	}
 	
@@ -136,5 +145,45 @@ public class AudioPlayer {
 		if(mp != null) {
 			mp.pause();
 		}
+	}
+	
+	public void updatePlayer() {
+		
+		for(String key : playKeys) {
+			if(players.containsKey(key) && players.get(key).getStatus() == MediaPlayer.Status.READY) {
+				
+				// Play the audio
+				players.get(key).play();
+			}
+		}
+		
+		playKeys = new ArrayList<String>();
+		
+		garbageCollection();
+	}
+	
+	private void garbageCollection() {
+		
+		// Find stopped players
+		ArrayList<String> keysToRemove = new ArrayList<String>();
+		for(String key : players.keySet()) {
+			if(players.get(key).getStatus() == MediaPlayer.Status.STOPPED) {
+				keysToRemove.add(key);
+			}
+		}
+		
+		// Remove the associated players
+		for(String key : keysToRemove) {
+			if(players.containsKey(key)) {
+				
+				// Not sure if necessary
+				players.put(key, null);
+				
+				// Remove
+				players.remove(key);
+			}
+		}
+		
+		System.out.println("Removed " + keysToRemove.size() + " Audio Player(s).");
 	}
 }
