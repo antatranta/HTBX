@@ -131,7 +131,7 @@ public class EnemyShip extends Ship implements ActionListener {
 	protected void playDamageSound() {
 		AudioPlayer myAudio = AudioPlayer.getInstance();
 //		myAudio.Sound("sounds", "BlinkerHit.wav");
-		myAudio.playSound("sounds", "BlinkerHit.wav");
+//		myAudio.playSound("sounds", "BlinkerHit.wav");
 	}
 
 	// Thanks Wenrui

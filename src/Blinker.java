@@ -135,7 +135,7 @@ public class Blinker extends EnemyShip {
 //			myAudio.playSound("sounds", "BlinkerTeleport.wav");
 			
 			AudioPlayer myAudio = AudioPlayer.getInstance();
-			myAudio.playSound("sounds", "BlinkerTeleport.wav");
+//			myAudio.playSound("sounds", "BlinkerTeleport.wav");
 			
 			// Set the charger pos
 			Vector2 pos = Camera.backendToFrontend(this.physObj.getPosition());
@@ -160,7 +160,7 @@ public class Blinker extends EnemyShip {
 //				myAudio.playSound("sounds", "BlinkerShoot.wav");
 				
 				AudioPlayer myAudio = AudioPlayer.getInstance();
-				myAudio.playSound("sounds", "BlinkerShoot.wav");
+//				myAudio.playSound("sounds", "BlinkerShoot.wav");
 			} else {
 				
 				this.targetColor = new Color(205, 58, 42);
