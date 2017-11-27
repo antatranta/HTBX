@@ -45,7 +45,8 @@ public class EnemyShip extends Ship implements ActionListener {
 		if(!checkInteractionDistance(playerPos)) {
 			currentTarget = physObj.getPosition();
 			gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
-		} else {
+		}
+		else {
 			if (checkpoint == 0) {
 				checkpoint = 1;
 				double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));
@@ -92,9 +93,7 @@ public class EnemyShip extends Ship implements ActionListener {
 					shootSpread(bfe, 3, 45);
 					break;
 				case LEVEL_3:
-					bfe.setBulletType(BulletType.ACCEL);
-					bfe.setTime(4);
-					shootSpread(bfe, 5, 75);
+					shootSpread(bfe, 5, 90);
 					break;
 				case BOSS:
 					break;
@@ -154,9 +153,9 @@ public class EnemyShip extends Ship implements ActionListener {
 			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 		}
 		if (data.getType() == CollisionType.asteroid || data.getType() == CollisionType.player_bullet) {
-			AudioPlayer myAudio = AudioPlayer.getInstance();
-			myAudio.stopSound("sounds", "BlinkerHit.wav");
-			myAudio.playSound("sounds", "BlinkerHit.wav");
+//			AudioPlayer myAudio = AudioPlayer.getInstance();
+//			myAudio.stopSound("sounds", "BlinkerHit.wav");
+//			myAudio.playSound("sounds", "BlinkerHit.wav");
 			takeDamage(data.getDamage());
 		}
 	}
