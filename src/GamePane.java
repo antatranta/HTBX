@@ -78,8 +78,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GameImage player_img;
 	private GameImage aiming_head;
 	private GameImage aiming_edge;
-	private ArrayList <GameImage> cursor_dots;
+
 	private ArrayList <Integer> pressed_keys;
+	private ArrayList <GameImage> drawn_fx;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <EnemyShip> drawn_ships;
 	private ArrayList <EnemyShip> drawn_ship_gifs;
@@ -274,7 +275,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		CAN_MOVE = false;
 		
 		last_mouse_loc = new Vector2(0,0);
-		cursor_dots = new ArrayList <GameImage>();
 		pressed_keys = new ArrayList <Integer>();
 		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <EnemyShip>();
@@ -338,8 +338,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.add(aiming_head);
 		HUD.showContents();
 	}
-	
-
 
 	@Override
 	public void hideContents() {
@@ -348,9 +346,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.remove(aiming_head);
 		HUD.hideContents();
 	}
-	
 
-	
 	private void playerShoot() {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 
@@ -877,19 +873,19 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		double off_x = (coord.getX() - visual_root.getX());
 		double off_y = (coord.getY() - visual_root.getY());
 		double theta_rad = Math.atan2(off_y, off_x);
-		double unit_x = (Math.cos(theta_rad) * CURSOR_DIST);
-		double unit_y = (Math.sin(theta_rad) * CURSOR_DIST);
+//		double unit_x = (Math.cos(theta_rad) * CURSOR_DIST);
+//		double unit_y = (Math.sin(theta_rad) * CURSOR_DIST);
 		aiming_edge.setDegrees(Math.toDegrees(theta_rad));
 		aiming_edge.setLocation(visual_root.getX() - (aiming_edge.getWidth() / 2), visual_root.getY() - (aiming_edge.getHeight() / 2));
 		aiming_head.setDegrees(Math.toDegrees(theta_rad));
 		aiming_head.setLocation(coord.getX() - (aiming_head.getWidth() / 2), coord.getY() - (aiming_head.getHeight() / 2));
-		for (int i = 0; i < cursor_dots.size(); i++) {
-			GameImage dot = cursor_dots.get(i);
-			double pos_x = visual_root.getX() - (dot.getWidth() / 2) + (unit_x * (i + 1.5));
-			double pos_y = visual_root.getY() - (dot.getHeight() / 2) + (unit_y * (i + 1.5));
-			dot.setDegrees(Math.toDegrees(theta_rad));
-			dot.setLocation(pos_x, pos_y);
-		}
+//		for (int i = 0; i < cursor_dots.size(); i++) {
+//			GameImage dot = cursor_dots.get(i);
+//			double pos_x = visual_root.getX() - (dot.getWidth() / 2) + (unit_x * (i + 1.5));
+//			double pos_y = visual_root.getY() - (dot.getHeight() / 2) + (unit_y * (i + 1.5));
+//			dot.setDegrees(Math.toDegrees(theta_rad));
+//			dot.setLocation(pos_x, pos_y);
+//		}
 		//System.out.println("Distance: " + distance + ", Drawn: " + dots);
 		ALIGNMENT_LOCK = false;
 	}
