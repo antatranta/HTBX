@@ -9,7 +9,7 @@ public class EnemyShip extends Ship implements ActionListener {
 	private static int max_dist = 350;
 	protected EnemyShipStats stats;
 	
-	private static int max_cd = 180;
+//	private static int max_cd = 180;
 	private int weapon_cd;
 	private int checkpoint;
 	private int auto_reset = 0;
@@ -83,16 +83,18 @@ public class EnemyShip extends Ship implements ActionListener {
 			if (weapon_cd == 0) {
 				weapon_cd = stats.getFireRateValue() + randomRange(-15, 15);
 				PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-				BulletFireEventData bfe = new BulletFireEventData(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 2, po, "RedCircle.png", weapon_target);
+				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 5, po, "RedCircle.png", weapon_target);
 //				System.out.println("This pos: " + physObj.getPosition().toString() + ", BFE: " + bfe.getMovementVector().toString());
 				switch(type) {
 				case LEVEL_1:
+					bfe.setSpeed(6);
 					shoot(bfe);
 					break;
 				case LEVEL_2:
 					shootSpread(bfe, 3, 45);
 					break;
 				case LEVEL_3:
+					bfe.setBulletType(BulletType.OSCILLATE);
 					shootSpread(bfe, 5, 90);
 					break;
 				case BOSS:
