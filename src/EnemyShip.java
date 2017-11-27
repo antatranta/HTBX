@@ -79,8 +79,7 @@ public class EnemyShip extends Ship implements ActionListener {
 		}
 	}
 	
-
-	private void destroyShip() {
+	protected void destroyShip() {
 		setCurrentHealth(0);
 		
 		if(subscribers != null && subscribers.size() > 0) {

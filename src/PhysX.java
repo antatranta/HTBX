@@ -112,13 +112,11 @@ public class PhysX {
 	}
 	
 	public void setActiveQuadrant(QuadrantID newQUID) {
-		this.ActiveQuadrant = newQUID;
-		/*
-		if (newQUID.getX() > 0 && newQUID.getX() <= MAP_WIDTH
-				&& newQUID.getY() > 0 && newQUID.getY() <= MAP_HEIGHT) {
+		
+		// Only set if it's a valid quad.
+		if(newQUID.Order() != -45 && newQUID.Order() < Quadrants.size() && newQUID.Order() != -99) {
 			this.ActiveQuadrant = newQUID;
 		}
-		*/
 		updateQuadrantStates();
 	}
 	

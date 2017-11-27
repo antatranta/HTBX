@@ -168,5 +168,5 @@ public class Blinker extends EnemyShip {
 		}
 		count++;
 	}
-	
+
 }
