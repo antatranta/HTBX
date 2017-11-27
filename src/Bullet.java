@@ -5,7 +5,7 @@ public class Bullet extends Entity {
 	private BulletType bulletType;
 	public static final int OSCILLATION_OFFSET = 5;
 	public static final int WAVE_OFFSET = 50;
-	public static final int WAVE_DELTA = 5;
+	public static final int WAVE_DELTA = 2;
 	
 	private int bulletOscIts = 0;
 	private int bulletWaveIts = 0;
@@ -113,13 +113,13 @@ public class Bullet extends Entity {
 			// OSCILLATE: Bullet fluctuates in its path
 			else if (bulletType == BulletType.OSCILLATE) {
 				if (bulletSpeed > -OSCILLATION_OFFSET && bulletOscIts == 0) {
-					bulletSpeed -= 1;
+					bulletSpeed -= 0.5;
 				}
 				if (bulletSpeed == 0) {
 					bulletOscIts = 1;
 				}
 				if (bulletSpeed < originalSpeed + OSCILLATION_OFFSET && bulletOscIts == 1) {
-					bulletSpeed += 1;
+					bulletSpeed += 0.5;
 				}
 				if (bulletSpeed >= originalSpeed + OSCILLATION_OFFSET) {
 					bulletOscIts = 0;

@@ -9,9 +9,9 @@ import acm.util.*;
 import java.awt.*;
 
 public class MapCreator {
-	private static float min_distance_between_objects=400.0f;
-	private final int MAX_ENEMIES_IN_QUAD = 2;
-	private final int MAX_BLINKERS_IN_QUAD = 2;
+	private static float min_distance_between_objects=50.0f;
+	private final int MAX_ENEMIES_IN_QUAD = 6;
+	private final int MAX_BLINKERS_IN_QUAD = 1;
 	private final int MAX_ASTEROIDS_IN_QUAD = 4;
 	private final int MAX_FENCERS_IN_QUAD = 0;
 	private final int MAX_BANSHES_IN_QUAD = 1;
