@@ -49,7 +49,7 @@ public class BlinkerTest extends GraphicsApplication implements ActionListener {
 		
 		// Create the Blinker object
 		PhysXObject shipPhysXObj =  new PhysXObject(id, targetVector.minus(Vector2.One().mult(new Vector2(2,2))));
-		blinker = new Blinker(shipPhysXObj, "Blinker.png",10, new EnemyShipStats(speed, shield_max, health_max, damage, aggression, fireRate), 1);
+		blinker = new Blinker(shipPhysXObj, "Blinker.png",10, new EnemyShipStats(speed, shield_max, health_max, damage, aggression, fireRate), 1, 15);
 		add(blinker.getCharger());
 		add(blinker.getSprite());
 		
@@ -57,7 +57,7 @@ public class BlinkerTest extends GraphicsApplication implements ActionListener {
 		
 		// Create the Target object
 		PhysXObject targetPhysXObj = new PhysXObject(id, targetVector);
-		target = new Blinker(targetPhysXObj, "Enemy_1_S.png",10, ShipStats.EnemyStats_01(), 1);
+		target = new Blinker(targetPhysXObj, "Enemy_1_S.png",10, ShipStats.EnemyStats_01(), 1, 15);
 		add(target.getSprite());
 		
 		drawEntity(target);	

@@ -16,16 +16,19 @@ public class Ship extends Entity {
 	protected GameConsoleEvents gameConsoleSubscriber;
 	protected LaserManagerEvents laserManagerSubscriber;
 	
+	protected int exp_value;
+	
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
 	
-	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType) {
+	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType, int exp) {
 		super(physObj, sprite, new CollisionData(10, shipType));
 		this.external_force = new Vector2(0, 0);
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
 		this.stats = stats;
 		this.subscribers = new ArrayList<ShipTriggers>();
+		this.exp_value = exp;
 	}
 	
 	public void identifySubscribers() {
@@ -63,18 +66,17 @@ public class Ship extends Entity {
 		if(subscribers != null && subscribers.size() > 0) {
 			for(ShipTriggers sub : subscribers) {
 				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
+				gameConsoleSubscriber.onShipDeath(physObj.getPosition(), 10);
 			}
 		}
-		
-		gameConsoleSubscriber.onShipDeath(physObj.getPosition());
-		
-		// TEMPORARY solution to "kill" enemies
-		//physObj.setPosition(new Vector2(0, 0));
-		physObj = new PhysXObject();
-		
-		sprite.rotate(0);
+
+		gameConsoleSubscriber.onShipDeath(physObj.getPosition(), KB_FORCE);
 		
 
+		// TEMPORARY solution to "kill" enemies
+		physObj.setPosition(new Vector2(-1000, -1000));
+		
+		sprite.rotate(0);
 	}
 	
 	protected void playDeathSound() {
@@ -154,6 +156,10 @@ public class Ship extends Entity {
 		return stats;
 	}
 	
+	public int getExp() {
+		return exp_value;
+	}
+	
 	protected void shoot(int damage, int speed, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		BulletFireEventData bfe = new BulletFireEventData(damage,speed, type, collision, time, obj, sprite, movementVector);
 		
@@ -189,10 +195,6 @@ public class Ship extends Entity {
 	}
 	
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-		takeDamage(data.getDamage());
-	}
-	
-	protected void handleCollision(CollisionData data) {
 		takeDamage(data.getDamage());
 	}
 	

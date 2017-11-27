@@ -379,7 +379,7 @@ public class MapCreator {
 		presetPhysObj.setQUID(physObj.getQUID());
 		
 		System.out.println("[" + file.getShipSprite(preset) + "]");
-		return new EnemyShip(presetPhysObj, file.getShipSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getShipLevel(preset));
+		return new EnemyShip(presetPhysObj, file.getShipSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getShipLevel(preset), 10);
 	}
 	
 	public ArrayList<EnemyShip> placeEnemies(QuadrantID quad, int numToCreate) {
@@ -432,7 +432,7 @@ public class MapCreator {
 		
 		System.out.println("[" + file.getBlinkSprite(preset) + "]");
 //		PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression
-		return new Blinker(presetPhysObj, file.getBlinkSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getBlinkLevel(preset));
+		return new Blinker(presetPhysObj, file.getBlinkSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getBlinkLevel(preset), 15);
 	}
 	
 	public ArrayList<Blinker> placeBlinkers(QuadrantID quad, int numToCreate) {
@@ -458,7 +458,7 @@ public class MapCreator {
 		presetPhysObj.setQUID(physObj.getQUID());
 		
 		System.out.println("[" + file.getFencerSprite(preset) + "]");
-		return new Fencer(presetPhysObj, file.getFencerSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getFencerLevel(preset));
+		return new Fencer(presetPhysObj, file.getFencerSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getFencerLevel(preset), 20);
 	}
 	
 	public ArrayList<Fencer> placeFencers (QuadrantID quad, int numToCreate) {

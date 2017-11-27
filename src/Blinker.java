@@ -21,8 +21,8 @@ public class Blinker extends EnemyShip {
 	private boolean BlinkerGOvalAdded = false;
 
 	
-	public Blinker(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
-		super(physObj, sprite, current_health, stats, aggression);
+	public Blinker(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, int exp) {
+		super(physObj, sprite, current_health, stats, aggression, exp);
 		
 		this.blinkRate = getBlinkRate();
 		this.count = 0;
@@ -168,15 +168,5 @@ public class Blinker extends EnemyShip {
 		}
 		count++;
 	}
-	
-	@Override
-	protected void playDeathSound() {
-		
-		// Remove the eye
-		this.gameConsoleSubscriber.programRequest_removeGOval(this.getPhysObj(), this.charger);
-		
-		AudioPlayer myAudio = AudioPlayer.getInstance();
-		myAudio.stopSound("sounds", "BlinkerHit.wav");
-		myAudio.playSound("sounds", "BlinkerHit.wav");
-	}
+
 }

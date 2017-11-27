@@ -5,7 +5,7 @@ import acm.graphics.GOval;
 import rotations.GameImage;
 
 public interface GameConsoleEvents {
-	public void onShipDeath(Vector2 pos);
+	public void onShipDeath(Vector2 pos, int exp);
 	public boolean physXRequest_isAreaSafe(Vector2 pos, float range);
 	public void programRequest_drawGOval(PhysXObject obj, GOval oval);
 	public void programRequest_removeGOval(PhysXObject obj, GOval oval);

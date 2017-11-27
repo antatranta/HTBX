@@ -21,7 +21,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private PlayerShip player;
 	private MapCreator mapCreator;
 	private PhysX physx; // The controller for all things
+	private int level;
+	private int next_level;
 	private int skill_points;
+	private int exp;
 	private Camera camera;
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
@@ -33,7 +36,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public GameConsole() {
 		endDebugView();
-		skill_points = 16;
+		skill_points = 0;
+		exp = 0;
+		level = 1;
+		calculateNeededExp();
 		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
@@ -196,11 +202,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		return laserStore;
 	}
 	
-	public BulletEmitter createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
+	public void createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
 		BulletEmitter be = new BulletEmitter(health, rate, physObj, sprite, data);
 		be.addSubscriber(getBulletManager());
 		emitters.add(be);
-		return be;
 	}
 
 	public ArrayList<BulletEmitter> getActiveBulletEmitters() {
@@ -214,13 +219,22 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	}
 
 	@Override
-	public void onShipDeath(Vector2 pos) {
-		
-		System.out.println("Hello");
-		// TODO Auto-generated method stub
-		skill_points += 1;
-		System.out.println("SP: " + skill_points);
-		createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
+	public void onShipDeath(Vector2 pos, int ship_exp) {
+		calculateNeededExp();
+		exp += ship_exp;
+		if (exp >= next_level) {
+			exp -= next_level;
+			level += 1;
+			skill_points += 1;
+			calculateNeededExp();
+		}
+		System.out.println("Level: " + level + "| Exp: " + exp + "| SP: " + skill_points);
+		//createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
+	}
+	
+	private void calculateNeededExp() {
+		int base = 60;
+		next_level = (int)(base + ((level - 1) * 20));
 	}
 	
 	public int getSP() {
@@ -280,15 +294,9 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		gamePane_ref = game;
 	}
 	
-	public void emitBurst(ShipDeathData data) {
-		this.bulletStore.emitBurst(data.getPos(), data.getQUID(), 25);
-	}
-
 	@Override
 	public void bulletRequest_burst(Vector2 pos, QuadrantID QUID) {
-//		gamePane_ref.eventRequest_addDeathEvent(new ShipDeathData(pos,QUID));
-		// TODO Auto-generated method stub
-//		this.bulletStore.emitBurst(pos, new QuadrantID(), 25);
+		// Stub
 	}
 
 	@Override
