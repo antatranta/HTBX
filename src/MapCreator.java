@@ -521,7 +521,8 @@ public class MapCreator {
 	public PlayerShip placePlayer (QuadrantID quad) {
 		PhysXObject physObj = createPhysXObjectInQuad(quad);
 		int player_base_hp = 3;
-		return new PlayerShip(physObj, player_base_hp, new ShipStats(1, 1, player_base_hp, 1), "PlayerShip-Small.png");
+//		return new PlayerShip(physObj, player_base_hp, new ShipStats(1, 1, player_base_hp, 1), "PlayerShip-Small.png");
+		return new PlayerShip(physObj, player_base_hp, new ShipStats(1, 1, player_base_hp, 1), "Player V2.png");
 	}
 	
 	public void placeBoss(Quadrant quad, Boss boss) {

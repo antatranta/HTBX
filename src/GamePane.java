@@ -308,8 +308,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		laserStore = console.getLaserManager();
 
 
-		aiming_edge = new GameImage("rectile.png", 0, 0);
-		aiming_head = new GameImage("Cursor.png", 0, 0);
+		aiming_edge = new GameImage("Player Rectile.png", 0, 0);
+		aiming_head = new GameImage("Player Cursor.png", 0, 0);
 		player_img = player.getSprite();
 		if (console.getPlayer() != null && player != null) {
 			System.out.println("GamePane successfully accessed GameConsole's Player ship");
@@ -353,7 +353,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void playerShoot() {
 
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
-		BulletFireEventData bfe = new BulletFireEventData(1, 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "BlueCircle.png", Camera.frontendToBackend(last_mouse_loc));
+		BulletFireEventData bfe = new BulletFireEventData(1, 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc));
 		player.shoot(bfe);
 	}
 
