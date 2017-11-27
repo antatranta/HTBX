@@ -12,7 +12,7 @@ public class DisplayableHUD implements Displayable {
 
 	private MainApplication program;
 	private PlayerShip player;
-	
+	private GamePane pane;
 	// Things to draw
 	
 	private GImage status_front;
@@ -39,6 +39,8 @@ public class DisplayableHUD implements Displayable {
 	private GRect threat_right;
 	private GRect threat_up;
 	private GRect threat_down;
+	
+	private Color oldColor;
 	
 	private ArrayList<Direction> threats;
 	private float[] threatLevels;
@@ -71,10 +73,12 @@ public class DisplayableHUD implements Displayable {
 	double startx = 0;
 	double starty = 0;
 	double unity = 0;
+
 	
-	public DisplayableHUD(MainApplication program, PlayerShip player) {
+	public DisplayableHUD(MainApplication program, PlayerShip player, GamePane pane) {
 		this.program = program;
 		this.player = player;
+		this.pane = pane;
 		init();
 		updateStats();
 	}
@@ -156,12 +160,20 @@ public class DisplayableHUD implements Displayable {
 		skill_msg.setLocation((MainApplication.WINDOW_WIDTH / 2) -(skill_msg.getWidth() / 2), MainApplication.WINDOW_HEIGHT);
 
 		threat_left = new GRect(20, (MainApplication.WINDOW_HEIGHT / 2) - (threatWidth / 2), 10, threatWidth);
+		threat_left.setFilled(true);
 		threat_right = new GRect(MainApplication.WINDOW_WIDTH - 40, (MainApplication.WINDOW_HEIGHT / 2) - (threatWidth / 2), 10, threatWidth);
+		threat_right.setFilled(true);
 		threat_up = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), 10, threatWidth, 10);
+		threat_up.setFilled(true);
 		threat_down = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), MainApplication.WINDOW_HEIGHT - 20, threatWidth, 10);
+
 	
 		threats = new ArrayList<Direction>();
 		threatLevels = new float[4];
+
+		threat_down.setFilled(true);
+		oldColor = Color.WHITE;
+
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -179,6 +191,9 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	public void updateHUD() {
+		
+		// Status HUD
+		
 		if (player.getCurrentShield() != last_shield) {
 			shield_diff = recalculateDifference(player.getCurrentShield(), last_shield);
 //			System.out.println("shield_diff = " + shield_diff + ", last_shield = " + last_shield + " | max_shield: " + player.getStats().getShieldMax());
@@ -281,28 +296,29 @@ public class DisplayableHUD implements Displayable {
 		msg_diff_dmg /= 1.1;
 		msg_diff_hp /= 1.1;
 		msg_diff_shd /= 1.1;
-		
-		// Handle threats
+
+		// Handle threats		
 		updateThreatBar(threat_up, threatLevels[0]);
 		updateThreatBar(threat_down, threatLevels[1]);
 		updateThreatBar(threat_left, threatLevels[2]);
 		updateThreatBar(threat_right, threatLevels[3]);
+		
 		
 		// Reset the levels
 		threats = new ArrayList<Direction>();
 		threatLevels = new float[4];
 	}
 	
+	
+	
 	private void updateThreatBar(GRect bar, float value) {
-		if(value > 0) {
-			bar.setFilled(true);
-			Color color = PaintToolbox.blend(Color.WHITE, Color.RED, value);
-			bar.setFillColor(color);
-			bar.setColor(color);
-		} else {
-			bar.setFilled(false);
-			bar.setColor(Color.WHITE);
-		}
+		bar.setFilled(true);
+//			Color color = PaintToolbox.blend(Color.WHITE, Color.RED, value);
+		Color newColor = new Color(1.0f,0.0f, 0.0f, value);
+		Color color = PaintToolbox.blendAlpha(oldColor, newColor, 0.15f);
+		this.oldColor = color;
+		bar.setFillColor(color);
+		bar.setColor(color);
 	}
 	
 	public void updateThreats(Direction threatDirection) {
@@ -344,6 +360,18 @@ public class DisplayableHUD implements Displayable {
 				threatLevels[3] = .999f;
 			}
 		}
+//=======
+		// Threat Levels
+		
+		/*
+		float hue = 0;
+		float sat = 0;
+		float bri = 1;
+	
+		float left = (1 / (pane.getLeftThreat() + 1));
+		threat_left.setFillColor(new Color(1, left, left, (float) 0.5));
+//		threat_left.setFillColor(Color.getHSBColor(hue, (1 - (1 / (pane.getLeftThreat() + 1))), bri));
+ * */
 	}
 	
 	public int recalculateDifference(int cur, int last) {

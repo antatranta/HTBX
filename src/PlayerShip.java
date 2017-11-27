@@ -133,6 +133,7 @@ public class PlayerShip extends Ship implements ActionListener{
 		}
 		
 		if (data.getType() == CollisionType.enemy_bullet && i_frames == 0) {
+			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 			takeDamage(data.getDamage());
 		}
 	}

@@ -113,6 +113,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //	private static final String CURSOR_LINE_SPRITE = "Aiming_Line.png";
 //	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
 	
+	// THREAT LEVELS
+	private int left_threat = 0;
+	private int right_threat = 0;
+	private int down_threat = 0;
+	private int up_threat = 0;
+	
 	// Player STATUS HUD Stuffs
 
 	public GamePane(MainApplication app) {
@@ -313,7 +319,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		
-		HUD = new DisplayableHUD(program, player);
+		HUD = new DisplayableHUD(program, player, this);
 		CAN_MOVE = true;
 	}
 	
@@ -345,45 +351,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	}
 
 	private void playerShoot() {
+
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 		BulletFireEventData bfe = new BulletFireEventData(1, 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "BlueCircle.png", Camera.frontendToBackend(last_mouse_loc));
 		player.shoot(bfe);
-
-		
-//		double theta_rad = 0;
-//		double unit_x = Math.cos(theta_rad);
-//		double unit_y = -Math.sin(theta_rad);
-//
-////		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-//
-////		console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
-//
-//		
-//
-//		for (int i =0; i < 10; i++) {
-//			Vector2 pos = new Vector2(player.getPhysObj().getPosition().getX(), player.getPhysObj().getPosition().getY());
-//			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
-////			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
-////			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc).add(offset));
-//			GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), Camera.frontendToBackend(last_mouse_loc)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc).add(offset));
-//			theta_rad += Math.toRadians(360 / 10);
-//			unit_x = Math.cos(theta_rad);
-//			unit_y = -Math.sin(theta_rad);
-//		}
-		//		Vector2 pos = new Vector2((float)( player.getPhysObj().getPosition().getX() ), (float)( player.getPhysObj().getPosition().getY() ));
-//
-//		GImage bullet = console.Shoot(1, 15, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc) );
-//		
-//		if(bullet != null) {
-//			program.add(bullet);
-//		}
-		
-		
-
-//		GameImage bullet = console.Shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc) );
-//		program.add(bullet);
-//		player.shoot(1, 25, CollisionType.player_bullet, 4, new PhysXObject(player.getPhysObj().getQUID(), pos, new CircleCollider(4)), Camera.frontendToBackend(last_mouse_loc));
-
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary
@@ -391,9 +362,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void actionPerformed(ActionEvent e) {
 		
 		if(deathEvents.size() > 1) {
-//			for(ShipDeathData data: deathEvents) {
-//				console.onShipDeath(data.getPos(), 0);
-//			}
 			deathEvents = new ArrayList<ShipDeathData>();
 		}
 		
@@ -428,6 +396,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		HUD.updateHUD();
 		HUD.updateStats();
 		layerSprites();
+		
+		left_threat = 0;
+		right_threat = 0;
+		up_threat = 0;
+		down_threat = 0;
 		
 		if (console.IS_DEBUGGING) {
 			debugUpdate();
@@ -1113,7 +1086,64 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void addThreat(Vector2 pos) {
 		// TODO Auto-generated method stub
 		Direction dir = PhysXLibrary.directionOffPoint(pos, player.getPhysObj().getPosition(), 200);
+		
+		// Lj's Method
 		HUD.updateThreats(dir);
+		
+		/*
+		// Kevin's Method
+		switch(dir) {
+		case left:
+			left_threat += 1;
+			break;
+		case lower_left:
+			left_threat += 1;
+			down_threat += 1;
+			break;
+		case upper_left:
+			left_threat += 1;
+			up_threat += 1;
+			break;
+		case right:
+			right_threat += 1;
+			break;
+		case lower_right:
+			right_threat += 1;
+			down_threat += 1;
+			break;
+		case upper_right:
+			right_threat += 1;
+			up_threat += 1;
+			break;
+		case up:
+			up_threat += 1;
+			break;
+		case down:
+			down_threat += 1;
+			break;
+		default:
+			break;
+		}
+		System.out.println("THREAT LEVELS: Left: " + left_threat + ", Right: " + right_threat + ", Down: " + down_threat + ", Up: " + up_threat);
+		*/
 	}
+	
+	/*
+	public int getLeftThreat() {
+		return left_threat;
+	}
+	
+	public int getRightThreat() {
+		return right_threat;
+	}
+	
+	public int getUpThreat() {
+		return up_threat;
+	}
+	
+	public int getDownThreat() {
+		return down_threat;
+	}
+	*/
 	
 }
