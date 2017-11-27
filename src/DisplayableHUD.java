@@ -34,6 +34,13 @@ public class DisplayableHUD implements Displayable {
 	private LevelUpButton shield_up;
 	private GRect stats_back;
 	
+	private GRect threat_left;
+	private GRect threat_right;
+	private GRect threat_up;
+	private GRect threat_down;
+	
+	private float threatWidth = 100;
+	
 	// Numerical variables for control of the HUD
 	
 	private double bar_max_x;
@@ -143,6 +150,12 @@ public class DisplayableHUD implements Displayable {
 		
 		skill_msg = new GImage("SkillMsg.png", 0, 0);
 		skill_msg.setLocation((MainApplication.WINDOW_WIDTH / 2) -(skill_msg.getWidth() / 2), MainApplication.WINDOW_HEIGHT);
+		
+
+		threat_left = new GRect(20, (MainApplication.WINDOW_HEIGHT / 2) - (threatWidth / 2), 10, threatWidth);
+		threat_right = new GRect(MainApplication.WINDOW_WIDTH - 40, (MainApplication.WINDOW_HEIGHT / 2) - (threatWidth / 2), 10, threatWidth);
+		threat_up = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), 10, threatWidth, 10);
+		threat_down = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), MainApplication.WINDOW_HEIGHT - 20, threatWidth, 10);
 	}
 	
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -319,6 +332,11 @@ public class DisplayableHUD implements Displayable {
 		program.add(sp_label);
 		
 		program.add(skill_msg);
+		
+		program.add(threat_left);
+		program.add(threat_right);
+		program.add(threat_up);
+		program.add(threat_down);
 	}
 
 	@Override

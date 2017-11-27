@@ -31,14 +31,20 @@ public class EnemyShip extends Ship implements ActionListener {
 		return type;
 	}
 	
+	protected boolean checkInteractionDistance(Vector2 playerPos) {
+		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance()) {
+			return false;
+		}
+		return true;
+	}
+	
 	public void AIUpdate(Vector2 playerPos) {
 
 		// Is the player within range?
-		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance()) {
+		if(!checkInteractionDistance(playerPos)) {
 			currentTarget = physObj.getPosition();
-			return;
-		}
-		else {
+			gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
+		} else {
 			if (checkpoint == 0) {
 				checkpoint = 1;
 				double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));

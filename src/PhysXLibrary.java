@@ -132,4 +132,49 @@ public class PhysXLibrary{
 		float unit_y = (float)(Math.sin(theta_rad));
 		return new Vector2(unit_x * -KB_FORCE, unit_y * -KB_FORCE);
 	}
+	
+	public static Direction directionOffPoint(Vector2 point, Vector2 ref, float margin) {
+		
+		Direction x_dir = Direction.left;
+		Direction y_dir = Direction.down;
+		
+		// X doesn't matter
+		if(Math.abs(ref.getX() - point.getX()) > margin){
+			if(ref.getX() < point.getX()) {
+				x_dir = Direction.right;
+			}
+		} else {
+			x_dir = Direction.none;
+		}
+		
+		// Y doesn't matter
+		if(Math.abs(ref.getY() - point.getY()) < margin){
+			if(ref.getX() < point.getX()) {
+				y_dir = Direction.up;
+			}
+		} else {
+			y_dir = Direction.none;
+		}
+		
+		if(x_dir == Direction.none && y_dir == Direction.none) {
+			return Direction.none;
+		} else if (x_dir == Direction.none && y_dir != Direction.none) {
+			return y_dir;
+		} else if (y_dir == Direction.none && x_dir != Direction.none) {
+			return x_dir;
+		} else if (x_dir == Direction.left && y_dir == Direction.up) {
+			return Direction.upper_left;
+		} else if (x_dir == Direction.right && y_dir == Direction.up) {
+			return Direction.upper_right;
+		} else if (x_dir == Direction.left && y_dir == Direction.down) {
+			return Direction.lower_left;
+		} else if (x_dir == Direction.right && y_dir == Direction.down) {
+			return Direction.lower_right;
+		} else {
+			return Direction.none;
+		}
+		
+		// ref --- point : Right
+
+	}
 }

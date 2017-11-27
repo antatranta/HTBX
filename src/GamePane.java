@@ -1108,5 +1108,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	public void eventRequest_removeObject(GOval oval) {
 		program.remove(oval);
 	}
+
+	@Override
+	public void addThreat(Vector2 pos) {
+		// TODO Auto-generated method stub
+		Direction dir = PhysXLibrary.directionOffPoint(pos, player.getPhysObj().getPosition(), 200);
+		
+		
+	}
 	
 }

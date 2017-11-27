@@ -321,8 +321,12 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 
 	@Override
 	public void programRequest_removeGOval(PhysXObject obj, GOval oval) {
-		// TODO Auto-generated method stub
 		this.gamePane_ref.eventRequest_removeObject(oval);
+	}
+
+	@Override
+	public void UIRequest_addThreat(Vector2 pos) {
+		this.gamePane_ref.addThreat(pos);
 	}
 
 
