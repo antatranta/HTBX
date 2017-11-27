@@ -79,7 +79,12 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		program.switchToGame();
+		if(program.lookedAtControls()) {
+			program.switchToGame();
+		}
+		else {
+			program.switchToControls();
+		}
 	}
 	
 	@Override

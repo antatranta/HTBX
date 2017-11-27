@@ -22,6 +22,8 @@ public class MainApplication extends GraphicsApplication {
 	private boolean musicToggle;
 	private boolean sfxToggle;
 	private boolean isPaused;
+	private boolean lookedAtControls;
+	private boolean fromMenu;
 	
 	public void init() {
 		setTitle("HTBX");
@@ -30,6 +32,11 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void run() {
+		musicToggle = true;
+		sfxToggle = true;
+		isPaused = false;
+		lookedAtControls = false;
+		fromMenu = true;
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
 		control = new ControlsPane(this);
@@ -37,9 +44,6 @@ public class MainApplication extends GraphicsApplication {
 		pause = new PausePane(this);
 		gameOver = new GameOverPane(this);
 		audio = AudioPlayer.getInstance();
-		musicToggle = true;
-		sfxToggle = true;
-		isPaused = false;
 		
 		switchToMenu();
 	}
@@ -48,12 +52,24 @@ public class MainApplication extends GraphicsApplication {
 		sfxToggle = toggle;
 	}
 	
+	public void setLookedAtControls(boolean looked) {
+		lookedAtControls = looked;
+	}
+	
 	public boolean getSfxToggle() {
 		return sfxToggle;
 	}
 	
 	public boolean isPaused() {
 		return isPaused;
+	}
+	
+	public boolean lookedAtControls() {
+		return lookedAtControls;
+	}
+	
+	public boolean getFromMenu() {
+		return fromMenu;
 	}
 	
 	public void pauseGameTimer() {
@@ -77,6 +93,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToStory() {
+		fromMenu = false;
 		if(gameTimer != null) {
 			gameTimer.stopTimer();
 		}

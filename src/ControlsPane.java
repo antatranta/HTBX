@@ -9,6 +9,7 @@ public class ControlsPane extends GraphicsPane {
 	private MainApplication program;
 	private GImage controls;
 	private GLabel back;
+	private GLabel continueToGame;
 	private GObject obj;
 	
 	public ControlsPane(MainApplication app) {
@@ -20,6 +21,11 @@ public class ControlsPane extends GraphicsPane {
 		back.setFont(font);
 		back.setColor(Color.black);
 		back.setLocation(CENTER_WIDTH - (back.getWidth() / 2), CENTER_HEIGHT - (back.getHeight() / 2) + 250);
+		
+		continueToGame = new GLabel("CONTINUE");
+		continueToGame.setFont(font);
+		continueToGame.setColor(Color.black);
+		continueToGame.setLocation(CENTER_WIDTH - (continueToGame.getWidth() / 2), CENTER_HEIGHT - (continueToGame.getHeight() / 2) + 250);
 	}
 	
 	@Override
@@ -27,16 +33,27 @@ public class ControlsPane extends GraphicsPane {
 		program.add(whiteBG());
 		program.add(controls);
 		program.add(title());
-		program.add(back);
 		program.add(selection());
-		selection.setLocation(back.getX() - 25, back.getY());
+		if(program.getFromMenu() || program.isPaused()) {
+			program.add(back);
+			selection.setLocation(back.getX() - 25, back.getY());
+		}
+		else {
+			program.add(continueToGame);
+			selection.setLocation(continueToGame.getX() - 25, continueToGame.getY());
+		}
 	}
 
 	@Override
 	public void hideContents() {
 		program.remove(whiteBG());
 		program.remove(title());
-		program.remove(back);
+		if(program.getFromMenu() || program.isPaused()) {
+			program.remove(back);
+		}
+		else {
+			program.remove(continueToGame);
+		}
 		program.remove(selection());
 		program.remove(controls);
 	}
@@ -47,11 +64,15 @@ public class ControlsPane extends GraphicsPane {
 		if(obj == back) {
 			back.setColor(Color.gray);
 		}
+		else if(obj == continueToGame) {
+			continueToGame.setColor(Color.gray);
+		}
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		back.setColor(Color.black);
+		continueToGame.setColor(Color.black);
 		
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {
@@ -62,12 +83,18 @@ public class ControlsPane extends GraphicsPane {
 				program.switchToPause();
 			}
 		}
+		
+		program.setLookedAtControls(true);
+		
+		if(obj == continueToGame) {
+			program.switchToGame();
+		}
 	}
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == back) {
+		if(obj == back || obj == continueToGame) {
 			selection.setVisible(true);
 		}
 		else {
