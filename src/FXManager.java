@@ -23,8 +23,9 @@ public class FXManager {
 		// CHECK FOR DEAD ONES AFTER
 		for (int i = 0; i < size; i++) {
 			FXParticle fx = particles.get(i);
-			if (fx.getLife() == 0) {
+			if (fx.getLife() <= 0) {
 				size -= 1;
+				i -= 1;
 				particles.remove(fx);
 			}
 		}
@@ -40,7 +41,6 @@ public class FXManager {
 			x.setDir(new Vector2((float)Math.cos(Math.toRadians(angle_off)) * spd, (float)Math.sin(Math.toRadians(angle_off)) * spd));
 			particles.add(x);
 		}
-		System.out.println(particles.size());
 	}
 	
 	public void setReferences(GamePane pane) {
