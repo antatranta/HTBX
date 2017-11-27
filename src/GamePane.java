@@ -354,7 +354,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void playerShoot(BulletType type) {
 		//float radius = (player.getPhysObj().getColliders()[0].getRadius() / 2);
 
-		console.Shoot(3, 8, type, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
+		console.Shoot(3, 20, type, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "RedCircle.png",  Camera.frontendToBackend(last_mouse_loc));
 
 		
 //		double theta_rad = 0;

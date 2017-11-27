@@ -96,7 +96,8 @@ public class MainApplication extends GraphicsApplication {
 		
 		if(musicToggle) {
 			audio.stopSound("sounds", "3A1W - Menu.wav");
-			audio.playSound("sounds", "01 Misconection_1.mp3", true);
+//			audio.playSound("sounds", "01 Misconection_1.mp3", true);
+			audio.playSound("sounds", "Stone_1.mp3", true);
 		}
 		
 		gameTimer.startTimer();
@@ -105,7 +106,8 @@ public class MainApplication extends GraphicsApplication {
 	
 	public void switchToGameOver() {
 		isPaused = false;
-		audio.stopSound("sounds", "01 Misconection_1.mp3");
+//		audio.stopSound("sounds", "01 Misconection_1.mp3");
+		audio.stopSound("sounds", "Stone_1.mp3");
 		switchToScreen(gameOver);
 	}
 	
@@ -124,7 +126,8 @@ public class MainApplication extends GraphicsApplication {
 	public void switchToPause() {
 		isPaused = true;
 		
-		audio.stopSound("sounds", "01 Misconection_1.mp3");
+//		audio.stopSound("sounds", "01 Misconection_1.mp3");
+		audio.stopSound("sounds", "Stone_1.mp3");
 		audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
