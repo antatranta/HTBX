@@ -44,9 +44,10 @@ public class EnemyShip extends Ship implements ActionListener {
 		// Is the player within range?
 		if(!checkInteractionDistance(playerPos)) {
 			currentTarget = physObj.getPosition();
-			gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
+//			gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
 		}
 		else {
+			gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
 			if (checkpoint == 0) {
 				checkpoint = 1;
 				double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));

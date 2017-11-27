@@ -102,8 +102,11 @@ public class Blinker extends EnemyShip {
 		// Current position
 		// Is the player within range?
 		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > getInteractionDistance()) {
+//			gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
 			return;
 		}
+		
+		gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
 		
 		if(count >= blinkRate) {
 			if (mangementSubscriber != null) {
