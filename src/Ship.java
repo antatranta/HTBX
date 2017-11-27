@@ -197,7 +197,7 @@ public class Ship extends Entity {
 		double unit_y = Math.sin(Math.toRadians(theta_deg));
 		for (int i = 0; i < bullets; i++) {
 			Vector2 pos = new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y));
-			shoot(new BulletFireEventData(bfe.getDamage(), bfe.getSpeed(), bfe.getBulletType(), bfe.getCollisionType(), bfe.getTime(), new PhysXObject(bfe.getPhysXObject()), bfe.getSprite(), pos));
+			shoot(new BulletFireEventData(bfe.getDamage(), bfe.getSpeed(), bfe.getBulletType(), bfe.getCollisionType(), bfe.getTime(), new PhysXObject(bfe.getPhysXObject()), bfe.getSprite(), pos, bfe.getFXParticle()));
 			if (bullets > 1) {
 				theta_deg += delta_deg;
 				unit_x = Math.cos(Math.toRadians(theta_deg));

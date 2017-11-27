@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import acm.graphics.GOval;
+
 public class EnemyShip extends Ship implements ActionListener {
 	protected EnemyType type;
 
@@ -51,9 +53,9 @@ public class EnemyShip extends Ship implements ActionListener {
 			if (checkpoint == 0) {
 				checkpoint = 1;
 				double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));
-				theta_deg += randomRange(-45, 45);
-				double unit_x = -Math.cos(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
-				double unit_y = Math.sin(Math.toRadians(theta_deg)) * randomRange(min_dist, max_dist);
+				theta_deg += LavaLamp.randomRange(-45, 45);
+				double unit_x = -Math.cos(Math.toRadians(theta_deg)) * LavaLamp.randomRange(min_dist, max_dist);
+				double unit_y = Math.sin(Math.toRadians(theta_deg)) * LavaLamp.randomRange(min_dist, max_dist);
 				currentTarget = playerPos.add(new Vector2((float)unit_x, (float)unit_y));
 			}
 			else if (checkpoint == 1) {
@@ -82,9 +84,9 @@ public class EnemyShip extends Ship implements ActionListener {
 				weapon_cd -= 1;
 			}
 			if (weapon_cd == 0) {
-				weapon_cd = stats.getFireRateValue() + randomRange(-15, 15);
+				weapon_cd = stats.getFireRateValue() + LavaLamp.randomRange(-15, 15);
 				PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 5, po, "RedCircle.png", weapon_target);
+				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 5, po, "RedCircle.png", weapon_target, FXManager.redParticle());
 //				System.out.println("This pos: " + physObj.getPosition().toString() + ", BFE: " + bfe.getMovementVector().toString());
 				switch(type) {
 				case LEVEL_1:
@@ -173,12 +175,6 @@ public class EnemyShip extends Ship implements ActionListener {
 	@Override
 	public void Move() {
 		// Stub
-	}
-
-	public static int randomRange(int min, int max)
-	{
-	   int range = (max - min) + 1;     
-	   return (int)(Math.random() * range) + min;
 	}
 	
 }

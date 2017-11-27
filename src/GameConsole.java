@@ -20,6 +20,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	//private PlayerShip player;
 	private PlayerShip player;
 	private MapCreator mapCreator;
+	private FXManager fx;
 	private PhysX physx; // The controller for all things
 	private int level;
 	private int next_level;
@@ -48,9 +49,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
 		
 		// create a new bullet manager
-		bulletStore = new BulletManager();
+		bulletStore = new BulletManager(this);
 		
 		laserStore = new LaserManager(this);
+		fx = new FXManager();
 		
 		// setup a new camera
 		camera = new Camera();
@@ -176,11 +178,11 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	}
 	
 
-	public void Shoot (int dmg, int spd, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+//	public void Shoot (int dmg, int spd, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 //		this.bulletStore.onShipDeath(obj.getPosition(), obj.getQUID());
 //		this.bulletStore.emitBurst(movementVector, obj.getQUID(), 25);
-		bulletStore.onShootEvent(dmg, spd, type, collision, time, obj, sprite, movementVector);
-	}
+//		bulletStore.onShootEvent(dmg, spd, type, collision, time, obj, sprite, movementVector);
+//	}
 	
 	public void moveBullets() {
 		this.bulletStore.moveBullets();
@@ -200,6 +202,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public LaserManager getLaserManager() {
 		return laserStore;
+	}
+	
+	public FXManager getFXManager() {
+		return fx;
 	}
 	
 	public void createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
@@ -322,6 +328,18 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	@Override
 	public void UIRequest_addThreat(Vector2 pos) {
 		this.gamePane_ref.addThreat(pos);
+	}
+
+	@Override
+	public void programRequest_makeFX(FXPattern pattern, FXType type, FXParticle particle) {
+		switch(pattern) {
+		case SPARKS_DEFLECT:
+			fx.makeDeflectSparks(type, particle);
+			break;
+		default:
+			break;
+		}
+		
 	}
 
 
