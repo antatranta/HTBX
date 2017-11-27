@@ -23,6 +23,9 @@ public class FileInput {
 	private ArrayList<String> fencerSprites = new ArrayList<String>();
 	private ArrayList<Integer> fencerLevels = new ArrayList<Integer>();
 	
+	private ArrayList<PhysXObject> bansheObjects = new ArrayList<PhysXObject>();
+	private ArrayList<String> bansheSprites = new ArrayList<String>();
+	private ArrayList<Integer> bansheLevels = new ArrayList<Integer>();
 	
 	
 	public FileInput() {
@@ -37,6 +40,10 @@ public class FileInput {
 		blinkObjects = new ArrayList<PhysXObject>();
 		blinkSprites = new ArrayList<String>();
 		blinkLevels = new ArrayList<Integer>();
+		
+		bansheObjects = new ArrayList<PhysXObject>();
+		bansheSprites = new ArrayList<String>();
+		bansheLevels = new ArrayList<Integer>();
 	}
 
 	// Give this the file path and file name, ie, "C:\\Place1\\Place2\File.txt"
@@ -127,6 +134,10 @@ public class FileInput {
 				fencerObjects.add(physObj);
 				fencerSprites.add(sprite);
 				fencerLevels.add(level);
+			} else if (Reader.contains("#BANSH#")) {
+				this.bansheObjects.add(physObj);
+				this.bansheSprites.add(sprite);
+				this.bansheLevels.add(level);
 			} else {
 				System.out.println("String not formated correctly");
 			}
@@ -326,5 +337,24 @@ public class FileInput {
 	}
 	public int getFencerLevel(int index) {
 		return fencerLevels.get(index);
+	}
+	
+	// ==============================
+	// =========== BANSHE ===========
+	// ==============================
+	
+	public int numberOfBanshePresets() {
+		return bansheObjects.size();
+	}
+	
+	public PhysXObject getBansheObject(int index) {
+		return bansheObjects.get(index);
+	}
+	
+	public String getBansheSprite(int index) {
+		return bansheSprites.get(index);
+	}
+	public int getBansheLevel(int index) {
+		return bansheLevels.get(index);
 	}
 };
