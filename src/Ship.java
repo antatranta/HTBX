@@ -83,13 +83,19 @@ public class Ship extends Entity {
 		
 	}
 	
+	protected void playDamageSound() {
+		
+	}
+	
 	protected void takeDamage(int damage) {
-		System.out.println("Health: " + getCurrentHealth() + " Dam: " + damage);
+//		System.out.println("Health: " + getCurrentHealth() + " Dam: " + damage);
 		if(getCurrentHealth() > 0) {
 			setCurrentHealth(getCurrentHealth() - damage);
 		} 
 		if (getCurrentHealth() <= 0) {
 			destroyShip();
+		} else {
+			playDamageSound();
 		}
 	}
 

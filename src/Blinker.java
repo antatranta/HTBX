@@ -128,7 +128,10 @@ public class Blinker extends EnemyShip {
 				
 				
 			}
-			AudioPlayer myAudio = AudioPlayer.getInstance();
+//			AudioPlayer myAudio = AudioPlayer.getInstance();
+//			myAudio.playSound("sounds", "BlinkerTeleport.wav");
+			
+			SFXAudioPlayer myAudio = SFXAudioPlayer.getInstance();
 			myAudio.playSound("sounds", "BlinkerTeleport.wav");
 			
 			// Set the charger pos
@@ -150,7 +153,10 @@ public class Blinker extends EnemyShip {
 				BulletFireEventData bfe = new BulletFireEventData(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
 				shoot(bfe);
 				
-				AudioPlayer myAudio = AudioPlayer.getInstance();
+//				AudioPlayer myAudio = AudioPlayer.getInstance();
+//				myAudio.playSound("sounds", "BlinkerShoot.wav");
+				
+				SFXAudioPlayer myAudio = SFXAudioPlayer.getInstance();
 				myAudio.playSound("sounds", "BlinkerShoot.wav");
 			} else {
 				
