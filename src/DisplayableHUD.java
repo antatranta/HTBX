@@ -172,7 +172,7 @@ public class DisplayableHUD implements Displayable {
 		threatLevels = new float[4];
 
 		threat_down.setFilled(true);
-		oldColor = Color.WHITE;
+		oldColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 
 	}
 	
@@ -312,6 +312,10 @@ public class DisplayableHUD implements Displayable {
 //			Color color = PaintToolbox.blend(Color.WHITE, Color.RED, value);
 		Color newColor = new Color(1.0f, 0.0f, 0.0f, value);
 		Color color = PaintToolbox.blendAlpha(oldColor, newColor, 0.15f);
+		
+		if (value < .001f) {
+			color = new Color(1.0f, 0.0f, 0.0f, 0.0f);
+		}
 		this.oldColor = color;
 		bar.setFillColor(color);
 		bar.setColor(color);
