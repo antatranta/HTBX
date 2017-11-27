@@ -133,7 +133,7 @@ public class BulletManager implements ShipTriggers {
 	}
 
 	@Override
-	public void onShipDeath(Vector2 position, QuadrantID currentQUID, int exp) {
+	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
 		// TODO Auto-generated method stub
 		
 	}

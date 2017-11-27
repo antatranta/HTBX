@@ -65,7 +65,8 @@ public class Ship extends Entity {
 		
 		if(subscribers != null && subscribers.size() > 0) {
 			for(ShipTriggers sub : subscribers) {
-				sub.onShipDeath(physObj.getPosition(), physObj.getQUID(), 10);
+				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
+				gameConsoleSubscriber.onShipDeath(physObj.getPosition(), 10);
 			}
 		}
 		// TEMPORARY solution to "kill" enemies

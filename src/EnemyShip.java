@@ -84,7 +84,8 @@ public class EnemyShip extends Ship implements ActionListener {
 		
 		if(subscribers != null && subscribers.size() > 0) {
 			for(ShipTriggers sub : subscribers) {
-				sub.onShipDeath(physObj.getPosition(), physObj.getQUID(), exp_value);
+				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
+				gameConsoleSubscriber.onShipDeath(physObj.getPosition(), exp_value);
 			}
 		}
 		// TEMPORARY solution to "kill" enemies
