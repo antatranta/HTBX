@@ -30,10 +30,16 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
 	private LaserManager laserStore;
-	
+//	private double framesElapsed;
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
 //	private GameTimer clock = new GameTimer();
+	
+	//Score
+	private int score=0;
+	private int enemiesKilled=0;
+	private final int scorePerEnemy=100;
+	private final int scorePerDamage = 50;
 	
 	public GameConsole() {
 		endDebugView();
@@ -227,6 +233,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	@Override
 	public void onShipDeath(Vector2 pos, int ship_exp) {
 		calculateNeededExp();
+		enemiesKilled++;
 		exp += ship_exp;
 		if (exp >= next_level) {
 			exp -= next_level;
@@ -234,6 +241,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 			skill_points += 1;
 			calculateNeededExp();
 		}
+		SetScore();
+		System.out.println("Score: "+score +"| EnemyKills: "+ enemiesKilled+"| Taken Damage: " + player.getDamageTaken());
 		System.out.println("Level: " + level + "| Exp: " + exp + "| SP: " + skill_points);
 		//createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
 	}
@@ -341,7 +350,11 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		}
 		
 	}
-
+	
+	public void SetScore() {
+		score = enemiesKilled * scorePerEnemy - player.getDamageTaken()* scorePerDamage;
+		//System.out.println("Score: "+ score);
+	}
 
 }
 

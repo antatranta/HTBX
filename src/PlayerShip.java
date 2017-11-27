@@ -14,6 +14,7 @@ public class PlayerShip extends Ship implements ActionListener{
 	private int shield_between = REGEN_BETWEEN;
 	private int i_frames = INV_CAP;
 	private ShipStats bonus_stats;
+	private int damageTaken=0;
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
 		super(physObj, current_health, stats, sprite, CollisionType.playerShip, 0);
@@ -129,13 +130,18 @@ public class PlayerShip extends Ship implements ActionListener{
 			if (i_frames == 0) {
 				System.out.println("Took " + data.getDamage() + " collision damage");
 				takeDamage(data.getDamage());
+				damageTaken+=data.getDamage();
 			}
 		}
 		
 		if (data.getType() == CollisionType.enemy_bullet && i_frames == 0) {
 			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 			takeDamage(data.getDamage());
+			damageTaken+=data.getDamage();
 		}
 	}
 	
+	public int getDamageTaken() {
+		return damageTaken;
+	}
 }

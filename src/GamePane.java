@@ -368,6 +368,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		myAudio.updatePlayer();
 		
 		if(player.getCurrentHealth() <= 0) {
+			console.SetScore();
 			program.switchToGameOver();
 		}
 		
