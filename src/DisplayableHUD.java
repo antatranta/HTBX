@@ -206,7 +206,7 @@ public class DisplayableHUD implements Displayable {
 				have_sp = true;
 				msg_diff_box = skill_msg.getHeight() * 1.35;
 			}
-			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 1.35) + (msg_diff_box));
+			skill_msg.setLocation(skill_msg.getX(), MainApplication.WINDOW_HEIGHT - (skill_msg.getHeight() * 1.5) + (msg_diff_box));
 		}
 		else {
 			if (have_sp == true) {
@@ -276,7 +276,6 @@ public class DisplayableHUD implements Displayable {
 			}
 			shield_up.setLocation(stats_display.getX() + stats_display.getWidth() + msg_diff_shd - skill_msg.getHeight(), shield_stat.getY());
 		}
-		
 
 		msg_diff_box /= 1.1;
 		msg_diff_spd /= 1.1;
@@ -286,13 +285,14 @@ public class DisplayableHUD implements Displayable {
 		
 		// Threat Levels
 		
-		float hue = 0;
-		float sat = 0;
-		float bri = 1;
-	
 		float left = (1 / (pane.getLeftThreat() + 1));
 		threat_left.setFillColor(new Color(1, left, left, (float) 0.5));
-//		threat_left.setFillColor(Color.getHSBColor(hue, (1 - (1 / (pane.getLeftThreat() + 1))), bri));
+		float right = (1 / (pane.getRightThreat() + 1));
+		threat_right.setFillColor(new Color(1, right, right, (float) 0.5));
+		float up = (1 / (pane.getUpThreat() + 1));
+		threat_up.setFillColor(new Color(1, up, up, (float) 0.5));
+		float down = (1 / (pane.getDownThreat() + 1));
+		threat_down.setFillColor(new Color(1, down, down, (float) 0.5));
 		
 	}
 	

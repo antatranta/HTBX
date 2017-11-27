@@ -114,10 +114,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //	private static final String PLAYER_SPRITE = "PlayerShip-Small.png";
 	
 	// THREAT LEVELS
-	private int left_threat = 0;
-	private int right_threat = 0;
-	private int down_threat = 0;
-	private int up_threat = 0;
+	private float left_threat = 0;
+	private float right_threat = 0;
+	private float down_threat = 0;
+	private float up_threat = 0;
 	
 	// Player STATUS HUD Stuffs
 
@@ -1089,23 +1089,23 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			left_threat += 1;
 			break;
 		case lower_left:
-			left_threat += 1;
-			down_threat += 1;
+			left_threat += 0.5;
+			down_threat += 0.5;
 			break;
 		case upper_left:
-			left_threat += 1;
-			up_threat += 1;
+			left_threat += 0.5;
+			up_threat += 0.5;
 			break;
 		case right:
 			right_threat += 1;
 			break;
 		case lower_right:
-			right_threat += 1;
-			down_threat += 1;
+			right_threat += 0.5;
+			down_threat += 0.5;
 			break;
 		case upper_right:
-			right_threat += 1;
-			up_threat += 1;
+			right_threat += 0.5;
+			up_threat += 0.5;
 			break;
 		case up:
 			up_threat += 1;
@@ -1116,22 +1116,22 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		default:
 			break;
 		}
-		System.out.println("THREAT LEVELS: Left: " + left_threat + ", Right: " + right_threat + ", Down: " + down_threat + ", Up: " + up_threat);
+//		System.out.println("THREAT LEVELS: Left: " + left_threat + ", Right: " + right_threat + ", Down: " + down_threat + ", Up: " + up_threat);
 	}
 	
-	public int getLeftThreat() {
+	public float getLeftThreat() {
 		return left_threat;
 	}
 	
-	public int getRightThreat() {
+	public float getRightThreat() {
 		return right_threat;
 	}
 	
-	public int getUpThreat() {
+	public float getUpThreat() {
 		return up_threat;
 	}
 	
-	public int getDownThreat() {
+	public float getDownThreat() {
 		return down_threat;
 	}
 	
