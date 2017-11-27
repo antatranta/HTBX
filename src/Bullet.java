@@ -23,6 +23,8 @@ public class Bullet extends Entity {
 	private Vector2 GOval_Pos;
 	private Vector2 GOval_Size;
 	private int steps = 0;
+
+	private FXParticle fx_particle;
 	
 
 	public Bullet(int dmg, float spd, BulletType type, CollisionType collision, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
@@ -37,7 +39,8 @@ public class Bullet extends Entity {
 		this.movementVector = movementVector;
 		this.physObj.addSubscriber(this);
 		this.originalAngle = Math.atan2(movementVector.getY() - physObj.getPosition().getY(), movementVector.getX() - physObj.getPosition().getX());
-
+		this.fx_particle = null;
+		
 		if (bulletType == BulletType.ACCEL) {
 			bulletSpeed = 0;
 		}
@@ -64,7 +67,7 @@ public class Bullet extends Entity {
 	public void setPhysObj(PhysXObject obj) {
 		this.physObj = obj;
 	}
-	
+
 	public void setBulletDXDY(float dx, float dy) {
 		bulletDX = dx;
 		bulletDY = dy;
@@ -100,6 +103,14 @@ public class Bullet extends Entity {
 	
 	public BulletType getBulletType() {
 		return this.bulletType;
+	}
+	
+	public void giveFX(FXParticle particle) {
+		this.fx_particle = particle;
+	}
+	
+	public FXParticle getFX() {
+		return this.fx_particle;
 	}
 	
 	public void move() {

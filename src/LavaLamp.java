@@ -26,4 +26,10 @@ public class LavaLamp {
 	public static float nextFloat() {
 		return rand.nextFloat();
 	}
+	
+	public static int randomRange(int min, int max)
+	{
+	   int range = (max - min) + 1;     
+	   return (int)(Math.random() * range) + min;
+	}
 }
