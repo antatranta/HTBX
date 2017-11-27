@@ -52,17 +52,6 @@ public class MainApplication extends GraphicsApplication {
 		sfxToggle = toggle;
 	}
 	
-	public void musicToggle(boolean toggle) {
-		musicToggle = toggle;
-		
-		if(musicToggle) {
-			audio.playSound("sounds", "3A1W - Menu.wav", true);
-		}
-		else {
-			audio.stopSound("sounds", "3A1W - Menu.wav");
-		}
-	}
-	
 	public void setLookedAtControls(boolean looked) {
 		lookedAtControls = looked;
 	}
@@ -99,9 +88,10 @@ public class MainApplication extends GraphicsApplication {
 		story = new StoryPane(this);
 		isPaused = false;
 		
-		audio.stopSound("sounds", "Credits.mp3");
+		//audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
+			audio.updatePlayer();
 		}
 		
 		switchToScreen(menu);
@@ -171,5 +161,16 @@ public class MainApplication extends GraphicsApplication {
 		
 	public GameConsole getGameConsole() {
 		return console;
+	}
+	
+	public void setMusicToggle(boolean toggle) {
+		musicToggle = toggle;
+		
+		if(musicToggle) {
+			audio.playSound("sounds", "3A1W - Menu.wav", true);
+		}
+		else {
+			audio.stopSound("sounds", "3A1W - Menu.wav");
+		}
 	}
 }

@@ -66,8 +66,8 @@ public class AudioPlayer {
 		if(mPlayer == null || mPlayer.getCycleDuration().lessThanOrEqualTo(mPlayer.getCurrentTime())) {
 			mPlayer = createMediaPlayer(folder, filename);
 		}
-//		mPlayer.play();
-		addKey(folder+filename);
+		mPlayer.play();
+//		addKey(folder+filename);
 		if(shouldLoop) {
 			mPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 		}
@@ -149,6 +149,7 @@ public class AudioPlayer {
 	
 	public void updatePlayer() {
 		
+		/*
 		for(String key : playKeys) {
 			if(players.containsKey(key) && players.get(key).getStatus() == MediaPlayer.Status.READY) {
 				
@@ -160,6 +161,7 @@ public class AudioPlayer {
 		playKeys = new ArrayList<String>();
 		
 		garbageCollection();
+		*/
 	}
 	
 	private void garbageCollection() {
