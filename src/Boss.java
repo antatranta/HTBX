@@ -16,7 +16,7 @@ public class Boss extends EnemyShip implements ActionListener {
 	private int shotCount;
 	
 	public Boss(PhysXObject physObj, int current_health, ShipStats stats) {
-		super(physObj, "Enemy_1.png", current_health, stats, 5, 0);
+		super(physObj, "Enemy_1.png", current_health, stats, 5, EnemyType.BOSS, 0);
 		// TODO Auto-generated constructor stub
 	}
 	

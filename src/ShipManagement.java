@@ -13,13 +13,9 @@ public class ShipManagement implements ShipTriggers {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
-	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
-		// TODO Auto-generated method stub
-//		System.out.println("Ship died");
-//		bulletManager_ref.onShipDeath(position, currentQUID);
-		gameConsole_ref.bulletRequest_burst(position, currentQUID);
-	}
+//	@Override
+//	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
+//	}
 
 	@Override
 	public int isAreaSafe(Vector2 pos, float range) {

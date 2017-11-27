@@ -13,11 +13,19 @@ public class ShipStats {
 	}
 	
 	public static ShipStats EnemyStats_01() {
+		return new ShipStats(1, 1, 10, 0);
+	}
+	
+	public static ShipStats EnemyStats_02() {
 		return new ShipStats(1, 1, 15, 0);
 	}
 	
+	public static ShipStats EnemyStats_03() {
+		return new ShipStats(1, 1, 20, 0);
+	}
+	
 	public static ShipStats EnemyStats_Banshe() {
-		return new ShipStats(5, 1, 15, 0);
+		return new ShipStats(5, 1, 5, 0);
 	}
 	
 	

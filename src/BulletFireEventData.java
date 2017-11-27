@@ -2,7 +2,7 @@
 public class BulletFireEventData {
 	
 	private int damage;
-	private int speed;
+	private float speed;
 	private BulletType type;
 	private CollisionType collision;
 	private float time;
@@ -10,7 +10,7 @@ public class BulletFireEventData {
 	private String sprite;
 	private Vector2 movementVector;
 	
-	public BulletFireEventData(int damage, int speed, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+	public BulletFireEventData(int damage, float speed, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		this.damage = damage;
 		this.speed = speed;
 		this.type = type;
@@ -24,13 +24,25 @@ public class BulletFireEventData {
 	public int getDamage() {
 		return this.damage;
 	}
+	
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
 
-	public int getSpeed() {
+	public float getSpeed() {
 		return this.speed;
+	}
+	
+	public void setSpeed(float spd) {
+		this.speed = spd;
 	}
 	
 	public BulletType getBulletType() {
 		return this.type;
+	}
+	
+	public void setBulletType(BulletType type) {
+		this.type = type;
 	}
 
 	public CollisionType getCollisionType() {
@@ -40,6 +52,10 @@ public class BulletFireEventData {
 	public float getTime() {
 		return this.time;
 	}
+	
+	public void setTime(float dur) {
+		this.time = dur;
+	}
 
 	public PhysXObject getPhysXObject() {
 		return this.obj;
@@ -47,6 +63,10 @@ public class BulletFireEventData {
 
 	public String getSprite() {
 		return this.sprite;
+	}
+	
+	public void setSprite(String spr) {
+		this.sprite = spr;
 	}
 
 	public Vector2 getMovementVector() {

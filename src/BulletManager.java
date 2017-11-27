@@ -38,7 +38,7 @@ public class BulletManager implements ShipTriggers {
 		return objs;
 	}
 	
-	public GameImage onShootEvent(int dmg, int spd, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+	public GameImage onShootEvent(int dmg, float spd, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		// Variable Verification
 //		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {
 			Bullet shot = new Bullet(dmg, spd, type, collision, time, obj, sprite, movementVector);
@@ -57,9 +57,9 @@ public class BulletManager implements ShipTriggers {
 		for(int i=0; i < this.bullets.size(); i++) {
 			Bullet current = this.bullets.get(i);
 			current.move();
-			Vector2 pos = Camera.backendToFrontend(current.getPhysObj().getPosition());
+			//Vector2 pos = Camera.backendToFrontend(current.getPhysObj().getPosition());
 
-			current.getSprite().setLocation(pos.getX() - (current.getSprite().getWidth() / 2), pos.getY() - (current.getSprite().getHeight() / 2));
+			//current.getSprite().setLocation(pos.getX() - (current.getSprite().getWidth() / 2), pos.getY() - (current.getSprite().getHeight() / 2));
 
 			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 100 || this.bullets.get(i).checkIfDead()) {
 				this.deadBullets.add(bullets.get(i).getSprite());
@@ -132,9 +132,9 @@ public class BulletManager implements ShipTriggers {
 		return 20;
 	}
 
-	@Override
-	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 }

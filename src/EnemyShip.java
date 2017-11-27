@@ -3,7 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class EnemyShip extends Ship implements ActionListener {
-	protected static EnemyType type;
+	protected EnemyType type;
 
 	private static int min_dist = 250;
 	private static int max_dist = 350;
@@ -16,14 +16,15 @@ public class EnemyShip extends Ship implements ActionListener {
 	
 	protected Vector2 currentTarget = new Vector2(-99, -99);
 	
-	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, int exp) {
+	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, EnemyType type, int exp) {
 		super(physObj, current_health, stats, sprite, CollisionType.enemyShip, exp);
 		this.stats = new EnemyShipStats(stats, aggression);
 		System.out.println("Stats: " + stats);
 		System.out.println("Aggression: " +aggression);
 		System.out.println("Int. Dist: " + this.stats.getInteractionDistance());
 		System.out.println("Stp. Dist: " + this.stats.getStoppingDistance());
-		weapon_cd = 90;
+		this.weapon_cd = 60;
+		this.type = type;
 	}
 	
 	
@@ -79,8 +80,27 @@ public class EnemyShip extends Ship implements ActionListener {
 				weapon_cd -= 1;
 			}
 			if (weapon_cd == 0) {
-				weapon_cd = max_cd + randomRange(-15, 15);
-				shootSpread(BulletType.STRAIGHT, weapon_target, 3, 45);
+				weapon_cd = stats.getFireRateValue() + randomRange(-15, 15);
+				PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
+				BulletFireEventData bfe = new BulletFireEventData(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 2, po, "RedCircle.png", weapon_target);
+//				System.out.println("This pos: " + physObj.getPosition().toString() + ", BFE: " + bfe.getMovementVector().toString());
+				switch(type) {
+				case LEVEL_1:
+					shoot(bfe);
+					break;
+				case LEVEL_2:
+					shootSpread(bfe, 3, 45);
+					break;
+				case LEVEL_3:
+					bfe.setBulletType(BulletType.ACCEL);
+					bfe.setTime(4);
+					shootSpread(bfe, 5, 75);
+					break;
+				case BOSS:
+					break;
+				default:
+					break;
+				}
 			}
 		}
 	}
@@ -88,12 +108,14 @@ public class EnemyShip extends Ship implements ActionListener {
 	protected void destroyShip() {
 		setCurrentHealth(0);
 		
-		if(subscribers != null && subscribers.size() > 0) {
-			for(ShipTriggers sub : subscribers) {
-				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
-				gameConsoleSubscriber.onShipDeath(physObj.getPosition(), exp_value);
-			}
-		}
+//		if(subscribers != null && subscribers.size() > 0) {
+//			for(ShipTriggers sub : subscribers) {
+//				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
+//				
+//			}
+//		}
+		
+		gameConsoleSubscriber.onShipDeath(physObj.getPosition(), exp_value);
 		// TEMPORARY solution to "kill" enemies
 		physObj.setPosition(new Vector2(-1000, -1000));
 		

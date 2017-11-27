@@ -1,7 +1,7 @@
 
 public class EnemyShipStats extends ShipStats {
 	private int aggression = 1;
-	private int fireRate = 2;
+	private int fireRate = 0;
 	
 	public EnemyShipStats(int speed, int damage, int health_max, int shield_max, int aggression, int fireRate) {
 		super(speed, damage, health_max, shield_max);
@@ -78,17 +78,17 @@ public class EnemyShipStats extends ShipStats {
 	public int getFireRateValue() {
 		switch(this.fireRate) {
 		case 0:
-			return 1;
+			return 180;
 		case 1:
-			return 2;
+			return 130;
 		case 2:
-			return 5;
+			return 120;
 		case 3:
-			return 10;
+			return 90;
 		case 4:
-			return 15;
+			return 60;
 		case 5:
-			return 20;
+			return 30;
 		default:
 			return 1;
 		}

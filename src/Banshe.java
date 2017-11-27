@@ -11,7 +11,7 @@ public class Banshe extends EnemyShip{
 	private int auto_reset = 0;
 	
 	public Banshe(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
-		super(physObj, sprite, current_health, stats, aggression, aggression);
+		super(physObj, sprite, current_health, stats, aggression, EnemyType.BANSHEE, aggression);
 		this.stats = new EnemyShipStats(stats, aggression);
 	}
 	

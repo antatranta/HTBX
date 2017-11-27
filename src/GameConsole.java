@@ -38,7 +38,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		endDebugView();
 		skill_points = 0;
 		exp = 0;
-		level = 1;
+		level = 0;
 		calculateNeededExp();
 		// set up the clock for the game
 		gameTimer = new GameTimer();
@@ -234,7 +234,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	private void calculateNeededExp() {
 		int base = 60;
-		next_level = (int)(base + ((level - 1) * 20));
+		next_level = (int)(base + (level * 20));
 	}
 	
 	public int getSP() {
@@ -292,11 +292,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 
 	public void addGraphicsSubscriber(GamePaneEvents game) {
 		gamePane_ref = game;
-	}
-	
-	@Override
-	public void bulletRequest_burst(Vector2 pos, QuadrantID QUID) {
-		// Stub
 	}
 
 	@Override

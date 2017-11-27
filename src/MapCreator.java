@@ -90,7 +90,7 @@ public class MapCreator {
 //		int numberOfFencers = LavaLamp.randomNumber(0, MAX_FENCERS_IN_QUAD);
 		int numberOfBanshes = LavaLamp.randomNumber(0, MAX_BANSHES_IN_QUAD);
 		
-		ArrayList<EnemyShip> EnemyShips =  placeEnemies(quad.getQUID(), numberOfEnemies);
+		ArrayList<EnemyShip> EnemyShips =  placeGenericEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
 		ArrayList<Blinker> Blinkers = placeBlinkers(quad.getQUID(), numberOfBlinkers);
 //		ArrayList<Fencer> Fencers = placeFencers(quad.getQUID(), numberOfFencers);
@@ -116,7 +116,7 @@ public class MapCreator {
 			while(shipIndex != -404) {
 				shipRuns++;
 				EnemyShips.remove(shipIndex);
-				EnemyShips.add(placeEnemy(quad.getQUID()));
+				EnemyShips.add(placeGenericEnemy(quad.getQUID()));
 				shipIndex = checkObjects(EnemyShips);
 			}
 			
@@ -372,26 +372,45 @@ public class MapCreator {
 		return new PhysXObject(quad, new Vector2(startingX + x_pos, startingY + y_pos));
 	}
 	
-	public EnemyShip buildShip(PhysXObject physObj) {
+	// ===============================
+	// ======= GENERIC ENEMIES =======
+	// ===============================
+	
+	public EnemyShip buildGenericEnemy(PhysXObject physObj) {
 		int preset = LavaLamp.randomNumber(0,file.numberOfShipPresets()-1);
 		PhysXObject presetPhysObj = new PhysXObject(file.getShipObject(preset));
 		presetPhysObj.setPosition(physObj.getPosition());
 		presetPhysObj.setQUID(physObj.getQUID());
+		ShipStats stats = null;
+		EnemyType type = null;
+		switch (file.getShipLevel(preset)) {
+		case 1:
+			stats = ShipStats.EnemyStats_01();
+			type = EnemyType.LEVEL_1;
+			break;
+		case 2:
+			stats = new ShipStats(1, 1, 15, 0);
+			type = EnemyType.LEVEL_2;
+			break;
+		case 3:
+			stats = new ShipStats(1, 1, 15, 0);
+			type = EnemyType.LEVEL_3;
+		}
 		
 		System.out.println("[" + file.getShipSprite(preset) + "]");
-		return new EnemyShip(presetPhysObj, file.getShipSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getShipLevel(preset), 10);
+		return new EnemyShip(presetPhysObj, file.getShipSprite(preset), stats.getHealthMax(), stats, file.getShipLevel(preset), type, 10);
 	}
 	
-	public ArrayList<EnemyShip> placeEnemies(QuadrantID quad, int numToCreate) {
+	public ArrayList<EnemyShip> placeGenericEnemies(QuadrantID quad, int numToCreate) {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		for(int i =0; i < numToCreate; ++i) {
-			EnemyShips.add(buildShip(createPhysXObjectInQuad(quad)));
+			EnemyShips.add(buildGenericEnemy(createPhysXObjectInQuad(quad)));
 		}
 		return EnemyShips;
 	}
 	
-	public EnemyShip placeEnemy (QuadrantID quad) {
-		return buildShip(createPhysXObjectInQuad(quad));
+	public EnemyShip placeGenericEnemy (QuadrantID quad) {
+		return buildGenericEnemy(createPhysXObjectInQuad(quad));
 	}
 	
 	// ===============================
@@ -499,9 +518,6 @@ public class MapCreator {
 		return buildBanshe(createPhysXObjectInQuad(quad));
 	}
 	
-	
-	
-
 	public PlayerShip placePlayer (QuadrantID quad) {
 		PhysXObject physObj = createPhysXObjectInQuad(quad);
 		int player_base_hp = 3;

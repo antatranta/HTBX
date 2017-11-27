@@ -58,11 +58,11 @@ public class BulletEmitter extends Entity{
 	
 	protected void shoot(int damage, int speed, BulletType type, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
 		BulletFireEventData bfe = new BulletFireEventData(damage, speed, type, enemyBullet, time, obj, sprite, movementVector);
-		if(subscribers != null && subscribers.size() > 0) {
-			for(ShipTriggers sub: subscribers) {
-				sub.onShipFire(bfe, enemyBullet);
-			}
-		}
+//		if(subscribers != null && subscribers.size() > 0) {
+//			for(ShipTriggers sub: subscribers) {
+//				sub.onShipFire(bfe, enemyBullet);
+//			}
+//		}
 	}
 	
 	@Override

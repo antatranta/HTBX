@@ -63,14 +63,14 @@ public class Ship extends Entity {
 		playDeathSound();
 		setCurrentHealth(0);
 		
-		if(subscribers != null && subscribers.size() > 0) {
-			for(ShipTriggers sub : subscribers) {
-				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
-				gameConsoleSubscriber.onShipDeath(physObj.getPosition(), 10);
-			}
-		}
-
-		gameConsoleSubscriber.onShipDeath(physObj.getPosition(), KB_FORCE);
+//		if(subscribers != null && subscribers.size() > 0) {
+//			for(ShipTriggers sub : subscribers) {
+//				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
+//				
+//			}
+//		}
+		gameConsoleSubscriber.onShipDeath(physObj.getPosition(), 0);
+		//gameConsoleSubscriber.onShipDeath(physObj.getPosition(), KB_FORCE);
 		
 
 		// TEMPORARY solution to "kill" enemies
@@ -160,32 +160,38 @@ public class Ship extends Entity {
 		return exp_value;
 	}
 	
-	protected void shoot(int damage, int speed, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-		BulletFireEventData bfe = new BulletFireEventData(damage,speed, type, collision, time, obj, sprite, movementVector);
+//	protected void shoot(int damage, int speed, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
+//		BulletFireEventData bfe = new BulletFireEventData(damage,speed, type, collision, time, obj, sprite, movementVector);
 		
+	protected void shoot(BulletFireEventData bfe) {
 		if(bulletSubscriber == null) {
 			if(subscribers != null && subscribers.size() > 0) {
 				for(ShipTriggers sub: subscribers) {
-					sub.onShipFire(bfe, collision);
+					sub.onShipFire(bfe, bfe.getCollisionType());
 				}
 			}
-		} else {
-			bulletSubscriber.onShipFire(bfe, collision);
+		}
+		else {
+			bulletSubscriber.onShipFire(bfe, bfe.getCollisionType());
 		}
 	}
 	
 	// FIRING METHODS
-	protected void shootSpread(BulletType type, Vector2 target, int bullets, int max_spread) {
-		double theta_deg = Math.toDegrees(Math.atan2(target.getY() - physObj.getPosition().getY(), target.getX() - physObj.getPosition().getX()));
+	protected void shootSpread(BulletFireEventData bfe, int bullets, int max_spread) {
+		double theta_deg = Math.toDegrees(Math.atan2(bfe.getMovementVector().getY() - physObj.getPosition().getY(), bfe.getMovementVector().getX() - physObj.getPosition().getX()));
 		if (bullets > 1) {
 			theta_deg -= (max_spread / 2);
+		}
+		else if (max_spread == 0) {
+			System.out.println("[Warning] Attempting to fire 0 degree spread of " + bullets + " bullets. Consider using normal shoot method");
+			return;
 		}
 		double delta_deg = max_spread / (bullets - 1);
 		double unit_x = Math.cos(Math.toRadians(theta_deg));
 		double unit_y = Math.sin(Math.toRadians(theta_deg));
 		for (int i = 0; i < bullets; i++) {
-			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-			shoot(1, 3, type, CollisionType.enemy_bullet, 5, obj, "RedCircle.png", new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y)));
+			Vector2 pos = new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y));
+			shoot(new BulletFireEventData(bfe.getDamage(), bfe.getSpeed(), bfe.getBulletType(), bfe.getCollisionType(), bfe.getTime(), new PhysXObject(bfe.getPhysXObject()), bfe.getSprite(), pos));
 			if (bullets > 1) {
 				theta_deg += delta_deg;
 				unit_x = Math.cos(Math.toRadians(theta_deg));

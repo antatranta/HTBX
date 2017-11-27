@@ -22,7 +22,7 @@ public class Blinker extends EnemyShip {
 
 	
 	public Blinker(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, int exp) {
-		super(physObj, sprite, current_health, stats, aggression, exp);
+		super(physObj, sprite, current_health, stats, aggression, EnemyType.BLINKER, exp);
 		
 		this.blinkRate = getBlinkRate();
 		this.count = 0;
@@ -147,7 +147,8 @@ public class Blinker extends EnemyShip {
 				
 				// Shoot
 				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-				shoot(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
+				BulletFireEventData bfe = new BulletFireEventData(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
+				shoot(bfe);
 				
 				AudioPlayer myAudio = AudioPlayer.getInstance();
 				myAudio.playSound("sounds", "BlinkerShoot.wav");

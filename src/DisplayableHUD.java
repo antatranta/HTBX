@@ -150,7 +150,6 @@ public class DisplayableHUD implements Displayable {
 		
 		skill_msg = new GImage("SkillMsg.png", 0, 0);
 		skill_msg.setLocation((MainApplication.WINDOW_WIDTH / 2) -(skill_msg.getWidth() / 2), MainApplication.WINDOW_HEIGHT);
-		
 
 		threat_left = new GRect(20, (MainApplication.WINDOW_HEIGHT / 2) - (threatWidth / 2), 10, threatWidth);
 		threat_right = new GRect(MainApplication.WINDOW_WIDTH - 40, (MainApplication.WINDOW_HEIGHT / 2) - (threatWidth / 2), 10, threatWidth);

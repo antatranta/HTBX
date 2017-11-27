@@ -13,7 +13,7 @@ public class Fencer extends EnemyShip{
 	private boolean isAiming;
 
 	public Fencer(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, int exp) {
-		super(physObj, sprite, current_health, stats, aggression, exp);
+		super(physObj, sprite, current_health, stats, aggression, EnemyType.FENCER, exp);
 		this.count = 0;
 		this.shots = 1;
 		this.shotCount = 0;
@@ -104,7 +104,8 @@ public class Fencer extends EnemyShip{
 //			}
 			if(count <= laserDelay + laserDuration && isAiming) {
 				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-				shoot(4, 25, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
+				BulletFireEventData bfe = new BulletFireEventData(4, 25, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos);
+				shoot(bfe);
 				count = 0;
 				isAiming = false;
 			} else if(!isAiming) {

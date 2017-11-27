@@ -12,8 +12,8 @@ public class Bullet extends Entity {
 	private double originalAngle;
 	private double angle;
 	
-	private int originalSpeed;
-	private int bulletSpeed;
+	private float originalSpeed;
+	private float bulletSpeed;
 	private float bulletDuration;
 	private Vector2 movementVector;
 	private float bulletDX;
@@ -25,7 +25,7 @@ public class Bullet extends Entity {
 	private int steps = 0;
 	
 
-	public Bullet(int dmg, int spd, BulletType type, CollisionType collision, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
+	public Bullet(int dmg, float spd, BulletType type, CollisionType collision, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
 		super(physObj, sprite, new CollisionData(10, CollisionType.enemy_bullet));
 		
 //		System.out.println("Damage: "+ dmg);
@@ -39,12 +39,10 @@ public class Bullet extends Entity {
 		this.originalAngle = Math.atan2(movementVector.getY() - physObj.getPosition().getY(), movementVector.getX() - physObj.getPosition().getX());
 
 		if (bulletType == BulletType.ACCEL) {
-			bulletSpeed = 1;
-		}
-		else {
-			angle = originalAngle;
+			bulletSpeed = 0;
 		}
 		
+		angle = originalAngle;
 		physObj.setCollisionData(new CollisionData(dmg, collision));
 		this.bulletTrajectory();
 		
@@ -76,7 +74,7 @@ public class Bullet extends Entity {
 		return this.physObj.getCollisionData().getDamage();
 	}
 	
-	public int getBulletSpeed() {
+	public float getBulletSpeed() {
 		return this.bulletSpeed;
 	}
 	
@@ -110,7 +108,7 @@ public class Bullet extends Entity {
 		if (bulletType != BulletType.STRAIGHT) {
 			// ACCEL: Bullet increases in speed (self explanatory)
 			if (bulletType == BulletType.ACCEL) {
-				bulletSpeed += 1;
+				bulletSpeed += 0.4;
 			}
 			// OSCILLATE: Bullet fluctuates in its path
 			else if (bulletType == BulletType.OSCILLATE) {
