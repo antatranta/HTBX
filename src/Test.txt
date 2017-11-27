@@ -5,12 +5,12 @@
 #ASTER# ! $COLL 3, 10, 0, 35,  10, 50, 25,  15, -50, 25 ! $SPRITE Asteroid_4.png
 #ASTER# ! $COLL 3,  25, 0, 35, -15, 0, 15, -45, 0, 15 ! $SPRITE Asteroid_5.png
 #ASTER# ! $COLL 2, 0, 25, 25,  0, -40, 35 ! $SPRITE Asteroid_6.png
-#SHIP#  ! $COLL 1, 0, 0, 50 ! $SPRITE Enemy_1_S.png ! $LEVEL 1
-#SHIP#  ! $COLL 1, 0, 0, 50 ! $SPRITE Enemy_2_S.png ! $LEVEL 2
-#SHIP#  ! $COLL 1, 0, 0, 50 ! $SPRITE Enemy_3_S.png ! $LEVEL 3
-#BLINK# ! $COLL 1, 0, 0, 50 ! $SPRITE Blinker.png ! $Level 1
-#BLINK# ! $COLL 1, 0, 0, 50 ! $SPRITE Blinker.png ! $Level 2
+#SHIP#  ! $COLL 1, 0, 0, 30 ! $SPRITE Enemy_1_S.png ! $LEVEL 1
+#SHIP#  ! $COLL 1, 0, 0, 30 ! $SPRITE Enemy_2_S.png ! $LEVEL 2
+#SHIP#  ! $COLL 1, 0, 0, 30 ! $SPRITE Enemy_3_S.png ! $LEVEL 3
+#BLINK# ! $COLL 1, 0, 0, 30 ! $SPRITE Blinker.png ! $Level 1
+#BLINK# ! $COLL 1, 0, 0, 30 ! $SPRITE Blinker.png ! $Level 2
 #FENCER# ! $COLL 1, 0, 0, 50 ! $SPRITE Buddy_2.png ! $Level 1
 #FENCER# ! $COLL 1, 0, 0, 50 ! $SPRITE Buddy_2.png ! $Level 2
-#BANSH# ! $COLL 1, 0, 0, 50 ! $SPRITE Buddy_2.png ! $Level 1
-#BANSH# ! $COLL 1, 0, 0, 50 ! $SPRITE Buddy_2.png ! $Level 2
+#BANSH# ! $COLL 1, 0, 0, 25 ! $SPRITE Buddy_2.png ! $Level 1
+#BANSH# ! $COLL 1, 0, 0, 25 ! $SPRITE Buddy_2.png ! $Level 2

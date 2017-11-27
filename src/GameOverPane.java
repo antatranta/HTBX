@@ -24,14 +24,15 @@ public class GameOverPane extends GraphicsPane {
 		gameOver.setLocation(CENTER_WIDTH - (gameOver.getWidth() / 2), CENTER_HEIGHT - (gameOver.getHeight() / 2));
 		retryGame.setFont(font);
 		retryGame.setColor(Color.black);
-		retryGame.setLocation(gameOver.getX(), gameOver.getY() + 50);
+		retryGame.setLocation(gameOver.getX() - 75, gameOver.getY() + 50);
 		exitToMenu.setFont(font);
 		exitToMenu.setColor(Color.black);
-		exitToMenu.setLocation(retryGame.getX() + 50, retryGame.getY());
+		exitToMenu.setLocation(gameOver.getX() + 75, retryGame.getY());
 	}
 	
 	@Override
 	public void showContents() {
+		program.removeAll();
 		program.add(whiteBG());
 		program.add(selection());
 		program.add(gameOver);
