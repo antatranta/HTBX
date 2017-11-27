@@ -359,6 +359,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		if(player.getCurrentHealth() <= 0) {
+			program.switchToGameOver();
+		}
+		
 		if(deathEvents.size() > 1) {
 			deathEvents = new ArrayList<ShipDeathData>();
 		}

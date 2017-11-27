@@ -105,6 +105,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToGameOver() {
+		gameTimer.stopTimer();
 		isPaused = false;
 //		audio.stopSound("sounds", "01 Misconection_1.mp3");
 		audio.stopSound("sounds", "Stone_1.mp3");
