@@ -20,7 +20,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	//private PlayerShip player;
 	private PlayerShip player;
 	private MapCreator mapCreator;
-	private FXManager fx;
+	
 	private PhysX physx; // The controller for all things
 	private int level;
 	private int next_level;
@@ -30,6 +30,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
 	private LaserManager laserStore;
+	private FXManager fx;
 //	private double framesElapsed;
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
@@ -244,6 +245,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		SetScore();
 		System.out.println("Score: "+score +"| EnemyKills: "+ enemiesKilled+"| Taken Damage: " + player.getDamageTaken());
 		System.out.println("Level: " + level + "| Exp: " + exp + "| SP: " + skill_points);
+		
+		FXParticle particle = FXManager.deathFlash();
+		particle.setPosition(pos);
+		fx.makeDeathFlash(FXType.COLOR_CHANGE, particle);
 		//createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
 	}
 	
@@ -345,6 +350,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		case SPARKS_DEFLECT:
 			fx.makeDeflectSparks(type, particle);
 			break;
+		case GROW_STATIONARY:
+			fx.makeBulletFlash(type, particle);
 		default:
 			break;
 		}

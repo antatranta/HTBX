@@ -1,5 +1,6 @@
 
 public enum FXPattern {
 	SPARKS_DEFLECT,
-	SPARKS_CIRCLE;
+	SPARKS_CIRCLE,
+	GROW_STATIONARY
 }

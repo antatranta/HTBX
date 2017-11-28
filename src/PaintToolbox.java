@@ -1,6 +1,13 @@
 import java.awt.Color;
 
 public class PaintToolbox {
+	public static final Color TRANSPARENT = new Color(0,0,0,0);
+	public static final Color WHITE = new Color(255,255,255,255);
+	public static final Color RED = new Color(255,20,20,255);
+	public static final Color YELLOW = new Color(225, 225, 0, 255);
+	public static final Color GREY = new Color(84, 84, 84, 255);
+	public static final Color BLUE = new Color(71, 195, 242, 255);
+	
 	public static Color blend(Color b, Color a, float blending) {
 		
 		if(0 >= blending || .9999999999999f <= blending) {
@@ -34,5 +41,9 @@ public class PaintToolbox {
 		float blue =  a.getBlue()  * blending   +   b.getBlue()  * inverse_blending;
 		float alpha = a.getAlpha() * blending   +   b.getAlpha() * inverse_blending;
 		return new Color ((float)(red / 256), (float)(green / 256), (float)(blue / 256), (float)(alpha / 256));
+	}
+	
+	public static Color setAlpha(Color a, int transparency) {
+		return new Color (a.getRed(), a.getGreen(), a.getBlue(), transparency);
 	}
 }

@@ -1,11 +1,18 @@
+import java.awt.Color;
+
+import org.omg.CORBA.SystemException;
+
 import acm.graphics.GOval;
 
 public class FXParticle {
-	GOval sprite;
+	protected GOval sprite;
 	FXPattern pattern;
 	FXType type; 
 	Vector2 pos, dir;
-	int life;
+	protected int life;
+	protected int max;
+	
+	private Object[] args;
 	
 	public FXParticle(GOval particle, FXPattern pattern, FXType type, Vector2 position, Vector2 dir, int max) {
 		this.sprite = particle;
@@ -14,6 +21,7 @@ public class FXParticle {
 		this.pos = position;
 		this.dir = dir;
 		this.life = max;
+		this.max = max;
 	}
 	
 	public FXParticle(FXParticle copy) {
@@ -53,6 +61,15 @@ public class FXParticle {
 		return this.life;
 	}
 	
+	
+	public Object[] getArgs() {
+		return args;
+	}
+	
+	public void setArgs(Object[] args) {
+		this.args = args;
+	}
+	
 	// ============================================================================
 	
 	public void setPosition(Vector2 pos) {
@@ -62,5 +79,36 @@ public class FXParticle {
 	public void setDir(Vector2 dir) {
 		this.dir = dir;
 	}
+
+	public void shrink() {
+		float startValue,endValue;
+		try {
+			startValue = (float)args[0];
+			endValue = (float)args[1];
+		} catch (NullPointerException e) {
+			System.out.println("[WARN] You need to assign values.");
+			return;
+		}
+		
+		float blending = (float)this.life/(float)this.max;
+		float newSize = startValue * blending + endValue * (1- blending);
+		this.sprite.setSize(newSize, newSize);
+	}
+
+	public void colorChange() {
+		Color startValue,endValue;
+		try {
+			startValue = (Color)args[2];
+			endValue = (Color)args[3];
+		} catch (NullPointerException e) {
+			System.out.println("[WARN] You need to assign values.");
+			return;
+		}
+		// TODO Auto-generated method stub
+		float blending = (float)this.life/(float)this.max;
+		this.sprite.setFillColor(PaintToolbox.blendAlpha(startValue, endValue, blending));
+	}
+
+	
 	
 }
