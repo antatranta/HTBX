@@ -76,12 +76,12 @@ public class FileInput {
 		
 		for(String line : lines) {
 			
-			System.out.println("Line: "+ line);
+//			System.out.println("Line: "+ line);
 			
 			// Remove spaces
 			String Reader = line.replaceAll("\\s", "");
 			
-			System.out.println("Reader: "+ Reader);
+//			System.out.println("Reader: "+ Reader);
 			String[] sections = Reader.split("!");
 			
 			PhysXObject physObj = new PhysXObject(QuadrantID.unassigned());
@@ -90,7 +90,7 @@ public class FileInput {
 			
 			for(String section: sections) {
 				
-				System.out.println("Section: "+ section);
+//				System.out.println("Section: "+ section);
 				
 				if(section.contains("$COLL")) {
 					
@@ -157,13 +157,13 @@ public class FileInput {
 			if (i + 2 < values.length && currentCollider < numColliders) {
 //		for(int i =1; i < values.length; i+=3) {
 //			if(i + 2 < values.length && currentCollider < numColliders) {
-				System.out.println("i: " + i + " currentCollider: "+ currentCollider +".");
+//				System.out.println("i: " + i + " currentCollider: "+ currentCollider +".");
 				float colliderX 		= Float.parseFloat(values[i]);
-				System.out.println("colliderX: " + colliderX);
+//				System.out.println("colliderX: " + colliderX);
 				float colliderY 		= Float.parseFloat(values[i + 1]);
-				System.out.println("colliderY: " + colliderY);
+//				System.out.println("colliderY: " + colliderY);
 				float colliderRadius = Float.parseFloat(values[i + 2]);
-				System.out.println("colliderRadius: " + colliderRadius);
+//				System.out.println("colliderRadius: " + colliderRadius);
 				
 				// data verification
 				Vector2 pos = new Vector2(colliderX, colliderY);

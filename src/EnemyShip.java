@@ -21,10 +21,10 @@ public class EnemyShip extends Ship implements ActionListener {
 	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, EnemyType type, int exp) {
 		super(physObj, current_health, stats, sprite, CollisionType.enemyShip, exp);
 		this.stats = new EnemyShipStats(stats, aggression);
-		System.out.println("Stats: " + stats);
-		System.out.println("Aggression: " +aggression);
-		System.out.println("Int. Dist: " + this.stats.getInteractionDistance());
-		System.out.println("Stp. Dist: " + this.stats.getStoppingDistance());
+//		System.out.println("Stats: " + stats);
+//		System.out.println("Aggression: " +aggression);
+//		System.out.println("Int. Dist: " + this.stats.getInteractionDistance());
+//		System.out.println("Stp. Dist: " + this.stats.getStoppingDistance());
 		this.weapon_cd = 60;
 		this.type = type;
 	}

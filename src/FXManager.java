@@ -5,7 +5,6 @@ import acm.graphics.GOval;
 
 public class FXManager {
 	ArrayList<FXParticle> particles;
-	GamePaneEvents pane;
 	
 	// - - Bullet Flash - -
 	private static final float bf_transitionSpeed = 20f;
@@ -15,15 +14,15 @@ public class FXManager {
 	
 	// - - Death Flash - -
 	private static final float df_transitionSpeed = 20f;
-	private static final int		df_maxBursts = 6;
-	private static final int		df_minBursts = 3;
+	private static final int	  df_maxBursts = 6;
+	private static final int	  df_minBursts = 3;
 	private static final float df_size = 40f;
 	private static final float df_endSize = 50f;
 	private static final Color df_startColor = PaintToolbox.RED;
 	
 	public FXManager() {
 		this.particles = new ArrayList<FXParticle>();
-		this.pane = null;
+//		this.pane = null;
 		System.out.println("[Warning]: FX Manager requires GamePane reference to be set after intialization");
 	}
 	
@@ -109,10 +108,6 @@ public class FXManager {
 			x.setArgs(args);
 			particles.add(x);
 		}
-	}
-	
-	public void setReferences(GamePaneEvents pane) {
-		this.pane = pane;
 	}
 	
 	public ArrayList<FXParticle> getParticles() {

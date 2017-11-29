@@ -17,4 +17,5 @@ public interface GameConsoleEvents {
 	
 	public PhysXObject physXRequest_getPlayer();
 	public void UIRequest_addThreat(Vector2 pos);
+	void programRequest_makeBossRoom();
 }

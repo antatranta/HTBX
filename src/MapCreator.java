@@ -50,6 +50,12 @@ public class MapCreator {
 		System.out.print("boss_spawn_quad_order: "+ boss_spawn_quad_order);
 	}
 	
+	public ArrayList<Quadrant> createBossRoom(){
+		ArrayList<Quadrant> Quadrants = new ArrayList<Quadrant>();
+		Quadrants.add(createQuadrant(0,0,0));
+		return Quadrants;
+	}
+	
 	public ArrayList<Quadrant> createMap(){
 		// Create a new array to hold the quads
 		ArrayList<Quadrant> Quadrants = new ArrayList<Quadrant>();
@@ -60,7 +66,10 @@ public class MapCreator {
 			for(int b = PhysXLibrary.MAP_HEIGHT; b > 0; --b) {
 
 				Quadrant quad = createQuadrant(b-1,a-1,order);
-				fillQuadrant(quad);
+				
+				if (order != boss_spawn_quad_order) {
+					fillQuadrant(quad);
+				}
 				Quadrants.add(quad);
 				
 				if (order == player_spawn_quad_order) {
@@ -109,7 +118,7 @@ public class MapCreator {
 				asteroidIndex = checkObjects(Asteroids);
 			}
 			
-			System.out.println("Asteroid runs: "+ asteroidRuns);
+//			System.out.println("Asteroid runs: "+ asteroidRuns);
 			
 			int shipIndex = checkObjects(EnemyShips);
 			int shipRuns = -1;
@@ -120,7 +129,7 @@ public class MapCreator {
 				shipIndex = checkObjects(EnemyShips);
 			}
 			
-			System.out.println("Ship runs: "+ shipRuns);
+//			System.out.println("Ship runs: "+ shipRuns);
 			
 			int blinkerIndex = checkObjects(Blinkers);
 			while(blinkerIndex != -404) {
@@ -191,8 +200,8 @@ public class MapCreator {
 			
 //			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && check_asteroid_and_fencer == -404) {
 			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && bansheIndex == -404) {
-				System.out.println("asteroid:" + Asteroids.toString());
-				System.out.println("Enemies:" + EnemyShips.toString());
+//				System.out.println("asteroid:" + Asteroids.toString());
+//				System.out.println("Enemies:" + EnemyShips.toString());
 				check=false;
 			}
 		}
