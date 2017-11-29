@@ -556,12 +556,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		HUD.layerSprites();
 		aiming_edge.sendToBack();
 		aiming_head.sendToBack();
-		player_img.sendToBack();
 		
 		// FX Layer
 		for (int i = 0; i < drawn_fx.size(); i++) {
 			drawn_fx.get(i).getSprite().sendToBack();
 		}
+		
+		// Player ship
+		player_img.sendToBack();
 		
 		// Big rocks have priority next
 		for (int i = 0; i < drawn_rocks.size(); i++) {

@@ -17,7 +17,7 @@ public class FXManager {
 	private static final float df_transitionSpeed = 20f;
 	private static final int		df_maxBursts = 6;
 	private static final int		df_minBursts = 3;
-	private static final float df_size = 25f;
+	private static final float df_size = 40f;
 	private static final float df_endSize = 50f;
 	private static final Color df_startColor = PaintToolbox.RED;
 	
@@ -119,21 +119,22 @@ public class FXManager {
 		return this.particles;
 	}
 	
-	public static FXParticle redParticle() {
-		GOval sp = new GOval(5,5,5,5);
-		sp.setFillColor(Color.RED);
-		sp.setFilled(true);
-		sp.setColor(PaintToolbox.TRANSPARENT);
-		FXParticle fx_p = new FXParticle(sp, FXPattern.SPARKS_DEFLECT, FXType.SHRINK, Vector2.Zero(), Vector2.Zero(), 10);
-		return fx_p;
-	}
+//	public static FXParticle redParticle() {
+//		GOval sp = new GOval(5,5,5,5);
+//		sp.setFillColor(Color.RED);
+//		sp.setFilled(true);
+//		sp.setColor(PaintToolbox.TRANSPARENT);
+//		FXParticle fx_p = new FXParticle(sp, FXPattern.SPARKS_DEFLECT, FXType.SHRINK, Vector2.Zero(), Vector2.Zero(), 25);
+//		return fx_p;
+//	}
 	
 	public static FXParticle colorParticle(Color color) {
-		GOval sp = new GOval(5,5,5,5);
+		double size = 25;
+		GOval sp = new GOval(size, size, size, size);
 		sp.setFillColor(color);
 		sp.setFilled(true);
 		sp.setColor(PaintToolbox.TRANSPARENT);
-		FXParticle fx_p = new FXParticle(sp, FXPattern.SPARKS_DEFLECT, FXType.SHRINK, Vector2.Zero(), Vector2.Zero(), 10);
+		FXParticle fx_p = new FXParticle(sp, FXPattern.GROW_STATIONARY, FXType.SHRINK, Vector2.Zero(), Vector2.Zero(), 25);
 		return fx_p;
 	}
 	

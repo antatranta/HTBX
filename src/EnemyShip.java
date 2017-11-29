@@ -86,7 +86,7 @@ public class EnemyShip extends Ship implements ActionListener {
 			if (weapon_cd == 0) {
 				weapon_cd = stats.getFireRateValue() + LavaLamp.randomRange(-15, 15);
 				PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 5, po, "RedCircle.png", weapon_target, FXManager.redParticle());
+				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 5, po, "RedCircle.png", weapon_target, FXManager.colorParticle(PaintToolbox.RED));
 //				System.out.println("This pos: " + physObj.getPosition().toString() + ", BFE: " + bfe.getMovementVector().toString());
 				switch(type) {
 				case LEVEL_1:

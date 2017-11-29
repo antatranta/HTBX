@@ -153,7 +153,7 @@ public class Blinker extends EnemyShip {
 				
 				// Shoot
 				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
-				BulletFireEventData bfe = new BulletFireEventData(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos, FXManager.redParticle());
+				BulletFireEventData bfe = new BulletFireEventData(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet, 5, obj, "Bullet Large.png", playerPos, FXManager.colorParticle(PaintToolbox.RED));
 				shoot(bfe);
 				
 //				AudioPlayer myAudio = AudioPlayer.getInstance();
