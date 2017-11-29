@@ -16,6 +16,7 @@ public class TeleportWaypoint {
 	}
 	
 	public TeleportWaypoint(QuadrantID QUID, GameConsoleEvents gameConsole) {
+		System.out.println("Boss Quad: "+ QUID.toString());
 		this.active = false;
 		this.setInteractable(false);
 		this.gameConsole = gameConsole;
