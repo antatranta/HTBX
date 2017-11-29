@@ -543,7 +543,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		ArrayList<BulletEmitter> bulletEmitters = console.getActiveBulletEmitters();
 		for(BulletEmitter bulletEmitter: bulletEmitters) {
 			bulletEmitter.addSubscriber(bulletStore);
-			bulletEmitter.Update(player.physObj.getPosition());
+			bulletEmitter.AIUpdate(player.physObj.getPosition());
 		}
 	}
 	
