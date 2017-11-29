@@ -18,7 +18,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private static final int CURSOR_DIST = 75;
 	private static final int CURSOR_SIZE = 10;
 	private static final int TURN_POWER = 6;
-	private static final int PLAYER_FIRE_RATE = 5;
+	private static final int PLAYER_FIRE_RATE = 6;
 	
 	private MainApplication program; // You will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
@@ -364,10 +364,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		// Handle player shooting
 		if(isShooting) {
-			if(shotCount % PLAYER_FIRE_RATE == 0) {
+			shotCount++;
+			if(shotCount == PLAYER_FIRE_RATE) {
+				shotCount = 0;
 				playerShoot();
 			}
-			shotCount++;
 		}
 		
 		// Test collisions

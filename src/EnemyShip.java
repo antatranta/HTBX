@@ -13,7 +13,7 @@ public class EnemyShip extends Ship {
 
 	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, EnemyType type, int exp) {
 		super(physObj, current_health, stats, sprite, CollisionType.enemyShip, exp);
-		this.stats = new EnemyShipStats(stats, aggression);
+		this.stats = new EnemyShipStats(stats, aggression, type);
 		this.weapon_cd = 60;
 		this.type = type;
 	}
