@@ -1,68 +1,100 @@
 import java.util.ArrayList;
 
-import acm.graphics.GImage;
-
-public class BulletEmitter extends Entity{
-//	protected float KB_FORCE = 10;
-//	protected Vector2 external_force;
+public class BulletEmitter extends EnemyShip {
+	// TODO: Amount of bullets, angle delta, controllable emitter spray
 	
-	protected int health;
-	protected int rate;
-	protected int count = 0;
-	protected float interactionDistance;
+	private BulletEmitterData bank;
+	private BulletEmitterBehavior behavior;
+	private BulletType bullet_style;
+	private boolean damageable;
+	private double angle_delta;
+
 	private ArrayList<ShipTriggers> subscribers;
 
-	public BulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
-		super(physObj, sprite, data);
-		this.health = health;
-		this.rate = rate;
-		this.count = 0;
+	public BulletEmitter(PhysXObject obj, String sprite, ShipStats stats, BulletEmitterData bullet_data, BulletEmitterBehavior beh, double delta, BulletType type, boolean can_hurt) {
+		super(obj, sprite, stats.getHealthMax(), stats, 0, EnemyType.EMITTER, 0);
+		// Emitter does not need aggression, nor EXP value.
+		this.bank = bullet_data;
+		this.behavior = beh;
+		this.angle_delta = delta;
+		this.damageable = can_hurt;
+		this.bullet_style = type;
 	}
 	
 	protected void destroy() {
 		this.physObj = null;
 	}
 	
-	public void takeDamage(float damage) {
-		health -= damage;
-		if(health <= 0) {
-			destroy();
+	public void setTangibility(boolean tf) {
+		this.damageable = tf;
+	}
+	
+	public void takeDamage(int damage) {
+		if (!damageable) {
+			return;
+		}
+		this.current_health -= damage;
+		if (current_health < 0) {
+			current_health = 0;
 		}
 	}
 	
-	public void Update(Vector2 playerPos) {
-		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) < interactionDistance
-				&& count % rate == 0) {
-			emitCircle();
-			count ++;
-		} else {
-			count = 0;
-		}
+	public void changeBehavior(BulletEmitterBehavior beh) {
+		this.behavior = beh;
 	}
 	
-	public void emitCircle() {
-		double theta_rad = 0;
-		double unit_x = Math.cos(theta_rad);
-		double unit_y = -Math.sin(theta_rad);
+	public void angleToTarget(Vector2 pos) {
+		this.dir = Math.toDegrees(Math.atan2(pos.getY() - physObj.getPosition().getY(), pos.getX() - physObj.getPosition().getX()));
+	}
+	
+	@Override
+	public void AIUpdate(Vector2 playerPos) {
+		int current_index = BulletEmitterData.TOTAL_TYPES;
+		
+		// CHECK IF THE PRIORITIZED BULLETS ARE USED UP
+		int p_size = bank.getPriorities().length;
+		for (int i = 0; i < p_size; i++) {
+			int b_type = bank.getIndex(bank.getPriorities()[i]);
+			if (b_type < current_index && bank.getIndex(i) > 0) {
+				current_index = b_type;
+			}
+		}
+		
+		// SHOOT!
+		PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
 
-		for (int i =0; i < 10; i++) {
-			PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-			//Vector2 pos = new Vector2(physObj.getPosition().getX(), physObj.getPosition().getY());
-			Vector2 offset = new Vector2((float)unit_x, (float)unit_y);
-			shoot(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, 4, obj, "RedCircle.png",  physObj.getPosition().add(offset));
-			theta_rad += Math.toRadians(360 / 10);
-			unit_x = Math.cos(theta_rad);
-			unit_y = -Math.sin(theta_rad);
+		BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 5, po, "RedCircle.png", currentTarget, FXManager.colorParticle(PaintToolbox.RED));
+
+		if (behavior != BulletEmitterBehavior.SHOOT_TARGET) {
+			for (int i = 0; i < 1; i++) {
+				int neg = (-1) ^ i;
+				double unit_x = Math.cos(Math.toRadians(dir)) * neg;
+				double unit_y = Math.sin(Math.toRadians(dir)) * neg;
+				currentTarget = new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y));
+				bfe.setMovementVector(currentTarget);
+				shoot(bfe);
+			}
 		}
+		else {
+			bfe.setSpeed(6);
+			shoot(bfe);
+		}
+		bank.addIndex(current_index, -1); // Subtract a bullet after shooting
+		updateAngle();
 	}
 	
-	protected void shoot(int damage, int speed, BulletType type, CollisionType enemyBullet, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-		BulletFireEventData bfe = new BulletFireEventData(damage, speed, type, enemyBullet, time, obj, sprite, movementVector, FXManager.colorParticle(PaintToolbox.RED));
-//		if(subscribers != null && subscribers.size() > 0) {
-//			for(ShipTriggers sub: subscribers) {
-//				sub.onShipFire(bfe, enemyBullet);
-//			}
-//		}
+	private void updateAngle() {
+		switch(behavior) {
+		case SHOOT_CLOCKWISE:
+			dir += angle_delta;
+			break;
+		case SHOOT_COUNTER_CLOCKWISE:
+			dir -= angle_delta;
+			break;
+		default: // Shoot at target
+			angleToTarget(currentTarget);
+			break;
+		}
 	}
 	
 	@Override

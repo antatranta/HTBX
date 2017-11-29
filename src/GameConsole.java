@@ -215,8 +215,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		return fx;
 	}
 	
-	public void createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
-		BulletEmitter be = new BulletEmitter(health, rate, physObj, sprite, data);
+	public void createBulletEmitter(PhysXObject physObj, String sprite, ShipStats stats, BulletEmitterData data, BulletEmitterBehavior beh, double angle_delta, BulletType type, boolean can_hurt ) {
+		BulletEmitter be = new BulletEmitter(physObj, sprite, stats, data, beh, angle_delta, type, can_hurt);
 		be.addSubscriber(getBulletManager());
 		emitters.add(be);
 	}

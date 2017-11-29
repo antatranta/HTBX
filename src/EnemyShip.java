@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 import acm.graphics.GOval;
 
-public class EnemyShip extends Ship implements ActionListener {
+public class EnemyShip extends Ship {
 	protected EnemyType type;
 
 	private static int min_dist = 250;
@@ -162,19 +162,6 @@ public class EnemyShip extends Ship implements ActionListener {
 //			myAudio.playSound("sounds", "BlinkerHit.wav");
 			takeDamage(data.getDamage());
 		}
-	}
-	
-	
-	// WARNING: THIS IS NEVER ACCESSED IN THE GAME LOOP (GAMEPANE CALLS AIUPDATE)
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// Stub
-	}
-	
-	// WARNING: THIS IS NEVER ACCESSED IN THE GAME LOOP (GAMEPANE CALLS AIUPDATE)
-	@Override
-	public void Move() {
-		// Stub
 	}
 	
 }

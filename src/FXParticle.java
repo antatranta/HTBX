@@ -106,7 +106,7 @@ public class FXParticle {
 //		float blending = (float)this.life/(float)this.max;
 //		float newSize = startValue * blending + endValue * (1- blending);
 //		this.sprite.setSize(newSize, newSize);
-		double ratio = 0.9;
+		double ratio = 0.85;
 		this.sprite.setSize(this.sprite.getWidth() * ratio, this.sprite.getHeight() * ratio);
 	}
 

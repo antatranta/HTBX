@@ -129,7 +129,7 @@ public class FXManager {
 //	}
 	
 	public static FXParticle colorParticle(Color color) {
-		double size = 25;
+		double size = 30;
 		GOval sp = new GOval(size, size, size, size);
 		sp.setFillColor(color);
 		sp.setFilled(true);

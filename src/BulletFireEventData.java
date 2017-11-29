@@ -75,6 +75,10 @@ public class BulletFireEventData {
 		return this.movementVector;
 	}
 	
+	public void setMovementVector(Vector2 pos) {
+		this.movementVector = pos;
+	}
+	
 	public FXParticle getFXParticle() {
 		return this.fx;
 	}
