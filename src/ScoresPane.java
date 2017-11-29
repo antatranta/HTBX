@@ -46,6 +46,7 @@ public class ScoresPane extends GraphicsPane {
 		Collections.sort(scores, Collections.reverseOrder());
 		displayScores = new ArrayList<GLabel>();
 		
+		//Only display the top 5 scores
 		int j = 0;
 		for(int i = 0; i < scores.size(); i++) {
 			GLabel temp = new GLabel(scores.get(i));
@@ -55,7 +56,6 @@ public class ScoresPane extends GraphicsPane {
 			displayScores.add(temp);
 			j += 25;
 		}
-		
 		
 		back = new GLabel("BACK");
 		back.setFont(font);

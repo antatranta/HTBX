@@ -1,4 +1,3 @@
-
 public class ShipDeathData {
 	protected Vector2 pos;
 	protected QuadrantID QUID;
