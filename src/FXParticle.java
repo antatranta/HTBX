@@ -1,7 +1,5 @@
 import java.awt.Color;
 
-import org.omg.CORBA.SystemException;
-
 import acm.graphics.GOval;
 
 public class FXParticle {
