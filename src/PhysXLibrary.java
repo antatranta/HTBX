@@ -111,6 +111,17 @@ public class PhysXLibrary {
 		return new Vector2(unit_x * -KB_FORCE, unit_y * -KB_FORCE);
 	}
 	
+	
+	public static Vector2 lerpBetweenPoints(Vector2 a, Vector2 b, float blending) {
+		
+		if(blending > 1)
+			blending = .9999999f;
+		
+		float x =   a.getX() * blending + b.getX() * (1 - blending);
+		float y =   a.getY() * blending + b.getY() * (1 - blending);
+		return new Vector2(x,y);
+	}
+	
 	public static Direction directionOffPoint(Vector2 point, Vector2 ref, float margin) {
 		
 		Direction x_dir = Direction.left;

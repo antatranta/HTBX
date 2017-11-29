@@ -160,14 +160,21 @@ public class PhysX {
 		ArrayList<PhysXObject> objects = new ArrayList<PhysXObject>();
 		
 		for(Quadrant quad : quads) {
-			for(Ship ship : quad.getShips()) {
-				if(PhysXLibrary.arePositionsInXRange(pos, ship.getPhysObj().getPosition(), range)) {
-					objects.add(ship.getPhysObj());
+			
+			ArrayList<EnemyShip> ships = quad.getShips();
+			if(ships != null && ships.size() > 0) {
+				for(Ship ship : ships) {
+					if(PhysXLibrary.arePositionsInXRange(pos, ship.getPhysObj().getPosition(), range)) {
+						objects.add(ship.getPhysObj());
+					}
 				}
 			}
-			for (Asteroid asteroid : quad.getStatics()) {
-				if(PhysXLibrary.arePositionsInXRange(pos, asteroid.getPhysObj().getPosition(), range)) {
-					objects.add(asteroid.getPhysObj());
+			ArrayList<Asteroid> asteroids = quad.getAsteroids();
+			if(asteroids != null && asteroids.size() > 0) {
+				for (Asteroid asteroid : asteroids) {
+					if(PhysXLibrary.arePositionsInXRange(pos, asteroid.getPhysObj().getPosition(), range)) {
+						objects.add(asteroid.getPhysObj());
+					}
 				}
 			}
 		}

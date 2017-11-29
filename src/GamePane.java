@@ -69,7 +69,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <FXParticle> drawn_fx;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <EnemyShip> drawn_ships;
-	private ArrayList <EnemyShip> drawn_ship_gifs;
+//	private ArrayList <EnemyShip> drawn_ship_gifs;
 	private ArrayList <Bullet> drawn_bullets;
 	
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_ASTEROIDS;
@@ -93,6 +93,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	private boolean TRACKING_SET = false;
 	private Vector2 TRACKING_POSITION;
+	private Vector2 lastTrackingPosition;
 	private Vector2 tracking_offset;
 	
 	// THREAT LEVELS
@@ -102,7 +103,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private float up_threat = 0;
 	
 	// Player STATUS HUD Stuffs
-
+	ArrayList<StaticRect> GRID_ROWS = new ArrayList<StaticRect>();
+	ArrayList<StaticRect> GRID_COLS = new ArrayList<StaticRect>();
+	
+	ArrayList<StaticRect> GRID_LINES = new ArrayList<StaticRect>();
+	
+	float GRID_LINE_WIDTH = 2f;
+	float GRID_SQUARE_SIZE = 200f;
+	int NUM_GRID_LINES = 25;
 	public GamePane(MainApplication app) {
 		this.program = app;
 		init();
@@ -152,8 +160,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		playerCollider.setColor(Color.YELLOW);
 		
-		DEBUGGING_ROWS = new ArrayList<StaticRect>();
-		DEBUGGING_COLS = new ArrayList<StaticRect>();
+
 		
 		DEBUGGING_LINES = new ArrayList<StaticRect>();
 		
@@ -167,10 +174,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		tracking_offset = new Vector2(0, 0);
 		
+		DEBUGGING_ROWS = new ArrayList<StaticRect>();
+		DEBUGGING_COLS = new ArrayList<StaticRect>();
+		
+		
+		
 		for(int i =0; i < PhysXLibrary.MAP_WIDTH; ++i) {
 			DEBUGGING_ROWS.add(new StaticRect(new Vector2((PhysXLibrary.QUADRANT_WIDTH * i), 0), new Vector2(5, PhysXLibrary.getMapHeight())));
 			program.add(DEBUGGING_ROWS.get(i).getRect());
 			DEBUGGING_ROWS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
+			DEBUGGING_ROWS.get(i).getRect().setColor(PaintToolbox.TRANSPARENT);
 			DEBUGGING_ROWS.get(i).getRect().setFilled(true);
 		}
 		
@@ -178,7 +191,34 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			DEBUGGING_COLS.add(new StaticRect(new Vector2(0, (PhysXLibrary.QUADRANT_HEIGHT * i)), new Vector2(PhysXLibrary.getMapWidth(), 5)));
 			program.add(DEBUGGING_COLS.get(i).getRect());
 			DEBUGGING_COLS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
+			DEBUGGING_COLS.get(i).getRect().setColor(PaintToolbox.TRANSPARENT);
 			DEBUGGING_COLS.get(i).getRect().setFilled(true);
+		}
+	}
+
+	public void drawGridLines() {
+		GRID_ROWS = new ArrayList<StaticRect>();
+		GRID_COLS = new ArrayList<StaticRect>();
+		GRID_LINES = new ArrayList<StaticRect>();
+		
+		int i =0;
+		while ((i * GRID_SQUARE_SIZE)< (PhysXLibrary.QUADRANT_WIDTH * PhysXLibrary.MAP_WIDTH)) {
+			GRID_ROWS.add(new StaticRect(new Vector2((GRID_SQUARE_SIZE * i), 0), new Vector2(GRID_LINE_WIDTH, PhysXLibrary.getMapHeight())));
+			program.add(GRID_ROWS.get(i).getRect());
+			GRID_ROWS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
+			GRID_ROWS.get(i).getRect().setColor(PaintToolbox.TRANSPARENT);
+			GRID_ROWS.get(i).getRect().setFilled(true);
+			i++;
+		}
+		int e =0;
+		while ((e * GRID_SQUARE_SIZE)< (PhysXLibrary.QUADRANT_HEIGHT * PhysXLibrary.MAP_HEIGHT)) { 
+//		for(int i =0; i < NUM_GRID_LINES; ++i) {
+			GRID_COLS.add(new StaticRect(new Vector2(0, (GRID_SQUARE_SIZE * e)), new Vector2(PhysXLibrary.getMapWidth(), GRID_LINE_WIDTH)));
+			program.add(GRID_COLS.get(e).getRect());
+			GRID_COLS.get(e).getRect().setFillColor(Color.LIGHT_GRAY);
+			GRID_COLS.get(e).getRect().setColor(PaintToolbox.TRANSPARENT);
+			GRID_COLS.get(e).getRect().setFilled(true);
+			e++;
 		}
 	}
 	
@@ -262,7 +302,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawn_fx = new ArrayList <FXParticle>();
 		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <EnemyShip>();
-		drawn_ship_gifs = new ArrayList <EnemyShip>();
+//		drawn_ship_gifs = new ArrayList <EnemyShip>();
 		drawn_bullets = new ArrayList <Bullet>();
 		BlinkerEyes = new ArrayList <StaticGObject>();
 		DrawnBlinkerEyes = new ArrayList<StaticGObject>();
@@ -297,8 +337,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		HUD = new DisplayableHUD(program, player, this);
 		CAN_MOVE = true;
+		
+		lastTrackingPosition = player.getPhysObj().getPosition();
+		
+		drawGridLines();
 	}
-	
 	
 	public void centerPlayer() {
 		Vector2 frontPos = Camera.backendToFrontend(player.getPhysObj().getPosition());
@@ -349,13 +392,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			deathEvents = new ArrayList<ShipDeathData>();
 		}
 		
-		// Camera Tracking
-		if(!TRACKING_SET) {
-			TRACKING_POSITION = player.getPhysObj().getPosition();
-		}
-		
-		// Offset the camera
-		setOffset();
+		trackingUpdate();
 		
 		// Align the rectile
 		if (CAN_ALIGN && !ALIGNMENT_LOCK) {
@@ -394,6 +431,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		HUD.updateHUD();
 		HUD.updateStats();
 		
+		drawStaticRect(GRID_ROWS, GRID_LINES);
+		drawStaticRect(GRID_COLS, GRID_LINES);
+		
 		// Re-Layer objects
 		layerSprites();
 		
@@ -414,6 +454,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Test the boss room trigger
 		console.getBossRoomTrigger().Update(player.getPhysObj().getPosition());
 
+	}
+	
+	public void trackingUpdate() {
+		// Camera Tracking
+		if(!TRACKING_SET) {
+			lastTrackingPosition = PhysXLibrary.lerpBetweenPoints(player.getPhysObj().getPosition(),lastTrackingPosition, .1f);
+			TRACKING_POSITION = lastTrackingPosition;
+		}
+		
+		// Offset the camera
+		setOffset();
 	}
 	
 	public void debugUpdate() {
@@ -455,8 +506,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition(), size);
 				playerCollider.setLocation(newFEPOS.getX(), newFEPOS.getY());
 				
-				drawStaticRect(DEBUGGING_ROWS);
-				drawStaticRect(DEBUGGING_COLS);
+				drawStaticRect(DEBUGGING_ROWS, DEBUGGING_LINES);
+				drawStaticRect(DEBUGGING_COLS, DEBUGGING_LINES);
 				
 				if (!DRAWING_LOCK) {
 					try {
@@ -542,6 +593,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		aiming_edge.sendToBack();
 		aiming_head.sendToBack();
 		
+		// Grid
+		for(int i =0; i < GRID_LINES.size(); i++) {
+			GRID_LINES.get(i).getRect().sendToBack();
+		}
+		
 		// FX Layer
 		for (int i = 0; i < drawn_fx.size(); i++) {
 			drawn_fx.get(i).getSprite().sendToBack();
@@ -623,21 +679,29 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		MOVEMENT_LOCK = false;
 	}
 	
-	private void drawStaticRect(ArrayList<StaticRect> lines) {
+	private void drawStaticRect(ArrayList<StaticRect> lines, ArrayList<StaticRect> storage) {
+		
+		if(lines == null) {
+			return;
+		}
 		for (int i = 0; i < lines.size(); i++) {
 			// Get the offset
 			StaticRect rect = lines.get(i);
+			
+			if(rect == null) {
+				continue;
+			}
 			
 			// Make a proper vector2 location according to the camera zoom scale
 			Vector2 final_off = Camera.backendToFrontend(rect.getPhysObj().getPosition());
 
 			// Are we already drawing that rect?
-			if (!DEBUGGING_LINES.contains(rect)) {
-				DEBUGGING_LINES.add(rect);
+			if (!storage.contains(rect)) {
+				storage.add(rect);
 			}
 			
 			// Set its location according to the offset
-			if (DEBUGGING_LINES.contains(rect)) {
+			if (storage.contains(rect)) {
 				rect.getRect().setLocation(final_off.getX(), final_off.getY());
 			}
 		}
@@ -1004,8 +1068,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// TODO Auto-generated method stub
 		this.removeObjects(objects);
 	}
-	
-	
+		
 	@Override
 	public void eventRequest_addLaserLine(LaserLine line) {
 //		lasers.add(line);
