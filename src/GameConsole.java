@@ -17,7 +17,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
 	
 	private ArrayList<BulletEmitter> emitters = new ArrayList<BulletEmitter>();
-	//private PlayerShip player;
 	private PlayerShip player;
 	private MapCreator mapCreator;
 	
@@ -31,10 +30,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private BulletManager bulletStore;
 	private LaserManager laserStore;
 	private FXManager fx;
-//	private double framesElapsed;
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
-//	private GameTimer clock = new GameTimer();
+	private TeleportWaypoint bossRoomTrigger;
+
 	
 	//Score
 	private int score=0;
@@ -71,24 +70,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		// populate the PhysX sim
 		physx.addQuadrants(mapCreator.createMap());
 		
-		/*
-		// get the player spawn point
-		Quadrant playerSpawn = mapCreator.getPlayerSpawn();
-		float pos_x = Math.abs(((playerSpawn.getQUID().getX()) * PhysXLibrary.QUADRANT_WIDTH) - (PhysXLibrary.QUADRANT_WIDTH / 2));
-		float pos_y = Math.abs(((playerSpawn.getQUID().getY())* PhysXLibrary.QUADRANT_HEIGHT) - (PhysXLibrary.QUADRANT_HEIGHT / 2));
-//		System.out.println("(playerSpawn.getQUID().getX: "+playerSpawn.getQUID().getX()+" PhysXLibrary.QUADRANT_WIDTH): "+PhysXLibrary.QUADRANT_WIDTH);
-//		System.out.println("(playerSpawn.getQUID().getY: "+playerSpawn.getQUID().getY()+" PhysXLibrary.QUADRANT_HEIGHT): "+PhysXLibrary.QUADRANT_HEIGHT);
-		Vector2 pos = new Vector2(pos_x, pos_y);
-		System.out.println("player starting position = " + pos_x + ", " + pos_y);
-		
-		// create a new collider for the player
-		
-		
-		// create a new physXobject for the player
-		PhysXObject playerPhysXobj = new PhysXObject(playerSpawn.getQUID(), pos, playerCollider);
-		*/
-		// create the player
-//		player = new PlayerShip(playerPhysXobj, 1, new ShipStats(1,1,1,1), "PlayerShip-Small.png");
+
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 15);
 		player = mapCreator.placePlayer(mapCreator.getPlayerSpawn().getQUID());
 		player.physObj.removeColliders();
@@ -97,16 +79,30 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		player.addSubscriber(bulletStore);
 		gameTimer.addListener(player);
 		
+		// create a new ship manager
 		shipManager = new ShipManagement(this);
 		
+		// give all the ships refs
 		for(EnemyShip ship: getAllShips()) {
 			ship.addSubscriber(shipManager);
+			ship.addGameConsole(this);
+			ship.addLaserManager(laserStore);
 		}
+		
+		bossRoomTrigger = new TeleportWaypoint(mapCreator.getBossSpawn().getQUID(), this);
+		bossRoomTrigger.setActivationDistance(1000);
+		bossRoomTrigger.setTeleportDistance(200);
+		bossRoomTrigger.setInteractable(true);
 		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
 		System.out.println("Made a new game console");
+
 	}
 	
+	public TeleportWaypoint getBossRoomTrigger() {
+		return bossRoomTrigger;
+	}
+
 	public void startDebugView() {
 		IS_DEBUGGING = true;
 		System.out.println("- - - DEBUG ON - - -");
@@ -151,7 +147,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
 		for (Quadrant quad : quads) {
-			Asteroids.addAll(quad.getAsteroids());
+			ArrayList<Asteroid> asteroids = quad.getAsteroids();
+			if(asteroids != null && asteroids.size() > 0) {
+				Asteroids.addAll(quad.getAsteroids());
+			}
 		}
 		
 		return Asteroids;
@@ -161,12 +160,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
 		for (Quadrant quad : quads) {
-			EnemyShips.addAll(quad.getShips());
-		}
-		
-		for(EnemyShip ship : EnemyShips) {
-			ship.addGameConsole(this);
-			ship.addLaserManager(laserStore);
+			ArrayList<EnemyShip> ships = quad.getShips();
+			if(ships != null && ships.size() > 0) {
+				EnemyShips.addAll(quad.getShips());
+			}
 		}
 		return EnemyShips;
 	}
@@ -175,7 +172,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		ArrayList<Quadrant> quads = physx.getQuadrants();
 		for (Quadrant quad : quads) {
-			EnemyShips.addAll(quad.getShips());
+			ArrayList<EnemyShip> ships = quad.getShips();
+			if(ships != null && ships.size() > 0) {
+				EnemyShips.addAll(ships);
+			}
 		}
 		return EnemyShips;
 	}
@@ -183,13 +183,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public PlayerShip getPlayer() {
 		return this.player;
 	}
-	
-
-//	public void Shoot (int dmg, int spd, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-//		this.bulletStore.onShipDeath(obj.getPosition(), obj.getQUID());
-//		this.bulletStore.emitBurst(movementVector, obj.getQUID(), 25);
-//		bulletStore.onShootEvent(dmg, spd, type, collision, time, obj, sprite, movementVector);
-//	}
 	
 	public void moveBullets() {
 		this.bulletStore.moveBullets();
@@ -249,7 +242,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		FXParticle particle = FXManager.deathFlash();
 		particle.setPosition(pos);
 		fx.makeDeathFlash(FXType.COLOR_CHANGE, particle);
-		//createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
 	}
 	
 	private void calculateNeededExp() {
@@ -294,7 +286,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		default:
 			break;
 		}
-		//System.out.println("Stats are now:\n Speed: " + player.getStats().getSpeedSetting() + "\n Damage: " + player.getStats().getDamage() + "\n Max_HP: " + player.getStats().getHealthMax() + "\n Max_Shield: " + player.getStats().getShieldMax());
 	}
 
 	@Override
@@ -358,11 +349,22 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		
 	}
 	
+	@Override
+	public void programRequest_makeBossRoom() {
+		
+		// Delete the old PhysXObject and create a new one
+		physx = new PhysX(PhysXLibrary.BOSS_QUADRANT_HEIGHT, PhysXLibrary.BOSS_QUADRANT_WIDTH, 1, 1);
+		
+		// Add in the new Quadrant
+		physx.addQuadrants(mapCreator.createBossRoom());
+		
+		//TODO: STUB
+	}
+	
 	public void SetScore() {
 		score = enemiesKilled * scorePerEnemy - player.getDamageTaken()* scorePerDamage;
 		//System.out.println("Score: "+ score);
 	}
-
 }
 
 

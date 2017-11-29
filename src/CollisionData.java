@@ -6,10 +6,12 @@ public class CollisionData {
 		this.damage = 1;
 		this.type = CollisionType.enemyShip;
 	}
+	
 	public CollisionData(int damage, CollisionType type) {
 		this.damage = damage;
 		this.type = type;
 	}
+	
 	public CollisionData(CollisionData toCopy) {
 		if (toCopy != null) {
 			this.damage = toCopy.getDamage();
@@ -19,6 +21,7 @@ public class CollisionData {
 			this.type = CollisionType.enemyShip;
 		}
 	}
+	
 	public int getDamage() {
 		return this.damage;
 	}

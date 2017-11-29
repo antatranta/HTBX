@@ -7,5 +7,4 @@ public enum EnemyType {
 	BANSHEE,
 	FENCER,
 	EMITTER;
-	
 }

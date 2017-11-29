@@ -4,7 +4,6 @@ public class PhysXObject {
 	private CircleCollider[] colliders;
 	private QuadrantID QUID;
 	private Vector2 position;
-//	private Object host;
 	private ArrayList<Collision> subscribers;
 	private CollisionData collisionData;
 	
@@ -15,16 +14,6 @@ public class PhysXObject {
 		this.QUID = new QuadrantID();
 		this.position = Vector2.Zero();
 	}
-	
-	/*
-	public PhysXObject(Object host) {
-		this.host = host;
-		this.colliders = new CircleCollider[1];
-		this.colliders[0] = new CircleCollider();
-		this.QUID = new QuadrantID();
-		this.position = Vector2.Zero();
-	}
-	*/
 
 	public PhysXObject(QuadrantID QUID) {
 		this.subscribers = new ArrayList<Collision>();
@@ -115,15 +104,7 @@ public class PhysXObject {
 			colliders = newColliderArray;
 		}
 	}
-	
-//	public void setHost(Object host) {
-//		this.host = host;
-//	}
-//	
-//	public Object getHost() {
-//		return host;
-//	}
-	
+
 	public void addSubscriber(Collision newSubscriber) {
 		if (newSubscriber != null) {
 			subscribers.add(newSubscriber);

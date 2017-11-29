@@ -13,7 +13,6 @@ public class DisplayableHUD implements Displayable {
 	private MainApplication program;
 	private PlayerShip player;
 	private GamePane pane;
-	// Things to draw
 	
 	private GImage status_front;
 	private GRect status_back;
@@ -46,8 +45,6 @@ public class DisplayableHUD implements Displayable {
 	private float[] threatLevels;
 	
 	private float threatWidth = 100;
-	
-	// Numerical variables for control of the HUD
 	
 	private double bar_max_x;
 	private double bar_max_y;
@@ -191,9 +188,7 @@ public class DisplayableHUD implements Displayable {
 	}
 	
 	public void updateHUD() {
-		
 		// Status HUD
-		
 		if (player.getCurrentShield() != last_shield) {
 			shield_diff = recalculateDifference(player.getCurrentShield(), last_shield);
 //			System.out.println("shield_diff = " + shield_diff + ", last_shield = " + last_shield + " | max_shield: " + player.getStats().getShieldMax());
@@ -309,7 +304,6 @@ public class DisplayableHUD implements Displayable {
 	
 	private void updateThreatBar(GRect bar, float value) {
 		bar.setFilled(true);
-//			Color color = PaintToolbox.blend(Color.WHITE, Color.RED, value);
 		Color newColor = new Color(1.0f, 0.0f, 0.0f, value);
 		Color color = PaintToolbox.blendAlpha(oldColor, newColor, 0.15f);
 		
@@ -403,7 +397,6 @@ public class DisplayableHUD implements Displayable {
 		program.add(status_bar_shield);
 		program.add(iframes);
 		program.add(status_front);
-		
 		program.add(stats_back);
 		program.add(speed_stat);
 		program.add(damage_stat);
@@ -415,9 +408,7 @@ public class DisplayableHUD implements Displayable {
 		program.add(shield_up);
 		program.add(stats_display);
 		program.add(sp_label);
-		
 		program.add(skill_msg);
-		
 		program.add(threat_left);
 		program.add(threat_right);
 		program.add(threat_up);
@@ -432,7 +423,6 @@ public class DisplayableHUD implements Displayable {
 		program.remove(iframes);
 		program.remove(status_front);
 		program.remove(compass_sprite);
-		
 		program.remove(stats_back);
 		program.remove(stats_display);
 		program.remove(speed_stat);
@@ -444,7 +434,6 @@ public class DisplayableHUD implements Displayable {
 		program.remove(health_up);
 		program.remove(shield_up);
 		program.remove(sp_label);
-		
 		program.remove(skill_msg);
 	}
 }

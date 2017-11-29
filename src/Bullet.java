@@ -30,7 +30,6 @@ public class Bullet extends Entity {
 	public Bullet(int dmg, float spd, BulletType type, CollisionType collision, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
 		super(physObj, sprite, new CollisionData(10, CollisionType.enemy_bullet));
 		
-//		System.out.println("Damage: "+ dmg);
 		this.bulletType = type;
 		this.originalSpeed = spd;
 		this.bulletSpeed = originalSpeed;
@@ -48,8 +47,6 @@ public class Bullet extends Entity {
 		angle = originalAngle;
 		physObj.setCollisionData(new CollisionData(dmg, collision));
 		this.bulletTrajectory();
-		
-//		System.out.println("Damage - : "+ this.physObj.getCollisionData().getDamage());
 	}
 	
 	public void setBulletDamage(int dmg) {
@@ -178,7 +175,6 @@ public class Bullet extends Entity {
 	
 	public void destroy() {
 		dead = true;
-//		this.setCollisionData(CollisionData.Blank());
 	}
 	
 	public boolean checkIfDead() {
@@ -192,8 +188,6 @@ public class Bullet extends Entity {
 	public void bulletTrajectory() {
 		this.bulletDX = (float)Math.cos(angle);
 		this.bulletDY = (float)Math.sin(angle);
-//		this.bulletDX = physObj.getPosition().normalize(movementVector).getX();
-//		this.bulletDY = physObj.getPosition().normalize(movementVector).getY();
 	}
 	
 	public Vector2 getGOvalSize() {
@@ -215,7 +209,6 @@ public class Bullet extends Entity {
 
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-		// TODO Auto-generated method stub
 		handleCollision(data);
 	}
 	

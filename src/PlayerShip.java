@@ -18,7 +18,7 @@ public class PlayerShip extends Ship implements ActionListener{
 	
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
 		super(physObj, current_health, stats, sprite, CollisionType.playerShip, 0);
-		this.current_shield = 0;//stats.getShield_max();
+		this.current_shield = 0;
 		this.bonus_stats = new ShipStats(0, 0, 0, 0);
 	}
 
@@ -39,7 +39,6 @@ public class PlayerShip extends Ship implements ActionListener{
 	
 	private void regenerateShield() {
 		if (shield_regen == 0 && shield_between == 0 && (current_shield < getStats().getShieldMax() + bonus_stats.getShieldMax()) && current_health > 0) {
-			//REGEN_CAP = 240 + ((stats.getShieldMax() - 1) * 30);
 			chargeShield(1);
 		}
 		else {
@@ -52,23 +51,11 @@ public class PlayerShip extends Ship implements ActionListener{
 				shield_regen -= 1;
 			}
 		}
-		//System.out.println("Shield regen cd at: " + shield_regen + " | Current shield: " + current_shield + " / " + getStats().getShieldMax());
 	}
 	
 	public ShipStats getBonusStats() {
 		return bonus_stats;
 	}
-	
-	/*
-	@Override
-	public void sendCollisionMessage(CollisionData data) {
-		int damage = data.getDamage();
-		if (data.getType() == CollisionType.asteroid) {
-			damage = getCurrentHealth();
-		}
-		takeDamage(damage);
-	}
-	*/
 	
 	private void processInvincibility() {
 		if (i_frames > 0) {

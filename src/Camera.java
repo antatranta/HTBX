@@ -22,7 +22,6 @@ public class Camera {
 	}
 	
 	private void init() {
-		
 		// Set ratio to 1:1 to start
 		WINDOW_WIDTH = MainApplication.WINDOW_WIDTH;
 		WINDOW_HEIGHT = MainApplication.WINDOW_HEIGHT;
@@ -50,7 +49,6 @@ public class Camera {
 	
 	public static void setOffset(Vector2 OFFSET) {
 		Camera.OFFSET = OFFSET;
-//		.add(new Vector2(MainApplication.WINDOW_WIDTH / 2, MainApplication.WINDOW_HEIGHT / 2));
 	}
 	
 	public static Vector2 getOffset() {
@@ -58,25 +56,19 @@ public class Camera {
 	}
 	
 	public static Vector2 frontendToBackend(Vector2 pos) {
-//		return new Vector2((pos.getX() - OFFSET.getX()) * BACKWARD_RATIO, (pos.getY() - OFFSET.getY()) * BACKWARD_RATIO).add(new Vector2(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT));
 		return new Vector2((pos.getX() - OFFSET.getX() - (WINDOW_WIDTH / 2)) * BACKWARD_RATIO, (pos.getY() - OFFSET.getY() - (WINDOW_HEIGHT / 2)) * BACKWARD_RATIO);
-//		return new Vector2((pos.getX()) * BACKWARD_RATIO, (pos.getY()) * BACKWARD_RATIO).minus(OFFSET);
 	}
 	
 	public static Vector2 backendToFrontend(Vector2 pos) {
-//		return new Vector2((pos.getX() + OFFSET.getX()) * FORWARD_RATIO, (pos.getY() + OFFSET.getY()) * FORWARD_RATIO).minus(new Vector2(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT));
 		return new Vector2((pos.getX() + OFFSET.getX() + (WINDOW_WIDTH / 2)) * FORWARD_RATIO, (pos.getY() + OFFSET.getY() + (WINDOW_HEIGHT / 2)) * FORWARD_RATIO);
 
 	}
 	
 	public static Vector2 frontendToBackend(Vector2 pos, Vector2 size) {
-//		return new Vector2((pos.getX() - OFFSET.getX()) * BACKWARD_RATIO, (pos.getY() - OFFSET.getY()) * BACKWARD_RATIO).add(new Vector2(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT));
 		return new Vector2((pos.getX() - OFFSET.getX() + (size.getX() /2) - (WINDOW_WIDTH / 2)) * BACKWARD_RATIO, (pos.getY() - OFFSET.getY() + (size.getY()/2) - (WINDOW_HEIGHT / 2)) * BACKWARD_RATIO);
-//		return new Vector2((pos.getX()) * BACKWARD_RATIO, (pos.getY()) * BACKWARD_RATIO).minus(OFFSET);
 	}
 	
 	public static Vector2 backendToFrontend(Vector2 pos, Vector2 size) {
-//		return new Vector2((pos.getX() + OFFSET.getX()) * FORWARD_RATIO, (pos.getY() + OFFSET.getY()) * FORWARD_RATIO).minus(new Vector2(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT));
 		return new Vector2((pos.getX() + OFFSET.getX() - (size.getX() /2) + (WINDOW_WIDTH / 2)) * FORWARD_RATIO, (pos.getY() + OFFSET.getY() - (size.getY()/2) + (WINDOW_HEIGHT / 2)) * FORWARD_RATIO);
 
 	}

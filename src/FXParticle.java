@@ -1,7 +1,5 @@
 import java.awt.Color;
 
-import org.omg.CORBA.SystemException;
-
 import acm.graphics.GOval;
 
 public class FXParticle {
@@ -25,7 +23,6 @@ public class FXParticle {
 	}
 	
 	public FXParticle(FXParticle copy) {
-//		this(copy.getSprite(), copy.getPattern(), copy.getType(), copy.getPosition(), copy.getDir(), copy.getLife());
 		GOval spr = new GOval(0,0,0,0);
 		spr.setSize(copy.getSprite().getSize());
 		spr.setFilled(true);
@@ -94,18 +91,6 @@ public class FXParticle {
 	}
 
 	public void shrink() {
-//		float startValue,endValue;
-//		try {
-//			startValue = (float)args[0];
-//			endValue = (float)args[1];
-//		} catch (NullPointerException e) {
-//			System.out.println("[WARN] You need to assign values.");
-//			return;
-//		}
-//		
-//		float blending = (float)this.life/(float)this.max;
-//		float newSize = startValue * blending + endValue * (1- blending);
-//		this.sprite.setSize(newSize, newSize);
 		double ratio = 0.85;
 		this.sprite.setSize(this.sprite.getWidth() * ratio, this.sprite.getHeight() * ratio);
 	}
@@ -123,7 +108,4 @@ public class FXParticle {
 		float blending = (float)this.life/(float)this.max;
 		this.sprite.setFillColor(PaintToolbox.blendAlpha(startValue, endValue, blending));
 	}
-
-	
-	
 }
