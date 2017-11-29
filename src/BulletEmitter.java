@@ -1,10 +1,14 @@
 import java.util.ArrayList;
 
 public class BulletEmitter extends EnemyShip {
-	// TODO: Amount of bullets, angle delta, controllable emitter spray
 	
 	private BulletEmitterData bank;
 	private BulletEmitterBehavior behavior;
+	
+	private int bullet_spd = 4;
+	private float bullet_time = 10;
+	private String bullet_sprite = "RedCircle.png";
+	
 	private BulletType bullet_style;
 	private boolean damageable;
 	private double angle_delta;
@@ -23,6 +27,12 @@ public class BulletEmitter extends EnemyShip {
 	
 	protected void destroy() {
 		this.physObj = null;
+	}
+	
+	public void setBulletData(int spd, float time, String sprite) {
+		this.bullet_spd = spd;
+		this.bullet_time = time;
+		this.bullet_sprite = sprite;
 	}
 	
 	public void setTangibility(boolean tf) {
@@ -63,7 +73,7 @@ public class BulletEmitter extends EnemyShip {
 		// SHOOT!
 		PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
 
-		BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 5, po, "RedCircle.png", currentTarget, FXManager.colorParticle(PaintToolbox.RED));
+		BulletFireEventData bfe = new BulletFireEventData(1, bullet_spd, bullet_style, CollisionType.enemy_bullet, bullet_time, po, bullet_sprite, currentTarget, FXManager.colorParticle(PaintToolbox.RED));
 
 		if (behavior != BulletEmitterBehavior.SHOOT_TARGET) {
 			for (int i = 0; i < 1; i++) {
