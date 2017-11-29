@@ -10,6 +10,8 @@ import rotations.GameImage;
 
 public class DisplayableHUD implements Displayable {
 
+	private static final int AURORA_DISTANCE = 600;
+	private static final int AURORA_INNER = 100;
 	private MainApplication program;
 	private GameConsole console;
 	private PlayerShip player;
@@ -38,6 +40,8 @@ public class DisplayableHUD implements Displayable {
 	private GRect threat_right;
 	private GRect threat_up;
 	private GRect threat_down;
+	
+	private GRect overlay;
 
 	private Color oldColor;
 
@@ -181,6 +185,10 @@ public class DisplayableHUD implements Displayable {
 		y -= PhysXLibrary.QUADRANT_HEIGHT / 2;
 		boss_quad_pos = new Vector2(x, y);
 		
+		overlay = new GRect(0, 0, MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
+		overlay.setFillColor(PaintToolbox.setAlpha(PaintToolbox.BLACK, 0));
+		overlay.setColor(PaintToolbox.BLACK);
+		overlay.setFilled(true);
 	}
 
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -310,6 +318,18 @@ public class DisplayableHUD implements Displayable {
 		// Reset the levels
 		threats = new ArrayList<Direction>();
 		threatLevels = new float[4];
+		
+		// Boss portal
+		double dist = PhysXLibrary.distance(player.getPhysObj().getPosition(), boss_quad_pos);
+		if (dist < AURORA_DISTANCE && dist > AURORA_INNER) {
+			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), (int) (255 - (255 * ((dist - AURORA_INNER) / (AURORA_DISTANCE - AURORA_INNER))))));
+		}
+		else if (dist < AURORA_INNER) {
+			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), 255));
+		}
+		else {
+			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), 0));
+		}
 	}
 
 	private void updateThreatBar(GRect bar, float value) {
@@ -378,6 +398,10 @@ public class DisplayableHUD implements Displayable {
 		sp_label.setLabel("" + program.getGameConsole().getSP());
 	}
 
+	public Vector2 getBossQuadPos() {
+		return this.boss_quad_pos;
+	}
+	
 	public void layerSprites() {
 		status_front.sendToBack();
 		iframes.sendToBack();
@@ -397,6 +421,7 @@ public class DisplayableHUD implements Displayable {
 		health_up.sendToBack();
 		shield_up.sendToBack();
 		stats_back.sendToBack();
+		overlay.sendToBack();
 	}
 
 	@Override
@@ -423,6 +448,7 @@ public class DisplayableHUD implements Displayable {
 		program.add(threat_right);
 		program.add(threat_up);
 		program.add(threat_down);
+		program.add(overlay);
 	}
 
 	@Override
@@ -445,5 +471,6 @@ public class DisplayableHUD implements Displayable {
 		program.remove(shield_up);
 		program.remove(sp_label);
 		program.remove(skill_msg);
+		program.remove(overlay);
 	}
 }

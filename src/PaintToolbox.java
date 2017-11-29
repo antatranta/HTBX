@@ -2,6 +2,7 @@ import java.awt.Color;
 
 public class PaintToolbox {
 	public static final Color TRANSPARENT = new Color(0,0,0,0);
+	public static final Color BLACK = new Color(0,0,0,255);
 	public static final Color WHITE = new Color(255,255,255,255);
 	public static final Color RED = new Color(255,20,20,255);
 	public static final Color YELLOW = new Color(225, 225, 0, 255);
