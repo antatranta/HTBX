@@ -84,17 +84,14 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		if(!program.getFromMenu() && !program.isPaused()) {
-			program.switchToGame();
-		}
-	}
-	
-	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == back) {
 			back.setColor(Color.gray);
+		}
+		
+		if(!program.getFromMenu() && !program.isPaused()) {
+			program.switchToGame();
 		}
 	}
 	
