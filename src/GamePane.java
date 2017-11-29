@@ -15,9 +15,7 @@ import rotations.GameImage;
 
 public class GamePane extends GraphicsPane implements ActionListener, KeyListener, GamePaneEvents {	
 
-	private static final int CURSOR_DIST = 75;
-	private static final int CURSOR_SIZE = 10;
-	private static final int TURN_POWER = 6;
+	private static final int AURORA_DRAW_DIST = 2000;
 	private static final int PLAYER_FIRE_RATE = 6;
 	
 	private MainApplication program; // You will use program to get access to all of the GraphicsProgram calls
@@ -50,7 +48,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private boolean DEBUGGING_MOVE_LOCK = false;
 	private boolean CAN_MOVE = false;
 	private boolean MOVEMENT_LOCK = false;
-	private float MOVEMENT_CONSTANT = .0000001f;
 
 	private boolean CAN_ALIGN = true;
 	private boolean ALIGNMENT_LOCK = false;
@@ -63,13 +60,15 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GameImage player_img;
 	private GameImage aiming_head;
 	private GameImage aiming_edge;
-
+	private GameImage boss_aurora;
+	
 	private ArrayList <Integer> pressed_keys;
 	private ArrayList <FXParticle> drawn_fx;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <EnemyShip> drawn_ships;
 	private ArrayList <EnemyShip> drawn_ship_gifs;
 	private ArrayList <Bullet> drawn_bullets;
+	private ArrayList <GImage> drawn_bg;
 
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_ASTEROIDS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
@@ -295,6 +294,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 
 		HUD = new DisplayableHUD(program, player);
+		boss_aurora = new GameImage("Boss_Aurora_Gray_Small.png", 1000, 1000);
 		CAN_MOVE = true;
 	}
 
@@ -314,6 +314,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.add(aiming_edge);
 		program.add(aiming_head);
 		HUD.showContents();
+		program.add(boss_aurora);
 	}
 
 	@Override
@@ -322,6 +323,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.remove(aiming_edge);
 		program.remove(aiming_head);
 		HUD.hideContents();
+		program.remove(boss_aurora);
 	}
 
 	private void playerShoot() {
@@ -410,7 +412,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		// Move the enemy ships
 		moveEnemyShips();
-		
 		// Test the boss room trigger
 		console.getBossRoomTrigger().Update(player.getPhysObj().getPosition());
 
@@ -518,6 +519,16 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawBullets(bulletStore.getBullets(), drawn_bullets);
 		drawSprites(laserStore.getSegments(), drawnLaserSegments);
 		drawBlinkerEyes(BlinkerEyes);
+		drawBackground(drawn_bg);
+		
+		if (PhysXLibrary.distance(player.getPhysObj().getPosition(), HUD.getBossQuadPos()) < AURORA_DRAW_DIST) {
+			Vector2 lc = Camera.backendToFrontend(HUD.getBossQuadPos());
+			boss_aurora.setLocation(lc.getX() - (boss_aurora.getWidth() / 2), lc.getY() - (boss_aurora.getHeight() / 2));
+			boss_aurora.rotate(-1);
+		}
+		else {
+			boss_aurora.setLocation(1000, 1000);
+		}
 	}
 
 	public void moveEnemyShips() {
@@ -570,6 +581,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		for (int i = 0; i < drawn_bullets.size(); i++) {
 			drawn_bullets.get(i).getSprite().sendToBack();
 		}	
+		
+		boss_aurora.sendToBack();
 		
 		CURRENT_QUID_LABEL.sendToFront();
 
@@ -768,6 +781,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 	
+	private void drawBackground(ArrayList<GImage> storage) {
+		
+	}
+
+	
 	public <Item extends Entity> void drawGif (Item obj, ArrayList<Item> storage) {
 		Vector2 frontEndPos = Camera.backendToFrontend(obj.getPhysObj().getPosition());
 
@@ -783,7 +801,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 
-	// Might be a very taxing method. We can change to having a simple cursor at the mouse pointer. Luckily, won't draw more than 5 dots
+
 	public void alignReticle(Vector2 coord) {
 		Vector2 visual_root = new Vector2((float)(player_img.getX() + (player_img.getWidth()/2)), (float)(player_img.getY() + (player_img.getHeight()/2)));
 
@@ -947,6 +965,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		//GOD Mode = \ Pleb mode = P *ONLY FOR TESTING PURPOSES*
 		if(key == KeyEvent.VK_BACK_SLASH) {
 			player.setCurrentHealth(9999999);
+			console.HAX_SetSkillPoints(16);
 		}
 		else if(key == KeyEvent.VK_P) {
 			player.setCurrentHealth(1);

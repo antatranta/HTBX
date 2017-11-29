@@ -371,6 +371,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public int getScore() {
 		return score;
 	}
+	
+	public void HAX_SetSkillPoints(int x) {
+		this.skill_points = x;
+	}
 
 }
 

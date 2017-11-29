@@ -49,11 +49,11 @@ public class ShipStats {
 		case 0:
 			return 5;
 		case 1:
-			return 5.5f;
-		case 2:
 			return 6f;
+		case 2:
+			return 7f;
 		case 3:
-			return 6.5f;
+			return 8f;
 		default:
 			return 7;
 		}
