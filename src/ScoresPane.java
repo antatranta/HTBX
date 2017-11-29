@@ -47,7 +47,7 @@ public class ScoresPane extends GraphicsPane {
 		displayScores = new ArrayList<GLabel>();
 		
 		int j = 0;
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < scores.size(); i++) {
 			GLabel temp = new GLabel(scores.get(i));
 			temp.setFont(font);
 			temp.setColor(Color.black);
