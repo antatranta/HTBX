@@ -23,6 +23,7 @@ public class Quadrant{
 		if (!isActive) {
 			return;
 		}
+
 		if(ships != null && ships.size() > 0) {
 			for(Ship A : ships) {
 				for(Asteroid B : asteroids) {
@@ -33,9 +34,11 @@ public class Quadrant{
 							if (GameConsole.IS_DEBUGGING) {
 	//							System.out.println("Asteroid Collision!");
 							}
+
 						}
 					}
 				}
+
 				for(Ship C : ships) {
 					if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(), C.getPhysObj())) {
 						if(PhysXLibrary.isCollision(A.getPhysObj(), C.getPhysObj())) {
@@ -94,9 +97,6 @@ public class Quadrant{
 	}
 
 	public void setBanshes(ArrayList<Banshe> banshes) {
-		// TODO Auto-generated method stub
 		this.ships.addAll(banshes);
 	}
-
-
 }

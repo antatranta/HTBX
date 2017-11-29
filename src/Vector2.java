@@ -60,30 +60,6 @@ public class Vector2 {
 		return new Vector2(1,1);
 	}
 	
-	/*public static Vector2 normalize(Vector2 vectorB) {
-		float bX = vectorB.getX();
-		float bY = vectorB.getY();
-		double length = Math.sqrt((bX * bX) + (bY * bY));
-		
-		if(length > 0) {
-			bX /= length;
-			bY /= length;
-		}
-		
-		return new Vector2(bX, bY);
-	}
-	
-	public Vector2 normalize() {
-		float length = (float)Math.sqrt((x * x) + (y * y));
-		
-		if(length > 0) {
-			x /= length;
-			y /= length;
-		}
-		
-		return new Vector2(x, y);
-	}*/
-	
 	// Better normalize that actually WORKS - Anthony
 	public Vector2 normalize(Vector2 vectorB) {
 		float magnitude = (float)Math.sqrt(Math.pow(vectorB.getX() - this.x, 2) + Math.pow(vectorB.getY() - this.y, 2));

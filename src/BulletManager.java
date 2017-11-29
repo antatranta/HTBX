@@ -48,14 +48,10 @@ public class BulletManager implements ShipTriggers {
 	}
 	
 	public GameImage onShootEvent(int dmg, float spd, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector, FXParticle fx) {
-		// Variable Verification
-//		if (dmg >= 0 && spd >= 0 && time > 0 && obj != null && movementVector != null) {
-			Bullet shot = new Bullet(dmg, spd, type, collision, time, obj, sprite, movementVector);
-			shot.giveFX(fx);
-			this.bullets.add(shot);
-			return shot.getSprite();
-//		}		
-//		return null;
+		Bullet shot = new Bullet(dmg, spd, type, collision, time, obj, sprite, movementVector);
+		shot.giveFX(fx);
+		this.bullets.add(shot);
+		return shot.getSprite();
 	}
 	
 	public ArrayList<GameImage> getDeadBullets(){
@@ -73,18 +69,8 @@ public class BulletManager implements ShipTriggers {
 				this.deadBullets.add(bullets.get(i).getSprite());
 				this.bullets.remove(bullets.get(i));
 				
-//				if (this.console_ref == null) {
-//					System.out.println("Can't see console");
-//				}
-//				if (current.getFX() == null) {
-//					System.out.println("No FX");
-//				}
-//				if (current.checkIfDead() == false) {
-//					System.out.println("Didn't die from collision");
-//				}
 				// Check if the bullet has a particle effect or not
 				if (this.console_ref != null && current.getFX() != null && current.checkIfDead()) {
-
 					current.getFX().setPosition(current.getPhysObj().getPosition());
 					current.getFX().setDir(new Vector2(current.getBulletDX(), current.getBulletDY()));
 					this.console_ref.programRequest_makeFX(current.getFX().getPattern(), current.getFX().getType(), current.getFX());
@@ -131,19 +117,11 @@ public class BulletManager implements ShipTriggers {
 
 	@Override
 	public int isAreaSafe(Vector2 pos, float range) {
-		// TODO Auto-generated method stub
 		return -404;
 	}
 
 	@Override
 	public int identify() {
-		// TODO Auto-generated method stub
 		return 20;
 	}
-
-//	@Override
-//	public void onShipDeath(Vector2 position, QuadrantID currentQUID) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 }

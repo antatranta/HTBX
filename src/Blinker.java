@@ -37,7 +37,6 @@ public class Blinker extends EnemyShip {
 		this.targetColor = Color.WHITE;
 		this.prevColor = Color.WHITE;
 		this.BlinkerGOvalAdded = false;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public GOval getCharger() {

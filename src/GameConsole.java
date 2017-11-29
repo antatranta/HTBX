@@ -17,7 +17,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
 	
 	private ArrayList<BulletEmitter> emitters = new ArrayList<BulletEmitter>();
-	//private PlayerShip player;
 	private PlayerShip player;
 	private MapCreator mapCreator;
 	
@@ -33,8 +32,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private FXManager fx;
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
-	
 	private TeleportWaypoint bossRoomTrigger;
+
 	
 	//Score
 	private int score=0;
@@ -71,7 +70,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		// populate the PhysX sim
 		physx.addQuadrants(mapCreator.createMap());
 		
-		// create the player
+
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 15);
 		player = mapCreator.placePlayer(mapCreator.getPlayerSpawn().getQUID());
 		player.physObj.removeColliders();
@@ -97,6 +96,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
 		System.out.println("Made a new game console");
+
 	}
 	
 	public TeleportWaypoint getBossRoomTrigger() {
@@ -242,7 +242,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		FXParticle particle = FXManager.deathFlash();
 		particle.setPosition(pos);
 		fx.makeDeathFlash(FXType.COLOR_CHANGE, particle);
-		//createBulletEmitter(10, 5, new PhysXObject(player.getPhysObj().getQUID(), pos), "RedCircle.png", CollisionData.Blank());
 	}
 	
 	private void calculateNeededExp() {
@@ -287,7 +286,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		default:
 			break;
 		}
-		//System.out.println("Stats are now:\n Speed: " + player.getStats().getSpeedSetting() + "\n Damage: " + player.getStats().getDamage() + "\n Max_HP: " + player.getStats().getHealthMax() + "\n Max_Shield: " + player.getStats().getShieldMax());
 	}
 
 	@Override
@@ -367,7 +365,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		score = enemiesKilled * scorePerEnemy - player.getDamageTaken()* scorePerDamage;
 		//System.out.println("Score: "+ score);
 	}
-
 }
 
 

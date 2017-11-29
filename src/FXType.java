@@ -1,5 +1,5 @@
 
 public enum FXType {
 	SHRINK,
-	COLOR_CHANGE
+	COLOR_CHANGE;
 }

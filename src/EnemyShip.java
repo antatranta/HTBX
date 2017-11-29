@@ -1,8 +1,5 @@
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import acm.graphics.GOval;
 
 public class EnemyShip extends Ship implements ActionListener {
 	protected EnemyType type;
@@ -11,7 +8,6 @@ public class EnemyShip extends Ship implements ActionListener {
 	private static int max_dist = 350;
 	protected EnemyShipStats stats;
 	
-//	private static int max_cd = 180;
 	private int weapon_cd;
 	private int checkpoint;
 	private int auto_reset = 0;
@@ -46,7 +42,6 @@ public class EnemyShip extends Ship implements ActionListener {
 		// Is the player within range?
 		if(!checkInteractionDistance(playerPos)) {
 			currentTarget = physObj.getPosition();
-//			gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
 		}
 		else {
 			gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
@@ -87,7 +82,6 @@ public class EnemyShip extends Ship implements ActionListener {
 				weapon_cd = stats.getFireRateValue() + LavaLamp.randomRange(-15, 15);
 				PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
 				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet, (float) 5, po, "RedCircle.png", weapon_target, FXManager.colorParticle(PaintToolbox.RED));
-//				System.out.println("This pos: " + physObj.getPosition().toString() + ", BFE: " + bfe.getMovementVector().toString());
 				switch(type) {
 				case LEVEL_1:
 					bfe.setSpeed(6);
@@ -112,13 +106,6 @@ public class EnemyShip extends Ship implements ActionListener {
 	@Override
 	protected void destroyShip() {
 		setCurrentHealth(0);
-		
-//		if(subscribers != null && subscribers.size() > 0) {
-//			for(ShipTriggers sub : subscribers) {
-//				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
-//				
-//			}
-//		}
 		
 		gameConsoleSubscriber.onShipDeath(physObj.getPosition(), exp_value);
 		// TEMPORARY solution to "kill" enemies

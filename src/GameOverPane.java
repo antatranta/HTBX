@@ -5,7 +5,6 @@ import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GImage;
 
-//TODO: Implement Game Over Screen with a continue and exit to menu function
 public class GameOverPane extends GraphicsPane {
 	private MainApplication program;
 	private GLabel gameOver;

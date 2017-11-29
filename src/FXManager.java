@@ -13,9 +13,9 @@ public class FXManager {
 	private static final Color bf_startColor = PaintToolbox.YELLOW;
 	
 	// - - Death Flash - -
-	private static final float df_transitionSpeed = 20f;
-	private static final int	  df_maxBursts = 6;
-	private static final int	  df_minBursts = 3;
+
+	private static final int df_maxBursts = 6;
+	private static final int df_minBursts = 3;
 	private static final float df_size = 40f;
 	private static final float df_endSize = 50f;
 	private static final Color df_startColor = PaintToolbox.RED;
@@ -44,10 +44,6 @@ public class FXManager {
 		}
 		
 		int size = particles.size();
-//		for (int i = 0; i < size; i++) {
-//			FXParticle fx = particles.get(i);
-//			fx.move();
-//		}
 		
 		// CHECK FOR DEAD ONES AFTER
 		for (int i = 0; i < size; i++) {
@@ -64,7 +60,6 @@ public class FXManager {
 		double theta = Math.toDegrees(Math.atan2(0 - particle.getPosition().getY(), 0 - particle.getPosition().getX())) - 90;
 		
 		for (int i = 0; i < 3; i++) {
-//			FXParticle x = new FXParticle(particle.getSprite(), particle.getPattern(), particle.getType(), particle.getPosition(), particle.getDir(), particle.getLife());
 			FXParticle x = new FXParticle(particle);
 			double angle_off = theta + LavaLamp.randomRange(-65, 65);
 			float spd = LavaLamp.randomRange(9, 10);
@@ -113,15 +108,6 @@ public class FXManager {
 	public ArrayList<FXParticle> getParticles() {
 		return this.particles;
 	}
-	
-//	public static FXParticle redParticle() {
-//		GOval sp = new GOval(5,5,5,5);
-//		sp.setFillColor(Color.RED);
-//		sp.setFilled(true);
-//		sp.setColor(PaintToolbox.TRANSPARENT);
-//		FXParticle fx_p = new FXParticle(sp, FXPattern.SPARKS_DEFLECT, FXType.SHRINK, Vector2.Zero(), Vector2.Zero(), 25);
-//		return fx_p;
-//	}
 	
 	public static FXParticle colorParticle(Color color) {
 		double size = 25;

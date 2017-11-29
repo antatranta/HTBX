@@ -104,15 +104,7 @@ public class PhysXObject {
 			colliders = newColliderArray;
 		}
 	}
-	
-//	public void setHost(Object host) {
-//		this.host = host;
-//	}
-//	
-//	public Object getHost() {
-//		return host;
-//	}
-	
+
 	public void addSubscriber(Collision newSubscriber) {
 		if (newSubscriber != null) {
 			subscribers.add(newSubscriber);

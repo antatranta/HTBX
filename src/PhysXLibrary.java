@@ -1,12 +1,4 @@
-public class PhysXLibrary{
-	/*
-	public static float	QUADRANT_HEIGHT;
-	public static float	QUADRANT_WIDTH;
-	public static int 	MAP_WIDTH;
-	public static int 	MAP_HEIGHT;
-	*/
-	//For testing the map.--wenrui
-
+public class PhysXLibrary {
 	public static float	QUADRANT_HEIGHT = 500f * 2;
 	public static float	QUADRANT_WIDTH = 1000f * 2;
 	
@@ -34,7 +26,6 @@ public class PhysXLibrary{
 	}
 	
 	protected static double distance(Vector2 a, Vector2 b) {
-//		return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
 		return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
 	}
 	
@@ -110,23 +101,6 @@ public class PhysXLibrary{
 	}
 	
 	public static boolean areObjectsInCollisionRange(PhysXObject a, PhysXObject b) {
-		/*
-		QuadrantPlacement aPlacement = getPositionInQuadrant(a);
-		QuadrantPlacement bPlacement = getPositionInQuadrant(b);
-		
-		if (a.getQUID().Order() == b.getQUID().Order()) {
-			return true;
-		} else if (Math.abs(a.getQUID().getX() - b.getQUID().getX()) < 2) {
-			if (aPlacement.)
-			return true;
-		} else if (Math.abs(a.getQUID().getY() - b.getQUID().getY()) < 2) {
-			return true;
-		} else if (distance(a.getPosition(), b.getPosition()) < COLLISION_CONSTANT) {
-			return true;
-		} else {
-			return false;
-		}
-		*/
 		return areObjectsInXRange(a, b, COLLISION_CONSTANT);
 	}
 	
@@ -177,8 +151,5 @@ public class PhysXLibrary{
 		} else {
 			return Direction.none;
 		}
-		
-//		 ref --- point : Right
-
 	}
 }

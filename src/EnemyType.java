@@ -6,5 +6,4 @@ public enum EnemyType {
 	BLINKER,
 	BANSHEE,
 	FENCER;
-	
 }
