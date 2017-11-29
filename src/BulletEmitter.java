@@ -59,8 +59,13 @@ public class BulletEmitter extends EnemyShip {
 	
 	@Override
 	public void AIUpdate(Vector2 playerPos) {
-		int current_index = BulletEmitterData.TOTAL_TYPES;
+		// Check if there are even any bullets to fire
+		if (!bank.checkBank()) {
+			return;
+		}
 		
+		int current_index = BulletEmitterData.TOTAL_TYPES;
+
 		// CHECK IF THE PRIORITIZED BULLETS ARE USED UP
 		int p_size = bank.getPriorities().length;
 		for (int i = 0; i < p_size; i++) {
