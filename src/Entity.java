@@ -32,7 +32,6 @@ public class Entity implements Collision {
 	
 	protected void createSprite(String file) {
 		this.sprite = new GameImage(file);
-		//System.out.println("Asteroid at: " + physObj.getPosition().getX() + ", " + physObj.getPosition().getY());
 	}
 	
 	public String getSpriteName() {
@@ -61,16 +60,12 @@ public class Entity implements Collision {
 		
 	protected void setCollisionData(CollisionData data) {
 		this.physObj.setCollisionData(new CollisionData(data));
-//		this.physObj.getCollisionData().setDamage(45);
 	}
 	
 	public CollisionData getCollisionData() {
-//		System.out.println(this.physObj.getCollisionData().toString());
 		return physObj.getCollisionData();
 	}
 
-	public void onCollisionEvent(CollisionData data, Vector2 pos) {
-		// TODO Auto-generated method stub
-		
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {	
 	}
 }

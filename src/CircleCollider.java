@@ -32,13 +32,4 @@ public class CircleCollider {
 	public Vector2 getCenter() {
 		return center;
 	}
-
-	/*
-	public void changeRadius(float newRadius) {
-		this.radius = newRadius;
-	}
-	public void moveCenter(Vector2 newCenter) {
-		this.center = newCenter;
-	}
-	*/
 }

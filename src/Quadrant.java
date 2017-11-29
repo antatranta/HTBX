@@ -27,7 +27,6 @@ public class Quadrant{
 			for(Asteroid B : asteroids) {
 				if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(),B.getPhysObj())) {
 					if(PhysXLibrary.isCollision(A.getPhysObj(), B.getPhysObj())) {
-//						A.sendCollisionMessage(B.getCollisionData());
 						
 						if (GameConsole.IS_DEBUGGING) {
 //							System.out.println("Asteroid Collision!");
@@ -38,9 +37,6 @@ public class Quadrant{
 			for(Ship C : ships) {
 				if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(), C.getPhysObj())) {
 					if(PhysXLibrary.isCollision(A.getPhysObj(), C.getPhysObj())) {
-//						A.sendCollisionMessage(C.getCollisionData());
-//						C.sendCollisionMessage(A.getCollisionData());
-						
 						if (GameConsole.IS_DEBUGGING) {
 //							System.out.println("Ship Collision!");
 						}
@@ -92,9 +88,6 @@ public class Quadrant{
 	}
 
 	public void setBanshes(ArrayList<Banshe> banshes) {
-		// TODO Auto-generated method stub
 		this.ships.addAll(banshes);
 	}
-
-
 }

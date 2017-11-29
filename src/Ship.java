@@ -1,10 +1,6 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-
 public class Ship extends Entity {
-
 	protected int KB_FORCE = 10;
 	protected int current_health;
 	protected ShipStats stats;
@@ -63,16 +59,8 @@ public class Ship extends Entity {
 		playDeathSound();
 		setCurrentHealth(0);
 		
-//		if(subscribers != null && subscribers.size() > 0) {
-//			for(ShipTriggers sub : subscribers) {
-//				sub.onShipDeath(physObj.getPosition(), physObj.getQUID());
-//				
-//			}
-//		}
 		gameConsoleSubscriber.onShipDeath(physObj.getPosition(), 0);
-		//gameConsoleSubscriber.onShipDeath(physObj.getPosition(), KB_FORCE);
 		
-
 		// TEMPORARY solution to "kill" enemies
 		physObj.setPosition(new Vector2(-1000, -1000));
 		
@@ -88,7 +76,6 @@ public class Ship extends Entity {
 	}
 	
 	protected void takeDamage(int damage) {
-//		System.out.println("Health: " + getCurrentHealth() + " Dam: " + damage);
 		if(getCurrentHealth() > 0) {
 			setCurrentHealth(getCurrentHealth() - damage);
 		} 
@@ -131,14 +118,6 @@ public class Ship extends Entity {
 		this.physObj.setPosition(currentPosition.add(external_force));
 		external_force = external_force.div(new Vector2(PhysXLibrary.FRICTION, PhysXLibrary.FRICTION));
 	}
-
-//	protected void calculateCollisionForce(Vector2 pos) {
-//		double theta_rad = Math.atan2(pos.getY() - physObj.getPosition().getY(), pos.getX() - physObj.getPosition().getX());
-//		float unit_x = (float)(Math.cos(theta_rad));
-//		float unit_y = (float)(Math.sin(theta_rad));
-//		external_force.setXY(unit_x * -KB_FORCE, unit_y * -KB_FORCE);
-//
-//	}
 	
 	public float getDx() {
 		return dx;
@@ -166,9 +145,6 @@ public class Ship extends Entity {
 		return exp_value;
 	}
 	
-//	protected void shoot(int damage, int speed, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector) {
-//		BulletFireEventData bfe = new BulletFireEventData(damage,speed, type, collision, time, obj, sprite, movementVector);
-		
 	protected void shoot(BulletFireEventData bfe) {
 		if(bulletSubscriber == null) {
 			if(subscribers != null && subscribers.size() > 0) {

@@ -6,7 +6,6 @@ public class StaticRect {
 	
 	public StaticRect(Vector2 position, Vector2 size) {
 		physObj = new PhysXObject();
-//		physObj.setPosition(new Vector2(position.getX() - size.getX() / 2, position.getY() - size.getY() / 2));
 		physObj.setPosition(position);
 		this.size = size;
 		rect = new GRect(this.size.getX(), this.size.getY());

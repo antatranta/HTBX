@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-import acm.graphics.GObject;
 import acm.graphics.GOval;
 import rotations.GameImage;
 

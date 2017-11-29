@@ -1,4 +1,3 @@
-
 public class EnemyShipStats extends ShipStats {
 	private int aggression = 1;
 	private int fireRate = 0;

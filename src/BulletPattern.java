@@ -1,5 +1,7 @@
 //TODO Implement bullet patterns that the enemy will use
 public class BulletPattern {
+	private static final float CONSTANT_CHANGE = 20;
+	
 	private float angle;
 	private float x_angle;
 	private float y_angle;
@@ -17,7 +19,7 @@ public class BulletPattern {
 					y_angle = (float)Math.sin(Math.toRadians(angle));
 					
 					spiral.setBulletDXDY(x_angle, y_angle);
-					angle += 20;
+					angle += CONSTANT_CHANGE;
 					break;
 					
 				default:
@@ -38,7 +40,7 @@ public class BulletPattern {
 					y_angle = (float)Math.sin(Math.toRadians(angle));
 				
 					spiral.setBulletDXDY(x_angle, y_angle);
-					angle -= 20;
+					angle -= CONSTANT_CHANGE;
 					break;
 					
 				default:
@@ -62,10 +64,10 @@ public class BulletPattern {
 					sunBurst.setBulletDXDY(x_angle, y_angle);
 					
 					if(angle >= 180) {
-						i = -20;
+						i = -CONSTANT_CHANGE;
 					}
 					else if(angle <= 0) {
-						i = 20;
+						i = CONSTANT_CHANGE;
 					}
 					angle += i;
 					break;
@@ -91,10 +93,10 @@ public class BulletPattern {
 					sunBurst.setBulletDXDY(x_angle, y_angle);
 					
 					if(angle >= 180) {
-						i = -20;
+						i = -CONSTANT_CHANGE;
 					}
 					else if(angle <= 0) {
-						i = 20;
+						i = CONSTANT_CHANGE;
 					}
 					angle += i;
 					break;
@@ -119,10 +121,10 @@ public class BulletPattern {
 					zigZag.setBulletDXDY(x_angle, y_angle);
 					
 					if(angle >= 180) {
-						i = -20;
+						i = -CONSTANT_CHANGE;
 					}
 					else if(angle <= 0) {
-						i = 20;
+						i = CONSTANT_CHANGE;
 					}
 					angle += i;
 					break;
@@ -147,10 +149,10 @@ public class BulletPattern {
 					zigZag.setBulletDXDY(x_angle, y_angle);
 					
 					if(angle >= 180) {
-						i = -20;
+						i = -CONSTANT_CHANGE;
 					}
 					else if(angle <= 0) {
-						i = 20;
+						i = CONSTANT_CHANGE;
 					}
 					angle += i;
 					break;

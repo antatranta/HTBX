@@ -21,7 +21,6 @@ public class PhysX {
 	public void verifyOrder() {
 		int order = 0;
 		for(Quadrant quad : Quadrants) {
-			System.out.println("ORDER: " +quad.getQUID().Order() + " , INDEX: " + order);
 			order++;
 		}
 	}
