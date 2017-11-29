@@ -1,57 +1,53 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import acm.graphics.GImage;
+
 
 public class GameOverPane extends GraphicsPane {
+	private static final String FILE_NAME = "Scores.txt";
+	
 	private MainApplication program;
 	private GLabel gameOver;
+	private GLabel scoreDisplay;
 	private GLabel retryGame;
 	private GLabel exitToMenu;
 	private GObject obj;
-	private String filename = "Scores.txt";
 	
 	public GameOverPane(MainApplication app) {
 		program = app;
 		gameOver = new GLabel("GAME OVER");
+		scoreDisplay = new GLabel("YOUR SCORE: " + Integer.toString(program.getPlayerScore()));
 		retryGame = new GLabel("RETRY");
 		exitToMenu = new GLabel("EXIT TO MENU");
 
 		gameOver.setFont(font);
 		gameOver.setColor(Color.black);
 		gameOver.setLocation(CENTER_WIDTH - (gameOver.getWidth() / 2), CENTER_HEIGHT - (gameOver.getHeight() / 2));
+		scoreDisplay.setFont(font);
+		scoreDisplay.setColor(Color.black);
+		scoreDisplay.setLocation(CENTER_WIDTH - (scoreDisplay.getWidth() / 2), gameOver.getY() + 50);
 		retryGame.setFont(font);
 		retryGame.setColor(Color.black);
-		retryGame.setLocation(gameOver.getX() - 75, gameOver.getY() + 50);
+		retryGame.setLocation(gameOver.getX() - 75, scoreDisplay.getY() + 50);
 		exitToMenu.setFont(font);
 		exitToMenu.setColor(Color.black);
 		exitToMenu.setLocation(gameOver.getX() + 75, retryGame.getY());
 	}
 	
-	public void WriteScore() {
-		Scanner reader = new Scanner(System.in);
-		String player_input="";
-		String in="";
+	public void writeScore() {
+		String in = "";
 		try {
-			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
-			//FileWriter  fileWriter = new FileWriter("Scores.txt");
-			//BufferedWriter buffer = new BufferedWriter(fileWriter);
-			System.out.println("Enter your name: ");
-			player_input = reader.nextLine();
-			in = Integer.toString(program.getPlayerScore())+" "+player_input;
-			System.out.println(in);
-			out.write(in);
+			PrintWriter out = new PrintWriter(new FileWriter(FILE_NAME, true));
+			
+			in = Integer.toString(program.getPlayerScore());
+			out.println(in);
+			out.flush();
 			out.close();
 		}
 		catch(FileNotFoundException ex) {
@@ -69,9 +65,10 @@ public class GameOverPane extends GraphicsPane {
 		program.add(whiteBG());
 		program.add(selection());
 		program.add(gameOver);
+		program.add(scoreDisplay);
 		program.add(retryGame);
 		program.add(exitToMenu);
-		WriteScore();
+		writeScore();
 	}
 
 	@Override
@@ -79,6 +76,7 @@ public class GameOverPane extends GraphicsPane {
 		program.remove(whiteBG());
 		program.remove(selection());
 		program.remove(gameOver);
+		program.remove(scoreDisplay);
 		program.remove(retryGame);
 		program.remove(exitToMenu);
 	}

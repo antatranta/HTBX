@@ -40,7 +40,7 @@ public class MainApplication extends GraphicsApplication {
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
 		control = new ControlsPane(this);
-		score = new ScoresPane(this);
+		//score = new ScoresPane(this);
 		pause = new PausePane(this);
 		
 		audio = AudioPlayer.getInstance();
@@ -86,6 +86,7 @@ public class MainApplication extends GraphicsApplication {
 
 	public void switchToMenu() {
 		story = new StoryPane(this);
+		fromMenu = true;
 		isPaused = false;
 
 		//audio.stopSound("sounds", "Credits.mp3");
@@ -140,6 +141,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void switchToScores() {
+		score = new ScoresPane(this);
 		switchToScreen(score);
 	}
 

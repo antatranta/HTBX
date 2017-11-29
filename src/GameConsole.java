@@ -360,7 +360,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	}
 	
 	public void SetScore() {
-		score = enemiesKilled * scorePerEnemy - player.getDamageTaken()* scorePerDamage;
+		score = (enemiesKilled * scorePerEnemy) - (player.getDamageTaken() * scorePerDamage);
 		//System.out.println("Score: "+ score);
 	}
 	

@@ -1,19 +1,20 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class ScoresPane extends GraphicsPane {
+	private static final String FILE_NAME = "Scores.txt";
+	
 	private MainApplication program;
-	private ArrayList<String> scores;
+	private ArrayList<Integer> scores;
 	private ArrayList<GLabel> displayScores;
 	private GLabel back;
 	private GObject obj;
@@ -21,26 +22,16 @@ public class ScoresPane extends GraphicsPane {
 	public ScoresPane(MainApplication app) {
 		program = app;
 
-		scores = new ArrayList<String>();
-		String fileName = "Scores.txt";
-		String line = null;
-
+		scores = new ArrayList<Integer>();
 		try {
-			FileReader fileReader = new FileReader(fileName);
-
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-			while((line = bufferedReader.readLine()) != null) {
-				scores.add(line);
+			Scanner scanner = new Scanner(new File(FILE_NAME));
+			
+			while(scanner.hasNextInt()) {
+				scores.add(scanner.nextInt());
 			}
-
-			bufferedReader.close();
 		}
 		catch(FileNotFoundException ex) {
-			System.out.println("Unable to open file \"" + fileName + "\"");
-		}
-		catch(IOException ex) {
-			ex.printStackTrace();
+			System.out.println("Unable to open file \"" + FILE_NAME + "\"");
 		}
 
 		Collections.sort(scores, Collections.reverseOrder());
@@ -48,13 +39,19 @@ public class ScoresPane extends GraphicsPane {
 
 		//Only display the top 5 scores
 		int j = 0;
+		int k = 1;
 		for(int i = 0; i < scores.size(); i++) {
-			GLabel temp = new GLabel(scores.get(i));
+			if(i > 5) {
+				break;
+			}
+			
+			GLabel temp = new GLabel(k + ". " + Integer.toString(scores.get(i)));
 			temp.setFont(font);
 			temp.setColor(Color.black);
 			temp.setLocation(CENTER_WIDTH - (temp.getWidth() / 2), CENTER_HEIGHT - (temp.getHeight() / 2) + j);
 			displayScores.add(temp);
 			j += 25;
+			k++;
 		}
 
 		back = new GLabel("BACK");
