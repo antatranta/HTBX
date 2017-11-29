@@ -10,7 +10,7 @@ public class PlayerShip extends Ship implements ActionListener{
 	public static int REGEN_BETWEEN = 30;
 	public static int REGEN_CAP = 300;
 	private int current_shield;
-	private int shield_regen = REGEN_CAP;
+	private int shield_regen = 0;
 	private int shield_between = REGEN_BETWEEN;
 	private int i_frames = INV_CAP;
 	private ShipStats bonus_stats;

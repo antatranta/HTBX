@@ -1,15 +1,36 @@
 public class EnemyShipStats extends ShipStats {
 	private int aggression = 1;
-	private int fireRate = 0;
+	private int fireRate;
 
 	public EnemyShipStats(int speed, int damage, int health_max, int shield_max, int aggression, int fireRate) {
 		super(speed, damage, health_max, shield_max);
 		this.aggression = aggression;
+		this.fireRate = 0;
 	}
 
 	public EnemyShipStats(ShipStats stats, int aggression) {
 		super(stats.getSpeedSetting(), stats.getDamage(), stats.getHealthMax(), stats.getShieldMax());
 		this.aggression = aggression;
+		this.fireRate = 0;
+	}
+	
+	public EnemyShipStats(ShipStats stats, int aggression, EnemyType type) {
+		super(stats.getSpeedSetting(), stats.getDamage(), stats.getHealthMax(), stats.getShieldMax());
+		this.aggression = aggression;
+		setFireRate(type);
+	}
+	
+	public void setFireRate(EnemyType type) {
+		switch (type) {
+		case LEVEL_1:
+			this.fireRate = 4;
+		case LEVEL_2:
+			this.fireRate = 3;
+		case LEVEL_3:
+			this.fireRate = 2;
+		default:
+			this.fireRate = 0;
+		}
 	}
 
 	public float getStoppingDistance() {
@@ -34,19 +55,19 @@ public class EnemyShipStats extends ShipStats {
 	public float getInteractionDistance() {
 		switch(this.aggression) {
 		case 0:
-			return 500f;
-		case 1:
 			return 600f;
-		case 2:
+		case 1:
 			return 700f;
+		case 2:
+			return 800f;
 		case 3:
-			return 400f;
+			return 900f;
 		case 4:
-			return 450f;
+			return 1000f;
 		case 5:
-			return 500f;
+			return 1100f;
 		default:
-			return 200f;
+			return 1200f;
 		}
 	}
 
@@ -79,11 +100,11 @@ public class EnemyShipStats extends ShipStats {
 		case 0:
 			return 300;
 		case 1:
-			return 150;
-		case 2:
 			return 240;
+		case 2:
+			return 180;
 		case 3:
-			return 300;
+			return 120;
 		case 4:
 			return 60;
 		case 5:

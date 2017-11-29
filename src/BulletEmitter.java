@@ -101,10 +101,10 @@ public class BulletEmitter extends EnemyShip {
 	private void updateAngle() {
 		switch(behavior) {
 		case SHOOT_CLOCKWISE:
-			dir += angle_delta;
+			dir -= angle_delta;
 			break;
 		case SHOOT_COUNTER_CLOCKWISE:
-			dir -= angle_delta;
+			dir += angle_delta;
 			break;
 		default: // Shoot at target
 			angleToTarget(currentTarget);

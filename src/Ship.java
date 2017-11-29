@@ -18,7 +18,7 @@ public class Ship extends Entity {
 	private float dy = 0;// 1 to up, -1 to down.
 
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType, int exp) {
-		super(physObj, sprite, new CollisionData(10, shipType));
+		super(physObj, sprite, new CollisionData(1, shipType));
 		this.external_force = new Vector2(0, 0);
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);

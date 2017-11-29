@@ -13,9 +13,10 @@ public class FXManager {
 
 	// - - Death Flash - -
 
-	private static final int df_maxBursts = 6;
-	private static final int df_minBursts = 3;
+	private static final int df_maxBursts = 7;
+	private static final int df_minBursts = 4;
 	private static final float df_size = 40f;
+	private static final float df_size_variance = 30f;
 	private static final float df_endSize = 50f;
 	private static final Color df_startColor = PaintToolbox.RED;
 
@@ -119,7 +120,8 @@ public class FXManager {
 	}
 
 	public static FXParticle deathFlash() {
-		GOval sp = new GOval(df_size,df_size);
+		double var = LavaLamp.randomRange(0, df_size_variance);
+		GOval sp = new GOval(df_size + var,df_size + var);
 		sp.setFillColor(df_startColor);
 		sp.setFilled(true);
 
