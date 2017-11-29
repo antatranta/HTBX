@@ -4,21 +4,21 @@ public class Quadrant{
 	private ArrayList<EnemyShip> ships;
 	private boolean isActive;
 	private QuadrantID QUID;
-	
+
 	public Quadrant() {
 		this.isActive = false;
 		this.QUID = new QuadrantID(0,0,0);
 	}
-	
+
 	public Quadrant(QuadrantID QUID) {
 		this.isActive = false;
 		this.QUID = QUID;
 	}
-	
+
 	public QuadrantID getQUID() {
 		return QUID;
 	}
-	
+
 	public void checkForCollisions() {
 		if (!isActive) {
 			return;
@@ -34,7 +34,6 @@ public class Quadrant{
 							if (GameConsole.IS_DEBUGGING) {
 	//							System.out.println("Asteroid Collision!");
 							}
-
 						}
 					}
 				}
@@ -59,15 +58,15 @@ public class Quadrant{
 	public void Activate() {
 		this.isActive = true;
 	}
-	
+
 	public void Deactivate() {
 		this.isActive = false;
 	}
-	
+
 	public ArrayList<Asteroid> getStatics(){
 		return asteroids;
 	}
-	
+
 	public ArrayList<EnemyShip> getShips(){
 		return ships;
 	}
@@ -83,7 +82,7 @@ public class Quadrant{
 	public void setShips(ArrayList<EnemyShip> ships) {
 		this.ships = ships;
 	}
-	
+
 	public void setBlinkers(ArrayList<Blinker> blinkers) {
 		this.ships.addAll(blinkers);
 	}
@@ -91,7 +90,7 @@ public class Quadrant{
 	public void setFencers(ArrayList<Fencer> fencers) {
 		this.ships.addAll(fencers);
 	}
-	
+
 	public void setQUID(QuadrantID qUID) {
 		QUID = qUID;
 	}

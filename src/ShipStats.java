@@ -1,64 +1,64 @@
 public class ShipStats {
-	
+
 	private int speed;
 	private int shield_max;
 	private int health_max;
 	private int damage;
-	
+
 	public ShipStats(int speed, int damage, int health_max, int shield_max) {
 		this.speed = speed;
 		this.damage = damage;
 		this.health_max = health_max;
 		this.shield_max = shield_max;
 	}
-	
+
 	public static ShipStats PlayerStats(int base_hp) {
 		return new ShipStats(1, 3, base_hp, 1);
 	}
-	
+
 	public static ShipStats EnemyStats_01() {
 		return new ShipStats(1, 1, 120, 0);
 	}
-	
+
 	public static ShipStats EnemyStats_02() {
 		return new ShipStats(1, 1, 160, 0);
 	}
-	
+
 	public static ShipStats EnemyStats_03() {
 		return new ShipStats(1, 1, 220, 0);
 	}
-	
+
 	public static ShipStats EnemyStats_Blinker() {
 		return new ShipStats(1, 1, 30, 0);
 	}
-	
+
 	public static ShipStats EnemyStats_Banshe() {
 		return new ShipStats(5, 1, 30, 0);
 	}
-	
+
 	public float getTurningSpeed() {
 		return 5f;
 	}
-	
+
 	public int getSpeedSetting() {
 		return this.speed;
 	}
-	
+
 	public float getSpeedValue() {
 		switch(this.speed) {
 		case 0:
 			return 5;
 		case 1:
-			return 5.5f;
-		case 2:
 			return 6f;
+		case 2:
+			return 7f;
 		case 3:
-			return 6.5f;
+			return 8f;
 		default:
 			return 7;
 		}
 	}
-	
+
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}

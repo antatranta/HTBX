@@ -24,7 +24,7 @@ public class BulletEmitter extends EnemyShip {
 		this.damageable = can_hurt;
 		this.bullet_style = type;
 	}
-	
+
 	protected void destroy() {
 		this.physObj = null;
 	}
@@ -101,17 +101,17 @@ public class BulletEmitter extends EnemyShip {
 	private void updateAngle() {
 		switch(behavior) {
 		case SHOOT_CLOCKWISE:
-			dir += angle_delta;
+			dir -= angle_delta;
 			break;
 		case SHOOT_COUNTER_CLOCKWISE:
-			dir -= angle_delta;
+			dir += angle_delta;
 			break;
 		default: // Shoot at target
 			angleToTarget(currentTarget);
 			break;
 		}
 	}
-	
+
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		if (data.getType() == CollisionType.player_bullet) {

@@ -11,14 +11,14 @@ public class Ship extends Entity {
 	protected ShipTriggers bulletSubscriber;
 	protected GameConsoleEvents gameConsoleSubscriber;
 	protected LaserManagerEvents laserManagerSubscriber;
-	
+
 	protected int exp_value;
-	
+
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
-	
+
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType, int exp) {
-		super(physObj, sprite, new CollisionData(10, shipType));
+		super(physObj, sprite, new CollisionData(1, shipType));
 		this.external_force = new Vector2(0, 0);
 		this.physObj.addSubscriber(this);
 		this.setCurrentHealth(current_health);
@@ -26,7 +26,7 @@ public class Ship extends Entity {
 		this.subscribers = new ArrayList<ShipTriggers>();
 		this.exp_value = exp;
 	}
-	
+
 	public void identifySubscribers() {
 		if(subscribers != null && subscribers.size() > 0) {
 			for(ShipTriggers sub: subscribers) {
@@ -39,11 +39,11 @@ public class Ship extends Entity {
 			}
 		}
 	}
-	
+
 	public double getAngle() {
 		return dir;
 	}
-	
+
 	public void adjustAngle(double degree) {
 		dir += degree;
 		if (dir > 360) {
@@ -53,28 +53,28 @@ public class Ship extends Entity {
 			dir += 360;
 		}
 	}
-	
+
 	protected void destroyShip() {
-		
+
 		playDeathSound();
 		setCurrentHealth(0);
-		
+
 		gameConsoleSubscriber.onShipDeath(physObj.getPosition(), 0);
-		
+
 		// TEMPORARY solution to "kill" enemies
 		physObj.setPosition(new Vector2(-1000, -1000));
-		
+
 		sprite.rotate(0);
 	}
-	
+
 	protected void playDeathSound() {
-		
+
 	}
-	
+
 	protected void playDamageSound() {
-		
+
 	}
-	
+
 	protected void takeDamage(int damage) {
 		if(getCurrentHealth() > 0) {
 			setCurrentHealth(getCurrentHealth() - damage);
@@ -96,7 +96,7 @@ public class Ship extends Entity {
 		else
 			this.current_health = 0;
 	}
-	
+
 	public void Move() {
 		if(getCurrentHealth()>0) {
 			Vector2 currentPosition = physObj.getPosition();
@@ -104,21 +104,21 @@ public class Ship extends Entity {
 			this.physObj.setPosition(newPosition);
 		}
 	}
-	
+
 	public void moveVector2(Vector2 dir) {
 		if(getCurrentHealth()>0) {
 			Vector2 currentPosition = physObj.getPosition();
 			this.physObj.setPosition(currentPosition.add(dir));
-			
+
 		}
 	}
-	
+
 	protected void moveExternalForce() {
 		Vector2 currentPosition = physObj.getPosition();
 		this.physObj.setPosition(currentPosition.add(external_force));
 		external_force = external_force.div(new Vector2(PhysXLibrary.FRICTION, PhysXLibrary.FRICTION));
 	}
-	
+
 	public float getDx() {
 		return dx;
 	}
@@ -131,20 +131,20 @@ public class Ship extends Entity {
 	public void setDy(float dy) {
 		this.dy = dy;
 	}
-	
+
 	public void setDxDy(Vector2 DXDY) {
 		this.dx = DXDY.getX();
 		this.dy = DXDY.getY();
 	}
-	
+
 	public ShipStats getStats() {
 		return stats;
 	}
-	
+
 	public int getExp() {
 		return exp_value;
 	}
-	
+
 	protected void shoot(BulletFireEventData bfe) {
 		if(bulletSubscriber == null) {
 			if(subscribers != null && subscribers.size() > 0) {
@@ -157,7 +157,7 @@ public class Ship extends Entity {
 			bulletSubscriber.onShipFire(bfe, bfe.getCollisionType());
 		}
 	}
-	
+
 	// FIRING METHODS
 	protected void shootSpread(BulletFireEventData bfe, int bullets, int max_spread) {
 		double theta_deg = Math.toDegrees(Math.atan2(bfe.getMovementVector().getY() - physObj.getPosition().getY(), bfe.getMovementVector().getX() - physObj.getPosition().getX()));
@@ -181,21 +181,21 @@ public class Ship extends Entity {
 			}
 		}
 	}
-	
+
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		takeDamage(data.getDamage());
 	}
-	
+
 	public void addSubscriber(ShipTriggers sub) {
 		if(sub != null && !this.subscribers.contains(sub)) {
 			this.subscribers.add(sub);
 		}
 	}
-	
+
 	public void addGameConsole(GameConsoleEvents sub) {
 		gameConsoleSubscriber = sub;
 	}
-	
+
 	public void addLaserManager(LaserManagerEvents sub) {
 		laserManagerSubscriber = sub;
 	}

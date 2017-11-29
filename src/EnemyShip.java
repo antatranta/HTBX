@@ -4,16 +4,16 @@ public class EnemyShip extends Ship {
 	private static int min_dist = 250;
 	private static int max_dist = 350;
 	protected EnemyShipStats stats;
-	
+
 	private int weapon_cd;
 	private int checkpoint;
 	private int auto_reset = 0;
-	
+
 	protected Vector2 currentTarget = new Vector2(-99, -99);
-	
+
 	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, EnemyType type, int exp) {
 		super(physObj, current_health, stats, sprite, CollisionType.enemyShip, exp);
-		this.stats = new EnemyShipStats(stats, aggression);
+		this.stats = new EnemyShipStats(stats, aggression, type);
 		this.weapon_cd = 60;
 		this.type = type;
 	}
@@ -21,14 +21,14 @@ public class EnemyShip extends Ship {
 	public EnemyType getEnemyType() {
 		return type;
 	}
-	
+
 	protected boolean checkInteractionDistance(Vector2 playerPos) {
 		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance()) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public void AIUpdate(Vector2 playerPos) {
 
 		// Is the player within range?
@@ -54,18 +54,18 @@ public class EnemyShip extends Ship {
 				if (PhysXLibrary.distance(physObj.getPosition(), currentTarget) <= 15) {
 					checkpoint = 0;
 				}
-				
+
 			}
-			
+
 			rotateToPoint(currentTarget);
-			
+
 			this.sprite.setDegrees(dir + 90);
 			if (checkpoint < 2) {
 				this.physObj.setPosition(this.physObj.getPosition().add(new Vector2((float)Math.cos(Math.toRadians(dir)) * stats.getSpeedSetting(), (float)Math.sin(Math.toRadians(dir)) * stats.getSpeedSetting())));
 			}
-			
+
 			moveExternalForce();
-			
+
 			Vector2 weapon_target = playerPos;
 			if (weapon_cd > 0) {
 				weapon_cd -= 1;
@@ -94,23 +94,23 @@ public class EnemyShip extends Ship {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void destroyShip() {
 		setCurrentHealth(0);
-		
+
 		gameConsoleSubscriber.onShipDeath(physObj.getPosition(), exp_value);
 		// TEMPORARY solution to "kill" enemies
 		physObj.setPosition(new Vector2(-1000, -1000));
-		
+
 		sprite.rotate(0);
 	}
-	
+
 	@Override
 	protected void playDamageSound() {
 		AudioPlayer myAudio = AudioPlayer.getInstance();
-//		myAudio.Sound("sounds", "BlinkerHit.wav");
-//		myAudio.playSound("sounds", "BlinkerHit.wav");
+		//		myAudio.Sound("sounds", "BlinkerHit.wav");
+		//		myAudio.playSound("sounds", "BlinkerHit.wav");
 	}
 
 	// Thanks Wenrui
@@ -129,18 +129,17 @@ public class EnemyShip extends Ship {
 			adjustAngle(-1);
 		}
 	}
-	
+
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		if (data.getType() == CollisionType.playerShip) {
 			external_force = PhysXLibrary.calculateCollisionForce(pos, this.physObj, KB_FORCE);
 		}
 		if (data.getType() == CollisionType.asteroid || data.getType() == CollisionType.player_bullet) {
-//			AudioPlayer myAudio = AudioPlayer.getInstance();
-//			myAudio.stopSound("sounds", "BlinkerHit.wav");
-//			myAudio.playSound("sounds", "BlinkerHit.wav");
+			//			AudioPlayer myAudio = AudioPlayer.getInstance();
+			//			myAudio.stopSound("sounds", "BlinkerHit.wav");
+			//			myAudio.playSound("sounds", "BlinkerHit.wav");
 			takeDamage(data.getDamage());
 		}
 	}
-	
 }

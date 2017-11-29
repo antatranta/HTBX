@@ -5,13 +5,12 @@ public class ShipDeathData {
 		this.pos = pos;
 		this.QUID  = QUID;
 	}
-	
+
 	public Vector2 getPos () {
 		return this.pos;
 	}
-	
+
 	public QuadrantID getQUID() {
 		return this.QUID;
 	}
-	
 }

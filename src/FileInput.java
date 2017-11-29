@@ -172,7 +172,7 @@ public class FileInput {
 			}
 
 		}
-		
+
 		return readColliders;
 	}
 
@@ -205,7 +205,7 @@ public class FileInput {
 		}
 		return lines;
 	}
-	
+
 	// DRIVER TESTS
 	public static void main() {
 

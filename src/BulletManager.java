@@ -12,33 +12,33 @@ public class BulletManager implements ShipTriggers {
 	private ArrayList<Bullet> bullets;
 	private ArrayList<GameImage> deadBullets;
 	private GameConsole console_ref;
-	
+
 	private BulletPattern pattern;
-	
+
 	public BulletManager() {
 		this.bullets = new ArrayList<Bullet>();
 		this.deadBullets = new ArrayList<GameImage>();
 		pattern = new BulletPattern();
 		this.console_ref = null;
 	}
-	
+
 	public BulletManager(GameConsole console) {
 		this.bullets = new ArrayList<Bullet>();
 		this.deadBullets = new ArrayList<GameImage>();
 		pattern = new BulletPattern();
 		this.console_ref = console;
 	}
-	
+
 	public void setBullets(ArrayList<Bullet> bullets) {
 		this.bullets = bullets;
 	}
-	
+
 	public ArrayList<Bullet> getBullets() {
 		ArrayList<Bullet> r_bullets = new ArrayList<Bullet>();
 		r_bullets.addAll(bullets);
 		return r_bullets;
 	}
-	
+
 	public ArrayList<PhysXObject> getPhysXObjects(){
 		ArrayList<PhysXObject> objs = new ArrayList<PhysXObject>();
 		for(Bullet bullet : bullets) {
@@ -46,29 +46,29 @@ public class BulletManager implements ShipTriggers {
 		}
 		return objs;
 	}
-	
+
 	public GameImage onShootEvent(int dmg, float spd, BulletType type, CollisionType collision, float time, PhysXObject obj, String sprite, Vector2 movementVector, FXParticle fx) {
 		Bullet shot = new Bullet(dmg, spd, type, collision, time, obj, sprite, movementVector);
 		shot.giveFX(fx);
 		this.bullets.add(shot);
 		return shot.getSprite();
 	}
-	
+
 	public ArrayList<GameImage> getDeadBullets(){
 		return this.deadBullets;
 	}
-	
+
 	public void moveBullets() {
 		this.deadBullets = new ArrayList<GameImage>();
 		for(int i=0; i < this.bullets.size(); i++) {
 			Bullet current = this.bullets.get(i);
 			current.move();
-			
+
 			// Take care of dead bullets: They die prematurely or reach the end of their travel time
 			if(this.bullets.get(i).getSteps() > (int)this.bullets.get(i).getBulletDuration() * 100 || this.bullets.get(i).checkIfDead()) {
 				this.deadBullets.add(bullets.get(i).getSprite());
 				this.bullets.remove(bullets.get(i));
-				
+
 				// Check if the bullet has a particle effect or not
 				if (this.console_ref != null && current.getFX() != null && current.checkIfDead()) {
 					current.getFX().setPosition(current.getPhysObj().getPosition());
@@ -78,32 +78,32 @@ public class BulletManager implements ShipTriggers {
 			}
 		}
 	}
-	
+
 	public void moveClockwiseSpiralPattern() {
 		pattern.clockwiseSpiralPattern(this);
 		moveBullets();
 	}
-	
+
 	public void moveCounterSpiralPattern() {
 		pattern.counterClockwiseSpiralPattern(this);
 		moveBullets();
 	}
-	
+
 	public void moveSunBurstBottom() {
 		pattern.sunBurstBottom(this);
 		moveBullets();
 	}
-	
+
 	public void moveSunBurstTop() {
 		pattern.sunBurstTop(this);
 		moveBullets();
 	}
-	
+
 	public void moveZigZagBottom() {
 		pattern.zigZagBottom(this);
 		moveBullets();
 	}
-	
+
 	public void moveZigZagTop() {
 		pattern.zigZagTop(this);
 		moveBullets();
