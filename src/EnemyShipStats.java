@@ -78,13 +78,13 @@ public class EnemyShipStats extends ShipStats {
 	public int getFireRateValue() {
 		switch(this.fireRate) {
 		case 0:
-			return 120;
+			return 300;
 		case 1:
-			return 110;
+			return 150;
 		case 2:
-			return 100;
+			return 240;
 		case 3:
-			return 90;
+			return 300;
 		case 4:
 			return 60;
 		case 5:

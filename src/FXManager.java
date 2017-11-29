@@ -15,8 +15,8 @@ public class FXManager {
 	
 	// - - Death Flash - -
 	private static final float df_transitionSpeed = 20f;
-	private static final int		df_maxBursts = 10;
-	private static final int		df_minBursts = 2;
+	private static final int		df_maxBursts = 6;
+	private static final int		df_minBursts = 3;
 	private static final float df_size = 25f;
 	private static final float df_endSize = 50f;
 	private static final Color df_startColor = PaintToolbox.RED;
@@ -33,7 +33,7 @@ public class FXManager {
 			
 			switch(fx.getType()) {
 				case SHRINK:
-//					fx.shrink();
+					fx.shrink();
 					break;
 				case COLOR_CHANGE:
 					fx.shrink();
@@ -64,10 +64,11 @@ public class FXManager {
 	public void makeDeflectSparks(FXType type, FXParticle particle) {
 		double theta = Math.toDegrees(Math.atan2(0 - particle.getPosition().getY(), 0 - particle.getPosition().getX())) - 90;
 		
-		for (int i = 0; i < 10; i++) {
-			FXParticle x = new FXParticle(particle.getSprite(), particle.getPattern(), particle.getType(), particle.getPosition(), particle.getDir(), particle.getLife());
-			double angle_off = theta + LavaLamp.randomRange(-45, 45);
-			float spd = LavaLamp.randomRange(3, 7);
+		for (int i = 0; i < 3; i++) {
+//			FXParticle x = new FXParticle(particle.getSprite(), particle.getPattern(), particle.getType(), particle.getPosition(), particle.getDir(), particle.getLife());
+			FXParticle x = new FXParticle(particle);
+			double angle_off = theta + LavaLamp.randomRange(-65, 65);
+			float spd = LavaLamp.randomRange(9, 10);
 			x.setDir(new Vector2((float)Math.cos(Math.toRadians(angle_off)) * spd, (float)Math.sin(Math.toRadians(angle_off)) * spd));
 			particles.add(x);
 		}
@@ -92,9 +93,8 @@ public class FXManager {
 		
 		int r = LavaLamp.randomRange(df_minBursts, df_maxBursts);
 		for(int i =0; i < r; ++i) {
-			
-			FXParticle x = new FXParticle(particle.getSprite(), particle.getPattern(), particle.getType(), particle.getPosition(), particle.getDir(), particle.getLife());
-			
+	
+			FXParticle x = new FXParticle(particle);
 			// Build our arguments
 			Object[] args = new Object[4];
 			args[0] = LavaLamp.randomRange(df_size/2, df_size);

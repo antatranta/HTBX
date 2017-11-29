@@ -389,11 +389,11 @@ public class MapCreator {
 			type = EnemyType.LEVEL_1;
 			break;
 		case 2:
-			stats = new ShipStats(1, 1, 15, 0);
+			stats = ShipStats.EnemyStats_02();
 			type = EnemyType.LEVEL_2;
 			break;
 		case 3:
-			stats = new ShipStats(1, 1, 15, 0);
+			stats = ShipStats.EnemyStats_03();
 			type = EnemyType.LEVEL_3;
 		}
 		
@@ -451,7 +451,7 @@ public class MapCreator {
 		
 		System.out.println("[" + file.getBlinkSprite(preset) + "]");
 //		PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression
-		return new Blinker(presetPhysObj, file.getBlinkSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getBlinkLevel(preset), 15);
+		return new Blinker(presetPhysObj, file.getBlinkSprite(preset), ShipStats.EnemyStats_Blinker().getHealthMax(), ShipStats.EnemyStats_01(), file.getBlinkLevel(preset), 15);
 	}
 	
 	public ArrayList<Blinker> placeBlinkers(QuadrantID quad, int numToCreate) {
@@ -522,7 +522,7 @@ public class MapCreator {
 		PhysXObject physObj = createPhysXObjectInQuad(quad);
 		int player_base_hp = 3;
 //		return new PlayerShip(physObj, player_base_hp, new ShipStats(1, 1, player_base_hp, 1), "PlayerShip-Small.png");
-		return new PlayerShip(physObj, player_base_hp, new ShipStats(1, 1, player_base_hp, 1), "Player V2.png");
+		return new PlayerShip(physObj, player_base_hp, ShipStats.PlayerStats(player_base_hp), "Player V2.png");
 	}
 	
 	public void placeBoss(Quadrant quad, Boss boss) {

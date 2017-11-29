@@ -25,7 +25,20 @@ public class FXParticle {
 	}
 	
 	public FXParticle(FXParticle copy) {
-		this(copy.getSprite(), copy.getPattern(), copy.getType(), copy.getPosition(), copy.getDir(), copy.getLife());
+//		this(copy.getSprite(), copy.getPattern(), copy.getType(), copy.getPosition(), copy.getDir(), copy.getLife());
+		GOval spr = new GOval(0,0,0,0);
+		spr.setSize(copy.getSprite().getSize());
+		spr.setFilled(true);
+		spr.setFillColor(copy.getSprite().getFillColor());
+		spr.setColor(copy.getSprite().getColor());
+		this.sprite = spr;
+		this.pattern = copy.getPattern();
+		this.type = copy.getType();
+		this.pos = copy.getPosition();
+		this.dir = copy.getDir();
+		this.life = copy.getLife();
+		this.max = life;
+		
 	}
 	
 	// ============================================================================
@@ -81,18 +94,19 @@ public class FXParticle {
 	}
 
 	public void shrink() {
-		float startValue,endValue;
-		try {
-			startValue = (float)args[0];
-			endValue = (float)args[1];
-		} catch (NullPointerException e) {
-			System.out.println("[WARN] You need to assign values.");
-			return;
-		}
-		
-		float blending = (float)this.life/(float)this.max;
-		float newSize = startValue * blending + endValue * (1- blending);
-		this.sprite.setSize(newSize, newSize);
+//		float startValue,endValue;
+//		try {
+//			startValue = (float)args[0];
+//			endValue = (float)args[1];
+//		} catch (NullPointerException e) {
+//			System.out.println("[WARN] You need to assign values.");
+//			return;
+//		}
+//		
+//		float blending = (float)this.life/(float)this.max;
+//		float newSize = startValue * blending + endValue * (1- blending);
+//		this.sprite.setSize(newSize, newSize);
+		this.sprite.setSize(this.sprite.getWidth() * 0.95, this.sprite.getHeight() * 0.95);
 	}
 
 	public void colorChange() {
