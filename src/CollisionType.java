@@ -4,5 +4,5 @@ public enum CollisionType {
 	asteroid,
 	blank,
 	enemy_bullet,
-	player_bullet
+	player_bullet;
 }

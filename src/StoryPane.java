@@ -22,7 +22,7 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 	private int i;
 	private int j;
 	private int k;
-	
+
 	public StoryPane(MainApplication app) {
 		program = app;
 		switchStory = 0;
@@ -32,53 +32,53 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 		i = 1;
 		j = 1;
 		k = 1;
-		
+
 		clickToContinue = new GLabel("CLICK TO CONTINUE...", 0, 0);
 		clickToContinue.setFont(font);
 		clickToContinue.setColor(new Color(colorRed, colorBlue, colorGreen));
 		clickToContinue.setLocation(5, MainApplication.WINDOW_HEIGHT - 10);
-		
+
 		story = new GImage("Story_1.png", 0, 0);
-		
+
 		blackBG = new GRect(MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
 		blackBG.setFilled(true);
 		blackBG.setColor(Color.black);
 	}
-	
+
 	@Override
 	public void showContents() {
 		Timer fadingLabel = new Timer(5, this);
 		fadingLabel.start();
-		
+
 		switch(switchStory % 3) {
-			case 1:
-				story.setImage("Story_2.png");
-				break;
-				
-			case 2:
-				story.setImage("Story_3.png");
-				break;
-			
-			default:
-				break;				
+		case 1:
+			story.setImage("Story_2.png");
+			break;
+
+		case 2:
+			story.setImage("Story_3.png");
+			break;
+
+		default:
+			break;				
 		}
 		story.setLocation(CENTER_WIDTH - (story.getWidth() / 2), CENTER_HEIGHT - (story.getHeight() / 2));
 		switchStory++;
-		
+
 		program.add(blackBG);
 		program.add(story);
 		program.add(clickToContinue);
 	}
-	
+
 	@Override
 	public void hideContents() {
 		program.remove(blackBG);
 		program.remove(story);
 		program.remove(clickToContinue);
 	}
-	
+
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 		if(program.lookedAtControls()) {
 			program.switchToGame();
 		}
@@ -86,51 +86,51 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 			program.switchToControls();
 		}
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		clickToContinue.setColor(new Color(colorRed, colorGreen, colorBlue));
-        
-		
+
+
 		switch(colorRed % 256) {
-			case 0:
-				i = 1;
-				break;
-				
-			case 255:
-				i = -1;
-				break;
-				
-			default:
-				break;
+		case 0:
+			i = 1;
+			break;
+
+		case 255:
+			i = -1;
+			break;
+
+		default:
+			break;
 		}
 		switch(colorGreen % 256) {
-			case 0:
-				j = 1;
-				break;
-			
-			case 255:
-				j = -1;
-				break;
-				
-			default:
-				break;
+		case 0:
+			j = 1;
+			break;
+
+		case 255:
+			j = -1;
+			break;
+
+		default:
+			break;
 		}
 		switch(colorBlue % 256) {
-			case 0:
-				k = 1;
-				break;
-				
-			case 255:
-				k = -1;
-				break;
-				
-			default:
-				break;
+		case 0:
+			k = 1;
+			break;
+
+		case 255:
+			k = -1;
+			break;
+
+		default:
+			break;
 		}
-        
-        colorRed += i;
-        colorGreen += j;
-        colorBlue += k;
+
+		colorRed += i;
+		colorGreen += j;
+		colorBlue += k;
 	}
 }

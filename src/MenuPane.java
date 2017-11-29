@@ -10,10 +10,10 @@ public class MenuPane extends GraphicsPane {
 	private MainApplication program;
 	private ArrayList<GLabel> mainMenu = new ArrayList<GLabel>();
 	private GObject obj;
-	
+
 	public MenuPane(MainApplication app) {
 		program = app;
-		
+
 		GLabel play = new GLabel("NEW GAME");
 		GLabel settings = new GLabel("SETTINGS");
 		GLabel scores = new GLabel("SCORES");
@@ -24,7 +24,7 @@ public class MenuPane extends GraphicsPane {
 		mainMenu.add(scores);
 		mainMenu.add(controls);
 		mainMenu.add(quit);
-		
+
 		double yPos = CENTER_HEIGHT - (play.getHeight() / 2);
 		for(GLabel menu:mainMenu) {
 			menu.setFont(font);
@@ -33,11 +33,11 @@ public class MenuPane extends GraphicsPane {
 			yPos += 50;
 		}
 	}
-	
+
 	public ArrayList<GLabel> getMainMenu() {
 		return mainMenu;
 	}
-	
+
 	@Override
 	public void showContents() {
 		program.add(whiteBG());
@@ -57,60 +57,60 @@ public class MenuPane extends GraphicsPane {
 		program.remove(title());
 		program.remove(selection());
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == null || obj == whiteBG()) {
 			return;
 		}
-		
+
 		obj.setColor(Color.gray);
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		for(GLabel menu:mainMenu) {
 			menu.setColor(Color.black);
 		}
-		
+
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj != whiteBG() || obj != title()) {
 			for(GLabel menu:mainMenu) {
 				if(obj == menu) {
 					switch(menu.getLabel()) {
-						case "NEW GAME":
-							program.switchToStory();
-							break;
-							
-						case "SETTINGS":
-							program.switchToSettings();
-							break;
-							
-						case "SCORES":
-							program.switchToScores();
-							break;
-							
-						case "CONTROLS":
-							program.switchToControls();
-							break;
-							
-						case "QUIT":
-							System.exit(0);
-							break;
-							
-						default:
-							break;
+					case "NEW GAME":
+						program.switchToStory();
+						break;
+
+					case "SETTINGS":
+						program.switchToSettings();
+						break;
+
+					case "SCORES":
+						program.switchToScores();
+						break;
+
+					case "CONTROLS":
+						program.switchToControls();
+						break;
+
+					case "QUIT":
+						System.exit(0);
+						break;
+
+					default:
+						break;
 					}
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		
+
 		if(obj != whiteBG() && obj != title()) {
 			for(GLabel menu:mainMenu) {
 				if(obj == menu) {

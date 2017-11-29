@@ -12,28 +12,28 @@ public abstract class GraphicsPane implements Interfaceable {
 	public static final double CENTER_WIDTH = MainApplication.WINDOW_WIDTH / 2;
 	public static final double CENTER_HEIGHT = MainApplication.WINDOW_HEIGHT / 2;
 	public static final GLabel selection = new GLabel(">");
-	
+
 	private static final GRect whiteBG = new GRect(0, 0, MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
 	private static final GImage title = new GImage("HTBX_Title.png");
-	
+
 	public GImage title() {
 		title.setLocation(CENTER_WIDTH - (title.getWidth() / 2), 50);
 		return title;
 	}
-	
+
 	public GLabel selection() {
 		selection.setFont(font);
 		selection.setColor(Color.black);
 		selection.setVisible(false);
 		return selection;
 	}
-	
+
 	public GRect whiteBG() {
 		whiteBG.setFilled(true);
 		whiteBG.setColor(Color.white);
 		return whiteBG;
 	}
-	
+
 	@Override
 	public abstract void showContents();
 
@@ -42,45 +42,45 @@ public abstract class GraphicsPane implements Interfaceable {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub

@@ -11,13 +11,13 @@ public class GameOverPane extends GraphicsPane {
 	private GLabel retryGame;
 	private GLabel exitToMenu;
 	private GObject obj;
-	
+
 	public GameOverPane(MainApplication app) {
 		program = app;
 		gameOver = new GLabel("GAME OVER");
 		retryGame = new GLabel("RETRY");
 		exitToMenu = new GLabel("EXIT TO MENU");
-		
+
 		gameOver.setFont(font);
 		gameOver.setColor(Color.black);
 		gameOver.setLocation(CENTER_WIDTH - (gameOver.getWidth() / 2), CENTER_HEIGHT - (gameOver.getHeight() / 2));
@@ -28,7 +28,7 @@ public class GameOverPane extends GraphicsPane {
 		exitToMenu.setColor(Color.black);
 		exitToMenu.setLocation(gameOver.getX() + 75, retryGame.getY());
 	}
-	
+
 	@Override
 	public void showContents() {
 		program.removeAll();
@@ -47,7 +47,7 @@ public class GameOverPane extends GraphicsPane {
 		program.remove(retryGame);
 		program.remove(exitToMenu);
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
@@ -58,28 +58,28 @@ public class GameOverPane extends GraphicsPane {
 			program.switchToMenu();
 		}
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == null || obj == whiteBG()) {
 			return;
 		}
-		
+
 		obj.setColor(Color.gray);
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		gameOver.setColor(Color.black);
 		retryGame.setColor(Color.black);
 		exitToMenu.setColor(Color.black);
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		
+
 		if(obj == retryGame) {
 			selection.setVisible(true);
 			selection.setLocation(retryGame.getX() - 25, retryGame.getY());

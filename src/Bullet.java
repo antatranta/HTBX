@@ -6,12 +6,12 @@ public class Bullet extends Entity {
 	public static final int OSCILLATION_OFFSET = 5;
 	public static final int WAVE_OFFSET = 50;
 	public static final int WAVE_DELTA = 2;
-	
+
 	private int bulletOscIts = 0;
 	private int bulletWaveIts = 0;
 	private double originalAngle;
 	private double angle;
-	
+
 	private float originalSpeed;
 	private float bulletSpeed;
 	private float bulletDuration;
@@ -25,11 +25,11 @@ public class Bullet extends Entity {
 	private int steps = 0;
 
 	private FXParticle fx_particle;
-	
+
 
 	public Bullet(int dmg, float spd, BulletType type, CollisionType collision, float time, PhysXObject physObj, String sprite, Vector2 movementVector) {
 		super(physObj, sprite, new CollisionData(10, CollisionType.enemy_bullet));
-		
+
 		this.bulletType = type;
 		this.originalSpeed = spd;
 		this.bulletSpeed = originalSpeed;
@@ -39,28 +39,28 @@ public class Bullet extends Entity {
 		this.physObj.addSubscriber(this);
 		this.originalAngle = Math.atan2(movementVector.getY() - physObj.getPosition().getY(), movementVector.getX() - physObj.getPosition().getX());
 		this.fx_particle = null;
-		
+
 		if (bulletType == BulletType.ACCEL) {
 			bulletSpeed = 0;
 		}
-		
+
 		angle = originalAngle;
 		physObj.setCollisionData(new CollisionData(dmg, collision));
 		this.bulletTrajectory();
 	}
-	
+
 	public void setBulletDamage(int dmg) {
 		this.physObj.getCollisionData().setDamage(dmg);
 	}
-	
+
 	public void setBulletSpeed(int spd) {
 		this.bulletSpeed = spd;
 	}
-	
+
 	public void setBulletDuration(float time) {
 		this.bulletDuration = time;
 	}
-	
+
 	public void setPhysObj(PhysXObject obj) {
 		this.physObj = obj;
 	}
@@ -69,47 +69,47 @@ public class Bullet extends Entity {
 		bulletDX = dx;
 		bulletDY = dy;
 	}
-	
+
 	public int getBulletDamage() {
 		return this.physObj.getCollisionData().getDamage();
 	}
-	
+
 	public float getBulletSpeed() {
 		return this.bulletSpeed;
 	}
-	
+
 	public float getBulletDuration() {
 		return this.bulletDuration;
 	}
-	
+
 	public PhysXObject getPhysObj() {
 		return this.physObj;
 	}
-	
+
 	public Vector2 getMovementVector() {
 		return this.movementVector;
 	}
-	
+
 	public float getBulletDX() {
 		return this.bulletDX * this.bulletSpeed;
 	}
-	
+
 	public float getBulletDY() {
 		return this.bulletDY * this.bulletSpeed;
 	}
-	
+
 	public BulletType getBulletType() {
 		return this.bulletType;
 	}
-	
+
 	public void giveFX(FXParticle particle) {
 		this.fx_particle = particle;
 	}
-	
+
 	public FXParticle getFX() {
 		return this.fx_particle;
 	}
-	
+
 	public void move() {
 		steps ++;
 		// DO NOT need a case for straight bullets
@@ -153,7 +153,7 @@ public class Bullet extends Entity {
 						bulletOscIts = 1;
 					}
 				}
-			
+
 				angle = originalAngle + Math.toRadians(bulletWaveIts);
 				this.bulletTrajectory();
 			}
@@ -167,53 +167,53 @@ public class Bullet extends Entity {
 				angle += Math.toRadians(1);
 				this.bulletTrajectory();
 			}
-			
+
 		}
 		Vector2 movement = new Vector2(physObj.getPosition().getX() + getBulletDX(), physObj.getPosition().getY() + getBulletDY());
 		this.physObj.setPosition(movement);
 	}
-	
+
 	public void destroy() {
 		dead = true;
 	}
-	
+
 	public boolean checkIfDead() {
 		return dead;
 	}
-	
+
 	public int getSteps() {
 		return this.steps;
 	}
-	
+
 	public void bulletTrajectory() {
 		this.bulletDX = (float)Math.cos(angle);
 		this.bulletDY = (float)Math.sin(angle);
 	}
-	
+
 	public Vector2 getGOvalSize() {
 		return this.GOval_Size;
 	}
-	
+
 	public Vector2 getGOvalPos() {
 		return this.GOval_Pos;
 	}
-	
+
 	public GameImage getSprite() {
 		return sprite;
 	}	
-	
+
 	public GOval getGOval() {
 		return oval;
 	}
-	
+
 
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		handleCollision(data);
 	}
-	
+
 	protected void handleCollision(CollisionData data) {
-		
+
 		if(data.getType() == CollisionType.asteroid) {
 			destroy();
 		}
@@ -227,5 +227,5 @@ public class Bullet extends Entity {
 			}
 		}
 	}
-	
+
 }

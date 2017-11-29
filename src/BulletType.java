@@ -4,5 +4,5 @@ public enum BulletType {
 	OSCILLATE,
 	WAVE,
 	SWERVE_CW,
-	SWERVE_CCW
+	SWERVE_CCW;
 }

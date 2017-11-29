@@ -12,20 +12,20 @@ public class PausePane extends MenuPane {
 	private MainApplication program;
 	private ArrayList<GLabel> pauseMenu;
 	private GObject obj;
-	
+
 	public PausePane(MainApplication app) {
 		super(app);
 		program = app;
-		
+
 		pauseMenu = super.getMainMenu();
-		
+
 		GLabel continueGame = new GLabel("CONTINUE");
 		GLabel exitToMenu = new GLabel("EXIT TO MENU");
 		pauseMenu.remove(4);
 		pauseMenu.remove(0);
 		pauseMenu.add(0, continueGame);
 		pauseMenu.add(exitToMenu);
-		
+
 		double yPos = CENTER_HEIGHT - (continueGame.getHeight() / 2);
 		for(GLabel pause:pauseMenu) {
 			pause.setFont(font);
@@ -34,7 +34,7 @@ public class PausePane extends MenuPane {
 			yPos += 50;
 		}
 	}
-	
+
 	@Override
 	public void showContents() {
 		program.add(whiteBG());
@@ -44,7 +44,7 @@ public class PausePane extends MenuPane {
 		program.add(title());
 		program.add(selection());
 	}
-	
+
 	@Override
 	public void hideContents() {
 		program.remove(whiteBG());
@@ -54,60 +54,60 @@ public class PausePane extends MenuPane {
 		program.remove(title());
 		program.remove(selection());
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj == null || obj == whiteBG()) {
 			return;
 		}
-		
+
 		obj.setColor(Color.gray);
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		for(GLabel pause:pauseMenu) {
 			pause.setColor(Color.black);
 		}
-		
+
 		obj = program.getElementAt(e.getX(), e.getY());
 		if(obj != whiteBG() || obj != title()) {
 			for(GLabel pause:pauseMenu) {
 				if(obj == pause) {
 					switch(pause.getLabel()) {
-						case "CONTINUE":
-							program.switchToGame();
-							break;
-							
-						case "SETTINGS":
-							program.switchToSettings();
-							break;
-							
-						case "SCORES":
-							program.switchToScores();
-							break;
-							
-						case "CONTROLS":
-							program.switchToControls();
-							break;
-							
-						case "EXIT TO MENU":
-							program.switchToMenu();
-							break;
-							
-						default:
-							break;
+					case "CONTINUE":
+						program.switchToGame();
+						break;
+
+					case "SETTINGS":
+						program.switchToSettings();
+						break;
+
+					case "SCORES":
+						program.switchToScores();
+						break;
+
+					case "CONTROLS":
+						program.switchToControls();
+						break;
+
+					case "EXIT TO MENU":
+						program.switchToMenu();
+						break;
+
+					default:
+						break;
 					}
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		
+
 		if(obj != whiteBG() && obj != title()) {
 			for(GLabel pause:pauseMenu) {
 				if(obj == pause) {
@@ -120,18 +120,18 @@ public class PausePane extends MenuPane {
 			selection.setVisible(false);
 		}
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		
+
 		switch(key) {
-			case KeyEvent.VK_ESCAPE:
-				program.switchToGame();
-				break;
-				
-			default:
-				break;
+		case KeyEvent.VK_ESCAPE:
+			program.switchToGame();
+			break;
+
+		default:
+			break;
 		}
 	}
 }

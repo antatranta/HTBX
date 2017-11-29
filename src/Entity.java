@@ -7,14 +7,14 @@ public class Entity implements Collision {
 	protected GImage gif;
 	protected String sprite_name;
 	protected boolean isGif;
-	
+
 	public Entity(PhysXObject physObj, String sprite, CollisionData data) {
 		this.physObj = physObj;
 		this.physObj.setCollisionData(new CollisionData(data));
 		sprite_name = sprite;
 		this.sprite = new GameImage(sprite_name);
 	}
-	
+
 	public Entity(PhysXObject physObj, String sprite, CollisionData data, boolean isGif) {
 		this.physObj = physObj;
 		this.physObj.setCollisionData(new CollisionData(data));
@@ -26,42 +26,42 @@ public class Entity implements Collision {
 			this.sprite = new GameImage(sprite_name);
 			this.gif = null;
 		}
-		
+
 		this.isGif = isGif;
 	}
-	
+
 	protected void createSprite(String file) {
 		this.sprite = new GameImage(file);
 	}
-	
+
 	public String getSpriteName() {
 		return this.sprite_name;
 	}
-	
+
 	public void setSprite(String name) {
 		this.sprite.setImage(name);
 	}
-	
+
 	public boolean isSpriteGif() {
 		return this.isGif;
 	}
-	
+
 	public GameImage getSprite() {
 		return this.sprite;
 	}
-	
+
 	public GImage getGif() {
 		return this.gif;
 	}
-	
+
 	public PhysXObject getPhysObj() {
 		return this.physObj;
 	}
-		
+
 	protected void setCollisionData(CollisionData data) {
 		this.physObj.setCollisionData(new CollisionData(data));
 	}
-	
+
 	public CollisionData getCollisionData() {
 		return physObj.getCollisionData();
 	}

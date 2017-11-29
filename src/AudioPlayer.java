@@ -21,13 +21,13 @@ public class AudioPlayer {
 	private HashMap<String, MediaPlayer> players;
 	private static AudioPlayer somePlayer;
 	private static ArrayList<String> playKeys;
-	
+
 	protected AudioPlayer() {
 		JFXPanel fxPanel = new JFXPanel();
 		players = new HashMap<String, MediaPlayer>();
 		playKeys = new ArrayList<String>();
 	}
-	
+
 	/**
 	 * Think of this like the constructor for getting the audioplayer
 	 * Usage:
@@ -41,7 +41,7 @@ public class AudioPlayer {
 		}
 		return somePlayer;
 	}
-	
+
 	/**
 	 * Plays a sound based on the foldername and filename given in the parameters 
 	 * Will only play the sound once.  If the sound isn't finished and the exact same
@@ -53,7 +53,7 @@ public class AudioPlayer {
 	public void playSound(String folder, String filename) {
 		playSound(folder, filename, false);
 	}
-	
+
 	/**
 	 * same as the original play sound, but has the option to loop the sound 
 	 * 
@@ -67,18 +67,18 @@ public class AudioPlayer {
 			mPlayer = createMediaPlayer(folder, filename);
 		}
 		mPlayer.play();
-//		addKey(folder+filename);
+		//		addKey(folder+filename);
 		if(shouldLoop) {
 			mPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 		}
 	}
-	
+
 	private void addKey(String key) {
 		if(!playKeys.contains(key)) {
 			playKeys.add(key);
 		}
 	}
-	
+
 	protected MediaPlayer createMediaPlayer(String folder, String filename) {
 		String key = buildResourcePath(folder, filename);
 		Media sound = new Media(key);
@@ -86,7 +86,7 @@ public class AudioPlayer {
 		players.put(folder+filename, mPlayer);
 		return mPlayer;
 	}
-	
+
 	/*
 	 * Currently only supports default package or one sub-package, have not updated the code
 	 * for the latest package
@@ -114,11 +114,11 @@ public class AudioPlayer {
 		}
 		return resource.toString();
 	}
-	
+
 	protected MediaPlayer findSound(String folder, String filename) {
 		return players.get(folder+filename);
 	}
-	
+
 	/**
 	 * Stops the sound when the media is playing, does nothing otherwise
 	 * Calling playSound after stopping the sound will cause the sound to start from the beginning
@@ -132,7 +132,7 @@ public class AudioPlayer {
 			mp.stop();
 		}
 	}
-	
+
 	/**
 	 * Pauses the sound when the media is playing, does nothing otherwise
 	 * Calling playSound after pausing the sound will cause the sound to play where it left off
@@ -146,26 +146,26 @@ public class AudioPlayer {
 			mp.pause();
 		}
 	}
-	
+
 	public void updatePlayer() {
-		
+
 		/*
 		for(String key : playKeys) {
 			if(players.containsKey(key) && players.get(key).getStatus() == MediaPlayer.Status.READY) {
-				
+
 				// Play the audio
 				players.get(key).play();
 			}
 		}
-		
+
 		playKeys = new ArrayList<String>();
-		
+
 		garbageCollection();
-		*/
+		 */
 	}
-	
+
 	private void garbageCollection() {
-		
+
 		// Find stopped players
 		ArrayList<String> keysToRemove = new ArrayList<String>();
 		for(String key : players.keySet()) {
@@ -173,14 +173,14 @@ public class AudioPlayer {
 				keysToRemove.add(key);
 			}
 		}
-		
+
 		// Remove the associated players
 		for(String key : keysToRemove) {
 			if(players.containsKey(key)) {
-				
+
 				// Not sure if necessary
 				players.put(key, null);
-				
+
 				// Remove
 				players.remove(key);
 			}

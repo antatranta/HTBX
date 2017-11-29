@@ -9,17 +9,17 @@ import acm.program.GraphicsProgram;
 import rotations.GameImage;
 
 public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
-	
+
 	public static boolean IS_DEBUGGING;
 	private int TIMER_INTERVAL = 16;
 	private int INITIAL_DELAY = 0;
-	
+
 	private ArrayList<Ship> ships = new ArrayList<Ship>();
-	
+
 	private ArrayList<BulletEmitter> emitters = new ArrayList<BulletEmitter>();
 	private PlayerShip player;
 	private MapCreator mapCreator;
-	
+
 	private PhysX physx; // The controller for all things
 	private int level;
 	private int next_level;
@@ -32,13 +32,13 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private FXManager fx;
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
-	
+
 	//Score
 	private int score=0;
 	private int enemiesKilled=0;
 	private final int scorePerEnemy=100;
 	private final int scorePerDamage = 50;
-	
+
 	public GameConsole() {
 		endDebugView();
 		skill_points = 0;
@@ -48,26 +48,26 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
-		
+
 		// create an object to handle physX
 		physx = new PhysX(PhysXLibrary.QUADRANT_HEIGHT, PhysXLibrary.QUADRANT_WIDTH, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT);
-		
+
 		// create a new bullet manager
 		bulletStore = new BulletManager(this);
-		
+
 		laserStore = new LaserManager(this);
 		fx = new FXManager();
-		
+
 		// setup a new camera
 		camera = new Camera();
 		camera.setupCamera(1, 1);
-		
+
 		// create a new map
 		mapCreator = new MapCreator();
-		
+
 		// populate the PhysX sim
 		physx.addQuadrants(mapCreator.createMap());
-		
+
 		CircleCollider playerCollider = new CircleCollider(Vector2.Zero(), 15);
 		player = mapCreator.placePlayer(mapCreator.getPlayerSpawn().getQUID());
 		player.physObj.removeColliders();
@@ -75,24 +75,24 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		player.setDxDy(Vector2.Zero());
 		player.addSubscriber(bulletStore);
 		gameTimer.addListener(player);
-		
+
 		shipManager = new ShipManagement(this);
-		
+
 		for(EnemyShip ship: getAllShips()) {
 			ship.addSubscriber(shipManager);
 		}
 	}
-	
+
 	public void startDebugView() {
 		IS_DEBUGGING = true;
 		System.out.println("- - - DEBUG ON - - -");
 	}
-	
+
 	public void endDebugView() {
 		IS_DEBUGGING = false;
 		System.out.println("- - - DEBUG OFF - - -");
 	}
-	
+
 	public void changeGraphicsRatio(float FR, float BR) {
 		camera.setupCamera(FR, BR);
 		if(IS_DEBUGGING) {
@@ -101,14 +101,14 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 			System.out.println("BACKWAR -> "+BR);
 		}
 	}
-	
+
 	public void testCollisions(PlayerShip player) {
-		
+
 		physx.checkForCollisionsInQuads();
-		
+
 		if(player.getPhysObj() != null) {
 			physx.checkForCollisions(player.getPhysObj());
-			
+
 		}
 		if(bulletStore.getBullets() != null) {
 			physx.checkForCollisions(player.getPhysObj(),bulletStore.getPhysXObjects());
@@ -117,36 +117,36 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 			}
 		}
 	}
-	
+
 	public PhysX physx() {
 		return physx;
 	}
-	
+
 	public ArrayList<Asteroid> getActiveAsteroids() {
-		
+
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
 		for (Quadrant quad : quads) {
 			Asteroids.addAll(quad.getAsteroids());
 		}
-		
+
 		return Asteroids;
 	}
-	
+
 	public ArrayList<EnemyShip> getActiveShips() {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
 		for (Quadrant quad : quads) {
 			EnemyShips.addAll(quad.getShips());
 		}
-		
+
 		for(EnemyShip ship : EnemyShips) {
 			ship.addGameConsole(this);
 			ship.addLaserManager(laserStore);
 		}
 		return EnemyShips;
 	}
-	
+
 	public ArrayList<EnemyShip> getAllShips() {
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		ArrayList<Quadrant> quads = physx.getQuadrants();
@@ -155,35 +155,35 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		}
 		return EnemyShips;
 	}
-	
+
 	public PlayerShip getPlayer() {
 		return this.player;
 	}
-	
+
 	public void moveBullets() {
 		this.bulletStore.moveBullets();
 	}
-	
+
 	public ArrayList<GameImage> cullBullets() {
 		return this.bulletStore.getDeadBullets();
 	}
-	
+
 	public GameTimer getTimer() {
 		return gameTimer;
 	}
-	
+
 	public BulletManager getBulletManager() {
 		return bulletStore;
 	}
-	
+
 	public LaserManager getLaserManager() {
 		return laserStore;
 	}
-	
+
 	public FXManager getFXManager() {
 		return fx;
 	}
-	
+
 	public void createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
 		BulletEmitter be = new BulletEmitter(health, rate, physObj, sprite, data);
 		be.addSubscriber(getBulletManager());
@@ -214,21 +214,21 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		SetScore();
 		System.out.println("Score: "+score +"| EnemyKills: "+ enemiesKilled+"| Taken Damage: " + player.getDamageTaken());
 		System.out.println("Level: " + level + "| Exp: " + exp + "| SP: " + skill_points);
-		
+
 		FXParticle particle = FXManager.deathFlash();
 		particle.setPosition(pos);
 		fx.makeDeathFlash(FXType.COLOR_CHANGE, particle);
 	}
-	
+
 	private void calculateNeededExp() {
 		int base = 20;
 		next_level = (int)(base + (level * 20));
 	}
-	
+
 	public int getSP() {
 		return skill_points;
 	}
-	
+
 	public void levelUpSkill(LevelUpEnum stat) {
 		if (skill_points == 0) {
 			return;
@@ -322,9 +322,9 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		default:
 			break;
 		}
-		
+
 	}
-	
+
 	public void SetScore() {
 		score = enemiesKilled * scorePerEnemy - player.getDamageTaken()* scorePerDamage;
 		//System.out.println("Score: "+ score);

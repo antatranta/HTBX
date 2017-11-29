@@ -17,23 +17,23 @@ public class ScoresPane extends GraphicsPane {
 	private ArrayList<GLabel> displayScores;
 	private GLabel back;
 	private GObject obj;
-	
+
 	public ScoresPane(MainApplication app) {
 		program = app;
-		
+
 		scores = new ArrayList<String>();
 		String fileName = "Scores.txt";
 		String line = null;
-		
+
 		try {
 			FileReader fileReader = new FileReader(fileName);
-			
+
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			
+
 			while((line = bufferedReader.readLine()) != null) {
 				scores.add(line);
 			}
-			
+
 			bufferedReader.close();
 		}
 		catch(FileNotFoundException ex) {
@@ -42,10 +42,10 @@ public class ScoresPane extends GraphicsPane {
 		catch(IOException ex) {
 			ex.printStackTrace();
 		}
-		
+
 		Collections.sort(scores, Collections.reverseOrder());
 		displayScores = new ArrayList<GLabel>();
-		
+
 		//Only display the top 5 scores
 		int j = 0;
 		for(int i = 0; i < 5; i++) {
@@ -56,13 +56,13 @@ public class ScoresPane extends GraphicsPane {
 			displayScores.add(temp);
 			j += 25;
 		}
-		
+
 		back = new GLabel("BACK");
 		back.setFont(font);
 		back.setColor(Color.black);
 		back.setLocation(CENTER_WIDTH - (back.getWidth() / 2), CENTER_HEIGHT - (back.getHeight() / 2) + 205);
 	}
-	
+
 	@Override
 	public void showContents() {
 		program.add(whiteBG());
@@ -85,7 +85,7 @@ public class ScoresPane extends GraphicsPane {
 		program.remove(back);
 		program.remove(selection());
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
@@ -93,7 +93,7 @@ public class ScoresPane extends GraphicsPane {
 			back.setColor(Color.gray);
 		}
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		back.setColor(Color.black);
@@ -107,7 +107,7 @@ public class ScoresPane extends GraphicsPane {
 			}
 		}
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());

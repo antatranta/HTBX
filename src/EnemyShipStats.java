@@ -1,12 +1,12 @@
 public class EnemyShipStats extends ShipStats {
 	private int aggression = 1;
 	private int fireRate = 0;
-	
+
 	public EnemyShipStats(int speed, int damage, int health_max, int shield_max, int aggression, int fireRate) {
 		super(speed, damage, health_max, shield_max);
 		this.aggression = aggression;
 	}
-	
+
 	public EnemyShipStats(ShipStats stats, int aggression) {
 		super(stats.getSpeedSetting(), stats.getDamage(), stats.getHealthMax(), stats.getShieldMax());
 		this.aggression = aggression;
@@ -30,7 +30,7 @@ public class EnemyShipStats extends ShipStats {
 			return 50f;
 		}
 	}
-	
+
 	public float getInteractionDistance() {
 		switch(this.aggression) {
 		case 0:
@@ -49,7 +49,7 @@ public class EnemyShipStats extends ShipStats {
 			return 200f;
 		}
 	}
-	
+
 	@Override
 	public float getTurningSpeed() {
 		switch(this.aggression) {
@@ -69,11 +69,11 @@ public class EnemyShipStats extends ShipStats {
 			return 1;
 		}
 	}
-	
+
 	public int getAggresionSetting() {
 		return this.aggression;
 	}
-	
+
 	public int getFireRateValue() {
 		switch(this.fireRate) {
 		case 0:
@@ -92,7 +92,7 @@ public class EnemyShipStats extends ShipStats {
 			return 1;
 		}
 	}
-	
+
 	public int getFireRateSetting() {
 		return this.fireRate;
 	}

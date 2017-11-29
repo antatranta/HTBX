@@ -9,9 +9,9 @@ public class FXParticle {
 	Vector2 pos, dir;
 	protected int life;
 	protected int max;
-	
+
 	private Object[] args;
-	
+
 	public FXParticle(GOval particle, FXPattern pattern, FXType type, Vector2 position, Vector2 dir, int max) {
 		this.sprite = particle;
 		this.pattern = pattern;
@@ -21,7 +21,7 @@ public class FXParticle {
 		this.life = max;
 		this.max = max;
 	}
-	
+
 	public FXParticle(FXParticle copy) {
 		GOval spr = new GOval(0,0,0,0);
 		spr.setSize(copy.getSprite().getSize());
@@ -35,57 +35,57 @@ public class FXParticle {
 		this.dir = copy.getDir();
 		this.life = copy.getLife();
 		this.max = life;
-		
+
 	}
-	
+
 	// ============================================================================
-	
+
 	public void move() {
 		pos = pos.add(dir);
 		this.life -= 1;
 	}
-	
+
 	// ============================================================================
-	
+
 	public GOval getSprite() {
 		return this.sprite;
 	}
-	
+
 	public FXPattern getPattern() {
 		return this.pattern;
 	}
-	
+
 	public FXType getType() {
 		return this.type;
 	}
-	
+
 	public Vector2 getPosition() {
 		return this.pos;
 	}
-	
+
 	public Vector2 getDir() {
 		return this.dir;
 	}
-	
+
 	public int getLife() {
 		return this.life;
 	}
-	
-	
+
+
 	public Object[] getArgs() {
 		return args;
 	}
-	
+
 	public void setArgs(Object[] args) {
 		this.args = args;
 	}
-	
+
 	// ============================================================================
-	
+
 	public void setPosition(Vector2 pos) {
 		this.pos = pos;
 	}
-	
+
 	public void setDir(Vector2 dir) {
 		this.dir = dir;
 	}

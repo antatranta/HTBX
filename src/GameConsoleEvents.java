@@ -13,7 +13,7 @@ public interface GameConsoleEvents {
 	public void programRequest_removeDrawnObjects(ArrayList<GameImage> objects);
 	public void programRequest_drawObjects(ArrayList<GameImage> objects);
 	public void programRequest_makeFX(FXPattern pattern, FXType type, FXParticle particle);
-	
+
 	public PhysXObject physXRequest_getPlayer();
 	public void UIRequest_addThreat(Vector2 pos);
 }

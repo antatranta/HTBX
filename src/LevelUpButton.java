@@ -8,7 +8,7 @@ public class LevelUpButton extends GImage {
 		this.setLocation(0, 0);
 		this.stat = stat;
 	}
-	
+
 	public LevelUpButton(String img, double x, double y, LevelUpEnum stat) {
 		super(img);
 		this.setLocation(x, y);
