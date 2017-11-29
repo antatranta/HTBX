@@ -11,8 +11,8 @@ import rotations.GameImage;
 public class DisplayableHUD implements Displayable {
 
 	private MainApplication program;
+	private GameConsole console;
 	private PlayerShip player;
-	private GamePane pane;
 
 	private GImage status_front;
 	private GRect status_back;
@@ -70,12 +70,14 @@ public class DisplayableHUD implements Displayable {
 	double startx = 0;
 	double starty = 0;
 	double unity = 0;
+	
+	Vector2 boss_quad_pos;
 
 
-	public DisplayableHUD(MainApplication program, PlayerShip player, GamePane pane) {
+	public DisplayableHUD(MainApplication program, PlayerShip player) {
 		this.program = program;
 		this.player = player;
-		this.pane = pane;
+		this.console = program.getGameConsole();
 		init();
 		updateStats();
 	}
@@ -170,7 +172,15 @@ public class DisplayableHUD implements Displayable {
 
 		threat_down.setFilled(true);
 		oldColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
-
+		
+		float x = console.getMapCreatorModule().getBossSpawn().getQUID().getX();
+		float y = console.getMapCreatorModule().getBossSpawn().getQUID().getY();
+		x *= PhysXLibrary.QUADRANT_WIDTH;
+		y *= PhysXLibrary.QUADRANT_HEIGHT;
+		x -= PhysXLibrary.QUADRANT_WIDTH / 2;
+		y -= PhysXLibrary.QUADRANT_HEIGHT / 2;
+		boss_quad_pos = new Vector2(x, y);
+		
 	}
 
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -205,7 +215,7 @@ public class DisplayableHUD implements Displayable {
 		scaleStatusBar(iframes, (double)player.getIFrames() / (double)PlayerShip.INV_CAP);
 		shield_diff /= 1.1;
 		hp_diff /= 1.1;
-		aimCompass(compass_sprite, new Vector2(0,0));
+		aimCompass(compass_sprite, boss_quad_pos);
 
 		// Skills
 

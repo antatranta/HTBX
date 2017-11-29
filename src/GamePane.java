@@ -294,7 +294,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
 
-		HUD = new DisplayableHUD(program, player, this);
+		HUD = new DisplayableHUD(program, player);
 		CAN_MOVE = true;
 	}
 

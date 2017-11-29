@@ -139,6 +139,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public PhysX physx() {
 		return physx;
 	}
+	
+	public MapCreator getMapCreatorModule() {
+		return this.mapCreator;
+	}
 
 	public ArrayList<Asteroid> getActiveAsteroids() {
 
