@@ -5,5 +5,6 @@ public enum EnemyType {
 	LEVEL_3,
 	BLINKER,
 	BANSHEE,
-	FENCER;
+	FENCER,
+	EMITTER;
 }

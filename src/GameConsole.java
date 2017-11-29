@@ -32,7 +32,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private FXManager fx;
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
-
+	private TeleportWaypoint bossRoomTrigger;
+	
 	//Score
 	private int score=0;
 	private int enemiesKilled=0;
@@ -75,12 +76,29 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		player.setDxDy(Vector2.Zero());
 		player.addSubscriber(bulletStore);
 		gameTimer.addListener(player);
-
+		
+		// create a new ship manager
 		shipManager = new ShipManagement(this);
-
+		
+		// give all the ships refs
 		for(EnemyShip ship: getAllShips()) {
 			ship.addSubscriber(shipManager);
+			ship.addGameConsole(this);
+			ship.addLaserManager(laserStore);
 		}
+		
+		bossRoomTrigger = new TeleportWaypoint(mapCreator.getBossSpawn().getQUID(), this);
+		bossRoomTrigger.setActivationDistance(1000);
+		bossRoomTrigger.setTeleportDistance(200);
+		bossRoomTrigger.setInteractable(true);
+		
+		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
+		System.out.println("Made a new game console");
+
+	}
+	
+	public TeleportWaypoint getBossRoomTrigger() {
+		return bossRoomTrigger;
 	}
 
 	public void startDebugView() {
@@ -127,7 +145,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		ArrayList<Asteroid> Asteroids = new ArrayList<Asteroid>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
 		for (Quadrant quad : quads) {
-			Asteroids.addAll(quad.getAsteroids());
+			ArrayList<Asteroid> asteroids = quad.getAsteroids();
+			if(asteroids != null && asteroids.size() > 0) {
+				Asteroids.addAll(quad.getAsteroids());
+			}
 		}
 
 		return Asteroids;
@@ -137,12 +158,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		ArrayList<Quadrant> quads = physx.getActiveQuadrants();
 		for (Quadrant quad : quads) {
-			EnemyShips.addAll(quad.getShips());
-		}
-
-		for(EnemyShip ship : EnemyShips) {
-			ship.addGameConsole(this);
-			ship.addLaserManager(laserStore);
+			ArrayList<EnemyShip> ships = quad.getShips();
+			if(ships != null && ships.size() > 0) {
+				EnemyShips.addAll(quad.getShips());
+			}
 		}
 		return EnemyShips;
 	}
@@ -151,7 +170,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		ArrayList<EnemyShip> EnemyShips = new ArrayList<EnemyShip>();
 		ArrayList<Quadrant> quads = physx.getQuadrants();
 		for (Quadrant quad : quads) {
-			EnemyShips.addAll(quad.getShips());
+			ArrayList<EnemyShip> ships = quad.getShips();
+			if(ships != null && ships.size() > 0) {
+				EnemyShips.addAll(ships);
+			}
 		}
 		return EnemyShips;
 	}
@@ -183,9 +205,9 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public FXManager getFXManager() {
 		return fx;
 	}
-
-	public void createBulletEmitter(int health, int rate, PhysXObject physObj, String sprite, CollisionData data) {
-		BulletEmitter be = new BulletEmitter(health, rate, physObj, sprite, data);
+	
+	public void createBulletEmitter(PhysXObject physObj, String sprite, ShipStats stats, BulletEmitterData data, BulletEmitterBehavior beh, double angle_delta, BulletType type, boolean can_hurt ) {
+		BulletEmitter be = new BulletEmitter(physObj, sprite, stats, data, beh, angle_delta, type, can_hurt);
 		be.addSubscriber(getBulletManager());
 		emitters.add(be);
 	}
@@ -324,11 +346,28 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		}
 
 	}
-
+	
+	@Override
+	public void programRequest_makeBossRoom() {
+		
+		// Delete the old PhysXObject and create a new one
+		physx = new PhysX(PhysXLibrary.BOSS_QUADRANT_HEIGHT, PhysXLibrary.BOSS_QUADRANT_WIDTH, 1, 1);
+		
+		// Add in the new Quadrant
+		physx.addQuadrants(mapCreator.createBossRoom());
+		
+		//TODO: STUB
+	}
+	
 	public void SetScore() {
 		score = enemiesKilled * scorePerEnemy - player.getDamageTaken()* scorePerDamage;
 		//System.out.println("Score: "+ score);
 	}
+	
+	public int getScore() {
+		return score;
+	}
+
 }
 
 

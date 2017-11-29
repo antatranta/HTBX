@@ -13,21 +13,13 @@ import acm.graphics.GOval;
 import acm.graphics.GRect;
 import rotations.GameImage;
 
-public class GamePane extends GraphicsPane implements ActionListener, KeyListener, GamePaneEvents {
-	// LAYER DATA: 0 Is the front, above 0 puts things behind
-	private static final int DEBUG_LAYER 		= 0;
-	private static final int CURSOR_LAYER 		= 1;
-	private static final int PLAYER_LAYER 		= 3;
-	private static final int PLAYER_RECTILE 		= 4;
-	private static final int PLAYER_RECTILE_2 	= 5;
-	private static final int ROCK_LAYER = 6;
-
-	// =============================================================================
+public class GamePane extends GraphicsPane implements ActionListener, KeyListener, GamePaneEvents {	
 
 	private static final int CURSOR_DIST = 75;
 	private static final int CURSOR_SIZE = 10;
 	private static final int TURN_POWER = 6;
-
+	private static final int PLAYER_FIRE_RATE = 5;
+	
 	private MainApplication program; // You will use program to get access to all of the GraphicsProgram calls
 	private GameConsole console; // Not a new one; just uses the one from MainApplication
 	private BulletManager bulletStore;
@@ -292,7 +284,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player = console.getPlayer();
 		bulletStore = console.getBulletManager();
 		laserStore = console.getLaserManager();
-		console.getFXManager().setReferences(this);
+		console.getFXManager();
 
 		aiming_edge = new GameImage("Player Rectile.png", 0, 0);
 		aiming_head = new GameImage("Player Cursor.png", 0, 0);
@@ -344,64 +336,83 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Audio
 		AudioPlayer myAudio = AudioPlayer.getInstance();
 		myAudio.updatePlayer();
-
+		
+		// Game over screen
 		if(player.getCurrentHealth() <= 0) {
 			console.SetScore();
 			program.switchToGameOver();
 		}
-
+		
+		// Reset death events
 		if(deathEvents.size() > 1) {
 			deathEvents = new ArrayList<ShipDeathData>();
 		}
-
+		
+		// Camera Tracking
 		if(!TRACKING_SET) {
 			TRACKING_POSITION = player.getPhysObj().getPosition();
 		}
-
+		
+		// Offset the camera
 		setOffset();
-
+		
+		// Align the rectile
 		if (CAN_ALIGN && !ALIGNMENT_LOCK) {
 			ALIGNMENT_LOCK = true;
 			alignReticle(last_mouse_loc);
 		}
-
+		
+		// Handle player shooting
 		if(isShooting) {
-			if(shotCount % 5 == 0) {
+			if(shotCount % PLAYER_FIRE_RATE == 0) {
 				playerShoot();
 			}
 			shotCount++;
 		}
-
+		
+		// Test collisions
 		console.testCollisions(player);
+		
+		// Move projectiles
 		console.moveBullets();
 		laserStore.updateLasers();
-
+		
+		// Move particles
+		console.getFXManager().moveParticles();
+		drawSprites();
+		
+		// Remove Dead bullets
 		for(GameImage bullet : console.cullBullets()) {
 			program.remove(bullet);
 		}
-
+		
+		// Update the debug screen
 		debugUpdate();		
-
+		
+		// Update the HUD
 		HUD.updateHUD();
 		HUD.updateStats();
+		
+		// Re-Layer objects
 		layerSprites();
-
+		
+		// Reset threat levels
 		left_threat = 0;
 		right_threat = 0;
 		up_threat = 0;
 		down_threat = 0;
-
-		if (console.IS_DEBUGGING) {
-			debugUpdate();
-		}
-
+		
+		// Move the player ship
 		if(CAN_MOVE) {
 			movementLoop();
 		}
-
+		
+		// Move the enemy ships
 		moveEnemyShips();
-		console.getFXManager().moveParticles();
-		drawSprites();
+		
+		// Test the boss room trigger
+		console.getBossRoomTrigger().Update(player.getPhysObj().getPosition());
+
 	}
 
 	public void debugUpdate() {
@@ -500,10 +511,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	public void drawSprites() {
 		drawFX(console.getFXManager().getParticles(), drawn_fx);
-		drawSprites(console.getActiveAsteroids(), drawn_rocks, ROCK_LAYER);
-		drawSprites(console.getActiveShips(), drawn_ships, ROCK_LAYER);
+		drawSprites(console.getActiveAsteroids(), drawn_rocks);
+		drawSprites(console.getActiveShips(), drawn_ships);
+//		drawGifs(console.getActiveShips(), drawn_ship_gifs, ROCK_LAYER);
 		drawBullets(bulletStore.getBullets(), drawn_bullets);
-		drawSprites(laserStore.getSegments(), drawnLaserSegments, ROCK_LAYER);
+		drawSprites(laserStore.getSegments(), drawnLaserSegments);
 		drawBlinkerEyes(BlinkerEyes);
 	}
 
@@ -519,7 +531,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		ArrayList<BulletEmitter> bulletEmitters = console.getActiveBulletEmitters();
 		for(BulletEmitter bulletEmitter: bulletEmitters) {
 			bulletEmitter.addSubscriber(bulletStore);
-			bulletEmitter.Update(player.physObj.getPosition());
+			bulletEmitter.AIUpdate(player.physObj.getPosition());
 		}
 	}
 
@@ -556,7 +568,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Finally, bullets
 		for (int i = 0; i < drawn_bullets.size(); i++) {
 			drawn_bullets.get(i).getSprite().sendToBack();
-		}
+		}	
+		
+		CURRENT_QUID_LABEL.sendToFront();
+
 	}
 
 	private void movementLoop() {
@@ -682,7 +697,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 
-	private <Item extends Entity> void drawSprites(ArrayList<Item> objects, ArrayList<Item> storage, int layer) {
+	private <Item extends Entity> void drawSprites(ArrayList<Item> objects, ArrayList<Item> storage) {
 		if(console.IS_DEBUGGING) {
 			CURRENT_ASTEROIDS_LABEL.setLabel("Current ASTER: " + objects.size());
 		}
@@ -692,7 +707,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			Item obj = objects.get(i);
 
 			if(obj.getSpriteName().contains("gif")) {
-				drawGif(obj, storage, layer);
+				drawGif(obj, storage);
 				continue;
 			}
 
@@ -751,8 +766,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			}
 		}
 	}
-
-	public <Item extends Entity> void drawGif (Item obj, ArrayList<Item> storage, int layer) {
+	
+	public <Item extends Entity> void drawGif (Item obj, ArrayList<Item> storage) {
 		Vector2 frontEndPos = Camera.backendToFrontend(obj.getPhysObj().getPosition());
 
 		// Are we already drawing that rock?
@@ -824,8 +839,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		isShooting = false;
-		shotCount= 0;	}
-
+		shotCount= 0;
+	}
+	
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		last_mouse_loc.setXY(e.getX(), e.getY()); 

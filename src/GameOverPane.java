@@ -1,5 +1,14 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
@@ -11,7 +20,8 @@ public class GameOverPane extends GraphicsPane {
 	private GLabel retryGame;
 	private GLabel exitToMenu;
 	private GObject obj;
-
+	private String filename = "Scores.txt";
+	
 	public GameOverPane(MainApplication app) {
 		program = app;
 		gameOver = new GLabel("GAME OVER");
@@ -28,7 +38,31 @@ public class GameOverPane extends GraphicsPane {
 		exitToMenu.setColor(Color.black);
 		exitToMenu.setLocation(gameOver.getX() + 75, retryGame.getY());
 	}
-
+	
+	public void WriteScore() {
+		Scanner reader = new Scanner(System.in);
+		String player_input="";
+		String in="";
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
+			//FileWriter  fileWriter = new FileWriter("Scores.txt");
+			//BufferedWriter buffer = new BufferedWriter(fileWriter);
+			System.out.println("Enter your name: ");
+			player_input = reader.nextLine();
+			in = Integer.toString(program.getPlayerScore())+" "+player_input;
+			System.out.println(in);
+			out.write(in);
+			out.close();
+		}
+		catch(FileNotFoundException ex) {
+			System.out.println("Unable to open file Scores.txt");
+		}
+		catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		System.out.println("Done!");
+	}
+	
 	@Override
 	public void showContents() {
 		program.removeAll();
@@ -37,6 +71,7 @@ public class GameOverPane extends GraphicsPane {
 		program.add(gameOver);
 		program.add(retryGame);
 		program.add(exitToMenu);
+		WriteScore();
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class ScoresPane extends GraphicsPane {
 
 		//Only display the top 5 scores
 		int j = 0;
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < scores.size(); i++) {
 			GLabel temp = new GLabel(scores.get(i));
 			temp.setFont(font);
 			temp.setColor(Color.black);

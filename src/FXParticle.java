@@ -91,7 +91,7 @@ public class FXParticle {
 	}
 
 	public void shrink() {
-		double ratio = 0.9;
+		double ratio = 0.85;
 		this.sprite.setSize(this.sprite.getWidth() * ratio, this.sprite.getHeight() * ratio);
 	}
 

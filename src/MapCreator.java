@@ -46,7 +46,13 @@ public class MapCreator {
 		this.player_spawn_quad_order = player_quad;
 		this.boss_spawn_quad_order = boss_quad;
 	}
-
+	
+	public ArrayList<Quadrant> createBossRoom(){
+		ArrayList<Quadrant> Quadrants = new ArrayList<Quadrant>();
+		Quadrants.add(createQuadrant(0,0,0));
+		return Quadrants;
+	}
+	
 	public ArrayList<Quadrant> createMap(){
 		// Create a new array to hold the quads
 		ArrayList<Quadrant> Quadrants = new ArrayList<Quadrant>();
@@ -57,7 +63,10 @@ public class MapCreator {
 			for(int b = PhysXLibrary.MAP_HEIGHT; b > 0; --b) {
 
 				Quadrant quad = createQuadrant(b-1,a-1,order);
-				fillQuadrant(quad);
+				
+				if (order != boss_spawn_quad_order) {
+					fillQuadrant(quad);
+				}
 				Quadrants.add(quad);
 
 				if (order == player_spawn_quad_order) {

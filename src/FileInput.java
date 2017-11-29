@@ -146,8 +146,10 @@ public class FileInput {
 		boolean loop = true;
 		while(loop) {
 			if (i + 2 < values.length && currentCollider < numColliders) {
+
 				float colliderX = Float.parseFloat(values[i]);
 				float colliderY = Float.parseFloat(values[i + 1]);
+
 				float colliderRadius = Float.parseFloat(values[i + 2]);
 
 				// data verification

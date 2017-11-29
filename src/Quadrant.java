@@ -23,25 +23,33 @@ public class Quadrant{
 		if (!isActive) {
 			return;
 		}
-		for(Ship A : ships) {
-			for(Asteroid B : asteroids) {
-				if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(),B.getPhysObj())) {
-					if(PhysXLibrary.isCollision(A.getPhysObj(), B.getPhysObj())) {
 
-						if (GameConsole.IS_DEBUGGING) {
-							//							System.out.println("Asteroid Collision!");
+		if(ships != null && ships.size() > 0) {
+			for(Ship A : ships) {
+				for(Asteroid B : asteroids) {
+					if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(),B.getPhysObj())) {
+						if(PhysXLibrary.isCollision(A.getPhysObj(), B.getPhysObj())) {
+	//						A.sendCollisionMessage(B.getCollisionData());
+							
+							if (GameConsole.IS_DEBUGGING) {
+	//							System.out.println("Asteroid Collision!");
+							}
 						}
 					}
 				}
-			}
-			for(Ship C : ships) {
-				if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(), C.getPhysObj())) {
-					if(PhysXLibrary.isCollision(A.getPhysObj(), C.getPhysObj())) {
-						if (GameConsole.IS_DEBUGGING) {
-							//							System.out.println("Ship Collision!");
-						}
-					}
 
+				for(Ship C : ships) {
+					if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(), C.getPhysObj())) {
+						if(PhysXLibrary.isCollision(A.getPhysObj(), C.getPhysObj())) {
+	//						A.sendCollisionMessage(C.getCollisionData());
+	//						C.sendCollisionMessage(A.getCollisionData());
+							
+							if (GameConsole.IS_DEBUGGING) {
+	//							System.out.println("Ship Collision!");
+							}
+						}
+	
+					}
 				}
 			}
 		}

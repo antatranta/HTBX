@@ -1,6 +1,9 @@
 public class PhysXLibrary {
 	public static float	QUADRANT_HEIGHT = 500f * 2;
 	public static float	QUADRANT_WIDTH = 1000f * 2;
+	
+	public static final float BOSS_QUADRANT_HEIGHT = 1000f * 2;
+	public static final float BOSS_QUADRANT_WIDTH = 1000f * 2;
 
 	public static int 	MAP_WIDTH=5;
 	public static int 	MAP_HEIGHT=5;
@@ -8,7 +11,7 @@ public class PhysXLibrary {
 	public static final float COLLISION_CONSTANT = 1000f;
 
 	public static final float FRICTION = (float) 1.15;
-
+	
 	public static float getMapHeight() {
 		return QUADRANT_HEIGHT * MAP_HEIGHT;
 	}
