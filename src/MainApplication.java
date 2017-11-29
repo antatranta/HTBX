@@ -40,7 +40,6 @@ public class MainApplication extends GraphicsApplication {
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
 		control = new ControlsPane(this);
-		//score = new ScoresPane(this);
 		pause = new PausePane(this);
 		
 		audio = AudioPlayer.getInstance();

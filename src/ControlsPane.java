@@ -15,23 +15,10 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 	private MainApplication program;
 	private GImage controls;
 	private GLabel back;
-	private GLabel clickToContinue;
 	private GObject obj;
-	private int colorRed;
-	private int colorBlue;
-	private int colorGreen;
-	private int i;
-	private int j;
-	private int k;
 	
 	public ControlsPane(MainApplication app) {
 		program = app;
-		colorRed = 0;
-		colorBlue = 0;
-		colorGreen = 0;
-		i = 1;
-		j = 1;
-		k = 1;
 		
 		controls = new GImage("controls.gif", 0, 0);
 		controls.setLocation((CENTER_WIDTH - (controls.getWidth() / 2)), (CENTER_HEIGHT - (controls.getHeight() / 2) + 60));
@@ -40,16 +27,6 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 		back.setFont(font);
 		back.setColor(Color.black);
 		back.setLocation(CENTER_WIDTH - (back.getWidth() / 2), CENTER_HEIGHT - (back.getHeight() / 2) + 250);
-		
-//		continueToGame = new GLabel("CONTINUE");
-//		continueToGame.setFont(font);
-//		continueToGame.setColor(Color.black);
-//		continueToGame.setLocation(CENTER_WIDTH - (continueToGame.getWidth() / 2), CENTER_HEIGHT - (continueToGame.getHeight() / 2) + 250);
-		
-		clickToContinue = new GLabel("CLICK TO CONTINUE...", 0, 0);
-		clickToContinue.setFont(font);
-		clickToContinue.setColor(new Color(colorRed, colorBlue, colorGreen));
-		clickToContinue.setLocation(5, MainApplication.WINDOW_HEIGHT - 10);
 	}
 	
 	@Override
@@ -63,9 +40,8 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 			selection.setLocation(back.getX() - 25, back.getY());
 		}
 		else {
-			Timer fadingLabel = new Timer(5, this);
-			fadingLabel.start();
-			program.add(clickToContinue);
+			startFadingLabel();
+			program.add(clickToContinue());
 		}
 	}
 
@@ -77,7 +53,8 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 			program.remove(back);
 		}
 		else {
-			program.remove(clickToContinue);
+			program.remove(clickToContinue());
+			stopFadingLabel();
 		}
 		program.remove(selection());
 		program.remove(controls);
@@ -121,52 +98,5 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 		else {
 			selection.setVisible(false);
 		}
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		clickToContinue.setColor(new Color(colorRed, colorGreen, colorBlue));
-        
-		
-		switch(colorRed % 256) {
-			case 0:
-				i = 1;
-				break;
-				
-			case 255:
-				i = -1;
-				break;
-				
-			default:
-				break;
-		}
-		switch(colorGreen % 256) {
-			case 0:
-				j = 1;
-				break;
-			
-			case 255:
-				j = -1;
-				break;
-				
-			default:
-				break;
-		}
-		switch(colorBlue % 256) {
-			case 0:
-				k = 1;
-				break;
-				
-			case 255:
-				k = -1;
-				break;
-				
-			default:
-				break;
-		}
-        
-        colorRed += i;
-        colorGreen += j;
-        colorBlue += k;
 	}
 }
