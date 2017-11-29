@@ -42,7 +42,7 @@ public class MainApplication extends GraphicsApplication {
 		control = new ControlsPane(this);
 		score = new ScoresPane(this);
 		pause = new PausePane(this);
-		gameOver = new GameOverPane(this);
+		
 		audio = AudioPlayer.getInstance();
 		
 		switchToMenu();
@@ -127,6 +127,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 	
 	public void switchToGameOver() {
+		gameOver = new GameOverPane(this);
 		gameTimer.stopTimer();
 		isPaused = false;
 //		audio.stopSound("sounds", "01 Misconection_1.mp3");
@@ -172,5 +173,9 @@ public class MainApplication extends GraphicsApplication {
 		else {
 			audio.stopSound("sounds", "3A1W - Menu.wav");
 		}
+	}
+	
+	public int getPlayerScore() {
+		return console.getScore();
 	}
 }
