@@ -368,11 +368,22 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		physx = new PhysX(PhysXLibrary.BOSS_QUADRANT_HEIGHT, PhysXLibrary.BOSS_QUADRANT_WIDTH, 1, 1);
 		
 		// Add in the new Quadrant
-		physx.addQuadrants(mapCreator.createBossRoom());
+		physx.addQuadrant(mapCreator.createBossRoom().get(0));
 		
+		System.out.println("Quads: " + physx.getQuadrants().size());
 		
-		Boss bossShip = new Boss(new PhysXObject(), 100, ShipStats.EnemyStats_01());
-		//TODO: STUB
+		// Create a new PhysXObject
+		PhysXObject boss_obj = new PhysXObject();
+		boss_obj.setQUID(physx.getQuadrants().get(0).getQUID());
+		
+		// Get the position of the new Object
+		Vector2 pos = new Vector2((boss_obj.getQUID().getX() * PhysXLibrary.QUADRANT_WIDTH) + (PhysXLibrary.QUADRANT_WIDTH / 2), (boss_obj.getQUID().getY() * PhysXLibrary.QUADRANT_HEIGHT) + (PhysXLibrary.QUADRANT_HEIGHT / 2));
+		boss_obj.setPosition(pos);
+		
+		// Create the boss
+		Boss bossShip = new Boss(boss_obj, 100, ShipStats.EnemyStats_01(), this.gamePane_ref);
+		
+		// Add to PhysX
 		if(physx.getQuadrants() != null && physx.getQuadrants().size() > 0) {
 			physx.getQuadrants().get(0).addEnemyShip(bossShip);
 		}
@@ -382,6 +393,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		bossRoomManager.setGameConsole_ref(this);
 		bossRoomManager.setGamePane_ref(gamePane_ref);
 		bossRoomManager.setBossShip(bossShip);
+		
+		player.getPhysObj().setPosition(pos.minus(Vector2.One().mult(new Vector2(5,5))));
 	}
 	
 	public void SetScore() {
@@ -406,6 +419,11 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 				quad.addEnemyShip(enemy);
 			}
 		}
+	}
+
+	public void updateBossRoom() {
+		if(bossRoomManager != null)
+			bossRoomManager.Update();
 	}
 
 }

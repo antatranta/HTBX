@@ -35,6 +35,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private GRect DEBUGGING_BOX;
 
 	private boolean DO_POINT_TEST = false;
+	
+	private boolean DEBUGGING_BOSS_TRIGGER = false;
 
 	private ArrayList<GOval> POINT_TEST;
 
@@ -375,7 +377,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage() + player.getBonusStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc), FXManager.colorParticle(PaintToolbox.BLUE));
 		player.shoot(bfe);
 		AudioPlayer myAudio = AudioPlayer.getInstance();
-		myAudio.playSound("sounds", "Bow_Fire_Arrow.wav");
+		myAudio.playSound("sounds", "PlayerShoot.wav");
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary
@@ -465,6 +467,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Test the boss room trigger
 		drawSprites();
 		console.getBossRoomTrigger().Update(player.getPhysObj().getPosition(), tele_flash);
+		
+		console.updateBossRoom();
 
 	}
 	
@@ -654,7 +658,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		boss_aurora.sendToBack();
-		HUD.getBackgroundOverlay().sendToBack();
+		if(HUD.getBackgroundOverlay() != null)
+			HUD.getBackgroundOverlay().sendToBack();
 		
 		CURRENT_QUID_LABEL.sendToFront();
 
@@ -1013,6 +1018,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				} else {
 					System.out.println("DRAW BULLETS --- ON");
 					DEBUGGING_DRAW_BULLETS = true;
+				}
+			}
+			
+			if(key == KeyEvent.VK_Z) {
+				if(!DEBUGGING_BOSS_TRIGGER) {
+					DEBUGGING_BOSS_TRIGGER = true; 
+					this.console.programRequest_makeBossRoom();
 				}
 			}
 		}

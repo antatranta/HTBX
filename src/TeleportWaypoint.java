@@ -19,10 +19,13 @@ public class TeleportWaypoint {
 	private int flash_sequence = 0;
 	private int step = 0;
 	
+	public static boolean calculateOverlay;
+	
 	public TeleportWaypoint() {
 		this.active = false;
 		this.setInteractable(false);
 		physObj = new PhysXObject();
+		calculateOverlay = false;
 	}
 	
 	public TeleportWaypoint(QuadrantID QUID, GameConsoleEvents gameConsole) {
@@ -87,6 +90,7 @@ public class TeleportWaypoint {
 	}
 	
 	protected void leaveTeleport() {
+		calculateOverlay = false;
 		System.out.println("     Teleport Finished!");
 		tele_sequence = -1;
 		gameConsole.physXRequest_getPlayer().setInvincibility(false);
@@ -113,19 +117,22 @@ public class TeleportWaypoint {
 	}
 	
 	public void Update(Vector2 refrencePosition, GOval flash) {
+		
 		double distance = PhysXLibrary.distance(getPhysObj().getPosition(), refrencePosition);
 		Vector2 fr = Camera.backendToFrontend(physObj.getPosition());
 		
 		if(distance < activationDistance && tele_sequence == 0) {
-			
+//			calculateOverlay = true;
 			if(distance < teleportDistance) {
 
 				interactable = false;
 				onTeleport();
+				leaveTeleport();
+				sendToBoss();
 			}
 			
 		}
-		
+		/*
 		// THE TELEPORTATION ANIMATIONS. KIND OF HARDCODE? NOT REALLY. BUT IT'S MAGICAL
 		else if (tele_sequence == 1) {
 
@@ -210,11 +217,10 @@ public class TeleportWaypoint {
 		// 7) Exit the sequence
 		else if (tele_sequence == 7) {
 			leaveTeleport();
+		} else {
+			calculateOverlay = false;
 		}
+		*/
 	}
-
-
-
-	
 	
 }
