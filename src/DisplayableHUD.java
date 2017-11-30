@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
+import acm.graphics.GOval;
 import acm.graphics.GRect;
 import javafx.scene.text.Font;
 import rotations.GameImage;
 
 public class DisplayableHUD implements Displayable {
 
-	private static final int AURORA_DISTANCE = 600;
-	private static final int AURORA_INNER = 100;
 	private MainApplication program;
 	private GameConsole console;
 	private PlayerShip player;
@@ -76,7 +75,6 @@ public class DisplayableHUD implements Displayable {
 	double unity = 0;
 	
 	Vector2 boss_tele_pos;
-
 
 	public DisplayableHUD(MainApplication program, PlayerShip player) {
 		this.program = program;
@@ -176,7 +174,6 @@ public class DisplayableHUD implements Displayable {
 
 		threat_down.setFilled(true);
 		oldColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
-		
 		
 		boss_tele_pos = console.getBossRoomTrigger().getPhysObj().getPosition();
 		
@@ -316,10 +313,10 @@ public class DisplayableHUD implements Displayable {
 		
 		// Boss portal
 		double dist = PhysXLibrary.distance(player.getPhysObj().getPosition(), boss_tele_pos);
-		if (dist < AURORA_DISTANCE && dist > AURORA_INNER) {
-			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), (int) (255 - (255 * ((dist - AURORA_INNER) / (AURORA_DISTANCE - AURORA_INNER))))));
+		if (dist < TeleportWaypoint.AURORA_DISTANCE && dist > TeleportWaypoint.AURORA_INNER) {
+			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), (int) (255 - (255 * ((dist - TeleportWaypoint.AURORA_INNER) / (TeleportWaypoint.AURORA_DISTANCE - TeleportWaypoint.AURORA_INNER))))));
 		}
-		else if (dist < AURORA_INNER) {
+		else if (dist < TeleportWaypoint.AURORA_INNER) {
 			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), 255));
 		}
 		else {

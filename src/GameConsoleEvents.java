@@ -14,7 +14,8 @@ public interface GameConsoleEvents {
 	public void programRequest_drawObjects(ArrayList<GameImage> objects);
 	public void programRequest_makeFX(FXPattern pattern, FXType type, FXParticle particle);
 
-	public PhysXObject physXRequest_getPlayer();
+	public PlayerShip physXRequest_getPlayer();
+	public PhysXObject physXRequest_getPlayerPhysObj();
 	public void UIRequest_addThreat(Vector2 pos);
 	void programRequest_makeBossRoom();
 }

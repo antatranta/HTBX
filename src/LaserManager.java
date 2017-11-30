@@ -71,7 +71,7 @@ public class LaserManager implements LaserManagerEvents {
 
 		for(LaserLine laser : advancedLasers) {
 			laser.incrementTime();
-			PhysXObject obj = console.physXRequest_getPlayer();
+			PhysXObject obj = console.physXRequest_getPlayerPhysObj();
 			if(obj != null) {
 				laser.updateBeam(laser.getOrigin(),obj.getPosition());
 			}
@@ -92,7 +92,7 @@ public class LaserManager implements LaserManagerEvents {
 
 	@Override
 	public void createAdvancedLaserAtPlayer(PhysXObject physObj, int f) {
-		PhysXObject playerObj = console.physXRequest_getPlayer();
+		PhysXObject playerObj = console.physXRequest_getPlayerPhysObj();
 		if(playerObj != null) {
 			createAdvancedLaserBeam(physObj,playerObj.getPosition(),f);
 		}
