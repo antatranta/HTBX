@@ -392,6 +392,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			program.switchToGameOver();
 		}
 		
+		if(console.getEnemiesKilled() == 1) {
+			program.switchToStory();
+		}
+		
 		// Reset death events
 		if(deathEvents.size() > 1) {
 			deathEvents = new ArrayList<ShipDeathData>();

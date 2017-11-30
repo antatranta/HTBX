@@ -98,6 +98,10 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 
 	}
 	
+	public int getEnemiesKilled() {
+		return enemiesKilled;
+	}
+	
 	public TeleportWaypoint getBossRoomTrigger() {
 		return bossRoomTrigger;
 	}
