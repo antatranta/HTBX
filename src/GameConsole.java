@@ -88,8 +88,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		}
 		
 		bossRoomTrigger = new TeleportWaypoint(mapCreator.getBossSpawn().getQUID(), this);
-		bossRoomTrigger.setActivationDistance(1000);
-		bossRoomTrigger.setTeleportDistance(200);
+		bossRoomTrigger.setActivationDistance(TeleportWaypoint.AURORA_DISTANCE);
+		bossRoomTrigger.setTeleportDistance(TeleportWaypoint.AURORA_INNER);
 		bossRoomTrigger.setInteractable(true);
 		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
@@ -321,9 +321,14 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public void programRequest_drawObjects(ArrayList<GameImage> objects) {
 		this.gamePane_ref.eventRequest_addObjects(objects);
 	}
+	
+	@Override
+	public PlayerShip physXRequest_getPlayer() {
+		return player;
+	}
 
 	@Override
-	public PhysXObject physXRequest_getPlayer() {
+	public PhysXObject physXRequest_getPlayerPhysObj() {
 		return player.getPhysObj();
 	}
 
