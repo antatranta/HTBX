@@ -35,6 +35,10 @@ public class ShipStats {
 	public static ShipStats EnemyStats_Banshe() {
 		return new ShipStats(5, 1, 30, 0);
 	}
+	
+	public static ShipStats bossBulletEmitter_0() {
+		return new ShipStats(5, 1, 30, 0);
+	}
 
 	public float getTurningSpeed() {
 		return 5f;
@@ -92,4 +96,6 @@ public class ShipStats {
 	public void incDamage(int update) {
 		this.damage += update;
 	}
+
+
 }

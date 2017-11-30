@@ -15,6 +15,7 @@ public class PlayerShip extends Ship implements ActionListener{
 	private int i_frames = INV_CAP;
 	private ShipStats bonus_stats;
 	private int damageTaken=0;
+	private boolean invincible = false;
 
 	public PlayerShip(PhysXObject physObj, int current_health, ShipStats stats, String sprite) {
 		super(physObj, current_health, stats, sprite, CollisionType.playerShip, 0);
@@ -74,10 +75,14 @@ public class PlayerShip extends Ship implements ActionListener{
 	public int getIFrames() {
 		return i_frames;
 	}
+	
+	public void setInvincibility(boolean tf) {
+		this.invincible = tf;
+	}
 
 	@Override
 	public void takeDamage(int amount) {
-		if (i_frames > 0) {
+		if (i_frames > 0 && invincible) {
 			return;
 		}
 		i_frames = INV_CAP;

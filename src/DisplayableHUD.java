@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
+import acm.graphics.GOval;
 import acm.graphics.GRect;
 import javafx.scene.text.Font;
 import rotations.GameImage;
 
 public class DisplayableHUD implements Displayable {
 
-	private static final int AURORA_DISTANCE = 600;
-	private static final int AURORA_INNER = 100;
 	private MainApplication program;
 	private GameConsole console;
 	private PlayerShip player;
@@ -75,8 +74,7 @@ public class DisplayableHUD implements Displayable {
 	double starty = 0;
 	double unity = 0;
 	
-	Vector2 boss_quad_pos;
-
+	Vector2 boss_tele_pos;
 
 	public DisplayableHUD(MainApplication program, PlayerShip player) {
 		this.program = program;
@@ -177,17 +175,11 @@ public class DisplayableHUD implements Displayable {
 		threat_down.setFilled(true);
 		oldColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 		
-		float x = console.getMapCreatorModule().getBossSpawn().getQUID().getX();
-		float y = console.getMapCreatorModule().getBossSpawn().getQUID().getY();
-		x *= PhysXLibrary.QUADRANT_WIDTH;
-		y *= PhysXLibrary.QUADRANT_HEIGHT;
-		x -= PhysXLibrary.QUADRANT_WIDTH / 2;
-		y -= PhysXLibrary.QUADRANT_HEIGHT / 2;
-		boss_quad_pos = new Vector2(x, y);
+		boss_tele_pos = console.getBossRoomTrigger().getPhysObj().getPosition();
 		
-		overlay = new GRect(0, 0, MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
+		// Offsets of 1 because the border is a single pixel. Needs to be offset by -1, and size +1
+		overlay = new GRect(-1, -1, MainApplication.WINDOW_WIDTH + 1, MainApplication.WINDOW_HEIGHT + 1);
 		overlay.setFillColor(PaintToolbox.setAlpha(PaintToolbox.BLACK, 0));
-		overlay.setColor(PaintToolbox.BLACK);
 		overlay.setFilled(true);
 	}
 
@@ -223,7 +215,7 @@ public class DisplayableHUD implements Displayable {
 		scaleStatusBar(iframes, (double)player.getIFrames() / (double)PlayerShip.INV_CAP);
 		shield_diff /= 1.1;
 		hp_diff /= 1.1;
-		aimCompass(compass_sprite, boss_quad_pos);
+		aimCompass(compass_sprite, boss_tele_pos);
 
 		// Skills
 
@@ -320,11 +312,11 @@ public class DisplayableHUD implements Displayable {
 		threatLevels = new float[4];
 		
 		// Boss portal
-		double dist = PhysXLibrary.distance(player.getPhysObj().getPosition(), boss_quad_pos);
-		if (dist < AURORA_DISTANCE && dist > AURORA_INNER) {
-			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), (int) (255 - (255 * ((dist - AURORA_INNER) / (AURORA_DISTANCE - AURORA_INNER))))));
+		double dist = PhysXLibrary.distance(player.getPhysObj().getPosition(), boss_tele_pos);
+		if (dist < TeleportWaypoint.AURORA_DISTANCE && dist > TeleportWaypoint.AURORA_INNER) {
+			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), (int) (255 - (255 * ((dist - TeleportWaypoint.AURORA_INNER) / (TeleportWaypoint.AURORA_DISTANCE - TeleportWaypoint.AURORA_INNER))))));
 		}
-		else if (dist < AURORA_INNER) {
+		else if (dist < TeleportWaypoint.AURORA_INNER) {
 			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), 255));
 		}
 		else {
@@ -398,8 +390,12 @@ public class DisplayableHUD implements Displayable {
 		sp_label.setLabel("" + program.getGameConsole().getSP());
 	}
 
-	public Vector2 getBossQuadPos() {
-		return this.boss_quad_pos;
+	public Vector2 getBossTelePos() {
+		return this.boss_tele_pos;
+	}
+	
+	public GRect getBackgroundOverlay() {
+		return this.overlay;
 	}
 	
 	public void layerSprites() {
@@ -421,7 +417,6 @@ public class DisplayableHUD implements Displayable {
 		health_up.sendToBack();
 		shield_up.sendToBack();
 		stats_back.sendToBack();
-		overlay.sendToBack();
 	}
 
 	@Override

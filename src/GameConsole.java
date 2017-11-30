@@ -29,6 +29,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
 	private LaserManager laserStore;
+	private BossRoomManager bossRoomManager;
 	private FXManager fx;
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
@@ -88,8 +89,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		}
 		
 		bossRoomTrigger = new TeleportWaypoint(mapCreator.getBossSpawn().getQUID(), this);
-		bossRoomTrigger.setActivationDistance(1000);
-		bossRoomTrigger.setTeleportDistance(200);
+		bossRoomTrigger.setActivationDistance(TeleportWaypoint.AURORA_DISTANCE);
+		bossRoomTrigger.setTeleportDistance(TeleportWaypoint.AURORA_INNER);
 		bossRoomTrigger.setInteractable(true);
 		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
@@ -321,9 +322,14 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public void programRequest_drawObjects(ArrayList<GameImage> objects) {
 		this.gamePane_ref.eventRequest_addObjects(objects);
 	}
+	
+	@Override
+	public PlayerShip physXRequest_getPlayer() {
+		return player;
+	}
 
 	@Override
-	public PhysXObject physXRequest_getPlayer() {
+	public PhysXObject physXRequest_getPlayerPhysObj() {
 		return player.getPhysObj();
 	}
 
@@ -360,7 +366,18 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		// Add in the new Quadrant
 		physx.addQuadrants(mapCreator.createBossRoom());
 		
+		
+		Boss bossShip = new Boss(new PhysXObject(), 100, ShipStats.EnemyStats_01());
 		//TODO: STUB
+		if(physx.getQuadrants() != null && physx.getQuadrants().size() > 0) {
+			physx.getQuadrants().get(0).addEnemyShip(bossShip);
+		}
+		
+		// Create a new boss room manager
+		bossRoomManager = new BossRoomManager();
+		bossRoomManager.setGameConsole_ref(this);
+		bossRoomManager.setGamePane_ref(gamePane_ref);
+		bossRoomManager.setBossShip(bossShip);
 	}
 	
 	public void SetScore() {

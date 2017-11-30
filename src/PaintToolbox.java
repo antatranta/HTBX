@@ -8,6 +8,8 @@ public class PaintToolbox {
 	public static final Color YELLOW = new Color(225, 225, 0, 255);
 	public static final Color GREY = new Color(84, 84, 84, 255);
 	public static final Color BLUE = new Color(71, 195, 242, 255);
+	public static final Color LIGHTGREY = new Color(170,170,170);
+	public static final Color VERYLIGHTGREY = new Color(220,220,220);
 
 	public static Color blend(Color b, Color a, float blending) {
 

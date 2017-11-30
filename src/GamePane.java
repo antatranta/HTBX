@@ -6,7 +6,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
@@ -68,7 +67,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <EnemyShip> drawn_ships;
 //	private ArrayList <EnemyShip> drawn_ship_gifs;
 	private ArrayList <Bullet> drawn_bullets;
-	private ArrayList <GImage> drawn_bg;
 
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_ASTEROIDS;
 	private ArrayList <StaticGObject> DEBUGGING_COLLIDERS_OBJECTS_ref;
@@ -103,12 +101,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	// Player STATUS HUD Stuffs
 	ArrayList<StaticRect> GRID_ROWS = new ArrayList<StaticRect>();
 	ArrayList<StaticRect> GRID_COLS = new ArrayList<StaticRect>();
-	
 	ArrayList<StaticRect> GRID_LINES = new ArrayList<StaticRect>();
 	
+	private GOval tele_flash;
+	
 	float GRID_LINE_WIDTH = 2f;
-	float GRID_SQUARE_SIZE = 200f;
-	int NUM_GRID_LINES = 25;
+	float GRID_SQUARE_SIZE = 400f;
+	
 	public GamePane(MainApplication app) {
 		this.program = app;
 		init();
@@ -199,7 +198,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		while ((i * GRID_SQUARE_SIZE)< (PhysXLibrary.QUADRANT_WIDTH * PhysXLibrary.MAP_WIDTH)) {
 			GRID_ROWS.add(new StaticRect(new Vector2((GRID_SQUARE_SIZE * i), 0), new Vector2(GRID_LINE_WIDTH, PhysXLibrary.getMapHeight())));
 			program.add(GRID_ROWS.get(i).getRect());
-			GRID_ROWS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
+			GRID_ROWS.get(i).getRect().setFillColor(PaintToolbox.VERYLIGHTGREY);
 			GRID_ROWS.get(i).getRect().setColor(PaintToolbox.TRANSPARENT);
 			GRID_ROWS.get(i).getRect().setFilled(true);
 			i++;
@@ -209,7 +208,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //		for(int i =0; i < NUM_GRID_LINES; ++i) {
 			GRID_COLS.add(new StaticRect(new Vector2(0, (GRID_SQUARE_SIZE * e)), new Vector2(PhysXLibrary.getMapWidth(), GRID_LINE_WIDTH)));
 			program.add(GRID_COLS.get(e).getRect());
-			GRID_COLS.get(e).getRect().setFillColor(Color.LIGHT_GRAY);
+			GRID_COLS.get(e).getRect().setFillColor(PaintToolbox.VERYLIGHTGREY);
 			GRID_COLS.get(e).getRect().setColor(PaintToolbox.TRANSPARENT);
 			GRID_COLS.get(e).getRect().setFilled(true);
 			e++;
@@ -335,6 +334,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		lastTrackingPosition = player.getPhysObj().getPosition();
 		
+		tele_flash = new GOval(0,0,0,0);
+		tele_flash.setFilled(true);
+		tele_flash.setFillColor(PaintToolbox.WHITE);
+		tele_flash.setColor(PaintToolbox.WHITE);
+		
 		drawGridLines();
 	}
 
@@ -354,6 +358,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.add(aiming_head);
 		HUD.showContents();
 		program.add(boss_aurora);
+		program.add(tele_flash);
 	}
 
 	@Override
@@ -363,6 +368,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		program.remove(aiming_head);
 		HUD.hideContents();
 		program.remove(boss_aurora);
+		program.remove(tele_flash);
 	}
 
 	private void playerShoot() {
@@ -410,12 +416,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		console.testCollisions(player);
 		
 		// Move projectiles
-		console.moveBullets();
+
 		laserStore.updateLasers();
 		
 		// Move particles
 		console.getFXManager().moveParticles();
-		drawSprites();
+
 		
 		// Remove Dead bullets
 		for(GameImage bullet : console.cullBullets()) {
@@ -440,7 +446,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		right_threat = 0;
 		up_threat = 0;
 		down_threat = 0;
-		
+		console.moveBullets();
+
 		// Move the player ship
 		if(CAN_MOVE) {
 			movementLoop();
@@ -448,8 +455,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		// Move the enemy ships
 		moveEnemyShips();
+		
 		// Test the boss room trigger
-		console.getBossRoomTrigger().Update(player.getPhysObj().getPosition());
+		drawSprites();
+		console.getBossRoomTrigger().Update(player.getPhysObj().getPosition(), tele_flash);
 
 	}
 	
@@ -568,12 +577,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawBullets(bulletStore.getBullets(), drawn_bullets);
 		drawSprites(laserStore.getSegments(), drawnLaserSegments);
 		drawBlinkerEyes(BlinkerEyes);
-		drawBackground(drawn_bg);
 		
-		if (PhysXLibrary.distance(player.getPhysObj().getPosition(), HUD.getBossQuadPos()) < AURORA_DRAW_DIST) {
-			Vector2 lc = Camera.backendToFrontend(HUD.getBossQuadPos());
+		player_img.setDegrees(-player.getAngle() + 90);
+		
+		if (PhysXLibrary.distance(player.getPhysObj().getPosition(), HUD.getBossTelePos()) < AURORA_DRAW_DIST) {
+			Vector2 lc = Camera.backendToFrontend(HUD.getBossTelePos());
 			boss_aurora.setLocation(lc.getX() - (boss_aurora.getWidth() / 2), lc.getY() - (boss_aurora.getHeight() / 2));
-			boss_aurora.rotate(-1);
+			//boss_aurora.rotate(-1);
 		}
 		else {
 			boss_aurora.setLocation(1000, 1000);
@@ -599,11 +609,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void layerSprites() {
 		// Then dynamic parts of the HUD
 		HUD.layerSprites();
+		tele_flash.sendToBack();
 		aiming_edge.sendToBack();
 		aiming_head.sendToBack();
 
-
-		
 		// FX Layer
 		for (int i = 0; i < drawn_fx.size(); i++) {
 			drawn_fx.get(i).getSprite().sendToBack();
@@ -639,6 +648,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		boss_aurora.sendToBack();
+		HUD.getBackgroundOverlay().sendToBack();
 		
 		CURRENT_QUID_LABEL.sendToFront();
 
@@ -649,6 +659,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			return;
 
 		MOVEMENT_LOCK = true;
+		if (console.getBossRoomTrigger().getPhase() <= 0) {
 		int final_turn = 0;
 		int final_forward = 0;
 
@@ -674,21 +685,21 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		float cos = (float) Math.cos(angle) * speed;
 		float sin = (float) Math.sin(angle) * speed;
 
-		player_img.rotate((int)player.getStats().getTurningSpeed() * final_turn);
 		player.adjustAngle((int)player.getStats().getTurningSpeed() * -final_turn);
-		player_img.setDegrees(-player.getAngle() + 90);
 
+
+		player.moveVector2(new Vector2(cos, sin));
+
+		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
+		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
+		}
+		
 		Vector2 newFEPOS = Camera.backendToFrontend(player.getPhysObj().getPosition());
 
 		if(!DEBUGGING_MOVE_LOCK) {
 			player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
 		}
-		player.moveVector2(new Vector2(cos, sin));
-
-		player.getPhysObj().setQUID(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
-		console.physx().setActiveQuadrant(console.physx().assignQuadrant(player.getPhysObj().getPosition()));
-
-
+		
 		MOVEMENT_LOCK = false;
 	}
 
@@ -847,11 +858,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 	
-	private void drawBackground(ArrayList<GImage> storage) {
-		
-	}
-
-	
 	public <Item extends Entity> void drawGif (Item obj, ArrayList<Item> storage) {
 		Vector2 frontEndPos = Camera.backendToFrontend(obj.getPhysObj().getPosition());
 
@@ -892,7 +898,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Vector2 mousePos = new Vector2(e.getX(), e.getY());
-		if (e.getButton() == MouseEvent.BUTTON3)
+		if (e.getButton() == MouseEvent.BUTTON3 && console.getBossRoomTrigger().getPhase() == 0)
 		{
 			Vector2 newPos = Camera.frontendToBackend(mousePos);
 
@@ -902,7 +908,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
 			}
 		}
-		else if(e.getButton() == MouseEvent.BUTTON1) {
+		else if(e.getButton() == MouseEvent.BUTTON1 && console.getBossRoomTrigger().getPhase() == 0) {
 			if (console.IS_DEBUGGING) {
 				if(!DO_POINT_TEST) {
 					isShooting = true;
