@@ -1042,6 +1042,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		else if(key == KeyEvent.VK_P) {
 			player.setCurrentHealth(1);
 		}
+		else if(key == KeyEvent.VK_SEMICOLON) {
+			program.switchToCredits();
+		}
 	}
 
 	@Override

@@ -31,6 +31,7 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 	
 	@Override
 	public void showContents() {
+		program.setLookedAtControls(true);
 		program.add(whiteBG());
 		program.add(controls);
 		program.add(title());
@@ -40,8 +41,8 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 			selection.setLocation(back.getX() - 25, back.getY());
 		}
 		else {
-			startFadingLabel();
 			program.add(clickToContinue());
+			startFadingLabel();
 		}
 	}
 
@@ -85,8 +86,6 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 				program.switchToPause();
 			}
 		}
-		
-		program.setLookedAtControls(true);
 	}
 	
 	@Override
