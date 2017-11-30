@@ -1,3 +1,4 @@
+
 /*
  * Typical usage of the AudioPlayer.java
  * ----------------------------------
@@ -12,6 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -20,94 +22,100 @@ import javafx.util.Duration;
 public class AudioPlayer {
 	private HashMap<String, MediaPlayer> players;
 	private static AudioPlayer somePlayer;
-	private static ArrayList<String> playKeys;
 
-	protected AudioPlayer() {
-		JFXPanel fxPanel = new JFXPanel();
+	private AudioPlayer() {
+		final JFXPanel fxPanel = new JFXPanel();
 		players = new HashMap<String, MediaPlayer>();
-		playKeys = new ArrayList<String>();
 	}
 
 	/**
-	 * Think of this like the constructor for getting the audioplayer
-	 * Usage:
+	 * Think of this like the constructor for getting the audioplayer Usage:
 	 * AudioPlayer myPlayer = AudioPlayer.getInstance();
 	 * 
 	 * @return instance of the AudioPlayer
 	 */
 	public static AudioPlayer getInstance() {
-		if(somePlayer == null) {
+		if (somePlayer == null) {
 			somePlayer = new AudioPlayer();
 		}
 		return somePlayer;
 	}
 
 	/**
-	 * Plays a sound based on the foldername and filename given in the parameters 
-	 * Will only play the sound once.  If the sound isn't finished and the exact same
+	 * Plays a sound based on the foldername and filename given in the parameters
+	 * Will only play the sound once. If the sound isn't finished and the exact same
 	 * sound is played again, playSound will restart the sound.
 	 * 
-	 * @param folder folder where the sound is inside of media, leave as empty string if in the main media folder
-	 * @param filename filename for the sound, make sure to include the extension
+	 * @param folder
+	 *            folder where the sound is inside of media, leave as empty string
+	 *            if in the main media folder
+	 * @param filename
+	 *            filename for the sound, make sure to include the extension
 	 */
 	public void playSound(String folder, String filename) {
 		playSound(folder, filename, false);
 	}
 
 	/**
-	 * same as the original play sound, but has the option to loop the sound 
+	 * same as the original play sound, but has the option to loop the sound
 	 * 
-	 * @param folder folder where the sound is inside of media, leave as empty string if in the main media folder
-	 * @param filename filename for the sound, make sure to include the extension
-	 * @param shouldLoop true will loop the sound.  
+	 * @param folder
+	 *            folder where the sound is inside of media, leave as empty string
+	 *            if in the main media folder
+	 * @param filename
+	 *            filename for the sound, make sure to include the extension
+	 * @param shouldLoop
+	 *            true will loop the sound.
 	 */
 	public void playSound(String folder, String filename, boolean shouldLoop) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				playSoundWithOptions(folder, filename, shouldLoop);
+			}
+		});
+	}
+
+	private void playSoundWithOptions(String folder, String filename, boolean shouldLoop) {
 		MediaPlayer mPlayer = findSound(folder, filename);
-		if(mPlayer == null || mPlayer.getCycleDuration().lessThanOrEqualTo(mPlayer.getCurrentTime())) {
+		if (mPlayer == null || mPlayer.getCycleDuration().lessThanOrEqualTo(mPlayer.getCurrentTime())) {
 			mPlayer = createMediaPlayer(folder, filename);
 		}
 		mPlayer.play();
-		//		addKey(folder+filename);
-		if(shouldLoop) {
+		if (shouldLoop) {
 			mPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 		}
 	}
 
-	private void addKey(String key) {
-		if(!playKeys.contains(key)) {
-			playKeys.add(key);
-		}
-	}
-
-	protected MediaPlayer createMediaPlayer(String folder, String filename) {
+	private MediaPlayer createMediaPlayer(String folder, String filename) {
 		String key = buildResourcePath(folder, filename);
 		Media sound = new Media(key);
 		MediaPlayer mPlayer = new MediaPlayer(sound);
-		players.put(folder+filename, mPlayer);
+		players.put(folder + filename, mPlayer);
 		return mPlayer;
 	}
 
 	/*
-	 * Currently only supports default package or one sub-package, have not updated the code
-	 * for the latest package
+	 * Currently only supports default package or one sub-package, have not updated
+	 * the code for the latest package
 	 */
-	protected String buildResourcePath(String folder, String filename) {
-		if(folder != null && folder.length() > 0) {
+	private String buildResourcePath(String folder, String filename) {
+		if (folder != null && folder.length() > 0) {
 			folder += "/";
 		}
-		final URL resource = getClass().getClassLoader().getResource(folder+filename);
+		final URL resource = getClass().getClassLoader().getResource(folder + filename);
 		try {
 			String result = resource.toString();
 			return result;
-		}catch(NullPointerException ex) {
+		} catch (NullPointerException ex) {
 			try {
-				final URL newResource = getClass().getClassLoader().getResource("../"+folder+filename);
+				final URL newResource = getClass().getClassLoader().getResource("../" + folder + filename);
 				String result = newResource.toString();
 				return result;
-			}catch(NullPointerException ex1) {
+			} catch (NullPointerException ex1) {
 				ex.printStackTrace();
-				System.out.println("MEDIA FILE NOT FOUND: " + folder+filename);
-				System.out.println("Also tried: ../" + folder+filename + "...Exiting");
+				System.out.println("MEDIA FILE NOT FOUND: " + folder + filename);
+				System.out.println("Also tried: ../" + folder + filename + "...Exiting");
 				System.exit(0);
 			}
 
@@ -115,38 +123,54 @@ public class AudioPlayer {
 		return resource.toString();
 	}
 
-	protected MediaPlayer findSound(String folder, String filename) {
-		return players.get(folder+filename);
+	private MediaPlayer findSound(String folder, String filename) {
+		return players.get(folder + filename);
 	}
 
 	/**
-	 * Stops the sound when the media is playing, does nothing otherwise
-	 * Calling playSound after stopping the sound will cause the sound to start from the beginning
+	 * Stops the sound when the media is playing, does nothing otherwise Calling
+	 * playSound after stopping the sound will cause the sound to start from the
+	 * beginning
 	 * 
-	 * @param folder folder where the sound is inside of media, leave as empty string if in the main media folder
-	 * @param filename filename for the sound, make sure to include the extension
+	 * @param folder
+	 *            folder where the sound is inside of media, leave as empty string
+	 *            if in the main media folder
+	 * @param filename
+	 *            filename for the sound, make sure to include the extension
 	 */
 	public void stopSound(String folder, String filename) {
-		MediaPlayer mp = findSound(folder, filename);
-		if(mp != null) {
-			mp.stop();
-		}
+		Platform.runLater(new Runnable() {
+			public void run() {
+				MediaPlayer mp = findSound(folder, filename);
+				if (mp != null) {
+					mp.stop();
+				}
+			}
+		});
 	}
 
 	/**
-	 * Pauses the sound when the media is playing, does nothing otherwise
-	 * Calling playSound after pausing the sound will cause the sound to play where it left off
+	 * Pauses the sound when the media is playing, does nothing otherwise Calling
+	 * playSound after pausing the sound will cause the sound to play where it left
+	 * off
 	 * 
-	 * @param folder folder where the sound is inside of media, leave as empty string if in the main media folder
-	 * @param filename filename for the sound, make sure to include the extension
+	 * @param folder
+	 *            folder where the sound is inside of media, leave as empty string
+	 *            if in the main media folder
+	 * @param filename
+	 *            filename for the sound, make sure to include the extension
 	 */
 	public void pauseSound(String folder, String filename) {
-		MediaPlayer mp = findSound(folder, filename);
-		if(mp != null) {
-			mp.pause();
-		}
+		Platform.runLater(new Runnable() {
+			public void run() {
+				MediaPlayer mp = findSound(folder, filename);
+				if (mp != null) {
+					mp.pause();
+				}
+			}
+		});
 	}
-
+	
 	public void updatePlayer() {
 
 		/*
@@ -162,30 +186,5 @@ public class AudioPlayer {
 
 		garbageCollection();
 		 */
-	}
-
-	private void garbageCollection() {
-
-		// Find stopped players
-		ArrayList<String> keysToRemove = new ArrayList<String>();
-		for(String key : players.keySet()) {
-			if(players.get(key).getStatus() == MediaPlayer.Status.STOPPED) {
-				keysToRemove.add(key);
-			}
-		}
-
-		// Remove the associated players
-		for(String key : keysToRemove) {
-			if(players.containsKey(key)) {
-
-				// Not sure if necessary
-				players.put(key, null);
-
-				// Remove
-				players.remove(key);
-			}
-		}
-		if(keysToRemove.size() > 0)
-			System.out.println("Removed " + keysToRemove.size() + " Audio Player(s).");
 	}
 }

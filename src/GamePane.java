@@ -374,6 +374,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void playerShoot() {
 		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage() + player.getBonusStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc), FXManager.colorParticle(PaintToolbox.BLUE));
 		player.shoot(bfe);
+		AudioPlayer myAudio = AudioPlayer.getInstance();
+		myAudio.playSound("sounds", "Bow_Fire_Arrow.wav");
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary
@@ -406,7 +408,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Handle player shooting
 		if(isShooting) {
 			shotCount++;
-			if(shotCount == PLAYER_FIRE_RATE) {
+			if(shotCount >= PLAYER_FIRE_RATE) {
 				shotCount = 0;
 				playerShoot();
 			}
@@ -898,7 +900,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Vector2 mousePos = new Vector2(e.getX(), e.getY());
-		if (e.getButton() == MouseEvent.BUTTON3 && console.getBossRoomTrigger().getPhase() == 0)
+		if (e.getButton() == MouseEvent.BUTTON3 && console.getBossRoomTrigger().getPhase() <= 0)
 		{
 			Vector2 newPos = Camera.frontendToBackend(mousePos);
 
@@ -908,7 +910,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				player_img.setLocationRespectSize(newFEPOS.getX(), newFEPOS.getY());
 			}
 		}
-		else if(e.getButton() == MouseEvent.BUTTON1 && console.getBossRoomTrigger().getPhase() == 0) {
+		else if(e.getButton() == MouseEvent.BUTTON1 && console.getBossRoomTrigger().getPhase() <= 0) {
 			if (console.IS_DEBUGGING) {
 				if(!DO_POINT_TEST) {
 					isShooting = true;
