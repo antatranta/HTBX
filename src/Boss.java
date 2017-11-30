@@ -21,12 +21,20 @@ public class Boss extends EnemyShip implements ActionListener {
 	private final String rightEyebrow = "";
 	
 	private final double eyeSize = 20;
+	private final double eyeBlinkSize = 5;
+	private EyeState currentEyeState;
+	
 	private GOval leftEye;
 	private GOval rightEye;
 	private Color currentEyeColor;
 	
+	private int blinkDuration;
+	private int blinkCounter;
+	
 	private final Color idleColor = PaintToolbox.WHITE;
 	private final Color angryColor = PaintToolbox.RED;
+	
+	private Vector2 trackingPosition;
 
 	public Boss(PhysXObject physObj, int current_health, ShipStats stats) {
 		super(physObj, "Enemy_1.png", current_health, stats, 5, EnemyType.BOSS, 0);
@@ -57,11 +65,46 @@ public class Boss extends EnemyShip implements ActionListener {
 	
 	public void updateEyes() {
 		
+		
 		// Set the color
 		leftEye.setFillColor(currentEyeColor);
 		rightEye.setFillColor(currentEyeColor);
 		
-		// Determine the
+		// Determine the behaviour
+		switch(currentEyeState) {
+		case Idle:
+			// Do nothing
+		case Blink:
+			// Blink
+			if(blinkCounter == -77) {
+				blinkCounter = 0;
+				
+				// Here we actually blink
+				leftEye.setSize(eyeSize, eyeBlinkSize);
+				rightEye.setSize(eyeSize, eyeBlinkSize);
+				
+			} else if (blinkCounter < blinkDuration){
+				blinkCounter++;
+			} else if (blinkCounter >= blinkDuration) {
+				
+				// Reset
+				leftEye.setSize(eyeSize, eyeSize);
+				rightEye.setSize(eyeSize, eyeSize);
+				
+				blinkCounter = -77;
+				currentEyeState = EyeState.Idle;
+			}
+			break;
+		case Track:
+			// Track player pos
+			break;
+		case Angry:
+			break;
+		default:
+			// Do nothing
+			break;
+		}
+		
 		
 	}
 
