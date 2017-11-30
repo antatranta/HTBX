@@ -393,6 +393,17 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		this.skill_points = x;
 	}
 
+	@Override
+	public void programRequest_makeEnemy(EnemyShip enemy) {
+		// TODO Auto-generated method stub
+		QuadrantID QUID = enemy.getPhysObj().getQUID();
+		for (Quadrant quad : physx.getActiveQuadrants()) {
+			if(quad.getQUID() == QUID) {
+				quad.addEnemyShip(enemy);
+			}
+		}
+	}
+
 }
 
 
