@@ -14,8 +14,41 @@ public class BossRoomManager {
 	
 	private final double stg_0_be_delta = 180;
 	
+	// - - - - - - - - - - - - - 
+	// - - - - - TIMING - - - - -
+	// - - - - - - - - - - - - - 
+	private int count = 0;
+	private int stateCount = 0;
+	private int currentState = -1;
+	private int numStates = 3  -1;
+	
+	// Settings
+		// Use '-3' to set the trigger flag as bypass
+		// Use '-2' to set the trigger flag as OR
+		// Use '-1' to set the trigger flag as AND
+		// Use 'X' to set the trigger flag as  NULL
+	
+	/* trigger flag : instead of waiting
+	 * for the count the trigger bypasses
+	 * this and moves the state.
+	 */
+	
+	private int bossState_0_Setting = 0;
+	private int bossState_0_Duration = 0;
+	private boolean bossState_0_CountTrigger;
+	
+	private int bossState_1_Setting = 0;
+	private int bossState_1_Duration = 0;
+	private boolean bossState_1_CountTrigger;
+	
+	private int bossState_2_Setting = 0;
+	private int bossState_2_Duration = 0;
+	private boolean bossState_2_CountTrigger;
+	
 	public BossRoomManager() {
-		bulletEmitters = new ArrayList<BulletEmitter>();
+		currentStage = 0;
+		count = 0;
+		bulletEmitters = new ArrayList<BulletEmitter>();	
 	}
 
 	private void createBulletEmitterCircle(int numEmitters) {
@@ -54,6 +87,132 @@ public class BossRoomManager {
 		} else {
 			System.out.println("[WARN] Bullet Emitters appear to be missing sprites!");
 		}
+	}
+	
+	/* * * * * * * * * * * * * * * 
+				TIMING 
+	* * * * * * * * * * * * * * */
+	
+	public void Update() {
+		
+		// Increment the count
+		count++;
+		
+		// Do this first
+		testStates();
+		
+		switch(currentState) {
+		case -1:
+			break;
+		case 0:
+			state_0();
+			break;
+		case 1:
+			state_1();
+			break;
+		case 2:
+			state_2();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void testStates() {
+		
+		// This needs to be set first. 
+		stateCount ++;
+		
+		int state = currentState;
+		switch(currentState) {
+
+		case -1:			// Ready
+			break;
+		case 0:			// State 0
+			state += testState(bossState_0_Setting, bossState_0_Duration, bossState_0_CountTrigger);
+			break;
+		case 1:
+			state += testState(bossState_1_Setting, bossState_1_Duration, bossState_1_CountTrigger);
+			break;	
+		case 2:
+			state += testState(bossState_2_Setting, bossState_2_Duration, bossState_2_CountTrigger);
+			break;	
+		}
+		
+		if (state != currentState) {
+			
+			// Loop the states
+			if (state > numStates) {
+				state = 0;
+				onStateLoop();
+			}
+			
+			// New state new count
+			stateCount = 0;
+		}
+
+		currentState = state;
+	}
+	
+	private int testState(int setting, int stateDuration, boolean trigger) {
+		int result = 0;
+		switch(setting) {
+		case -3:
+			// Bypass - count means nothing
+			if (trigger) {
+				result++;
+			}
+			break;
+			
+		case -2:
+			// OR - either condtion
+			if (trigger || stateCount >= stateDuration) {
+				result++;
+			}
+			break;
+			
+		case -1:
+			// AND - both condtions
+			if (trigger && stateCount >= stateDuration) {
+				result++;
+			}
+			break;
+			
+		default:
+			// AND - both condtions
+			if (trigger && stateCount >= stateDuration) {
+				result++;
+			}
+			break;
+		}
+		
+		// Reset the state
+		if(result > 0) {
+			trigger = false;
+		}
+		
+		return result;
+	}
+	
+	private void onStateLoop() {
+		
+	}
+	
+	
+	/* * * * * * * * * * * * * * * 
+				STATES 
+	* * * * * * * * * * * * * * */
+	
+	private void state_0() {
+		
+	}
+	
+	private void state_1() {
+		
+	}
+	
+	private void state_2() {
+		
 	}
 	
 	public Boss getBossShip() {
