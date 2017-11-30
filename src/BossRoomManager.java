@@ -4,6 +4,8 @@ import rotations.GameImage;
 
 public class BossRoomManager {
 	
+	private static final double ACTIVATION_DISTANCE = 2000;
+	
 	private Boss bossShip;
 	private int currentStage = 0;
 	private ArrayList<BulletEmitter> bulletEmitters;
@@ -12,7 +14,7 @@ public class BossRoomManager {
 	private GameConsoleEvents 	gameConsole_ref;
 	private GamePaneEvents		gamePane_ref;
 	
-	private final double stg_0_be_delta = 180;
+	private final double stg_0_be_delta = 1;
 	
 	// - - - - - - - - - - - - - 
 	// - - - - - TIMING - - - - -
@@ -21,6 +23,10 @@ public class BossRoomManager {
 	private int stateCount = 0;
 	private int currentState = -1;
 	private int numStates = 3  -1;
+	private boolean started = false;
+	private boolean started_0 = false;
+	private boolean started_1 = false;
+	private boolean started_2 = false;
 	
 	// Settings
 		// Use '-3' to set the trigger flag as bypass
@@ -33,14 +39,20 @@ public class BossRoomManager {
 	 * this and moves the state.
 	 */
 	
+	// STAGE 0
+	private static final int ROCK_SHIELD_COUNT = 8;
+	private static final int ROCK_SHIELD_RADIUS = 150;
 	private int bossState_0_Setting = 0;
 	private int bossState_0_Duration = 0;
 	private boolean bossState_0_CountTrigger;
 	
+	
+	// STAGE 1
 	private int bossState_1_Setting = 0;
 	private int bossState_1_Duration = 0;
 	private boolean bossState_1_CountTrigger;
 	
+	// STAGE 2
 	private int bossState_2_Setting = 0;
 	private int bossState_2_Duration = 0;
 	private boolean bossState_2_CountTrigger;
@@ -61,10 +73,10 @@ public class BossRoomManager {
 		return new BulletEmitter(
 				obj,										// PhysXObject
 				bulletEmitterSprite,						// Sprite
-				ShipStats.bossBulletEmitter_0(),			// ??
-				new BulletEmitterData(),					// ??
-				BulletEmitterBehavior.SHOOT_CLOCKWISE,	// ??
-				stg_0_be_delta,							// ??
+				ShipStats.bossBulletEmitter_0(),			// ShipStats
+				new BulletEmitterData(),					// Bullet bank
+				BulletEmitterBehavior.SHOOT_CLOCKWISE,	// Firing pattern
+				stg_0_be_delta,							// Angle delta
 				BulletType.STRAIGHT,   					// BulletType
 				false); 									// Can hurt
 	}
@@ -94,27 +106,34 @@ public class BossRoomManager {
 	* * * * * * * * * * * * * * */
 	
 	public void Update() {
-		
-		// Increment the count
-		count++;
-		
-		// Do this first
-		testStates();
-		
-		switch(currentState) {
-		case -1:
-			break;
-		case 0:
-			state_0();
-			break;
-		case 1:
-			state_1();
-			break;
-		case 2:
-			state_2();
-			break;
-		default:
-			break;
+		if (!started) {
+			double dist = PhysXLibrary.distance(bossShip.getPhysObj().getPosition(), gameConsole_ref.physXRequest_getPlayerPhysObj().getPosition());
+			if (dist < ACTIVATION_DISTANCE) {
+				started = true;
+			}
+		}
+		else if (started) {
+			// Increment the count
+			count++;
+			
+			// Do this first
+			testStates();
+			
+			switch(currentState) {
+			case -1:
+				break;
+			case 0:
+				state_0();
+				break;
+			case 1:
+				state_1();
+				break;
+			case 2:
+				state_2();
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	
@@ -203,8 +222,30 @@ public class BossRoomManager {
 				STATES 
 	* * * * * * * * * * * * * * */
 	
+
+	
 	private void state_0() {
-		
+		if (!started_0) {
+			started_0 = true;
+			init_state_0();
+		}
+	}
+	
+	// Initialize stage 0
+ 	private void init_state_0() {
+ 		double delta = ROCK_SHIELD_COUNT / 360;
+ 		double ang = 0;
+		for (int i = 0; i < ROCK_SHIELD_COUNT; i++) {
+			double x = Math.cos(Math.toRadians(ang));
+			double y = Math.sin(Math.toRadians(ang));
+			PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()), new Vector2((float)(x * ROCK_SHIELD_RADIUS), (float)(y * ROCK_SHIELD_RADIUS)), new CircleCollider(30));
+			ShipStats ss = ShipStats.EnemyStats_RockShield();
+			AsteroidEnemy rock = new AsteroidEnemy(po, "Asteroid_0.png", ss.getHealthMax(), ss,
+					0, EnemyType.ROCK_SHIELD, ang, ROCK_SHIELD_RADIUS);
+			gameConsole_ref.programRequest_makeEnemy(rock);
+			// Create shields
+			ang += delta;
+		}
 	}
 	
 	private void state_1() {

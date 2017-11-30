@@ -1,9 +1,10 @@
 public class ShipStats {
 
 	private int speed;
-	private int shield_max;
-	private int health_max;
 	private int damage;
+	private int health_max;
+	private int shield_max;
+
 
 	public ShipStats(int speed, int damage, int health_max, int shield_max) {
 		this.speed = speed;
@@ -38,6 +39,10 @@ public class ShipStats {
 	
 	public static ShipStats bossBulletEmitter_0() {
 		return new ShipStats(5, 1, 30, 0);
+	}
+	
+	public static ShipStats EnemyStats_RockShield() {
+		return new ShipStats(0, 0, 100, 0);
 	}
 
 	public float getTurningSpeed() {
