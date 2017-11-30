@@ -107,8 +107,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	ArrayList<StaticRect> GRID_LINES = new ArrayList<StaticRect>();
 	
 	float GRID_LINE_WIDTH = 2f;
-	float GRID_SQUARE_SIZE = 200f;
-	int NUM_GRID_LINES = 25;
+	float GRID_SQUARE_SIZE = 400f;
+	
 	public GamePane(MainApplication app) {
 		this.program = app;
 		init();
@@ -570,10 +570,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawBlinkerEyes(BlinkerEyes);
 		drawBackground(drawn_bg);
 		
-		if (PhysXLibrary.distance(player.getPhysObj().getPosition(), HUD.getBossQuadPos()) < AURORA_DRAW_DIST) {
-			Vector2 lc = Camera.backendToFrontend(HUD.getBossQuadPos());
+		if (PhysXLibrary.distance(player.getPhysObj().getPosition(), HUD.getBossTelePos()) < AURORA_DRAW_DIST) {
+			Vector2 lc = Camera.backendToFrontend(HUD.getBossTelePos());
 			boss_aurora.setLocation(lc.getX() - (boss_aurora.getWidth() / 2), lc.getY() - (boss_aurora.getHeight() / 2));
-			boss_aurora.rotate(-1);
+			//boss_aurora.rotate(-1);
 		}
 		else {
 			boss_aurora.setLocation(1000, 1000);
@@ -639,6 +639,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		boss_aurora.sendToBack();
+		HUD.getBackgroundOverlay().sendToBack();
 		
 		CURRENT_QUID_LABEL.sendToFront();
 
