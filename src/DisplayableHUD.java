@@ -75,7 +75,7 @@ public class DisplayableHUD implements Displayable {
 	double starty = 0;
 	double unity = 0;
 	
-	Vector2 boss_quad_pos;
+	Vector2 boss_tele_pos;
 
 
 	public DisplayableHUD(MainApplication program, PlayerShip player) {
@@ -177,17 +177,12 @@ public class DisplayableHUD implements Displayable {
 		threat_down.setFilled(true);
 		oldColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 		
-		float x = console.getMapCreatorModule().getBossSpawn().getQUID().getX();
-		float y = console.getMapCreatorModule().getBossSpawn().getQUID().getY();
-		x *= PhysXLibrary.QUADRANT_WIDTH;
-		y *= PhysXLibrary.QUADRANT_HEIGHT;
-		x -= PhysXLibrary.QUADRANT_WIDTH / 2;
-		y -= PhysXLibrary.QUADRANT_HEIGHT / 2;
-		boss_quad_pos = new Vector2(x, y);
 		
-		overlay = new GRect(0, 0, MainApplication.WINDOW_WIDTH, MainApplication.WINDOW_HEIGHT);
+		boss_tele_pos = console.getBossRoomTrigger().getPhysObj().getPosition();
+		
+		// Offsets of 1 because the border is a single pixel. Needs to be offset by -1, and size +1
+		overlay = new GRect(-1, -1, MainApplication.WINDOW_WIDTH + 1, MainApplication.WINDOW_HEIGHT + 1);
 		overlay.setFillColor(PaintToolbox.setAlpha(PaintToolbox.BLACK, 0));
-		overlay.setColor(PaintToolbox.BLACK);
 		overlay.setFilled(true);
 	}
 
@@ -223,7 +218,7 @@ public class DisplayableHUD implements Displayable {
 		scaleStatusBar(iframes, (double)player.getIFrames() / (double)PlayerShip.INV_CAP);
 		shield_diff /= 1.1;
 		hp_diff /= 1.1;
-		aimCompass(compass_sprite, boss_quad_pos);
+		aimCompass(compass_sprite, boss_tele_pos);
 
 		// Skills
 
@@ -320,7 +315,7 @@ public class DisplayableHUD implements Displayable {
 		threatLevels = new float[4];
 		
 		// Boss portal
-		double dist = PhysXLibrary.distance(player.getPhysObj().getPosition(), boss_quad_pos);
+		double dist = PhysXLibrary.distance(player.getPhysObj().getPosition(), boss_tele_pos);
 		if (dist < AURORA_DISTANCE && dist > AURORA_INNER) {
 			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), (int) (255 - (255 * ((dist - AURORA_INNER) / (AURORA_DISTANCE - AURORA_INNER))))));
 		}
@@ -398,8 +393,12 @@ public class DisplayableHUD implements Displayable {
 		sp_label.setLabel("" + program.getGameConsole().getSP());
 	}
 
-	public Vector2 getBossQuadPos() {
-		return this.boss_quad_pos;
+	public Vector2 getBossTelePos() {
+		return this.boss_tele_pos;
+	}
+	
+	public GRect getBackgroundOverlay() {
+		return this.overlay;
 	}
 	
 	public void layerSprites() {
@@ -421,7 +420,6 @@ public class DisplayableHUD implements Displayable {
 		health_up.sendToBack();
 		shield_up.sendToBack();
 		stats_back.sendToBack();
-		overlay.sendToBack();
 	}
 
 	@Override
