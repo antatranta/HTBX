@@ -29,6 +29,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private GameTimer gameTimer;
 	private BulletManager bulletStore;
 	private LaserManager laserStore;
+	private BossRoomManager bossRoomManager;
 	private FXManager fx;
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
@@ -365,10 +366,18 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		// Add in the new Quadrant
 		physx.addQuadrants(mapCreator.createBossRoom());
 		
+		
+		Boss bossShip = new Boss(new PhysXObject(), 100, ShipStats.EnemyStats_01());
 		//TODO: STUB
 		if(physx.getQuadrants() != null && physx.getQuadrants().size() > 0) {
-			physx.getQuadrants().get(0).addEnemyShip(/*BOSS*/ new Boss(new PhysXObject(), 100, ShipStats.EnemyStats_01()));
+			physx.getQuadrants().get(0).addEnemyShip(bossShip);
 		}
+		
+		// Create a new boss room manager
+		bossRoomManager = new BossRoomManager();
+		bossRoomManager.setGameConsole_ref(this);
+		bossRoomManager.setGamePane_ref(gamePane_ref);
+		bossRoomManager.setBossShip(bossShip);
 	}
 	
 	public void SetScore() {
