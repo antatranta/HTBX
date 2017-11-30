@@ -184,21 +184,21 @@ public class BossRoomManager {
 			break;
 			
 		case -2:
-			// OR - either condtion
+			// OR - either condition
 			if (trigger || stateCount >= stateDuration) {
 				result++;
 			}
 			break;
 			
 		case -1:
-			// AND - both condtions
+			// AND - both conditions
 			if (trigger && stateCount >= stateDuration) {
 				result++;
 			}
 			break;
 			
 		default:
-			// AND - both condtions
+			// AND - both conditions
 			if (trigger && stateCount >= stateDuration) {
 				result++;
 			}

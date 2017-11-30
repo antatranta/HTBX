@@ -12,6 +12,7 @@ public class AsteroidEnemy extends EnemyShip {
 		this.source_radius = radius;
 	}
 	
+	// Orbit around the source physObject Vector2
 	@Override
 	public void AIUpdate(Vector2 playerPos) {
 		double x = Math.cos(Math.toRadians(angle_from_source)) * source_radius;
@@ -31,5 +32,13 @@ public class AsteroidEnemy extends EnemyShip {
 	public void adjustAngle(double degrees) {
 		this.angle_from_source += degrees;
 	}
+	
+	// Asteroid enemy simply rotates; it will not ever suffer knockback, it only takes damage
+	@Override
+	public void onCollisionEvent(CollisionData data, Vector2 pos) {
+		if (data.getType() == CollisionType.player_bullet) {
+			takeDamage(data.getDamage());
+		}
+	}	
 
 }
