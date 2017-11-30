@@ -199,7 +199,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		while ((i * GRID_SQUARE_SIZE)< (PhysXLibrary.QUADRANT_WIDTH * PhysXLibrary.MAP_WIDTH)) {
 			GRID_ROWS.add(new StaticRect(new Vector2((GRID_SQUARE_SIZE * i), 0), new Vector2(GRID_LINE_WIDTH, PhysXLibrary.getMapHeight())));
 			program.add(GRID_ROWS.get(i).getRect());
-			GRID_ROWS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
+			GRID_ROWS.get(i).getRect().setFillColor(PaintToolbox.LIGHTGREY);
 			GRID_ROWS.get(i).getRect().setColor(PaintToolbox.TRANSPARENT);
 			GRID_ROWS.get(i).getRect().setFilled(true);
 			i++;
@@ -209,7 +209,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 //		for(int i =0; i < NUM_GRID_LINES; ++i) {
 			GRID_COLS.add(new StaticRect(new Vector2(0, (GRID_SQUARE_SIZE * e)), new Vector2(PhysXLibrary.getMapWidth(), GRID_LINE_WIDTH)));
 			program.add(GRID_COLS.get(e).getRect());
-			GRID_COLS.get(e).getRect().setFillColor(Color.LIGHT_GRAY);
+			GRID_COLS.get(e).getRect().setFillColor(PaintToolbox.LIGHTGREY);
 			GRID_COLS.get(e).getRect().setColor(PaintToolbox.TRANSPARENT);
 			GRID_COLS.get(e).getRect().setFilled(true);
 			e++;
