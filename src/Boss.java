@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import acm.graphics.GOval;
 import rotations.GameImage;
 
-public class Boss extends EnemyShip implements ActionListener {
+public class Boss extends EnemyShip {
 
 	private LaserLine laser;
 	private int currentStage = 0;
@@ -16,9 +16,32 @@ public class Boss extends EnemyShip implements ActionListener {
 	private int laserDelay;
 	private int shots;
 	private int shotCount;
-	private final String mainFace = "";
-	private final String leftEyebrow = "";
-	private final String rightEyebrow = "";
+	
+	
+	private GamePaneEvents gamePane_ref;
+	private final String mainFaceFile = "Face.png";
+	private final String mouthFile = "Mouth.png";
+	private final String leftEyebrowFile = "eyebrow_0.png";
+	private final String rightEyebrowFile = "eyebrow_1.png";
+	
+	private GameImage face;
+	private GameImage leftBrow;
+	private GameImage rightBrow;
+	private GameImage mouth;
+	
+	private final Vector2 leftBrowOffset = new Vector2(-20,-10);
+	private final Vector2 rightBrowOffset = new Vector2(30,-10);
+	
+	private final Vector2 browUp = new Vector2(0, 10);
+	private final Vector2 browDown = new Vector2(0, -10);
+	
+	private final Vector2 mouthOffset = new Vector2(7,80);
+	
+	private Vector2 mouthPosition;
+	private boolean isMouthOpen = false;
+	
+	private final Vector2 mouthUp = new Vector2(7,80);
+	private final Vector2 mouthDown = new Vector2(7,95);
 	
 	private final double eyeSize = 20;
 	private final double eyeBlinkSize = 5;
@@ -36,15 +59,79 @@ public class Boss extends EnemyShip implements ActionListener {
 	
 	private Vector2 trackingPosition;
 
-	public Boss(PhysXObject physObj, int current_health, ShipStats stats) {
-		super(physObj, "Enemy_1.png", current_health, stats, 5, EnemyType.BOSS, 0);
+	public Boss(PhysXObject physObj, int current_health, ShipStats stats,GamePaneEvents gamePane_ref) {
+		super(physObj, "Face.png", current_health, stats, 5, EnemyType.BOSS, 0);
 		// TODO Auto-generated constructor stub
-		
+		this.gamePane_ref = gamePane_ref;
+		setupFace();
 		setupEyes();
 	}
 
 	public ArrayList<GameImage> fireLaser(Vector2 origin, Vector2 endPoint) {
 		return laser.updateBeam(origin, endPoint);
+	}
+	
+	private void setupFace() {
+		face = new GameImage(mainFaceFile);
+		leftBrow = new GameImage(leftEyebrowFile);
+		rightBrow = new GameImage(rightEyebrowFile);
+		mouth = new GameImage(mouthFile);
+		
+		face.setLocationRespectSize(physObj.getPosition().getX(), physObj.getPosition().getY());
+		leftBrow.setLocationRespectSize(physObj.getPosition().getX() + leftBrowOffset.getX(), physObj.getPosition().getY() + leftBrowOffset.getY());
+		rightBrow.setLocationRespectSize(physObj.getPosition().getX() + rightBrowOffset.getX(), physObj.getPosition().getY() + rightBrowOffset.getY());
+		mouth.setLocationRespectSize(physObj.getPosition().getX() + mouthOffset.getX(), physObj.getPosition().getY() + mouthOffset.getY());
+		mouthPosition = physObj.getPosition().add(mouthOffset);
+		ArrayList<GameImage> images = new ArrayList<GameImage>();
+		images.add(face);
+		images.add(leftBrow);
+		images.add(rightBrow);
+		images.add(mouth);
+		gamePane_ref.eventRequest_addObjects(images);
+	}
+	
+	private void updateFace() {
+		updatePosition(physObj.getPosition(), face);
+		
+		
+		// Create the new offsets
+		Vector2 newLeftBrowOffset = new Vector2(physObj.getPosition().getX() + leftBrowOffset.getX(), physObj.getPosition().getY() + leftBrowOffset.getY());
+		Vector2 newRightBrowOffset = new Vector2(physObj.getPosition().getX() + rightBrowOffset.getX(), physObj.getPosition().getY() + rightBrowOffset.getY());
+		
+		if(currentEyeState == EyeState.Angry) {
+			newLeftBrowOffset.add(browUp);
+			newRightBrowOffset.add(browUp);
+		} else {
+			newLeftBrowOffset.add(browDown);
+			newLeftBrowOffset.add(browDown);
+		}
+		
+		updatePosition(newLeftBrowOffset, leftBrow);
+		updatePosition(newRightBrowOffset, rightBrow);
+		
+		if(this.isMouthOpen) {
+			mouthPosition = PhysXLibrary.lerpBetweenPoints(mouthPosition, mouthDown.add(this.physObj.getPosition()), .5f);
+		} else {
+			mouthPosition = PhysXLibrary.lerpBetweenPoints(mouthPosition, mouthUp.add(this.physObj.getPosition()), .5f);
+		}
+		updatePosition(mouthPosition, mouth);
+		
+		openMouth();
+		
+		currentEyeState = EyeState.Angry;
+	}
+	
+	public void openMouth() {
+		isMouthOpen = true;
+	}
+	
+	public void closeMouth() {
+		isMouthOpen = false;
+	}
+	
+	private void updatePosition(Vector2 b_pos, GameImage sprite) {
+		Vector2 f_pos = Camera.backendToFrontend(b_pos);
+		sprite.setLocationRespectSize(f_pos.getX(), f_pos.getY());
 	}
 	
 	private void setupEyes() {
@@ -97,8 +184,11 @@ public class Boss extends EnemyShip implements ActionListener {
 			break;
 		case Track:
 			// Track player pos
+			// trackingPosition
 			break;
 		case Angry:
+			
+			currentEyeColor = angryColor;
 			break;
 		default:
 			// Do nothing
@@ -136,48 +226,11 @@ public class Boss extends EnemyShip implements ActionListener {
 
 	@Override
 	public void AIUpdate(Vector2 playerPos) {
-
-		// If the laser is supposed to be active
-		if(count > laserDelay) { 
-
-			if(shotCount > shots) {
-
-				// Blink to a new pos
-				//				blink(playerPos);
-
-				// Reset the counter
-				shotCount = 0;
-
-				// Reset the counter
-				count = 0;
-
-				return;
-			}
-
-			// If the laser is active, Draw
-			if(count < laserDelay + laserDuration) {
-
-				// Re-Draw the laser
-				updateLaser(playerPos);
-			} else {
-
-				// Remove the laser
-				removeLaser();
-
-				// Reset the counter
-				count = 0;
-
-				// Increase the shot count
-				shotCount++;
-			}
-		}
+		
+		updateFace();
+		updateEyes();
 
 		count++;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 	}
 
 	public void increaseStage() {

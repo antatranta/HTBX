@@ -178,9 +178,10 @@ public class DisplayableHUD implements Displayable {
 		boss_tele_pos = console.getBossRoomTrigger().getPhysObj().getPosition();
 		
 		// Offsets of 1 because the border is a single pixel. Needs to be offset by -1, and size +1
-		overlay = new GRect(-1, -1, MainApplication.WINDOW_WIDTH + 1, MainApplication.WINDOW_HEIGHT + 1);
-		overlay.setFillColor(PaintToolbox.setAlpha(PaintToolbox.BLACK, 0));
-		overlay.setFilled(true);
+//		overlay = new GRect(-1, -1, MainApplication.WINDOW_WIDTH + 1, MainApplication.WINDOW_HEIGHT + 1);
+//		overlay.setFillColor(PaintToolbox.setAlpha(PaintToolbox.BLACK, 0));
+//		overlay.setFilled(true);
+		overlay = null;
 	}
 
 	private void scaleStatusBar(GRect bar, double percent) {
@@ -313,14 +314,25 @@ public class DisplayableHUD implements Displayable {
 		
 		// Boss portal
 		double dist = PhysXLibrary.distance(player.getPhysObj().getPosition(), boss_tele_pos);
-		if (dist < TeleportWaypoint.AURORA_DISTANCE && dist > TeleportWaypoint.AURORA_INNER) {
-			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), (int) (255 - (255 * ((dist - TeleportWaypoint.AURORA_INNER) / (TeleportWaypoint.AURORA_DISTANCE - TeleportWaypoint.AURORA_INNER))))));
-		}
-		else if (dist < TeleportWaypoint.AURORA_INNER) {
-			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), 255));
-		}
-		else {
-			overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), 0));
+		if(TeleportWaypoint.calculateOverlay) {
+			if(overlay == null) {
+				overlay = new GRect(-1, -1, MainApplication.WINDOW_WIDTH + 1, MainApplication.WINDOW_HEIGHT + 1);
+				program.add(overlay);
+				overlay.setFillColor(PaintToolbox.setAlpha(PaintToolbox.BLACK, 0));
+				overlay.setFilled(true);
+			}
+			if (dist < TeleportWaypoint.AURORA_DISTANCE && dist > TeleportWaypoint.AURORA_INNER) {
+				overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), (int) (255 - (255 * ((dist - TeleportWaypoint.AURORA_INNER) / (TeleportWaypoint.AURORA_DISTANCE - TeleportWaypoint.AURORA_INNER))))));
+			}
+			else if (dist < TeleportWaypoint.AURORA_INNER) {
+				overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), 255));
+			}
+			else {
+				overlay.setFillColor(PaintToolbox.setAlpha(overlay.getFillColor(), 0));
+			}
+		} else if (overlay != null) {
+			program.remove(overlay);
+			overlay = null;
 		}
 	}
 
@@ -443,7 +455,7 @@ public class DisplayableHUD implements Displayable {
 		program.add(threat_right);
 		program.add(threat_up);
 		program.add(threat_down);
-		program.add(overlay);
+//		program.add(overlay);
 	}
 
 	@Override
@@ -466,6 +478,6 @@ public class DisplayableHUD implements Displayable {
 		program.remove(shield_up);
 		program.remove(sp_label);
 		program.remove(skill_msg);
-		program.remove(overlay);
+//		program.remove(overlay);
 	}
 }

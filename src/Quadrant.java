@@ -24,15 +24,18 @@ public class Quadrant{
 			return;
 		}
 
-		if(ships != null && ships.size() > 0) {
+		if(ships != null && ships.size() > 0 && asteroids != null) {
 			for(Ship A : ships) {
-				for(Asteroid B : asteroids) {
-					if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(),B.getPhysObj())) {
-						if(PhysXLibrary.isCollision(A.getPhysObj(), B.getPhysObj())) {
-	//						A.sendCollisionMessage(B.getCollisionData());
-							
-							if (GameConsole.IS_DEBUGGING) {
-	//							System.out.println("Asteroid Collision!");
+				
+				if(asteroids.size() > 0) {
+					for(Asteroid B : asteroids) {
+						if(PhysXLibrary.areObjectsInCollisionRange(A.getPhysObj(),B.getPhysObj())) {
+							if(PhysXLibrary.isCollision(A.getPhysObj(), B.getPhysObj())) {
+		//						A.sendCollisionMessage(B.getCollisionData());
+								
+								if (GameConsole.IS_DEBUGGING) {
+		//							System.out.println("Asteroid Collision!");
+								}
 							}
 						}
 					}
@@ -100,6 +103,10 @@ public class Quadrant{
 	}
 	
 	public void addEnemyShip(EnemyShip ship) {
+		
+		if(this.ships == null) {
+			this.ships = new ArrayList<EnemyShip>();
+		}
 		this.ships.add(ship);
 	}
 }

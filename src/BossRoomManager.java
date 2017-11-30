@@ -43,18 +43,18 @@ public class BossRoomManager {
 	private static final int ROCK_SHIELD_COUNT = 8;
 	private static final int ROCK_SHIELD_RADIUS = 150;
 	private int bossState_0_Setting = 0;
-	private int bossState_0_Duration = 0;
+	private int bossState_0_Duration = 100;
 	private boolean bossState_0_CountTrigger;
 	
 	
 	// STAGE 1
 	private int bossState_1_Setting = 0;
-	private int bossState_1_Duration = 0;
+	private int bossState_1_Duration = 100;
 	private boolean bossState_1_CountTrigger;
 	
 	// STAGE 2
 	private int bossState_2_Setting = 0;
-	private int bossState_2_Duration = 0;
+	private int bossState_2_Duration = 100;
 	private boolean bossState_2_CountTrigger;
 	
 	public BossRoomManager() {
@@ -110,6 +110,7 @@ public class BossRoomManager {
 			double dist = PhysXLibrary.distance(bossShip.getPhysObj().getPosition(), gameConsole_ref.physXRequest_getPlayerPhysObj().getPosition());
 			if (dist < ACTIVATION_DISTANCE) {
 				started = true;
+				System.out.println("Fight started!");
 			}
 		}
 		else if (started) {
@@ -146,6 +147,7 @@ public class BossRoomManager {
 		switch(currentState) {
 
 		case -1:			// Ready
+			state += 1;
 			break;
 		case 0:			// State 0
 			state += testState(bossState_0_Setting, bossState_0_Duration, bossState_0_CountTrigger);
@@ -238,7 +240,7 @@ public class BossRoomManager {
 		for (int i = 0; i < ROCK_SHIELD_COUNT; i++) {
 			double x = Math.cos(Math.toRadians(ang));
 			double y = Math.sin(Math.toRadians(ang));
-			PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()), new Vector2((float)(x * ROCK_SHIELD_RADIUS), (float)(y * ROCK_SHIELD_RADIUS)), new CircleCollider(30));
+			PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),bossShip.getPhysObj().getPosition().add( new Vector2((float)(x * ROCK_SHIELD_RADIUS), (float)(y * ROCK_SHIELD_RADIUS))), new CircleCollider(30));
 			ShipStats ss = ShipStats.EnemyStats_RockShield();
 			AsteroidEnemy rock = new AsteroidEnemy(po, "Asteroid_0.png", ss.getHealthMax(), ss,
 					0, EnemyType.ROCK_SHIELD, ang, ROCK_SHIELD_RADIUS);
