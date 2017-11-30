@@ -37,8 +37,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	//Score
 	private int score=0;
 	private int enemiesKilled=0;
-	private final int scorePerEnemy=100;
-	private final int scorePerDamage = 50;
+	private static final int scorePerEnemy = 100;
+	private static final int scorePerDamage = 25;
 
 	public GameConsole() {
 		endDebugView();
