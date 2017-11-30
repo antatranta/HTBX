@@ -98,4 +98,8 @@ public class Quadrant{
 	public void setBanshes(ArrayList<Banshe> banshes) {
 		this.ships.addAll(banshes);
 	}
+	
+	public void addEnemyShip(EnemyShip ship) {
+		this.ships.add(ship);
+	}
 }

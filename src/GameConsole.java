@@ -361,6 +361,9 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		physx.addQuadrants(mapCreator.createBossRoom());
 		
 		//TODO: STUB
+		if(physx.getQuadrants() != null && physx.getQuadrants().size() > 0) {
+			physx.getQuadrants().get(0).addEnemyShip(/*BOSS*/ new Boss(new PhysXObject(), 100, ShipStats.EnemyStats_01()));
+		}
 	}
 	
 	public void SetScore() {
