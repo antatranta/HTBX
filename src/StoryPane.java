@@ -29,7 +29,6 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 
 	@Override
 	public void showContents() {
-		startFadingLabel();
 
 		switch(switchStory % 3) {
 		case 1:
@@ -49,6 +48,7 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 		program.add(blackBG);
 		program.add(story);
 		program.add(clickToContinue());
+		startFadingLabel();
 	}
 
 	@Override
