@@ -76,14 +76,6 @@ public class MainApplication extends GraphicsApplication {
 		return fromMenu;
 	}
 
-	public void pauseGameTimer() {
-		gameTimer.stopTimer();
-	}
-
-	public void startGameTimer() {
-		gameTimer.startTimer();
-	}
-
 	public void switchToMenu() {
 		story = new StoryPane(this);
 		fromMenu = true;

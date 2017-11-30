@@ -12,6 +12,7 @@ public class CreditsPane extends GraphicsPane {
 	
 	public CreditsPane(MainApplication app) {
 		program = app;
+		program.removeAll();
 		
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -19,27 +20,26 @@ public class CreditsPane extends GraphicsPane {
 			public void run() {
 				program.switchToMenu();
 			}
-		}, 90000);
-		timer.purge();
+		}, 10000);
 	}
 	
 	@Override
 	public void showContents() {
-		program.add(whiteBG());
 		//program.add(creditVideo);
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				program.add(clickToContinue());
-				startFadingLabel();
 			}
-		}, 30000);
+		}, 5000);
+		startFadingLabel();
 	}
 	
 	@Override
 	public void hideContents() {
-		program.remove(whiteBG());
-		program.remove(clickToContinue());
+		timer.cancel();
+		timer.purge();
+		program.removeAll();
 		stopFadingLabel();
 		//program.remove(creditVideo);
 	}

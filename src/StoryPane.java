@@ -26,6 +26,10 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 		blackBG.setFilled(true);
 		blackBG.setColor(Color.black);
 	}
+	
+	public void setSwitchStory(int num) {
+		switchStory = num;
+	}
 
 	@Override
 	public void showContents() {
@@ -56,12 +60,11 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 		program.remove(blackBG);
 		program.remove(story);
 		program.remove(clickToContinue());
-		
 		stopFadingLabel();
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		if(program.lookedAtControls()) {
 			program.switchToGame();
 		}
