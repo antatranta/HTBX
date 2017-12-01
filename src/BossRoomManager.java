@@ -257,6 +257,9 @@ public class BossRoomManager {
 				this.bullet_emitter.reverseDirection();
 			}
 			this.bossState_0_emitter_time -= 1;
+			if (bossState_0_barriers_left == 0) {
+				// TODO: ADVANCE STAGE HERE
+			}
 		}
 	}
 	
@@ -288,7 +291,7 @@ public class BossRoomManager {
 	}
 	
 	private void state_1() {
-		
+
 	}
 	
 	private void state_2() {
