@@ -44,7 +44,11 @@ public class BossRoomManager {
 	private static final int BARRIER_SHIELD_RADIUS = 300;
 	private static final double BARRIER_SHIELD_SPEED = 0.5;
 	private int bossState_0_barriers_left = -1;
+	private boolean bossState_0_emitter_made = false;
+	private int bossState_0_emitter_reverse_cap = 600;
 	private int bossState_0_emitter_time = 0;
+	private BulletEmitter bullet_emitter = null;
+	
 	private int bossState_0_Setting = 0;
 	private int bossState_0_Duration = 100;
 	private boolean bossState_0_CountTrigger;
@@ -234,9 +238,9 @@ public class BossRoomManager {
 			init_state_0();
 		}
 		else {
-			if (this.bossState_0_emitter_time == 0) {
-				this.bossState_0_emitter_time = 360;
-				double delta = 0.5;
+			if (!bossState_0_emitter_made) {
+				bossState_0_emitter_made = true;
+				double delta = 0.2;
 				PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),
 						new Vector2(bossShip.getPhysObj().getPosition()),
 						new CircleCollider(0));
@@ -246,8 +250,13 @@ public class BossRoomManager {
 				be.addSubscriber(gameConsole_ref.programRequest_getBulletManager());
 				be.HAX_setInfiniteBullets(true);
 				gameConsole_ref.programRequest_makeEnemy(be);
-
+				this.bullet_emitter = be;
 			}
+			if (bossState_0_emitter_time == 0) {
+				this.bossState_0_emitter_time = bossState_0_emitter_reverse_cap;
+				this.bullet_emitter.reverseDirection();
+			}
+			this.bossState_0_emitter_time -= 1;
 		}
 	}
 	

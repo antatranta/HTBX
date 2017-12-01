@@ -14,6 +14,7 @@ public class BulletEmitter extends EnemyShip {
 	private boolean damageable;
 	private double angle_delta;
 	private boolean infinite_bullets = false;
+	private int neg = 1;
 
 	//private ArrayList<ShipTriggers> subscribers;
 
@@ -92,14 +93,13 @@ public class BulletEmitter extends EnemyShip {
 			BulletFireEventData bfe = new BulletFireEventData(1, bullet_spd, bullet_style, CollisionType.enemy_bullet, bullet_time, po, bullet_sprite, currentTarget, FXManager.colorParticle(PaintToolbox.RED));
 	
 			if (behavior != BulletEmitterBehavior.SHOOT_TARGET) {
-//				for (int i = -1; i < 2; i += 2) {
+				neg *= (-1);
 					double unit_x = Math.cos(Math.toRadians(dir));
 					double unit_y = Math.sin(Math.toRadians(dir));
-					Vector2 w = new Vector2((float)(physObj.getPosition().getX() + unit_x),
-							(float)(physObj.getPosition().getY() + unit_y));
+					Vector2 w = new Vector2((float)(physObj.getPosition().getX() + unit_x * neg),
+							(float)(physObj.getPosition().getY() + unit_y * neg));
 					bfe.setMovementVector(w);
 					shoot(bfe);
-//				}
 			}
 			else {
 				bfe.setSpeed(6);
@@ -129,6 +129,15 @@ public class BulletEmitter extends EnemyShip {
 		}
 		else if (dir < 360) {
 			dir -= 360;
+		}
+	}
+	
+	public void reverseDirection() {
+		if (this.behavior == BulletEmitterBehavior.SHOOT_COUNTER_CLOCKWISE) {
+			behavior = BulletEmitterBehavior.SHOOT_CLOCKWISE;
+		}
+		else {
+			behavior = BulletEmitterBehavior.SHOOT_COUNTER_CLOCKWISE;
 		}
 	}
 	
