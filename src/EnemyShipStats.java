@@ -36,22 +36,7 @@ public class EnemyShipStats extends ShipStats {
 	}
 
 	public float getStoppingDistance() {
-		switch(this.aggression) {
-		case 0:
-			return 275f;
-		case 1:
-			return 250f;
-		case 2:
-			return 225f;
-		case 3:
-			return 200f;
-		case 4:
-			return 150f;
-		case 5:
-			return 100f;
-		default:
-			return 50f;
-		}
+		return 500f;
 	}
 
 	public float getInteractionDistance() {

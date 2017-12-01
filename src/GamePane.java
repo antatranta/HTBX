@@ -526,7 +526,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 				drawStaticRect(DEBUGGING_ROWS, DEBUGGING_LINES);
 				drawStaticRect(DEBUGGING_COLS, DEBUGGING_LINES);
-				
 
 				if (!DRAWING_LOCK) {
 					try {

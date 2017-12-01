@@ -387,7 +387,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		boss_obj.setPosition(pos);
 		
 		// Create the boss
-		Boss bossShip = new Boss(boss_obj, 100, ShipStats.EnemyStats_01(), this.gamePane_ref);
+		Boss bossShip = new Boss(boss_obj, ShipStats.EnemyStats_Boss().getHealthMax(), ShipStats.EnemyStats_Boss(), this.gamePane_ref);
 		bossShip.addGameConsole(this);
 		
 		// Add to PhysX
@@ -415,6 +415,11 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 			}
 		}
 
+	}
+	
+	@Override
+	public BulletManager programRequest_getBulletManager() {
+		return this.bulletStore;
 	}
 	
 	public void SetScore() {
