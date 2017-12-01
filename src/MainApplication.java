@@ -16,6 +16,7 @@ public class MainApplication extends GraphicsApplication {
 	private ControlsPane control;
 	private PausePane pause;
 	private GameOverPane gameOver;
+	private CreditsPane credits;
 	private GameConsole console;
 	private GameTimer gameTimer;
 	private AudioPlayer audio;
@@ -54,6 +55,10 @@ public class MainApplication extends GraphicsApplication {
 	public void setLookedAtControls(boolean looked) {
 		lookedAtControls = looked;
 	}
+	
+	public void setPaused(boolean paused) {
+		isPaused = paused;
+	}
 
 	public boolean getSfxToggle() {
 		return sfxToggle;
@@ -75,14 +80,6 @@ public class MainApplication extends GraphicsApplication {
 		return fromMenu;
 	}
 
-	public void pauseGameTimer() {
-		gameTimer.stopTimer();
-	}
-
-	public void startGameTimer() {
-		gameTimer.startTimer();
-	}
-
 	public void switchToMenu() {
 		story = new StoryPane(this);
 		fromMenu = true;
@@ -90,6 +87,8 @@ public class MainApplication extends GraphicsApplication {
 
 		//audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
+			audio.stopSound("sounds", "bensound-ofeliasdream.mp3");
+			audio.stopSound("sounds", "bensound-sadday.mp3");
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
 			audio.updatePlayer();
 		}
@@ -127,12 +126,25 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void switchToGameOver() {
-		gameOver = new GameOverPane(this);
 		gameTimer.stopTimer();
-		isPaused = false;
+		gameOver = new GameOverPane(this);
 		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
-		audio.stopSound("sounds", "Stone_1.mp3");
+		if(musicToggle) {
+			audio.stopSound("sounds", "Stone_1.mp3");
+			audio.playSound("sounds", "bensound-ofeliasdream.mp3", true);
+		}
 		switchToScreen(gameOver);
+	}
+	
+	public void switchToCredits() {
+		gameTimer.stopTimer();
+		credits = new CreditsPane(this);
+		
+		if(musicToggle) {
+			audio.stopSound("sounds", "Stone_1.mp3");
+			audio.playSound("sounds", "bensound-sadday.mp3");
+		}
+		switchToScreen(credits);
 	}
 
 	public void switchToSettings() {
@@ -150,6 +162,7 @@ public class MainApplication extends GraphicsApplication {
 
 	public void switchToPause() {
 		isPaused = true;
+		fromMenu = true;
 
 		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
 		audio.stopSound("sounds", "Stone_1.mp3");

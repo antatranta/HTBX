@@ -394,6 +394,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			program.switchToGameOver();
 		}
 		
+		if(console.getEnemiesKilled() == 1) {
+			program.switchToStory();
+			console.progressStory();
+		}
+		
 		// Reset death events
 		if(deathEvents.size() > 1) {
 			deathEvents = new ArrayList<ShipDeathData>();
@@ -1055,6 +1060,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		else if(key == KeyEvent.VK_P) {
 			player.setCurrentHealth(1);
+		}
+		else if(key == KeyEvent.VK_SEMICOLON) {
+			program.switchToCredits();
 		}
 	}
 

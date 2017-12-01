@@ -40,6 +40,9 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private int enemiesKilled=0;
 	private static final int scorePerEnemy = 100;
 	private static final int scorePerDamage = 25;
+	
+	//For story
+	private int storyProgression = enemiesKilled;
 
 	public GameConsole() {
 		endDebugView();
@@ -96,6 +99,14 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
 		System.out.println("Made a new game console");
 
+	}
+	
+	public void progressStory() {
+		storyProgression++;
+	}
+	
+	public int getEnemiesKilled() {
+		return storyProgression;
 	}
 	
 	public TeleportWaypoint getBossRoomTrigger() {
@@ -231,6 +242,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public void onShipDeath(Vector2 pos, int ship_exp) {
 		calculateNeededExp();
 		enemiesKilled++;
+		storyProgression = enemiesKilled;
 		exp += ship_exp;
 		if (exp >= next_level) {
 			exp -= next_level;

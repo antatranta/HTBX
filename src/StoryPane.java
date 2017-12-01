@@ -26,18 +26,23 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 		blackBG.setFilled(true);
 		blackBG.setColor(Color.black);
 	}
+	
+	public void setSwitchStory(int num) {
+		switchStory = num;
+	}
 
 	@Override
 	public void showContents() {
-		startFadingLabel();
 
 		switch(switchStory % 3) {
 		case 1:
 			story.setImage("Story_2.png");
+			program.setPaused(true);
 			break;
 
 		case 2:
 			story.setImage("Story_3.png");
+			program.setPaused(true);
 			break;
 
 		default:
@@ -49,6 +54,7 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 		program.add(blackBG);
 		program.add(story);
 		program.add(clickToContinue());
+		startFadingLabel();
 	}
 
 	@Override
@@ -56,12 +62,11 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 		program.remove(blackBG);
 		program.remove(story);
 		program.remove(clickToContinue());
-		
 		stopFadingLabel();
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		if(program.lookedAtControls()) {
 			program.switchToGame();
 		}
