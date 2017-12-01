@@ -64,9 +64,11 @@ public class ShipStats {
 		case 1:
 			return 6f;
 		case 2:
-			return 7f;
-		case 3:
 			return 8f;
+		case 3:
+			return 10f;
+		case 4:
+			return 15f;
 		default:
 			return 7;
 		}
