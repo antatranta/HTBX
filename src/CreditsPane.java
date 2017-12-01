@@ -14,18 +14,21 @@ public class CreditsPane extends GraphicsPane {
 		program = app;
 		program.removeAll();
 		
+		creditVideo = new GImage("Credits.gif", 0, 0);
+		creditVideo.setLocation(CENTER_WIDTH - creditVideo.getWidth() / 2, CENTER_HEIGHT - creditVideo.getHeight() / 2);
+		
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				program.switchToMenu();
 			}
-		}, 90000);
+		}, 93500);
 	}
 	
 	@Override
 	public void showContents() {
-		//program.add(creditVideo);
+		program.add(creditVideo);
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -41,7 +44,6 @@ public class CreditsPane extends GraphicsPane {
 		timer.purge();
 		program.removeAll();
 		stopFadingLabel();
-		//program.remove(creditVideo);
 	}
 	
 	@Override
