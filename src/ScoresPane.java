@@ -41,7 +41,7 @@ public class ScoresPane extends GraphicsPane {
 		int j = 0;
 		int k = 1;
 		for(int i = 0; i < scores.size(); i++) {
-			if(i > 5) {
+			if(i >= 5) {
 				break;
 			}
 			
