@@ -15,4 +15,4 @@ W - Move forward.
 <br /> Right Mouse Button (RMB) - Teleport at cursor.
 
 # Credits
-![HTBX Credits](https://i.imgur.com/1zMuU44.gif "Credits")
+https://i.imgur.com/1zMuU44.gif
