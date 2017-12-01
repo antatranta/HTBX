@@ -48,7 +48,7 @@ public class BossBarrier extends EnemyShip {
 		PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
 		BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet,
 				(float) 5, po, "RedCircle.png", player_pos, FXManager.colorParticle(PaintToolbox.RED));
-		shootSpread(bfe, 7, 90);
+		shootSpread(bfe, 9, 180);
 		super.destroyShip();
 		manager_ref.stage0_decrementBarriers();
 	}

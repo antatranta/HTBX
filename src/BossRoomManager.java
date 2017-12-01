@@ -258,6 +258,7 @@ public class BossRoomManager {
 			}
 			this.bossState_0_emitter_time -= 1;
 			if (bossState_0_barriers_left == 0) {
+				System.out.println("No more barriers");
 				// TODO: ADVANCE STAGE HERE
 			}
 		}
