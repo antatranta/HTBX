@@ -449,12 +449,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public void setShips(ArrayList<Ship> ships) {
 		this.ships = ships;
 	}
-	
-	public void setShipsSFX(boolean set) {
-		for( Ship s : ships) {
-			s.setSfxToggle(set);
-		}
-	}
+
 }
 
 

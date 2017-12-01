@@ -16,7 +16,6 @@ public class Ship extends Entity {
 
 	private float dx = 0;// 1 to right, -1 to left.
 	private float dy = 0;// 1 to up, -1 to down.
-	private boolean sfxToggle; // get sfx toggle from main application.
 
 	public Ship(PhysXObject physObj, int current_health, ShipStats stats, String sprite, CollisionType shipType, int exp) {
 		super(physObj, sprite, new CollisionData(1, shipType));
@@ -26,7 +25,6 @@ public class Ship extends Entity {
 		this.stats = stats;
 		this.subscribers = new ArrayList<ShipTriggers>();
 		this.exp_value = exp;
-		this.sfxToggle = true;
 	}
 
 	public void identifySubscribers() {
@@ -200,14 +198,6 @@ public class Ship extends Entity {
 
 	public void addLaserManager(LaserManagerEvents sub) {
 		laserManagerSubscriber = sub;
-	}
-	
-	public boolean isSfxToggle() {
-		return sfxToggle;
-	}
-
-	public void setSfxToggle(boolean sfxToggle) {
-		this.sfxToggle = sfxToggle;
 	}
 
 }
