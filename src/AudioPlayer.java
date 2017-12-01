@@ -22,10 +22,15 @@ import javafx.util.Duration;
 public class AudioPlayer {
 	private HashMap<String, MediaPlayer> players;
 	private static AudioPlayer somePlayer;
+	
+	private static boolean playSFX;
+	private static boolean playSounds;
 
 	private AudioPlayer() {
 		final JFXPanel fxPanel = new JFXPanel();
 		players = new HashMap<String, MediaPlayer>();
+		playSFX = true;
+		playSounds = true;
 	}
 
 	/**
@@ -52,8 +57,8 @@ public class AudioPlayer {
 	 * @param filename
 	 *            filename for the sound, make sure to include the extension
 	 */
-	public void playSound(String folder, String filename) {
-		playSound(folder, filename, false);
+	public void playSound(String folder, String filename, SoundType type) {
+		playSound(folder, filename, false, type);
 	}
 
 	/**
@@ -67,7 +72,18 @@ public class AudioPlayer {
 	 * @param shouldLoop
 	 *            true will loop the sound.
 	 */
-	public void playSound(String folder, String filename, boolean shouldLoop) {
+	public void playSound(String folder, String filename, boolean shouldLoop, SoundType type) {
+		
+		// Can we play SFX?
+		if(type == SoundType.SFX && !playSFX) {
+			return;
+		}
+		
+		// Can we play normal sounds?
+		if(type == SoundType.Music && !playSounds) {
+			return;
+		}
+		
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -172,19 +188,35 @@ public class AudioPlayer {
 	}
 	
 	public void updatePlayer() {
+		garbageCollection();
+	}
+	
+	private void garbageCollection() {
 
-		/*
-		for(String key : playKeys) {
-			if(players.containsKey(key) && players.get(key).getStatus() == MediaPlayer.Status.READY) {
-
-				// Play the audio
-				players.get(key).play();
+		// Find stopped players
+		ArrayList<String> keysToRemove = new ArrayList<String>();
+		for(String key : players.keySet()) {
+			if(players.get(key).getStatus() == MediaPlayer.Status.STOPPED) {
+				keysToRemove.add(key);
 			}
 		}
 
-		playKeys = new ArrayList<String>();
+		// Remove the associated players
+		for(String key : keysToRemove) {
+			if(players.containsKey(key)) {
 
-		garbageCollection();
-		 */
+				// Not sure if necessary
+				players.put(key, null);
+
+				// Remove
+				players.remove(key);
+			}
+		}
+		if(keysToRemove.size() > 0)
+			System.out.println("Removed " + keysToRemove.size() + " Audio Player(s).");
+	}
+
+	public void sfxToggle(boolean toggle) {
+		playSFX = toggle;
 	}
 }

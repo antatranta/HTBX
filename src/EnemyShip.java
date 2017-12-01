@@ -10,7 +10,6 @@ public class EnemyShip extends Ship {
 	private int auto_reset = 0;
 
 	protected Vector2 currentTarget = new Vector2(-99, -99);
-	private AudioPlayer myAudio;
 	
 	public EnemyShip(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression,
 			EnemyType type, int exp) {
@@ -18,7 +17,6 @@ public class EnemyShip extends Ship {
 		this.stats = new EnemyShipStats(stats, aggression, type);
 		this.weapon_cd = 60;
 		this.type = type;
-		myAudio = AudioPlayer.getInstance();
 	}
 
 	public EnemyType getEnemyType() {
@@ -107,9 +105,7 @@ public class EnemyShip extends Ship {
 		// TEMPORARY solution to "kill" enemies
 		physObj.setPosition(new Vector2(-1000, -1000));
 		sprite.rotate(0);
-		if(this.isSfxToggle()) {
-			playDeathSound();
-		}
+		playDeathSound();
 	}
 
 	@Override
@@ -120,8 +116,8 @@ public class EnemyShip extends Ship {
 	
 	@Override
 	protected void playDeathSound() {
-//		AudioPlayer myAudio = AudioPlayer.getInstance();
-		myAudio.playSound("sounds", "Gun_Fire.wav");
+		AudioPlayer myAudio = AudioPlayer.getInstance();
+		myAudio.playSound("sounds", "Gun_Fire.wav", SoundType.SFX);
 	}
 	
 	// Thanks Wenrui
@@ -148,9 +144,5 @@ public class EnemyShip extends Ship {
 		if (data.getType() == CollisionType.asteroid || data.getType() == CollisionType.player_bullet) {
 			takeDamage(data.getDamage());
 		}
-	}
-	
-	public boolean getSfxToggle() {
-		return this.isSfxToggle();
 	}
 }
