@@ -86,7 +86,7 @@ public class BulletEmitterData {
 	// REFILL: Add a value to the current value
 	
 	public void addIndex(int ind, int amnt) {
-		if (ind > TOTAL_TYPES) {
+		if (ind >= TOTAL_TYPES) {
 			System.out.println("[WARNING] Attempt to index more than TOTAL_TYPES in BulletEmitterData");
 			return;
 		}
@@ -116,7 +116,7 @@ public class BulletEmitterData {
 	// GET: Return the values of that bullet type
 	
 	public int getIndex(int ind) {
-		if (ind > TOTAL_TYPES) {
+		if (ind >= TOTAL_TYPES) {
 			System.out.println("[WARNING] Attempt to index more than TOTAL_TYPES in BulletEmitterData");
 			return 0;
 		}

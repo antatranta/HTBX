@@ -43,7 +43,8 @@ public class BossRoomManager {
 	private static final int BARRIER_SHIELD_COUNT = 16;
 	private static final int BARRIER_SHIELD_RADIUS = 300;
 	private static final double BARRIER_SHIELD_SPEED = 0.5;
-	private int barriers_left = -1;
+	private int bossState_0_barriers_left = -1;
+	private int bossState_0_emitter_time = 0;
 	private int bossState_0_Setting = 0;
 	private int bossState_0_Duration = 100;
 	private boolean bossState_0_CountTrigger;
@@ -232,24 +233,38 @@ public class BossRoomManager {
 			started_0 = true;
 			init_state_0();
 		}
+		else {
+			if (this.bossState_0_emitter_time == 0) {
+				this.bossState_0_emitter_time = 360;
+				
+				PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),
+						new Vector2(bossShip.getPhysObj().getPosition().add(new Vector2(500, 0))),
+						new CircleCollider(0));
+				BulletEmitterData bed = new BulletEmitterData(1000, 0, 0, 0, 0);
+				BulletEmitter be = new BulletEmitter(po, "BulletEmitter.png", ShipStats.bossBulletEmitter_0(),
+						bed, BulletEmitterBehavior.SHOOT_CLOCKWISE , 1, BulletType.STRAIGHT, true);
+				gameConsole_ref.programRequest_makeEnemy(be);
+				be.addSubscriber(gameConsole_ref.programRequest_getBulletManager());
+			}
+		}
 	}
 	
 	// Decrement the barriers
 	public void stage0_decrementBarriers() {
-		this.barriers_left -= 1;
+		this.bossState_0_barriers_left -= 1;
 	}
 	
 	// Initialize stage 0
  	private void init_state_0() {
  		double delta = 360 / BARRIER_SHIELD_COUNT;
  		double ang = 0;
- 		this.barriers_left = 0;
+ 		this.bossState_0_barriers_left = 0;
 		for (int i = 0; i <= BARRIER_SHIELD_COUNT; i++) {
-			this.barriers_left += 1;
+			this.bossState_0_barriers_left += 1;
 			double x = Math.cos(Math.toRadians(ang));
 			double y = Math.sin(Math.toRadians(ang));
 			PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()), new Vector2(bossShip.getPhysObj().getPosition().add( new Vector2((float)(x * BARRIER_SHIELD_RADIUS), (float)(y * BARRIER_SHIELD_RADIUS)))), new CircleCollider(25));
-			ShipStats ss = ShipStats.EnemyStats_RockShield();
+			ShipStats ss = ShipStats.EnemyStats_BossBarrier();
 			BossBarrier rock = new BossBarrier(po, "Boss_Barrier_Small.png", ss.getHealthMax(), ss,
 					0, EnemyType.BARRIER, ang, BARRIER_SHIELD_RADIUS, bossShip.getPhysObj().getPosition());
 			rock.addGameConsole(gameConsole_ref);

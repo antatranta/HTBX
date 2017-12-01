@@ -15,7 +15,9 @@ public class BulletEmitter extends EnemyShip {
 
 	private ArrayList<ShipTriggers> subscribers;
 
-	public BulletEmitter(PhysXObject obj, String sprite, ShipStats stats, BulletEmitterData bullet_data, BulletEmitterBehavior beh, double delta, BulletType type, boolean can_hurt) {
+	public BulletEmitter(PhysXObject obj, String sprite, ShipStats stats,
+			BulletEmitterData bullet_data, BulletEmitterBehavior beh, double delta, 
+			BulletType type, boolean can_hurt) {
 		super(obj, sprite, stats.getHealthMax(), stats, 0, EnemyType.EMITTER, 0);
 		// Emitter does not need aggression, nor EXP value.
 		this.bank = bullet_data;
@@ -69,7 +71,7 @@ public class BulletEmitter extends EnemyShip {
 		// CHECK IF THE PRIORITIZED BULLETS ARE USED UP
 		int p_size = bank.getPriorities().length;
 		for (int i = 0; i < p_size; i++) {
-			int b_type = bank.getIndex(bank.getPriorities()[i]);
+			int b_type = bank.getPriorities()[i];
 			if (b_type < current_index && bank.getIndex(i) > 0) {
 				current_index = b_type;
 			}
@@ -81,12 +83,13 @@ public class BulletEmitter extends EnemyShip {
 		BulletFireEventData bfe = new BulletFireEventData(1, bullet_spd, bullet_style, CollisionType.enemy_bullet, bullet_time, po, bullet_sprite, currentTarget, FXManager.colorParticle(PaintToolbox.RED));
 
 		if (behavior != BulletEmitterBehavior.SHOOT_TARGET) {
-			for (int i = 0; i < 1; i++) {
+			for (int i = 0; i <= 1; i++) {
 				int neg = (-1) ^ i;
 				double unit_x = Math.cos(Math.toRadians(dir)) * neg;
 				double unit_y = Math.sin(Math.toRadians(dir)) * neg;
-				currentTarget = new Vector2((float)(physObj.getPosition().getX() + unit_x), (float)(physObj.getPosition().getY() + unit_y));
-				bfe.setMovementVector(currentTarget);
+				Vector2 w = new Vector2((float)(physObj.getPosition().getX() + unit_x),
+						(float)(physObj.getPosition().getY() + unit_y));
+				bfe.setMovementVector(w);
 				shoot(bfe);
 			}
 		}

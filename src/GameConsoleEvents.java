@@ -19,4 +19,5 @@ public interface GameConsoleEvents {
 	public void UIRequest_addThreat(Vector2 pos);
 	void programRequest_makeBossRoom();
 	public <Enemy extends EnemyShip> void programRequest_makeEnemy(Enemy enemy);
+	public BulletManager programRequest_getBulletManager();
 }

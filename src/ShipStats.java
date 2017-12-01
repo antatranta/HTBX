@@ -17,6 +17,10 @@ public class ShipStats {
 		return new ShipStats(1, 3, base_hp, 1);
 	}
 
+	public static ShipStats EnemyStats_Boss() {
+		return new ShipStats(0, 0, 100000, 0);
+	}
+	
 	public static ShipStats EnemyStats_01() {
 		return new ShipStats(1, 1, 120, 0);
 	}
@@ -41,8 +45,8 @@ public class ShipStats {
 		return new ShipStats(5, 1, 30, 0);
 	}
 	
-	public static ShipStats EnemyStats_RockShield() {
-		return new ShipStats(0, 0, 100, 0);
+	public static ShipStats EnemyStats_BossBarrier() {
+		return new ShipStats(0, 0, 200, 0);
 	}
 
 	public float getTurningSpeed() {
