@@ -20,7 +20,7 @@ public class CreditsPane extends GraphicsPane {
 			public void run() {
 				program.switchToMenu();
 			}
-		}, 10000);
+		}, 90000);
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class CreditsPane extends GraphicsPane {
 			public void run() {
 				program.add(clickToContinue());
 			}
-		}, 5000);
+		}, 30000);
 		startFadingLabel();
 	}
 	
@@ -45,7 +45,7 @@ public class CreditsPane extends GraphicsPane {
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		program.switchToMenu();
 	}
 }
