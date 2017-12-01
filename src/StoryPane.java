@@ -49,7 +49,6 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 			break;				
 		}
 		story.setLocation(CENTER_WIDTH - (story.getWidth() / 2), CENTER_HEIGHT - (story.getHeight() / 2));
-		switchStory++;
 
 		program.add(blackBG);
 		program.add(story);
@@ -67,7 +66,10 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(program.lookedAtControls()) {
+		if(switchStory % 3 == 2) {
+			program.switchToCredits();
+		}
+		else if(program.lookedAtControls()) {
 			program.switchToGame();
 		}
 		else {

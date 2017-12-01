@@ -97,6 +97,10 @@ public class MainApplication extends GraphicsApplication {
 		switchToScreen(menu);
 	}
 
+	public void setStory(int num) {
+		story.setSwitchStory(num);
+	}
+	
 	public void switchToStory() {
 		fromMenu = false;
 		if(gameTimer != null) {
@@ -117,6 +121,8 @@ public class MainApplication extends GraphicsApplication {
 		}
 
 		if(musicToggle) {
+			audio.stopSound("sounds", "bensound-ofeliasdream.mp3");
+			audio.stopSound("sounds", "bensound-sadday.mp3");
 			audio.stopSound("sounds", "3A1W - Menu.wav");
 			//			audio.playSound("sounds", "01 Misconection_1.mp3", true);
 			audio.playSound("sounds", "Stone_1.mp3", true);

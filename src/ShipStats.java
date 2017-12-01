@@ -18,7 +18,7 @@ public class ShipStats {
 	}
 
 	public static ShipStats EnemyStats_Boss() {
-		return new ShipStats(0, 0, 100000, 0);
+		return new ShipStats(0, 0, 10, 0);
 	}
 	
 	public static ShipStats EnemyStats_01() {
