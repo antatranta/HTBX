@@ -21,9 +21,9 @@ public class CreditsPane extends GraphicsPane {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				program.switchToMenu();
+				program.switchToGameOver();
 			}
-		}, 93500);
+		}, 94500);
 	}
 	
 	@Override
@@ -48,6 +48,6 @@ public class CreditsPane extends GraphicsPane {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		program.switchToMenu();
+		program.switchToGameOver();
 	}
 }

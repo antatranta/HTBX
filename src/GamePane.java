@@ -174,7 +174,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		tracking_offset = new Vector2(0, 0);
 
-		for(int i =0; i < PhysXLibrary.MAP_WIDTH; ++i) {
+		for(int i = 0; i < PhysXLibrary.MAP_WIDTH; ++i) {
 			DEBUGGING_ROWS.add(new StaticRect(new Vector2((PhysXLibrary.QUADRANT_WIDTH * i), 0), new Vector2(5, PhysXLibrary.getMapHeight())));
 			program.add(DEBUGGING_ROWS.get(i).getRect());
 			DEBUGGING_ROWS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
@@ -182,7 +182,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			DEBUGGING_ROWS.get(i).getRect().setFilled(true);
 		}
 
-		for(int i =0; i < PhysXLibrary.MAP_HEIGHT; ++i) {
+		for(int i = 0; i < PhysXLibrary.MAP_HEIGHT; ++i) {
 			DEBUGGING_COLS.add(new StaticRect(new Vector2(0, (PhysXLibrary.QUADRANT_HEIGHT * i)), new Vector2(PhysXLibrary.getMapWidth(), 5)));
 			program.add(DEBUGGING_COLS.get(i).getRect());
 			DEBUGGING_COLS.get(i).getRect().setFillColor(Color.LIGHT_GRAY);
@@ -394,7 +394,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			program.switchToGameOver();
 		}
 		
-		if(console.getEnemiesKilled() == 5) {
+		if(console.getEnemiesKilled() == 1) {
+			pressed_keys.removeAll(pressed_keys);
 			program.setStory(1);
 			program.switchToStory();
 			console.progressStory();
@@ -476,6 +477,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			switch(boss.getEnemyType()) {
 				case BOSS:
 					if(boss.getCurrentHealth() == 0) {
+						pressed_keys.removeAll(pressed_keys);
 						program.setStory(2);
 						program.switchToStory();
 					}
@@ -1156,4 +1158,13 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		HUD.updateThreats(dir);
 	}
 
+	public void request_HUDtoDrawBossHP(int hp, int max) {
+		this.HUD.drawBossHPBar(hp, max);
+	}
+
+	@Override
+	public void tell_HUDBossIsActive(boolean tr) {
+		this.HUD.setBoss(tr);
+		
+	}
 }

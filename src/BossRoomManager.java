@@ -4,10 +4,12 @@ import rotations.GameImage;
 
 public class BossRoomManager {
 	
+	// That's a lot of damage!
+	private static final int TONS_OF_DAMAGE = 1000000;
 	private static final double ACTIVATION_DISTANCE = 2000;
 	
 	private Boss bossShip;
-	private int currentStage = 0;
+	private int currentStage = -1;
 	private ArrayList<BulletEmitter> bulletEmitters;
 	private String bulletEmitterSprite = "";
 	
@@ -19,6 +21,7 @@ public class BossRoomManager {
 	// - - - - - - - - - - - - - 
 	// - - - - - TIMING - - - - -
 	// - - - - - - - - - - - - - 
+	
 	private int count = 0;
 	private int stateCount = 0;
 	private int currentState = -1;
@@ -44,69 +47,23 @@ public class BossRoomManager {
 	private static final int BARRIER_SHIELD_RADIUS = 200;
 	private static final double BARRIER_SHIELD_SPEED = 0.75;
 	
-	private int bossState_0_barriers_left = -1;
-	private boolean bossState_0_emitter_made = false;
-	private int bossState_0_emitter_reverse_cap = 600;
-	private int bossState_0_emitter_time = 0;
-	private BulletEmitter bullet_emitter = null;
-	
-	private int bossState_0_Setting = 0;
-	private int bossState_0_Duration = 100;
-	private boolean bossState_0_CountTrigger;
+	private int bossStage_0_barriers_left = -1;
+	private boolean bossStage_0_emitter_made = false;
+	private int bossStage_0_emitter_reverse_cap = 600;
+	private int bossStage_0_emitter_time = 0;
+	private BulletEmitter bossStage_0_bullet_emitter = null;
 	
 	
 	// STAGE 1
-	private int bossState_1_Setting = 0;
-	private int bossState_1_Duration = 100;
-	private boolean bossState_1_CountTrigger;
+	
 	
 	// STAGE 2
-	private int bossState_2_Setting = 0;
-	private int bossState_2_Duration = 100;
-	private boolean bossState_2_CountTrigger;
+
 	
 	public BossRoomManager() {
 		currentStage = 0;
 		count = 0;
 		bulletEmitters = new ArrayList<BulletEmitter>();	
-	}
-
-	private void createBulletEmitterCircle(int numEmitters) {
-		// Create 'numEmitters' PhysXObjects in a evenly spaced circle around the boss
-			// Use 'createBulletEmitter()' 
-	}
-	
-	private BulletEmitter createBulletEmitter(PhysXObject obj, Vector2 pos, int health) {
-		//PhysXObject obj, String sprite, ShipStats stats, BulletEmitterData bullet_data, BulletEmitterBehavior beh, double delta, BulletType type, boolean can_hurt
-		return new BulletEmitter(
-				obj,										// PhysXObject
-				bulletEmitterSprite,						// Sprite
-				ShipStats.bossBulletEmitter_0(),			// ShipStats
-				new BulletEmitterData(),					// Bullet bank
-				BulletEmitterBehavior.SHOOT_CLOCKWISE,	// Firing pattern
-				stg_0_be_delta,							// Angle delta
-				BulletType.STRAIGHT,   					// BulletType
-				false); 									// Can hurt
-	}
-	
-	private void drawBulletEmitters() {
-		
-		if(bulletEmitters == null || bulletEmitters.size() <= 0) {
-			return;
-		}
-		
-		ArrayList<GameImage> bulletEmitterGameImages = new ArrayList<GameImage>();
-		for(BulletEmitter be : bulletEmitters) {
-			if(be != null) {
-				bulletEmitterGameImages.add(be.getSprite());
-			}
-		}
-		
-		if(bulletEmitterGameImages != null && bulletEmitterGameImages.size() > 0) {
-			gamePane_ref.eventRequest_addObjects(bulletEmitterGameImages);
-		} else {
-			System.out.println("[WARN] Bullet Emitters appear to be missing sprites!");
-		}
 	}
 	
 	/* * * * * * * * * * * * * * * 
@@ -118,112 +75,40 @@ public class BossRoomManager {
 			double dist = PhysXLibrary.distance(bossShip.getPhysObj().getPosition(), gameConsole_ref.physXRequest_getPlayerPhysObj().getPosition());
 			if (dist < ACTIVATION_DISTANCE) {
 				started = true;
+				currentStage = 0;
+				gamePane_ref.tell_HUDBossIsActive(true);
 				System.out.println("Fight started!");
 			}
 		}
 		else if (started) {
 			// Increment the count
+			gamePane_ref.request_HUDtoDrawBossHP(bossShip.getCurrentHealth(), bossShip.getStats().getHealthMax());
 			count++;
 			// Do this first
-			testStates();
-			
-			switch(currentState) {
-			case -1:
-				break;
+			switch(currentStage) {
 			case 0:
-				state_0();
-				break;
+				stage_0();
 			case 1:
-				state_1();
-				break;
+				stage_1();
 			case 2:
-				state_2();
-				break;
-			default:
-				break;
+				stage_2();
 			}
-		}
-	}
-	
-	private void testStates() {
-		
-		// This needs to be set first. 
-		stateCount ++;
-		
-		int state = currentState;
-		switch(currentState) {
 
-		case -1:			// Ready
-			state += 1;
-			break;
-		case 0:			// State 0
-			state += testState(bossState_0_Setting, bossState_0_Duration, bossState_0_CountTrigger);
-			break;
-		case 1:
-			state += testState(bossState_1_Setting, bossState_1_Duration, bossState_1_CountTrigger);
-			break;	
-		case 2:
-			state += testState(bossState_2_Setting, bossState_2_Duration, bossState_2_CountTrigger);
-			break;	
 		}
-		
-		if (state != currentState) {
-			
-			// Loop the states
-			if (state > numStates) {
-				state = 0;
-				onStateLoop();
-			}
-			
-			// New state new count
-			stateCount = 0;
-		}
-
-		currentState = state;
 	}
 	
-	private int testState(int setting, int stateDuration, boolean trigger) {
-		int result = 0;
-		switch(setting) {
-		case -3:
-			// Bypass - count means nothing
-			if (trigger) {
-				result++;
-			}
-			break;
-			
-		case -2:
-			// OR - either condition
-			if (trigger || stateCount >= stateDuration) {
-				result++;
-			}
-			break;
-			
-		case -1:
-			// AND - both conditions
-			if (trigger && stateCount >= stateDuration) {
-				result++;
-			}
-			break;
-			
-		default:
-			// AND - both conditions
-			if (trigger && stateCount >= stateDuration) {
-				result++;
-			}
-			break;
-		}
-		
-		// Reset the state
-		if(result > 0) {
-			trigger = false;
-		}
-		
-		return result;
-	}
-	
-	private void onStateLoop() {
-		
+	private BulletEmitter makeBulletEmitter() {
+		double delta = 0.2;
+		PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),
+				new Vector2(bossShip.getPhysObj().getPosition()),
+				new CircleCollider(0));
+		BulletEmitterData bed = new BulletEmitterData(1000, 0, 0, 0, 0);
+		BulletEmitter be = new BulletEmitter(po, "BulletEmitter.png", ShipStats.bossBulletEmitter_0(),
+				bed, BulletEmitterBehavior.SHOOT_CLOCKWISE , delta, BulletType.STRAIGHT, true);
+		be.addSubscriber(gameConsole_ref.programRequest_getBulletManager());
+		be.HAX_setInfiniteBullets(true);
+		gameConsole_ref.programRequest_makeEnemy(be);
+		return be;
 	}
 	
 	
@@ -233,52 +118,45 @@ public class BossRoomManager {
 	
 
 	
-	private void state_0() {
+	private void stage_0() {
 		if (!started_0) {
 			started_0 = true;
 			
 			System.out.println("Starting stage 0!");
-			init_state_0();
+			init_stage_0();
 		}
 		else {
-			if (!bossState_0_emitter_made) {
-				bossState_0_emitter_made = true;
-				double delta = 0.2;
-				PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),
-						new Vector2(bossShip.getPhysObj().getPosition()),
-						new CircleCollider(0));
-				BulletEmitterData bed = new BulletEmitterData(1000, 0, 0, 0, 0);
-				BulletEmitter be = new BulletEmitter(po, "BulletEmitter.png", ShipStats.bossBulletEmitter_0(),
-						bed, BulletEmitterBehavior.SHOOT_CLOCKWISE , delta, BulletType.STRAIGHT, true);
-				be.addSubscriber(gameConsole_ref.programRequest_getBulletManager());
-				be.HAX_setInfiniteBullets(true);
-				gameConsole_ref.programRequest_makeEnemy(be);
-				this.bullet_emitter = be;
+			if (!bossStage_0_emitter_made) {
+				bossStage_0_emitter_made = true;
+
+				BulletEmitter be = makeBulletEmitter();
+				this.bossStage_0_bullet_emitter = be;
 			}
-			if (bossState_0_emitter_time == 0) {
-				this.bossState_0_emitter_time = bossState_0_emitter_reverse_cap;
-				this.bullet_emitter.reverseDirection();
+			// Reverse weapon attacks periodically
+			if (bossStage_0_emitter_time == 0) {
+				this.bossStage_0_emitter_time = bossStage_0_emitter_reverse_cap;
+				this.bossStage_0_bullet_emitter.reverseDirection();
 			}
-			this.bossState_0_emitter_time -= 1;
-			if (bossState_0_barriers_left == 0) {
-				System.out.println("No more barriers");
-				// TODO: ADVANCE STAGE HERE
+			this.bossStage_0_emitter_time -= 1;
+			if (bossStage_0_barriers_left == 0) {
+				currentStage = 1;
+				this.bossStage_0_bullet_emitter.takeDamage(TONS_OF_DAMAGE);
 			}
 		}
 	}
 	
 	// Decrement the barriers
 	public void stage0_decrementBarriers() {
-		this.bossState_0_barriers_left -= 1;
+		this.bossStage_0_barriers_left -= 1;
 	}
 	
 	// Initialize stage 0
- 	private void init_state_0() {
+ 	private void init_stage_0() {
  		double delta = 360 / (BARRIER_SHIELD_COUNT - 1);
  		double ang = 0;
- 		this.bossState_0_barriers_left = 0;
+ 		this.bossStage_0_barriers_left = 0;
 		for (int i = 0; i <= BARRIER_SHIELD_COUNT; i++) {
-			this.bossState_0_barriers_left += 1;
+			this.bossStage_0_barriers_left += 1;
 			double x = Math.cos(Math.toRadians(ang));
 			double y = Math.sin(Math.toRadians(ang));
 
@@ -296,11 +174,11 @@ public class BossRoomManager {
 		}
 	}
 	
-	private void state_1() {
+	private void stage_1() {
 
 	}
 	
-	private void state_2() {
+	private void stage_2() {
 		
 	}
 	

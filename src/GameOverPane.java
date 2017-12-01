@@ -63,7 +63,9 @@ public class GameOverPane extends GraphicsPane {
 		program.removeAll();
 		program.add(whiteBG());
 		program.add(selection());
-		program.add(gameOver);
+		if(!program.getFromCredits()) {
+			program.add(gameOver);
+		}
 		program.add(scoreDisplay);
 		program.add(retryGame);
 		program.add(exitToMenu);
@@ -74,7 +76,9 @@ public class GameOverPane extends GraphicsPane {
 	public void hideContents() {
 		program.remove(whiteBG());
 		program.remove(selection());
-		program.remove(gameOver);
+		if(!program.getFromCredits()) {
+			program.remove(gameOver);
+		}
 		program.remove(scoreDisplay);
 		program.remove(retryGame);
 		program.remove(exitToMenu);
