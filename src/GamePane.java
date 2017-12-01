@@ -394,7 +394,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			program.switchToGameOver();
 		}
 		
-		if(console.getEnemiesKilled() == 5) {
+		if(console.getEnemiesKilled() == 1) {
+			pressed_keys.removeAll(pressed_keys);
 			program.setStory(1);
 			program.switchToStory();
 			console.progressStory();
@@ -476,6 +477,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			switch(boss.getEnemyType()) {
 				case BOSS:
 					if(boss.getCurrentHealth() == 0) {
+						pressed_keys.removeAll(pressed_keys);
 						program.setStory(2);
 						program.switchToStory();
 					}

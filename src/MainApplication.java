@@ -25,6 +25,7 @@ public class MainApplication extends GraphicsApplication {
 	private boolean isPaused;
 	private boolean lookedAtControls;
 	private boolean fromMenu;
+	private boolean fromCredits;
 
 	public void init() {
 		setTitle("HTBX");
@@ -38,6 +39,7 @@ public class MainApplication extends GraphicsApplication {
 		isPaused = false;
 		lookedAtControls = false;
 		fromMenu = true;
+		fromCredits = false;
 		menu = new MenuPane(this);
 		setting = new SettingsPane(this);
 		control = new ControlsPane(this);
@@ -79,6 +81,10 @@ public class MainApplication extends GraphicsApplication {
 
 	public boolean getFromMenu() {
 		return fromMenu;
+	}
+	
+	public boolean getFromCredits() {
+		return fromCredits;
 	}
 
 	public void switchToMenu() {
@@ -138,13 +144,16 @@ public class MainApplication extends GraphicsApplication {
 		gameOver = new GameOverPane(this);
 		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
 		if(musicToggle) {
-			audio.stopSound("sounds", "Stone_1.mp3");
-			audio.playSound("sounds", "bensound-ofeliasdream.mp3", true);
+			if(!getFromCredits()) {
+				audio.stopSound("sounds", "Stone_1.mp3");
+				audio.playSound("sounds", "bensound-ofeliasdream.mp3", true);	
+			}
 		}
 		switchToScreen(gameOver);
 	}
 	
 	public void switchToCredits() {
+		fromCredits = true;
 		gameTimer.stopTimer();
 		credits = new CreditsPane(this);
 		
