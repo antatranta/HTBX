@@ -34,7 +34,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
 	private TeleportWaypoint bossRoomTrigger;
-	
+	private boolean sfxToggle;
 	//Score
 	private int score=0;
 	private int enemiesKilled=0;
@@ -50,6 +50,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		exp = 0;
 		level = 0;
 		calculateNeededExp();
+		
+		sfxToggle = true;
 		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
@@ -439,6 +441,19 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 			bossRoomManager.Update();
 	}
 
+	public ArrayList<Ship> getShips() {
+		return ships;
+	}
+
+	public void setShips(ArrayList<Ship> ships) {
+		this.ships = ships;
+	}
+	
+	public void setShipsSFX(boolean set) {
+		for( Ship s : ships) {
+			s.setSfxToggle(set);
+		}
+	}
 }
 
 
