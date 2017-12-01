@@ -236,15 +236,17 @@ public class BossRoomManager {
 		else {
 			if (this.bossState_0_emitter_time == 0) {
 				this.bossState_0_emitter_time = 360;
-				
+				double delta = 0.5;
 				PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),
-						new Vector2(bossShip.getPhysObj().getPosition().add(new Vector2(500, 0))),
+						new Vector2(bossShip.getPhysObj().getPosition()),
 						new CircleCollider(0));
 				BulletEmitterData bed = new BulletEmitterData(1000, 0, 0, 0, 0);
 				BulletEmitter be = new BulletEmitter(po, "BulletEmitter.png", ShipStats.bossBulletEmitter_0(),
-						bed, BulletEmitterBehavior.SHOOT_CLOCKWISE , 1, BulletType.STRAIGHT, true);
-				gameConsole_ref.programRequest_makeEnemy(be);
+						bed, BulletEmitterBehavior.SHOOT_CLOCKWISE , delta, BulletType.STRAIGHT, true);
 				be.addSubscriber(gameConsole_ref.programRequest_getBulletManager());
+				be.HAX_setInfiniteBullets(true);
+				gameConsole_ref.programRequest_makeEnemy(be);
+
 			}
 		}
 	}
@@ -256,7 +258,7 @@ public class BossRoomManager {
 	
 	// Initialize stage 0
  	private void init_state_0() {
- 		double delta = 360 / BARRIER_SHIELD_COUNT;
+ 		double delta = 360 / (BARRIER_SHIELD_COUNT - 1);
  		double ang = 0;
  		this.bossState_0_barriers_left = 0;
 		for (int i = 0; i <= BARRIER_SHIELD_COUNT; i++) {

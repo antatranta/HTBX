@@ -46,7 +46,7 @@ public class ShipStats {
 	}
 	
 	public static ShipStats EnemyStats_BossBarrier() {
-		return new ShipStats(0, 0, 200, 0);
+		return new ShipStats(0, 0, 100, 0);
 	}
 
 	public float getTurningSpeed() {
