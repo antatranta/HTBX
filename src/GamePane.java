@@ -470,7 +470,19 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		console.getBossRoomTrigger().Update(player.getPhysObj().getPosition(), tele_flash);
 		
 		console.updateBossRoom();
-
+		
+		for(EnemyShip boss:drawn_ships) {
+			switch(boss.getEnemyType()) {
+				case BOSS:
+					if(boss.getCurrentHealth() == 0) {
+						program.switchToCredits();
+					}
+					break;
+					
+				default:
+					break;
+			}
+		}
 	}
 	
 	public void trackingUpdate() {
