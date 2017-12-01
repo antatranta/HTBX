@@ -56,7 +56,6 @@ public class GameOverPane extends GraphicsPane {
 		catch(IOException ex) {
 			ex.printStackTrace();
 		}
-		System.out.println("Done!");
 	}
 	
 	@Override

@@ -133,6 +133,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void switchToGameOver() {
+		isPaused = false;
 		gameTimer.stopTimer();
 		gameOver = new GameOverPane(this);
 		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
