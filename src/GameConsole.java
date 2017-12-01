@@ -403,7 +403,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		bossRoomManager.setGamePane_ref(gamePane_ref);
 		bossRoomManager.setBossShip(bossShip);
 		
-		player.getPhysObj().setPosition(pos.minus(Vector2.One().mult(new Vector2(5,5))));
+		player.getPhysObj().setPosition(bossShip.getPhysObj().getPosition().add(new Vector2(0, 750)));
+		gamePane_ref.request_RedrawGridLines();
 	}
 	
 	@Override

@@ -1173,4 +1173,28 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		this.HUD.setBoss(tr);
 		
 	}
+
+	@Override
+	public void request_RedrawGridLines() {
+		for (StaticRect row: GRID_ROWS) {
+			program.remove(row.getRect());
+		}
+		for (int i = GRID_ROWS.size() - 1; i > 0; i--) {
+			GRID_ROWS.remove(i);
+		}
+		
+		for (StaticRect col: GRID_COLS) {
+			program.remove(col.getRect());
+		}
+		for (int i = GRID_COLS.size() - 1; i > 0; i--) {
+			GRID_COLS.remove(i);
+		}
+		for (StaticRect line: GRID_LINES) {
+			program.remove(line.getRect());
+		}
+		for (int i = GRID_LINES.size() - 1; i > 0; i--) {
+			GRID_LINES.remove(i);
+		}
+		
+	}
 }

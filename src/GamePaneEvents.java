@@ -15,4 +15,5 @@ public interface GamePaneEvents {
 	public void addThreat(Vector2 pos);
 	public void request_HUDtoDrawBossHP(int hp, int max);
 	public void tell_HUDBossIsActive(boolean tr);
+	public void request_RedrawGridLines();
 }

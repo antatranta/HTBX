@@ -116,8 +116,6 @@ public class BossRoomManager {
 				STATES 
 	* * * * * * * * * * * * * * */
 	
-
-	
 	private void stage_0() {
 		if (!started_0) {
 			started_0 = true;
