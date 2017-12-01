@@ -482,6 +482,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				default:
 					break;
 			}
+			break;
 		}
 	}
 	
