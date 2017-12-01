@@ -49,7 +49,7 @@ public abstract class GraphicsPane implements Interfaceable, ActionListener {
 	
 	public GLabel clickToContinue() {
 		clickToContinue.setFont(font);
-		clickToContinue.setColor(Color.black);
+		clickToContinue.setColor(Color.white);
 		clickToContinue.setLocation(5, MainApplication.WINDOW_HEIGHT - 10);
 		return clickToContinue;
 	}

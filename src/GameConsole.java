@@ -34,12 +34,15 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private ShipManagement shipManager;
 	private GamePaneEvents gamePane_ref;
 	private TeleportWaypoint bossRoomTrigger;
-	
+	private boolean sfxToggle;
 	//Score
 	private int score=0;
 	private int enemiesKilled=0;
 	private static final int scorePerEnemy = 100;
 	private static final int scorePerDamage = 25;
+	
+	//For story
+	private int storyProgression = enemiesKilled;
 
 	public GameConsole() {
 		endDebugView();
@@ -47,6 +50,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		exp = 0;
 		level = 0;
 		calculateNeededExp();
+		
+		sfxToggle = true;
 		// set up the clock for the game
 		gameTimer = new GameTimer();
 		gameTimer.setupTimer(TIMER_INTERVAL, INITIAL_DELAY);
@@ -96,6 +101,14 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
 		System.out.println("Made a new game console");
 
+	}
+	
+	public void progressStory() {
+		storyProgression++;
+	}
+	
+	public int getEnemiesKilled() {
+		return storyProgression;
 	}
 	
 	public TeleportWaypoint getBossRoomTrigger() {
@@ -231,6 +244,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	public void onShipDeath(Vector2 pos, int ship_exp) {
 		calculateNeededExp();
 		enemiesKilled++;
+		storyProgression = enemiesKilled;
 		exp += ship_exp;
 		if (exp >= next_level) {
 			exp -= next_level;
@@ -366,18 +380,17 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		// Add in the new Quadrant
 		physx.addQuadrant(mapCreator.createBossRoom().get(0));
 		
-		System.out.println("Quads: " + physx.getQuadrants().size());
-		
 		// Create a new PhysXObject
-		PhysXObject boss_obj = new PhysXObject();
-		boss_obj.setQUID(physx.getQuadrants().get(0).getQUID());
+		QuadrantID qid = physx.getQuadrants().get(0).getQUID();
+		PhysXObject boss_obj = new PhysXObject(qid, new CircleCollider(90));
 		
 		// Get the position of the new Object
 		Vector2 pos = new Vector2((boss_obj.getQUID().getX() * PhysXLibrary.QUADRANT_WIDTH) + (PhysXLibrary.QUADRANT_WIDTH / 2), (boss_obj.getQUID().getY() * PhysXLibrary.QUADRANT_HEIGHT) + (PhysXLibrary.QUADRANT_HEIGHT / 2));
 		boss_obj.setPosition(pos);
 		
 		// Create the boss
-		Boss bossShip = new Boss(boss_obj, 100, ShipStats.EnemyStats_01(), this.gamePane_ref);
+		Boss bossShip = new Boss(boss_obj, ShipStats.EnemyStats_Boss().getHealthMax(), ShipStats.EnemyStats_Boss(), this.gamePane_ref);
+		bossShip.addGameConsole(this);
 		
 		// Add to PhysX
 		if(physx.getQuadrants() != null && physx.getQuadrants().size() > 0) {
@@ -393,6 +406,23 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		player.getPhysObj().setPosition(pos.minus(Vector2.One().mult(new Vector2(5,5))));
 	}
 	
+	@Override
+	public <Enemy extends EnemyShip> void programRequest_makeEnemy(Enemy enemy) {
+		// TODO Auto-generated method stub
+		QuadrantID QUID = enemy.getPhysObj().getQUID();
+		for (Quadrant quad : physx.getActiveQuadrants()) {
+			if(quad.getQUID().getX() == QUID.getX() && quad.getQUID().getY() == QUID.getY()) {
+				quad.addEnemyShip(enemy);
+			}
+		}
+
+	}
+	
+	@Override
+	public BulletManager programRequest_getBulletManager() {
+		return this.bulletStore;
+	}
+	
 	public void SetScore() {
 		score = (enemiesKilled * scorePerEnemy) - (player.getDamageTaken() * scorePerDamage);
 		//System.out.println("Score: "+ score);
@@ -406,22 +436,24 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		this.skill_points = x;
 	}
 
-	@Override
-	public void programRequest_makeEnemy(EnemyShip enemy) {
-		// TODO Auto-generated method stub
-		QuadrantID QUID = enemy.getPhysObj().getQUID();
-		for (Quadrant quad : physx.getActiveQuadrants()) {
-			if(quad.getQUID() == QUID) {
-				quad.addEnemyShip(enemy);
-			}
-		}
-	}
-
 	public void updateBossRoom() {
 		if(bossRoomManager != null)
 			bossRoomManager.Update();
 	}
 
+	public ArrayList<Ship> getShips() {
+		return ships;
+	}
+
+	public void setShips(ArrayList<Ship> ships) {
+		this.ships = ships;
+	}
+	
+	public void setShipsSFX(boolean set) {
+		for( Ship s : ships) {
+			s.setSfxToggle(set);
+		}
+	}
 }
 
 

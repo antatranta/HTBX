@@ -13,19 +13,15 @@ public class BulletManager implements ShipTriggers {
 	private ArrayList<GameImage> deadBullets;
 	private GameConsole console_ref;
 
-	private BulletPattern pattern;
-
 	public BulletManager() {
 		this.bullets = new ArrayList<Bullet>();
 		this.deadBullets = new ArrayList<GameImage>();
-		pattern = new BulletPattern();
 		this.console_ref = null;
 	}
 
 	public BulletManager(GameConsole console) {
 		this.bullets = new ArrayList<Bullet>();
 		this.deadBullets = new ArrayList<GameImage>();
-		pattern = new BulletPattern();
 		this.console_ref = console;
 	}
 
@@ -77,36 +73,6 @@ public class BulletManager implements ShipTriggers {
 				}
 			}
 		}
-	}
-
-	public void moveClockwiseSpiralPattern() {
-		pattern.clockwiseSpiralPattern(this);
-		moveBullets();
-	}
-
-	public void moveCounterSpiralPattern() {
-		pattern.counterClockwiseSpiralPattern(this);
-		moveBullets();
-	}
-
-	public void moveSunBurstBottom() {
-		pattern.sunBurstBottom(this);
-		moveBullets();
-	}
-
-	public void moveSunBurstTop() {
-		pattern.sunBurstTop(this);
-		moveBullets();
-	}
-
-	public void moveZigZagBottom() {
-		pattern.zigZagBottom(this);
-		moveBullets();
-	}
-
-	public void moveZigZagTop() {
-		pattern.zigZagTop(this);
-		moveBullets();
 	}
 
 	@Override

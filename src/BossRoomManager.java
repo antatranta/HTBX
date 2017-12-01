@@ -40,8 +40,16 @@ public class BossRoomManager {
 	 */
 	
 	// STAGE 0
-	private static final int ROCK_SHIELD_COUNT = 8;
-	private static final int ROCK_SHIELD_RADIUS = 150;
+	private static final int BARRIER_SHIELD_COUNT = 16;
+	private static final int BARRIER_SHIELD_RADIUS = 200;
+	private static final double BARRIER_SHIELD_SPEED = 0.75;
+	
+	private int bossState_0_barriers_left = -1;
+	private boolean bossState_0_emitter_made = false;
+	private int bossState_0_emitter_reverse_cap = 600;
+	private int bossState_0_emitter_time = 0;
+	private BulletEmitter bullet_emitter = null;
+	
 	private int bossState_0_Setting = 0;
 	private int bossState_0_Duration = 100;
 	private boolean bossState_0_CountTrigger;
@@ -116,7 +124,6 @@ public class BossRoomManager {
 		else if (started) {
 			// Increment the count
 			count++;
-			
 			// Do this first
 			testStates();
 			
@@ -233,29 +240,64 @@ public class BossRoomManager {
 			System.out.println("Starting stage 0!");
 			init_state_0();
 		}
+		else {
+			if (!bossState_0_emitter_made) {
+				bossState_0_emitter_made = true;
+				double delta = 0.2;
+				PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),
+						new Vector2(bossShip.getPhysObj().getPosition()),
+						new CircleCollider(0));
+				BulletEmitterData bed = new BulletEmitterData(1000, 0, 0, 0, 0);
+				BulletEmitter be = new BulletEmitter(po, "BulletEmitter.png", ShipStats.bossBulletEmitter_0(),
+						bed, BulletEmitterBehavior.SHOOT_CLOCKWISE , delta, BulletType.STRAIGHT, true);
+				be.addSubscriber(gameConsole_ref.programRequest_getBulletManager());
+				be.HAX_setInfiniteBullets(true);
+				gameConsole_ref.programRequest_makeEnemy(be);
+				this.bullet_emitter = be;
+			}
+			if (bossState_0_emitter_time == 0) {
+				this.bossState_0_emitter_time = bossState_0_emitter_reverse_cap;
+				this.bullet_emitter.reverseDirection();
+			}
+			this.bossState_0_emitter_time -= 1;
+			if (bossState_0_barriers_left == 0) {
+				System.out.println("No more barriers");
+				// TODO: ADVANCE STAGE HERE
+			}
+		}
+	}
+	
+	// Decrement the barriers
+	public void stage0_decrementBarriers() {
+		this.bossState_0_barriers_left -= 1;
 	}
 	
 	// Initialize stage 0
  	private void init_state_0() {
- 		double delta = ROCK_SHIELD_COUNT / 360;
+ 		double delta = 360 / (BARRIER_SHIELD_COUNT - 1);
  		double ang = 0;
-		for (int i = 0; i < ROCK_SHIELD_COUNT; i++) {
+ 		this.bossState_0_barriers_left = 0;
+		for (int i = 0; i <= BARRIER_SHIELD_COUNT; i++) {
+			this.bossState_0_barriers_left += 1;
 			double x = Math.cos(Math.toRadians(ang));
 			double y = Math.sin(Math.toRadians(ang));
-			PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),bossShip.getPhysObj().getPosition().add( new Vector2((float)(x * ROCK_SHIELD_RADIUS), (float)(y * ROCK_SHIELD_RADIUS))), new CircleCollider(30));
-			ShipStats ss = ShipStats.EnemyStats_RockShield();
-			AsteroidEnemy rock = new AsteroidEnemy(po, "Asteroid_0.png", ss.getHealthMax(), ss,
-					0, EnemyType.ROCK_SHIELD, ang, ROCK_SHIELD_RADIUS);
-			
-			System.out.println("Making shield");
+
+			PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()), new Vector2(bossShip.getPhysObj().getPosition().add( new Vector2((float)(x * BARRIER_SHIELD_RADIUS), (float)(y * BARRIER_SHIELD_RADIUS)))), new CircleCollider(25));
+			ShipStats ss = ShipStats.EnemyStats_BossBarrier();
+			BossBarrier rock = new BossBarrier(po, "Boss_Barrier_Small.png", ss.getHealthMax(), ss,
+					0, EnemyType.BARRIER, ang, BARRIER_SHIELD_RADIUS, bossShip.getPhysObj().getPosition());
+			rock.addGameConsole(gameConsole_ref);
+			rock.setOrbitSpeed(BARRIER_SHIELD_SPEED);
+			rock.setManagerRef(this);
+
 			gameConsole_ref.programRequest_makeEnemy(rock);
 			// Create shields
-			ang += delta;
+			ang = delta * i;
 		}
 	}
 	
 	private void state_1() {
-		
+
 	}
 	
 	private void state_2() {

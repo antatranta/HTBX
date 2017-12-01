@@ -9,6 +9,8 @@ public class Banshe extends EnemyShip{
 	private int weapon_cd;
 	private int checkpoint;
 	private int auto_reset = 0;
+	
+	private static float screamDist = 300f;
 
 	public Banshe(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression) {
 		super(physObj, sprite, current_health, stats, aggression, EnemyType.BANSHEE, 30);
@@ -21,6 +23,11 @@ public class Banshe extends EnemyShip{
 		// Is the player within range?
 		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > stats.getInteractionDistance()) {
 			return;
+		}
+		
+		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) < screamDist) {
+			AudioPlayer myAudio = AudioPlayer.getInstance();
+			myAudio.playSound("sounds", "Banshe.wav");
 		}
 
 		double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));

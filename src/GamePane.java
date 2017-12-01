@@ -376,8 +376,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void playerShoot() {
 		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage() + player.getBonusStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc), FXManager.colorParticle(PaintToolbox.BLUE));
 		player.shoot(bfe);
-		AudioPlayer myAudio = AudioPlayer.getInstance();
-		myAudio.playSound("sounds", "PlayerShoot.wav");
+//		AudioPlayer myAudio = AudioPlayer.getInstance();
+//		myAudio.playSound("sounds", "PlayerShoot.wav");
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary
@@ -392,6 +392,12 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		if(player.getCurrentHealth() <= 0) {
 			console.SetScore();
 			program.switchToGameOver();
+		}
+		
+		if(console.getEnemiesKilled() == 5) {
+			program.setStory(1);
+			program.switchToStory();
+			console.progressStory();
 		}
 		
 		// Reset death events
@@ -465,7 +471,21 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		console.getBossRoomTrigger().Update(player.getPhysObj().getPosition(), tele_flash);
 		
 		console.updateBossRoom();
-
+		
+		for(EnemyShip boss:drawn_ships) {
+			switch(boss.getEnemyType()) {
+				case BOSS:
+					if(boss.getCurrentHealth() == 0) {
+						program.setStory(2);
+						program.switchToStory();
+					}
+					break;
+					
+				default:
+					break;
+			}
+			break;
+		}
 	}
 	
 	public void trackingUpdate() {
@@ -521,7 +541,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 				drawStaticRect(DEBUGGING_ROWS, DEBUGGING_LINES);
 				drawStaticRect(DEBUGGING_COLS, DEBUGGING_LINES);
-				
 
 				if (!DRAWING_LOCK) {
 					try {
@@ -587,12 +606,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img.setDegrees(-player.getAngle() + 90);
 		
 		if (PhysXLibrary.distance(player.getPhysObj().getPosition(), HUD.getBossTelePos()) < AURORA_DRAW_DIST) {
+			if (!boss_aurora.isVisible()) {
+				boss_aurora.setVisible(true);
+			}
 			Vector2 lc = Camera.backendToFrontend(HUD.getBossTelePos());
 			boss_aurora.setLocation(lc.getX() - (boss_aurora.getWidth() / 2), lc.getY() - (boss_aurora.getHeight() / 2));
 			//boss_aurora.rotate(-1);
 		}
 		else {
-			boss_aurora.setLocation(1000, 1000);
+			if (boss_aurora.isVisible()) {
+				boss_aurora.setVisible(false);
+			}
 		}
 	}
 
@@ -1056,6 +1080,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		else if(key == KeyEvent.VK_P) {
 			player.setCurrentHealth(1);
 		}
+		else if(key == KeyEvent.VK_SEMICOLON) {
+			program.switchToCredits();
+		}
 	}
 
 	@Override
@@ -1127,5 +1154,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		// Lj's Method
 		HUD.updateThreats(dir);
+	}
+	
+	public void setES_SFX(boolean set) {
+		for( EnemyShip e : drawn_ships) {
+			e.setSfxToggle(set);
+		}
 	}
 }

@@ -4,7 +4,7 @@ import acm.graphics.*;
 import acm.program.*;
 
 public class MainApplication extends GraphicsApplication {
-	public static final int WINDOW_WIDTH = 800;
+	public static final int WINDOW_WIDTH = 900;
 	public static final int WINDOW_HEIGHT = 600;
 	public static final Vector2 WINDOW_CENTER = new Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
@@ -16,6 +16,7 @@ public class MainApplication extends GraphicsApplication {
 	private ControlsPane control;
 	private PausePane pause;
 	private GameOverPane gameOver;
+	private CreditsPane credits;
 	private GameConsole console;
 	private GameTimer gameTimer;
 	private AudioPlayer audio;
@@ -49,10 +50,15 @@ public class MainApplication extends GraphicsApplication {
 
 	public void sfxToggle(boolean toggle) {
 		sfxToggle = toggle;
+		game.setES_SFX(toggle);
 	}
 
 	public void setLookedAtControls(boolean looked) {
 		lookedAtControls = looked;
+	}
+	
+	public void setPaused(boolean paused) {
+		isPaused = paused;
 	}
 
 	public boolean getSfxToggle() {
@@ -75,14 +81,6 @@ public class MainApplication extends GraphicsApplication {
 		return fromMenu;
 	}
 
-	public void pauseGameTimer() {
-		gameTimer.stopTimer();
-	}
-
-	public void startGameTimer() {
-		gameTimer.startTimer();
-	}
-
 	public void switchToMenu() {
 		story = new StoryPane(this);
 		fromMenu = true;
@@ -90,6 +88,8 @@ public class MainApplication extends GraphicsApplication {
 
 		//audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
+			audio.stopSound("sounds", "bensound-ofeliasdream.mp3");
+			audio.stopSound("sounds", "bensound-sadday.mp3");
 			audio.playSound("sounds", "3A1W - Menu.wav", true);
 			audio.updatePlayer();
 		}
@@ -97,6 +97,10 @@ public class MainApplication extends GraphicsApplication {
 		switchToScreen(menu);
 	}
 
+	public void setStory(int num) {
+		story.setSwitchStory(num);
+	}
+	
 	public void switchToStory() {
 		fromMenu = false;
 		if(gameTimer != null) {
@@ -117,6 +121,8 @@ public class MainApplication extends GraphicsApplication {
 		}
 
 		if(musicToggle) {
+			audio.stopSound("sounds", "bensound-ofeliasdream.mp3");
+			audio.stopSound("sounds", "bensound-sadday.mp3");
 			audio.stopSound("sounds", "3A1W - Menu.wav");
 			//			audio.playSound("sounds", "01 Misconection_1.mp3", true);
 			audio.playSound("sounds", "Stone_1.mp3", true);
@@ -127,12 +133,25 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void switchToGameOver() {
-		gameOver = new GameOverPane(this);
 		gameTimer.stopTimer();
-		isPaused = false;
+		gameOver = new GameOverPane(this);
 		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
-		audio.stopSound("sounds", "Stone_1.mp3");
+		if(musicToggle) {
+			audio.stopSound("sounds", "Stone_1.mp3");
+			audio.playSound("sounds", "bensound-ofeliasdream.mp3", true);
+		}
 		switchToScreen(gameOver);
+	}
+	
+	public void switchToCredits() {
+		gameTimer.stopTimer();
+		credits = new CreditsPane(this);
+		
+		if(musicToggle) {
+			audio.stopSound("sounds", "Stone_1.mp3");
+			audio.playSound("sounds", "bensound-sadday.mp3");
+		}
+		switchToScreen(credits);
 	}
 
 	public void switchToSettings() {
@@ -150,6 +169,7 @@ public class MainApplication extends GraphicsApplication {
 
 	public void switchToPause() {
 		isPaused = true;
+		fromMenu = true;
 
 		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
 		audio.stopSound("sounds", "Stone_1.mp3");
