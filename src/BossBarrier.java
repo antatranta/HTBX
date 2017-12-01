@@ -6,6 +6,7 @@ public class BossBarrier extends EnemyShip {
 	double orbit_delta;
 	Vector2 source;
 	BossRoomManager manager_ref;
+	Vector2 player_pos;
 	
 	public BossBarrier(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression,
 			EnemyType type, double angle, double radius, Vector2 source) {
@@ -21,6 +22,7 @@ public class BossBarrier extends EnemyShip {
 	// Orbit around the source physObject Vector2
 	@Override
 	public void AIUpdate(Vector2 playerPos) {
+		player_pos = playerPos;
 		if (current_health > 0) {
 			double x = Math.cos(Math.toRadians(angle_from_source)) * source_radius;
 			double y = Math.sin(Math.toRadians(angle_from_source)) * source_radius;
@@ -32,33 +34,10 @@ public class BossBarrier extends EnemyShip {
 				weapon_cd -= 1;
 			}
 			if (weapon_cd == 0) {
-				weapon_cd = stats.getFireRateValue() + LavaLamp.randomRange(-15, 15);
+				weapon_cd = 600;
 				PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet,
+				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.ACCEL, CollisionType.enemy_bullet,
 						(float) 5, po, "RedCircle.png", weapon_target, FXManager.colorParticle(PaintToolbox.RED));
-				int type = LavaLamp.randomRange(0, 5);
-				switch(type) {
-				case 0:
-					bfe.setBulletType(BulletType.STRAIGHT);
-					break;
-				case 1:
-					bfe.setBulletType(BulletType.ACCEL);
-					break;
-				case 2:
-					bfe.setBulletType(BulletType.OSCILLATE);
-					break;
-				case 3:
-					bfe.setBulletType(BulletType.WAVE);
-					break;
-				case 4:
-					bfe.setBulletType(BulletType.SWERVE_CW);
-					break;
-				case 5:
-					bfe.setBulletType(BulletType.SWERVE_CCW);
-					break;
-				default:
-					break;
-				}
 				shoot(bfe);
 			}
 		}
@@ -66,6 +45,10 @@ public class BossBarrier extends EnemyShip {
 	
 	@Override
 	protected void destroyShip() {
+		PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
+		BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet,
+				(float) 5, po, "RedCircle.png", player_pos, FXManager.colorParticle(PaintToolbox.RED));
+		shootSpread(bfe, 7, 90);
 		super.destroyShip();
 		manager_ref.stage0_decrementBarriers();
 	}

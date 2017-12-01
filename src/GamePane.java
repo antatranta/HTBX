@@ -482,6 +482,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 				default:
 					break;
 			}
+			break;
 		}
 	}
 	
@@ -603,12 +604,17 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player_img.setDegrees(-player.getAngle() + 90);
 		
 		if (PhysXLibrary.distance(player.getPhysObj().getPosition(), HUD.getBossTelePos()) < AURORA_DRAW_DIST) {
+			if (!boss_aurora.isVisible()) {
+				boss_aurora.setVisible(true);
+			}
 			Vector2 lc = Camera.backendToFrontend(HUD.getBossTelePos());
 			boss_aurora.setLocation(lc.getX() - (boss_aurora.getWidth() / 2), lc.getY() - (boss_aurora.getHeight() / 2));
 			//boss_aurora.rotate(-1);
 		}
 		else {
-			boss_aurora.setLocation(1000, 1000);
+			if (boss_aurora.isVisible()) {
+				boss_aurora.setVisible(false);
+			}
 		}
 	}
 

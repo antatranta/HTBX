@@ -381,8 +381,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		physx.addQuadrant(mapCreator.createBossRoom().get(0));
 		
 		// Create a new PhysXObject
-		PhysXObject boss_obj = new PhysXObject();
-		boss_obj.setQUID(physx.getQuadrants().get(0).getQUID());
+		QuadrantID qid = physx.getQuadrants().get(0).getQUID();
+		PhysXObject boss_obj = new PhysXObject(qid, new CircleCollider(90));
 		
 		// Get the position of the new Object
 		Vector2 pos = new Vector2((boss_obj.getQUID().getX() * PhysXLibrary.QUADRANT_WIDTH) + (PhysXLibrary.QUADRANT_WIDTH / 2), (boss_obj.getQUID().getY() * PhysXLibrary.QUADRANT_HEIGHT) + (PhysXLibrary.QUADRANT_HEIGHT / 2));
@@ -411,7 +411,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		// TODO Auto-generated method stub
 		QuadrantID QUID = enemy.getPhysObj().getQUID();
 		for (Quadrant quad : physx.getActiveQuadrants()) {
-			System.out.println(quad.getQUID().toString());
 			if(quad.getQUID().getX() == QUID.getX() && quad.getQUID().getY() == QUID.getY()) {
 				quad.addEnemyShip(enemy);
 			}
