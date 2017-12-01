@@ -50,6 +50,7 @@ public class MainApplication extends GraphicsApplication {
 
 	public void sfxToggle(boolean toggle) {
 		sfxToggle = toggle;
+		game.setES_SFX(toggle);
 	}
 
 	public void setLookedAtControls(boolean looked) {

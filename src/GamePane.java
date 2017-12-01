@@ -376,8 +376,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void playerShoot() {
 		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage() + player.getBonusStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc), FXManager.colorParticle(PaintToolbox.BLUE));
 		player.shoot(bfe);
-		AudioPlayer myAudio = AudioPlayer.getInstance();
-		myAudio.playSound("sounds", "PlayerShoot.wav");
+//		AudioPlayer myAudio = AudioPlayer.getInstance();
+//		myAudio.playSound("sounds", "PlayerShoot.wav");
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary
@@ -1146,5 +1146,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 		// Lj's Method
 		HUD.updateThreats(dir);
+	}
+	
+	public void setES_SFX(boolean set) {
+		for( EnemyShip e : drawn_ships) {
+			e.setSfxToggle(set);
+		}
 	}
 }
