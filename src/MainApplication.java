@@ -55,6 +55,10 @@ public class MainApplication extends GraphicsApplication {
 	public void setLookedAtControls(boolean looked) {
 		lookedAtControls = looked;
 	}
+	
+	public void setPaused(boolean paused) {
+		isPaused = paused;
+	}
 
 	public boolean getSfxToggle() {
 		return sfxToggle;
@@ -158,6 +162,7 @@ public class MainApplication extends GraphicsApplication {
 
 	public void switchToPause() {
 		isPaused = true;
+		fromMenu = true;
 
 		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
 		audio.stopSound("sounds", "Stone_1.mp3");

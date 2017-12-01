@@ -36,7 +36,7 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 		program.add(controls);
 		program.add(title());
 		program.add(selection());
-		if(program.getFromMenu() || program.isPaused()) {
+		if(program.getFromMenu()) {
 			program.add(back);
 			selection.setLocation(back.getX() - 25, back.getY());
 		}
@@ -50,7 +50,7 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 	public void hideContents() {
 		program.remove(whiteBG());
 		program.remove(title());
-		if(program.getFromMenu() || program.isPaused()) {
+		if(program.getFromMenu()) {
 			program.remove(back);
 		}
 		else {
@@ -68,7 +68,7 @@ public class ControlsPane extends GraphicsPane implements ActionListener {
 			back.setColor(Color.gray);
 		}
 		
-		if(!program.getFromMenu() && !program.isPaused()) {
+		if(!program.getFromMenu()) {
 			program.switchToGame();
 		}
 	}

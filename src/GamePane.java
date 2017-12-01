@@ -396,6 +396,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		if(console.getEnemiesKilled() == 1) {
 			program.switchToStory();
+			console.progressStory();
 		}
 		
 		// Reset death events

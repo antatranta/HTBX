@@ -37,10 +37,12 @@ public class StoryPane extends GraphicsPane implements ActionListener {
 		switch(switchStory % 3) {
 		case 1:
 			story.setImage("Story_2.png");
+			program.setPaused(true);
 			break;
 
 		case 2:
 			story.setImage("Story_3.png");
+			program.setPaused(true);
 			break;
 
 		default:
