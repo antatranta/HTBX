@@ -69,6 +69,14 @@ public class DisplayableHUD implements Displayable {
 	private double msg_diff_hp;
 	private boolean delta_shd;
 	private double msg_diff_shd;
+	
+	private GImage boss_display;
+	private GRect boss_back;
+	private GRect boss_bar;
+	private boolean boss;
+	private boolean last_boss_setting;
+	private double boss_diff;
+	
 
 	double startx = 0;
 	double starty = 0;
@@ -80,6 +88,7 @@ public class DisplayableHUD implements Displayable {
 		this.program = program;
 		this.player = player;
 		this.console = program.getGameConsole();
+		this.boss = false;
 		init();
 		updateStats();
 	}
@@ -168,7 +177,17 @@ public class DisplayableHUD implements Displayable {
 		threat_up.setFilled(true);
 		threat_down = new GRect((MainApplication.WINDOW_WIDTH / 2) - (threatWidth / 2), MainApplication.WINDOW_HEIGHT - 20, threatWidth, 10);
 
-
+		boss_display = new GImage("Boss_HP_Bar.png",0,0);
+		boss_display.setVisible(false);
+		boss_back = new GRect(0,0,0,0);
+		boss_back.setFillColor(PaintToolbox.WHITE);
+		boss_back.setFilled(true);
+		boss_back.setVisible(false);
+		boss_bar = new GRect(0,0,0,0);
+		boss_bar.setFilled(true);
+		boss_bar.setFillColor(PaintToolbox.RED);
+		boss_bar.setVisible(false);
+		
 		threats = new ArrayList<Direction>();
 		threatLevels = new float[4];
 
@@ -334,6 +353,33 @@ public class DisplayableHUD implements Displayable {
 			program.remove(overlay);
 			overlay = null;
 		}
+		
+	}
+	
+	public void drawBossHPBar(int hp, int max) {
+		if (boss) {
+			if (!last_boss_setting) {
+				last_boss_setting = true;
+				boss_diff = 200;
+			}
+			else {
+				boss_display.setVisible(true);
+				boss_display.setLocation(MainApplication.WINDOW_WIDTH - (boss_display.getWidth() * 1.5) + boss_diff, MainApplication.WINDOW_HEIGHT * 0.15);
+				boss_diff /= 1.1;
+
+				double ratio = (double)hp / (double)max;
+				boss_back.setSize(22, 364);
+				boss_back.setLocation(boss_display.getX() + 19, boss_display.getY() + 9);
+				boss_back.setVisible(true);
+				boss_bar.setSize(22, 364 * ratio);
+				boss_bar.setLocation(boss_back.getX(), boss_display.getY() + 9 + (364 * (1.0 - ratio)));
+				boss_bar.setVisible(true);
+			}
+	
+		}
+		else {
+			last_boss_setting = boss;
+		}
 	}
 
 	private void updateThreatBar(GRect bar, float value) {
@@ -410,6 +456,10 @@ public class DisplayableHUD implements Displayable {
 		return this.overlay;
 	}
 	
+	public void setBoss(boolean tf) {
+		this.boss = tf;
+	}
+	
 	public void layerSprites() {
 		status_front.sendToBack();
 		iframes.sendToBack();
@@ -429,6 +479,10 @@ public class DisplayableHUD implements Displayable {
 		health_up.sendToBack();
 		shield_up.sendToBack();
 		stats_back.sendToBack();
+		
+		boss_display.sendToBack();
+		boss_bar.sendToBack();
+		boss_back.sendToBack();
 	}
 
 	@Override
@@ -455,6 +509,9 @@ public class DisplayableHUD implements Displayable {
 		program.add(threat_right);
 		program.add(threat_up);
 		program.add(threat_down);
+		program.add(boss_display);
+		program.add(boss_bar);
+		program.add(boss_back);
 //		program.add(overlay);
 	}
 
@@ -478,6 +535,9 @@ public class DisplayableHUD implements Displayable {
 		program.remove(shield_up);
 		program.remove(sp_label);
 		program.remove(skill_msg);
+		program.remove(boss_display);
+		program.remove(boss_bar);
+		program.remove(boss_back);
 //		program.remove(overlay);
 	}
 }

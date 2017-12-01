@@ -132,7 +132,7 @@ public class TeleportWaypoint {
 			}
 			
 		}
-		/*
+		
 		// THE TELEPORTATION ANIMATIONS. KIND OF HARDCODE? NOT REALLY. BUT IT'S MAGICAL
 		else if (tele_sequence == 1) {
 
@@ -220,7 +220,7 @@ public class TeleportWaypoint {
 		} else {
 			calculateOverlay = false;
 		}
-		*/
+		
 	}
 	
 }

@@ -13,4 +13,6 @@ public interface GamePaneEvents {
 	void eventRequest_addLaserLine(LaserLine line);
 	public void eventRequest_removeObject(GOval oval);
 	public void addThreat(Vector2 pos);
+	public void request_HUDtoDrawBossHP(int hp, int max);
+	public void tell_HUDBossIsActive(boolean tr);
 }
