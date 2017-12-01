@@ -1155,10 +1155,5 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Lj's Method
 		HUD.updateThreats(dir);
 	}
-	
-	public void setES_SFX(boolean set) {
-		for( EnemyShip e : drawn_ships) {
-			e.setSfxToggle(set);
-		}
-	}
+
 }

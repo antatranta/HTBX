@@ -27,7 +27,7 @@ public class Banshe extends EnemyShip{
 		
 		if(PhysXLibrary.distance(this.physObj.getPosition(), playerPos) < screamDist) {
 			AudioPlayer myAudio = AudioPlayer.getInstance();
-			myAudio.playSound("sounds", "Banshe.wav");
+			myAudio.playSound("sounds", "Banshe.wav", SoundType.SFX);
 		}
 
 		double theta_deg = -Math.toDegrees(Math.atan2(playerPos.getY() - physObj.getPosition().getY(), playerPos.getX() - physObj.getPosition().getX()));

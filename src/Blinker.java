@@ -19,7 +19,6 @@ public class Blinker extends EnemyShip {
 	protected GOval charger;
 
 	private boolean BlinkerGOvalAdded = false;
-	private AudioPlayer myAudio;
 	
 	public Blinker(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, int exp) {
 		super(physObj, sprite, current_health, stats, aggression, EnemyType.BLINKER, exp);
@@ -38,7 +37,6 @@ public class Blinker extends EnemyShip {
 		this.targetColor = Color.WHITE;
 		this.prevColor = Color.WHITE;
 		this.BlinkerGOvalAdded = false;
-		myAudio = AudioPlayer.getInstance();
 	}
 
 	public GOval getCharger() {
@@ -136,10 +134,8 @@ public class Blinker extends EnemyShip {
 
 			}
 
-//			AudioPlayer myAudio = AudioPlayer.getInstance();
-			if(this.getSfxToggle()) {
-				myAudio.playSound("sounds", "BlinkerTeleport.wav");
-			}
+			AudioPlayer myAudio = AudioPlayer.getInstance();
+			myAudio.playSound("sounds", "BlinkerTeleport.wav", SoundType.SFX);
 			// Set the charger pos
 			Vector2 pos = Camera.backendToFrontend(this.physObj.getPosition());
 			this.charger.setLocation(pos.getX() - (this.charger.getWidth() / 2),
@@ -160,10 +156,8 @@ public class Blinker extends EnemyShip {
 						5, obj, "Bullet Large.png", playerPos, FXManager.colorParticle(PaintToolbox.RED));
 				shoot(bfe);
 
-//				AudioPlayer myAudio = AudioPlayer.getInstance();
-				if(this.getSfxToggle()) {
-					myAudio.playSound("sounds", "BlinkerShoot.wav");
-				}
+				AudioPlayer myAudio = AudioPlayer.getInstance();
+				myAudio.playSound("sounds", "BlinkerShoot.wav", SoundType.SFX);
 			} else {
 
 				this.targetColor = new Color(205, 58, 42);
