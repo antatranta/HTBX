@@ -5,7 +5,7 @@ public class EnemyShip extends Ship {
 	private static int max_dist = 350;
 	protected EnemyShipStats stats;
 
-	private int weapon_cd;
+	protected int weapon_cd;
 	private int checkpoint;
 	private int auto_reset = 0;
 

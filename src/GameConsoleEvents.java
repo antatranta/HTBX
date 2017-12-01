@@ -18,5 +18,5 @@ public interface GameConsoleEvents {
 	public PhysXObject physXRequest_getPlayerPhysObj();
 	public void UIRequest_addThreat(Vector2 pos);
 	void programRequest_makeBossRoom();
-	public void programRequest_makeEnemy(EnemyShip enemy);
+	public <Enemy extends EnemyShip> void programRequest_makeEnemy(Enemy enemy);
 }

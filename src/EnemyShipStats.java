@@ -28,6 +28,8 @@ public class EnemyShipStats extends ShipStats {
 			this.fireRate = 3;
 		case LEVEL_3:
 			this.fireRate = 2;
+		case BARRIER:
+			this.fireRate = 3;
 		default:
 			this.fireRate = 0;
 		}

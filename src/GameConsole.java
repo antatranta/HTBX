@@ -366,8 +366,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		// Add in the new Quadrant
 		physx.addQuadrant(mapCreator.createBossRoom().get(0));
 		
-		System.out.println("Quads: " + physx.getQuadrants().size());
-		
 		// Create a new PhysXObject
 		PhysXObject boss_obj = new PhysXObject();
 		boss_obj.setQUID(physx.getQuadrants().get(0).getQUID());
@@ -378,6 +376,7 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		
 		// Create the boss
 		Boss bossShip = new Boss(boss_obj, 100, ShipStats.EnemyStats_01(), this.gamePane_ref);
+		bossShip.addGameConsole(this);
 		
 		// Add to PhysX
 		if(physx.getQuadrants() != null && physx.getQuadrants().size() > 0) {
@@ -393,6 +392,19 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		player.getPhysObj().setPosition(pos.minus(Vector2.One().mult(new Vector2(5,5))));
 	}
 	
+	@Override
+	public <Enemy extends EnemyShip> void programRequest_makeEnemy(Enemy enemy) {
+		// TODO Auto-generated method stub
+		QuadrantID QUID = enemy.getPhysObj().getQUID();
+		for (Quadrant quad : physx.getActiveQuadrants()) {
+			System.out.println(quad.getQUID().toString());
+			if(quad.getQUID().getX() == QUID.getX() && quad.getQUID().getY() == QUID.getY()) {
+				quad.addEnemyShip(enemy);
+			}
+		}
+
+	}
+	
 	public void SetScore() {
 		score = (enemiesKilled * scorePerEnemy) - (player.getDamageTaken() * scorePerDamage);
 		//System.out.println("Score: "+ score);
@@ -404,17 +416,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public void HAX_SetSkillPoints(int x) {
 		this.skill_points = x;
-	}
-
-	@Override
-	public void programRequest_makeEnemy(EnemyShip enemy) {
-		// TODO Auto-generated method stub
-		QuadrantID QUID = enemy.getPhysObj().getQUID();
-		for (Quadrant quad : physx.getActiveQuadrants()) {
-			if(quad.getQUID() == QUID) {
-				quad.addEnemyShip(enemy);
-			}
-		}
 	}
 
 	public void updateBossRoom() {
