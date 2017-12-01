@@ -229,6 +229,8 @@ public class BossRoomManager {
 	private void state_0() {
 		if (!started_0) {
 			started_0 = true;
+			
+			System.out.println("Starting stage 0!");
 			init_state_0();
 		}
 	}
@@ -244,6 +246,8 @@ public class BossRoomManager {
 			ShipStats ss = ShipStats.EnemyStats_RockShield();
 			AsteroidEnemy rock = new AsteroidEnemy(po, "Asteroid_0.png", ss.getHealthMax(), ss,
 					0, EnemyType.ROCK_SHIELD, ang, ROCK_SHIELD_RADIUS);
+			
+			System.out.println("Making shield");
 			gameConsole_ref.programRequest_makeEnemy(rock);
 			// Create shields
 			ang += delta;
