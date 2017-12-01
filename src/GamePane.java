@@ -191,14 +191,14 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 	}
 
-	public void drawGridLines() {
+	public void drawGridLines(int quad_w, int quad_h, int width, int height, float grid_W, float grid_h) {
 		GRID_ROWS = new ArrayList<StaticRect>();
 		GRID_COLS = new ArrayList<StaticRect>();
 		GRID_LINES = new ArrayList<StaticRect>();
 		
 		int i =0;
-		while ((i * GRID_SQUARE_SIZE)< (PhysXLibrary.QUADRANT_WIDTH * PhysXLibrary.MAP_WIDTH)) {
-			GRID_ROWS.add(new StaticRect(new Vector2((GRID_SQUARE_SIZE * i), 0), new Vector2(GRID_LINE_WIDTH, PhysXLibrary.getMapHeight())));
+		while ((i * GRID_SQUARE_SIZE)< (quad_w * width)) {
+			GRID_ROWS.add(new StaticRect(new Vector2((GRID_SQUARE_SIZE * i), 0), new Vector2(GRID_LINE_WIDTH, grid_W)));
 			program.add(GRID_ROWS.get(i).getRect());
 			GRID_ROWS.get(i).getRect().setFillColor(PaintToolbox.VERYLIGHTGREY);
 			GRID_ROWS.get(i).getRect().setColor(PaintToolbox.TRANSPARENT);
@@ -206,9 +206,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			i++;
 		}
 		int e =0;
-		while ((e * GRID_SQUARE_SIZE)< (PhysXLibrary.QUADRANT_HEIGHT * PhysXLibrary.MAP_HEIGHT)) { 
+		while ((e * GRID_SQUARE_SIZE)< (quad_h * height)) { 
 //		for(int i =0; i < NUM_GRID_LINES; ++i) {
-			GRID_COLS.add(new StaticRect(new Vector2(0, (GRID_SQUARE_SIZE * e)), new Vector2(PhysXLibrary.getMapWidth(), GRID_LINE_WIDTH)));
+			GRID_COLS.add(new StaticRect(new Vector2(0, (GRID_SQUARE_SIZE * e)), new Vector2(grid_h, GRID_LINE_WIDTH)));
 			program.add(GRID_COLS.get(e).getRect());
 			GRID_COLS.get(e).getRect().setFillColor(PaintToolbox.VERYLIGHTGREY);
 			GRID_COLS.get(e).getRect().setColor(PaintToolbox.TRANSPARENT);
@@ -341,7 +341,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		tele_flash.setFillColor(PaintToolbox.WHITE);
 		tele_flash.setColor(PaintToolbox.WHITE);
 		
-		drawGridLines();
+		drawGridLines((int)PhysXLibrary.QUADRANT_WIDTH, (int)PhysXLibrary.BOSS_QUADRANT_HEIGHT, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT, PhysXLibrary.getMapWidth(), PhysXLibrary.getMapHeight());
 	}
 
 	public void centerPlayer() {
@@ -1189,6 +1189,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		for (int i = GRID_LINES.size() - 1; i > 0; i--) {
 			GRID_LINES.remove(i);
 		}
+		drawGridLines((int)PhysXLibrary.BOSS_QUADRANT_WIDTH, (int)PhysXLibrary.BOSS_QUADRANT_HEIGHT, 1, 1, PhysXLibrary.BOSS_QUADRANT_WIDTH, PhysXLibrary.BOSS_QUADRANT_HEIGHT);
 		
 	}
 }

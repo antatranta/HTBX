@@ -5,7 +5,7 @@ public class BulletEmitter extends EnemyShip {
 	private BulletEmitterData bank;
 	private BulletEmitterBehavior behavior;
 	
-	private int bullet_spd = 4;
+	private int bullet_spd = 3;
 	private float bullet_time = 10;
 	private static final int WEAPON_CAP = 20;
 	private String bullet_sprite = "RedCircle.png";

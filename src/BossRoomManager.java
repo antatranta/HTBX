@@ -29,6 +29,7 @@ public class BossRoomManager {
 	private boolean started = false;
 	private boolean started_0 = false;
 	private boolean started_1 = false;
+	private boolean finished_setting_1 = false;
 	private boolean started_2 = false;
 	
 	// Settings
@@ -44,7 +45,7 @@ public class BossRoomManager {
 	
 	// STAGE 0
 	private static final int BARRIER_SHIELD_COUNT = 16;
-	private static final int BARRIER_SHIELD_RADIUS = 200;
+	private static final int BARRIER_SHIELD_RADIUS = 150;
 	private static final double BARRIER_SHIELD_SPEED = 0.75;
 	
 	private int bossStage_0_barriers_left = -1;
@@ -53,9 +54,12 @@ public class BossRoomManager {
 	private int bossStage_0_emitter_time = 0;
 	private BulletEmitter bossStage_0_bullet_emitter = null;
 	
+	private int barriersAtStart = 0;
+	
 	
 	// STAGE 1
-	
+	private ArrayList<BossBarrier> barriers;
+	private ArrayList<BulletEmitter> stage_1_emitters;
 	
 	// STAGE 2
 
@@ -64,6 +68,7 @@ public class BossRoomManager {
 		currentStage = 0;
 		count = 0;
 		bulletEmitters = new ArrayList<BulletEmitter>();	
+		this.barriers = new ArrayList<BossBarrier>();
 	}
 	
 	/* * * * * * * * * * * * * * * 
@@ -88,19 +93,22 @@ public class BossRoomManager {
 			switch(currentStage) {
 			case 0:
 				stage_0();
+				break;
 			case 1:
 				stage_1();
+				break;
 			case 2:
 				stage_2();
+				break;
 			}
 
 		}
 	}
 	
-	private BulletEmitter makeBulletEmitter() {
-		double delta = 0.2;
+	private BulletEmitter makeBulletEmitter(Vector2 pos) {
+		double delta = 0.1;
 		PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()),
-				new Vector2(bossShip.getPhysObj().getPosition()),
+				pos,
 				new CircleCollider(0));
 		BulletEmitterData bed = new BulletEmitterData(1000, 0, 0, 0, 0);
 		BulletEmitter be = new BulletEmitter(po, "BulletEmitter.png", ShipStats.bossBulletEmitter_0(),
@@ -121,13 +129,15 @@ public class BossRoomManager {
 			started_0 = true;
 			
 			System.out.println("Starting stage 0!");
+			System.out.println("Barriers: " + bossStage_0_barriers_left);
 			init_stage_0();
 		}
 		else {
+			System.out.println("Barriers: " + bossStage_0_barriers_left);
 			if (!bossStage_0_emitter_made) {
 				bossStage_0_emitter_made = true;
 
-				BulletEmitter be = makeBulletEmitter();
+				BulletEmitter be = makeBulletEmitter(bossShip.getPhysObj().getPosition());
 				this.bossStage_0_bullet_emitter = be;
 			}
 			// Reverse weapon attacks periodically
@@ -136,7 +146,7 @@ public class BossRoomManager {
 				this.bossStage_0_bullet_emitter.reverseDirection();
 			}
 			this.bossStage_0_emitter_time -= 1;
-			if (bossStage_0_barriers_left == 0) {
+			if (bossStage_0_barriers_left != this.barriersAtStart) {
 				currentStage = 1;
 				this.bossStage_0_bullet_emitter.takeDamage(TONS_OF_DAMAGE);
 			}
@@ -152,28 +162,46 @@ public class BossRoomManager {
  	private void init_stage_0() {
  		double delta = 360 / (BARRIER_SHIELD_COUNT - 1);
  		double ang = 0;
- 		this.bossStage_0_barriers_left = 0;
+ 		this.bossStage_0_barriers_left = BARRIER_SHIELD_COUNT;
 		for (int i = 0; i <= BARRIER_SHIELD_COUNT; i++) {
-			this.bossStage_0_barriers_left += 1;
 			double x = Math.cos(Math.toRadians(ang));
 			double y = Math.sin(Math.toRadians(ang));
 
 			PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()), new Vector2(bossShip.getPhysObj().getPosition().add( new Vector2((float)(x * BARRIER_SHIELD_RADIUS), (float)(y * BARRIER_SHIELD_RADIUS)))), new CircleCollider(25));
 			ShipStats ss = ShipStats.EnemyStats_BossBarrier();
-			BossBarrier rock = new BossBarrier(po, "Boss_Barrier_Small.png", ss.getHealthMax(), ss,
+			BossBarrier shield = new BossBarrier(po, "Boss_Barrier_Small.png", ss.getHealthMax(), ss,
 					0, EnemyType.BARRIER, ang, BARRIER_SHIELD_RADIUS, bossShip.getPhysObj().getPosition());
-			rock.addGameConsole(gameConsole_ref);
-			rock.setOrbitSpeed(BARRIER_SHIELD_SPEED);
-			rock.setManagerRef(this);
-
-			gameConsole_ref.programRequest_makeEnemy(rock);
+			shield.addGameConsole(gameConsole_ref);
+			shield.setOrbitSpeed(BARRIER_SHIELD_SPEED);
+			shield.setManagerRef(this);
+			this.barriers.add(shield);
+			gameConsole_ref.programRequest_makeEnemy(shield);
 			// Create shields
 			ang = delta * i;
 		}
+		this.barriersAtStart = BARRIER_SHIELD_COUNT;
 	}
 	
 	private void stage_1() {
-
+		if (!started_1) {
+			started_1 = true;
+			
+			System.out.println("Starting stage 1!");
+			init_stage_1();
+		}
+		else if (started_1 && !finished_setting_1) {
+			finished_setting_1 = barriers.get(0).reachedDestination();
+		}
+		else {
+			
+		}
+	}
+	
+	private void init_stage_1() {
+		for (BossBarrier b: barriers) {
+			b.moveToDistance(600);
+			b.setOrbitSpeed(0);
+		}
 	}
 	
 	private void stage_2() {

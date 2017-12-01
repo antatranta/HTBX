@@ -3,7 +3,11 @@ public class BossBarrier extends EnemyShip {
 
 	double angle_from_source;
 	double source_radius;
+	double original_radius;
+	double new_radius;
+	double radius_delta = 0;
 	double orbit_delta;
+	boolean reached_new_dist = false;
 	Vector2 source;
 	BossRoomManager manager_ref;
 	Vector2 player_pos;
@@ -36,9 +40,17 @@ public class BossBarrier extends EnemyShip {
 			if (weapon_cd == 0) {
 				weapon_cd = 600;
 				PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.ACCEL, CollisionType.enemy_bullet,
+				BulletFireEventData bfe = new BulletFireEventData(1, 3, BulletType.ACCEL, CollisionType.enemy_bullet,
 						(float) 5, po, "RedCircle.png", weapon_target, FXManager.colorParticle(PaintToolbox.RED));
 				shoot(bfe);
+			}
+			
+			if (radius_delta > 0) {
+				source_radius = new_radius - radius_delta;
+				radius_delta /= 1.01;
+				if (radius_delta < 1) {
+					this.reached_new_dist = true;
+				}
 			}
 		}
 	}
@@ -51,6 +63,7 @@ public class BossBarrier extends EnemyShip {
 		shootSpread(bfe, 9, 180);
 		super.destroyShip();
 		manager_ref.stage0_decrementBarriers();
+		System.out.println("Destoryed a barrier!");
 	}
 	
 	public void setBossPos(Vector2 boss) {
@@ -72,11 +85,23 @@ public class BossBarrier extends EnemyShip {
 		
 	}
 	
+	public void moveToDistance(double amnt) {
+		this.radius_delta = amnt;
+		this.original_radius = source_radius;
+		this.new_radius = original_radius + radius_delta;
+		this.reached_new_dist = false;
+	}
+	
 	public void setManagerRef(BossRoomManager man) {
 		this.manager_ref = man;
 	}
+	
 	public void setOrbitSpeed(double spd) {
 		this.orbit_delta = spd;
+	}
+	
+	public boolean reachedDestination() {
+		return this.reached_new_dist;
 	}
 	
 	// Asteroid enemy simply rotates; it will not ever suffer knockback, it only takes damage
