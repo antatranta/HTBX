@@ -63,7 +63,6 @@ public class GameImageRotator extends GraphicsProgram {
 
 	public void actionPerformed(ActionEvent e) {
 		image.rotate(DEGREES);
-		//image.move(IMAGE_DX, IMAGE_DY);
 		if(getElementAt(oval.getX() + oval.getWidth()/2, oval.getY() + oval.getHeight()/2) == image) {
 			label.setLabel(YES_LABEL);
 		}else{

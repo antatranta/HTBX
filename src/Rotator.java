@@ -69,7 +69,6 @@ public class Rotator extends GraphicsProgram implements ActionListener {
 		}
 		double diffX = newBImage.getWidth()-imageOnScreen.getWidth();
 		double diffY = newBImage.getHeight()-imageOnScreen.getHeight();
-		// System.out.println("rotation: " + rotation + " - w, h:" + (diffX) +", " + (diffY));
 		imageOnScreen.setImage(newBImage);
 		imageOnScreen.setLocation(imageOnScreen.getX() - diffX/2,
 				imageOnScreen.getY() - diffY/2);
@@ -95,7 +94,6 @@ public class Rotator extends GraphicsProgram implements ActionListener {
 
 		AffineTransform tat = new AffineTransform();
 
-		// System.out.print("reg: " + -xtrans + ", " + -ytrans + "  --  ");
 		tat.translate(-xtrans, -ytrans);
 		return tat;
 	}

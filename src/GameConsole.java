@@ -409,7 +409,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	@Override
 	public <Enemy extends EnemyShip> void programRequest_makeEnemy(Enemy enemy) {
-		// TODO Auto-generated method stub
 		QuadrantID QUID = enemy.getPhysObj().getQUID();
 		for (Quadrant quad : physx.getActiveQuadrants()) {
 			if(quad.getQUID().getX() == QUID.getX() && quad.getQUID().getY() == QUID.getY()) {
@@ -426,7 +425,6 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	
 	public void SetScore() {
 		score = (enemiesKilled * scorePerEnemy) - (player.getDamageTaken() * scorePerDamage);
-		//System.out.println("Score: "+ score);
 	}
 	
 	public int getScore() {

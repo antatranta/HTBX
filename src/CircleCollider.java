@@ -1,5 +1,3 @@
-// CircleCollider.Java
-
 public class CircleCollider {
 
 	private Vector2 center;

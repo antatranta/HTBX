@@ -157,7 +157,6 @@ public class GameImage extends GImage {
 	/* setSize is not supported for the polygon */
 	@Override
 	public void setSize(double width, double height) {
-		//origImage.setSize(width, height);
 	}
 	
 	
@@ -177,12 +176,6 @@ public class GameImage extends GImage {
 		super.scale(sx, sy);
 		poly.scale(sx, sy);
 	}
-	
-//	@Override
-//	public void setImage(Image image) {
-//		super.setImage(image);
-//		initGameImage();
-//	}
 	
 	@Override
 	public void setImage(String name) {
@@ -218,7 +211,6 @@ public class GameImage extends GImage {
 
 		AffineTransform tat = new AffineTransform();
 
-		// System.out.print("reg: " + -xtrans + ", " + -ytrans + "  --  ");
 		tat.translate(-xtrans, -ytrans);
 		return tat;
 	}

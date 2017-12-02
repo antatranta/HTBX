@@ -22,7 +22,6 @@ public class FXManager {
 
 	public FXManager() {
 		this.particles = new ArrayList<FXParticle>();
-//		this.pane = null;
 		System.out.println("[Warning]: FX Manager requires GamePane reference to be set after intialization");
 	}
 

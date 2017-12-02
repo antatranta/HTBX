@@ -16,8 +16,6 @@ public class BulletEmitter extends EnemyShip {
 	private boolean infinite_bullets = false;
 	private int neg = 1;
 
-	//private ArrayList<ShipTriggers> subscribers;
-
 	public BulletEmitter(PhysXObject obj, String sprite, ShipStats stats,
 			BulletEmitterData bullet_data, BulletEmitterBehavior beh, double delta, 
 			BulletType type, boolean can_hurt) {

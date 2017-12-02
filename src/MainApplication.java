@@ -19,7 +19,6 @@ public class MainApplication extends GraphicsApplication {
 	private CreditsPane credits;
 	private GameConsole console;
 	private GameTimer gameTimer;
-//	private AudioPlayer audio;
 	private boolean musicToggle;
 	private boolean sfxToggle;
 	private boolean isPaused;
@@ -45,7 +44,6 @@ public class MainApplication extends GraphicsApplication {
 		control = new ControlsPane(this);
 		pause = new PausePane(this);
 		
-//		AudioPlayer myAudio = AudioPlayer.getInstance();
 
 		switchToMenu();
 	}
@@ -94,7 +92,6 @@ public class MainApplication extends GraphicsApplication {
 		isPaused = false;
 
 		AudioPlayer audio = AudioPlayer.getInstance();
-		//audio.stopSound("sounds", "Credits.mp3");
 		if(musicToggle) {
 			audio.stopSound("sounds", "bensound-ofeliasdream.mp3");
 			audio.stopSound("sounds", "bensound-sadday.mp3");
@@ -133,7 +130,6 @@ public class MainApplication extends GraphicsApplication {
 			audio.stopSound("sounds", "bensound-ofeliasdream.mp3");
 			audio.stopSound("sounds", "bensound-sadday.mp3");
 			audio.stopSound("sounds", "3A1W - Menu.wav");
-			//			audio.playSound("sounds", "01 Misconection_1.mp3", true);
 			audio.playSound("sounds", "Stone_1.mp3", true, SoundType.Music);
 		}
 
@@ -145,7 +141,6 @@ public class MainApplication extends GraphicsApplication {
 		isPaused = false;
 		gameTimer.stopTimer();
 		gameOver = new GameOverPane(this);
-		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
 		
 		AudioPlayer audio = AudioPlayer.getInstance();
 		if(musicToggle) {
@@ -188,7 +183,6 @@ public class MainApplication extends GraphicsApplication {
 		isPaused = true;
 		fromMenu = true;
 
-		//		audio.stopSound("sounds", "01 Misconection_1.mp3");
 		AudioPlayer audio = AudioPlayer.getInstance();
 		audio.stopSound("sounds", "Stone_1.mp3");
 		audio.stopSound("sounds", "Credits.mp3");

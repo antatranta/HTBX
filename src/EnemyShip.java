@@ -110,8 +110,6 @@ public class EnemyShip extends Ship {
 
 	@Override
 	protected void playDamageSound() {
-
-//		myAudio.playSound("sounds", "Gun_Fire.wav");
 	}
 	
 	@Override

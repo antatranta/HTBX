@@ -67,7 +67,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private ArrayList <FXParticle> drawn_fx;
 	private ArrayList <Asteroid> drawn_rocks;
 	private ArrayList <EnemyShip> drawn_ships;
-//	private ArrayList <EnemyShip> drawn_ship_gifs;
 	private ArrayList <Bullet> drawn_bullets;
 
 	private ArrayList <Asteroid> DEBUGGING_COLLIDERS_ASTEROIDS;
@@ -206,9 +205,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			i++;
 		}
 		int e =0;
-		while ((e * GRID_SQUARE_SIZE)< (quad_h * height)) { 
-//		for(int i =0; i < NUM_GRID_LINES; ++i) {
-			GRID_COLS.add(new StaticRect(new Vector2(0, (GRID_SQUARE_SIZE * e)), new Vector2(grid_h, GRID_LINE_WIDTH)));
+		while ((e * GRID_SQUARE_SIZE)< (PhysXLibrary.QUADRANT_HEIGHT * PhysXLibrary.MAP_HEIGHT)) { 
+			GRID_COLS.add(new StaticRect(new Vector2(0, (GRID_SQUARE_SIZE * e)), new Vector2(PhysXLibrary.getMapWidth(), GRID_LINE_WIDTH)));
 			program.add(GRID_COLS.get(e).getRect());
 			GRID_COLS.get(e).getRect().setFillColor(PaintToolbox.VERYLIGHTGREY);
 			GRID_COLS.get(e).getRect().setColor(PaintToolbox.TRANSPARENT);
@@ -297,7 +295,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawn_fx = new ArrayList <FXParticle>();
 		drawn_rocks = new ArrayList <Asteroid>();
 		drawn_ships = new ArrayList <EnemyShip>();
-//		drawn_ship_gifs = new ArrayList <EnemyShip>();
 		drawn_bullets = new ArrayList <Bullet>();
 		BlinkerEyes = new ArrayList <StaticGObject>();
 		DrawnBlinkerEyes = new ArrayList<StaticGObject>();
@@ -376,8 +373,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private void playerShoot() {
 		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage() + player.getBonusStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc), FXManager.colorParticle(PaintToolbox.BLUE));
 		player.shoot(bfe);
-//		AudioPlayer myAudio = AudioPlayer.getInstance();
-//		myAudio.playSound("sounds", "PlayerShoot.wav");
 	}
 
 	// Every tick of the global game clock calls all visual drawing necessary
@@ -600,7 +595,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		drawFX(console.getFXManager().getParticles(), drawn_fx);
 		drawSprites(console.getActiveAsteroids(), drawn_rocks);
 		drawSprites(console.getActiveShips(), drawn_ships);
-//		drawGifs(console.getActiveShips(), drawn_ship_gifs, ROCK_LAYER);
 		drawBullets(bulletStore.getBullets(), drawn_bullets);
 		drawSprites(laserStore.getSegments(), drawnLaserSegments);
 		drawBlinkerEyes(BlinkerEyes);
@@ -613,7 +607,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			}
 			Vector2 lc = Camera.backendToFrontend(HUD.getBossTelePos());
 			boss_aurora.setLocation(lc.getX() - (boss_aurora.getWidth() / 2), lc.getY() - (boss_aurora.getHeight() / 2));
-			//boss_aurora.rotate(-1);
 		}
 		else {
 			if (boss_aurora.isVisible()) {
@@ -1122,26 +1115,22 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 
 	@Override
 	public void eventRequest_removeShip(EnemyShip obj) {
-		// TODO Auto-generated method stub
 		drawn_ships.remove(obj);
 		program.remove(obj.getSprite());
 	}
 
 	@Override
 	public void eventRequest_addObjects(ArrayList<GameImage> objects) {
-		// TODO Auto-generated method stub
 		this.addObjects(objects);
 	}
 
 	@Override
 	public void eventRequest_removeObjects(ArrayList<GameImage> objects) {
-		// TODO Auto-generated method stub
 		this.removeObjects(objects);
 	}
 
 	@Override
 	public void eventRequest_addLaserLine(LaserLine line) {
-		//		lasers.add(line);
 	}
 
 	@Override

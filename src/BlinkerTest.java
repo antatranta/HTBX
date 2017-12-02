@@ -16,8 +16,6 @@ public class BlinkerTest extends GraphicsApplication implements ActionListener {
 	private GOval colorTest;
 	private float colorCount;
 
-	//	private EnemyShip target1;
-	//	private Vector2 enemyVector = new Vector2(100,100);
 	private Vector2 targetVector = new Vector2(500,500);
 	int speed = 10;
 	int shield_max = 10;
@@ -53,8 +51,6 @@ public class BlinkerTest extends GraphicsApplication implements ActionListener {
 		add(blinker.getCharger());
 		add(blinker.getSprite());
 
-
-
 		// Create the Target object
 		PhysXObject targetPhysXObj = new PhysXObject(id, targetVector);
 		target = new Blinker(targetPhysXObj, "Enemy_1_S.png",10, ShipStats.EnemyStats_01(), 1, 15);
@@ -81,8 +77,6 @@ public class BlinkerTest extends GraphicsApplication implements ActionListener {
 		TargetMovementSimulate();
 		colorCount += .001f;
 		colorTest.setFillColor(PaintToolbox.blend(Color.CYAN, Color.GREEN, colorCount));
-		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
-
 	}
 
 	public void Move() {
@@ -94,11 +88,9 @@ public class BlinkerTest extends GraphicsApplication implements ActionListener {
 		drawEntity(target);
 	}
 
-
 	public void TargetMovementSimulate() {
 		count++;
 		if(count%2==0) {
-			//			Vector2 randomOffset = new Vector2(LavaLamp.randomSignedInt(0, 100), LavaLamp.randomSignedInt(0, 100));
 			target.getPhysObj().setPosition(target.getPhysObj().getPosition().add(Vector2.One().mult(new Vector2(2,2))));
 		}
 	}
