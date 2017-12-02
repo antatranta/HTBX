@@ -128,6 +128,7 @@ public class BossRoomManager {
  			amount = BossRoomManager.STAGE_0_BARRIER_SHIELD_COUNT;
  			radius = BossRoomManager.STAGE_0_BARRIER_SHIELD_RADIUS;
  			speed = BossRoomManager.STAGE_0_BARRIER_SHIELD_SPEED;
+ 			this.bossStage_0_barriers_left = amount;
  			break;
  		case 1:
  			amount = BossRoomManager.STAGE_1_BARRIER_SHIELD_COUNT;
@@ -136,17 +137,15 @@ public class BossRoomManager {
  		default:
  			break;
  		}
- 		
-		this.bossStage_0_barriers_left = amount;
- 		double delta = 360 / (amount);
+ 		double delta = 360 / (amount - 1);
  		double ang = 0;
-		for (int i = 0; i <= amount; i++) {
+		for (int i = 0; i < amount; i++) {
 			double x = Math.cos(Math.toRadians(ang));
 			double y = Math.sin(Math.toRadians(ang));
 
 			PhysXObject po = new PhysXObject(new QuadrantID(bossShip.getPhysObj().getQUID()), new Vector2(bossShip.getPhysObj().getPosition().add( new Vector2((float)(x * radius), (float)(y * radius)))), new CircleCollider(25));
 			ShipStats ss = ShipStats.EnemyStats_BossBarrier();
-			BossBarrier shield = new BossBarrier(po, "Boss_Barrier_Small.png", ss.getHealthMax(), ss,
+			BossBarrier shield = new BossBarrier(po, "Boss_Barrier_Small.png", ss.getHealthMax() + ((ss.getHealthMax() / 4) * i), ss,
 					0, EnemyType.BARRIER, ang, radius, bossShip.getPhysObj().getPosition());
 			shield.addGameConsole(gameConsole_ref);
 			shield.setOrbitSpeed(speed);
@@ -174,11 +173,9 @@ public class BossRoomManager {
 			started_0 = true;
 			
 			System.out.println("Starting stage 0!");
-			System.out.println("Barriers: " + bossStage_0_barriers_left);
 			init_stage_0();
 		}
 		else {
-			System.out.println("Barriers: " + bossStage_0_barriers_left);
 			if (!bossStage_0_emitter_made) {
 				bossStage_0_emitter_made = true;
 
@@ -215,6 +212,7 @@ public class BossRoomManager {
 			
 			System.out.println("Starting stage 1!");
 			init_stage_1();
+			bossShip.setStage(1);
 		}
 		else if (started_1 && !finished_setting_1) {
 			if (stage_1_barriers.get(0).reachedDestination()) {

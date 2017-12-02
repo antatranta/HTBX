@@ -58,6 +58,8 @@ public class Boss extends EnemyShip {
 	private final Color angryColor = PaintToolbox.RED;
 	
 	private Vector2 trackingPosition;
+	private int stage1_shotgun_cd = 120;
+	private int stage1_shotgun_cd_cap = 300;
 
 	public Boss(PhysXObject physObj, int current_health, ShipStats stats,GamePaneEvents gamePane_ref) {
 		super(physObj, "Face.png", current_health, stats, 5, EnemyType.BOSS, 0);
@@ -235,10 +237,20 @@ public class Boss extends EnemyShip {
 		updateEyes();
 		switch (currentStage) {
 		case 1:
-			PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
-			BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet,
-					(float) 5, po, "RedCircle.png", playerPos, FXManager.colorParticle(PaintToolbox.RED));
-			shootSpread(bfe, 5, 90);
+			if (stage1_shotgun_cd == 0) {
+				stage1_shotgun_cd = stage1_shotgun_cd_cap ;
+				PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
+				BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet,
+						(float) 5, po, "RedCircle.png", playerPos, FXManager.colorParticle(PaintToolbox.RED));
+				shootSpread(bfe, 15, 65);
+				if (!this.isMouthOpen) {
+					this.openMouth();
+				}
+			}
+			else {
+				stage1_shotgun_cd -= 1;
+				this.closeMouth();
+			}
 			break;
 		default:
 			break;
