@@ -122,7 +122,6 @@ public class TeleportWaypoint {
 		Vector2 fr = Camera.backendToFrontend(physObj.getPosition());
 		
 		if(distance < activationDistance && tele_sequence == 0) {
-//			calculateOverlay = true;
 			if(distance < teleportDistance) {
 
 				interactable = false;

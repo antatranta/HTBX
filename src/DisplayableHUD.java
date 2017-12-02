@@ -196,10 +196,6 @@ public class DisplayableHUD implements Displayable {
 		
 		boss_tele_pos = console.getBossRoomTrigger().getPhysObj().getPosition();
 		
-		// Offsets of 1 because the border is a single pixel. Needs to be offset by -1, and size +1
-//		overlay = new GRect(-1, -1, MainApplication.WINDOW_WIDTH + 1, MainApplication.WINDOW_HEIGHT + 1);
-//		overlay.setFillColor(PaintToolbox.setAlpha(PaintToolbox.BLACK, 0));
-//		overlay.setFilled(true);
 		overlay = null;
 	}
 
@@ -221,12 +217,10 @@ public class DisplayableHUD implements Displayable {
 		// Status HUD
 		if (player.getCurrentShield() != last_shield) {
 			shield_diff = recalculateDifference(player.getCurrentShield(), last_shield);
-			//			System.out.println("shield_diff = " + shield_diff + ", last_shield = " + last_shield + " | max_shield: " + player.getStats().getShieldMax());
 			last_shield = player.getCurrentShield();
 		}
 		if (player.getCurrentHealth() != last_hp) {
 			hp_diff = recalculateDifference(player.getCurrentHealth(), last_hp);
-			//			System.out.println("hp_diff = " + hp_diff + ", last_hp = " + last_hp + " | max_hp: " + player.getStats().getHealthMax());
 			last_hp = player.getCurrentHealth();
 		}
 
@@ -238,7 +232,6 @@ public class DisplayableHUD implements Displayable {
 		aimCompass(compass_sprite, boss_tele_pos);
 
 		// Skills
-
 		if (program.getGameConsole().getSP() > 0) {
 			if (have_sp == false) {
 				have_sp = true;
@@ -512,7 +505,6 @@ public class DisplayableHUD implements Displayable {
 		program.add(boss_display);
 		program.add(boss_bar);
 		program.add(boss_back);
-//		program.add(overlay);
 	}
 
 	@Override
@@ -538,6 +530,5 @@ public class DisplayableHUD implements Displayable {
 		program.remove(boss_display);
 		program.remove(boss_bar);
 		program.remove(boss_back);
-//		program.remove(overlay);
 	}
 }

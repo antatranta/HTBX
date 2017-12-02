@@ -60,7 +60,6 @@ public class Vector2 {
 		return new Vector2(1,1);
 	}
 
-	// Better normalize that actually WORKS - Anthony
 	public Vector2 normalize(Vector2 vectorB) {
 		float magnitude = (float)Math.sqrt(Math.pow(vectorB.getX() - this.x, 2) + Math.pow(vectorB.getY() - this.y, 2));
 		float aX = vectorB.getX() - this.x;

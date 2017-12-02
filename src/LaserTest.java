@@ -93,15 +93,6 @@ public class LaserTest extends GraphicsApplication implements ActionListener {
 			markers[i] = new GOval(0,0,25,25);
 			add(markers[i]);
 		}
-
-		//		pos_0 = new GOval(0,0,25,25);
-		//		pos_1 = new GOval(0,0,25,25);
-		//		add(pos_0);
-		//		add(pos_1);
-
-		//		for(GameImage sprite: line.getSprites()) {
-		//			add(sprite);
-		//		}
 	}
 
 	public void run() {
@@ -111,52 +102,7 @@ public class LaserTest extends GraphicsApplication implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-
-		//		for(GameImage sprite: line.getSprites()) {
-		//			add(sprite);
-		//		}
-		// Detect target
-		//		Move();
-		//		AIUpdate(target1.getPhysObj().getPosition());
 		enemy.AIUpdate(target1.getPhysObj().getPosition());
-
-		//		line.createBeam(enemy.getPhysObj().getPosition(), target1.getPhysObj().getPosition());
-		/*
-		for(GameImage sprite: line.getSprites()) {
-			remove(sprite);
-		}
-		for(GameImage sprite: line.updateBeam(enemy.getPhysObj().getPosition(), target1.getPhysObj().getPosition())) {
-			add(sprite);
-		}
-		 */
-
-		/*
-		if(positions != null && positions.length > 2) {
-
-
-//			pos_0.setLocation(this.positions[0].getX(), this.positions[0].getY());
-//			pos_1.setLocation(this.positions[0].getX(), this.positions[1].getY());
-
-			for(GameImage sprite: line.getSprites()) {
-				remove(sprite);
-			}
-			for(GameImage sprite: line.updateBeam(this.positions[0], this.positions[2])) {
-				add(sprite);
-			}
-
-			line.updatePositions();
-
-
-			for(int i =0; i < markers.length; ++i) {
-				if(this.positions[i] != null) {
-					markers[i].setLocation(this.positions[i].getX(), this.positions[i].getY());
-				}
-			}
-		}
-		 */
-		//		TargetMovementSimulate();
-		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
-
 	}
 
 	public void Move() {
@@ -178,15 +124,8 @@ public class LaserTest extends GraphicsApplication implements ActionListener {
 	private void removeLasers() {
 		// Remove old laser
 		for(GameImage sprite : laser_0.getSprites()) {
-			//			this.gameConsoleSubscriber.programRequest_removeDrawnObject(sprite);
 			remove(sprite);
 		}
-
-		//		for(GameImage sprite : laser_1.getSprites()) {
-		//			this.gameConsoleSubscriber.programRequest_removeDrawnObject(sprite);
-		//		}
-
-		//		System.out.println("Removing laser");
 	}
 
 	private void calculateTrajectories(Vector2 pos) {
@@ -220,32 +159,13 @@ public class LaserTest extends GraphicsApplication implements ActionListener {
 		for(int i =0; i < positions.length; ++i) {
 			positions[i] = positions[i].add(trajectories[i].mult(new Vector2(1f,1f)));
 		}
-		//		position_2 = position_2.add(trajectory_2);
-
-		// Update lasers
-		/*
-		for(GameImage sprite : laser_0.updateBeam(position_0, position_1)) {
-			add(sprite);
-		}
-		laser_0.updatePositions();
-		 */
-
-		//		for(GameImage sprite : laser_1.updateBeam(position_1, position_2)) {
-		//			this.gameConsoleSubscriber.programRequest_drawObject(sprite);
-		//		}
 	}
 
 	public void AIUpdate(Vector2 playerPos) {
-
-		//		moveProjectiles();
-
 		// If the laser is supposed to be active
 		if(count > laserDelay) { 
 
 			if(shotCount > shots) {
-
-				// Blink to a new pos
-				//				blink(playerPos);
 
 				// Reset the counter
 				shotCount = 0;
@@ -271,7 +191,6 @@ public class LaserTest extends GraphicsApplication implements ActionListener {
 				}
 
 				if(count %5 == 0) {
-					//					removeLasers();
 					moveProjectiles();
 
 					System.out.println("Moved targets");
@@ -281,8 +200,6 @@ public class LaserTest extends GraphicsApplication implements ActionListener {
 				}
 			} else {
 
-				// Remove the laser
-				//				removeLasers();
 
 				hasTrajectories = false;
 

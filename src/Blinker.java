@@ -9,20 +9,15 @@ public class Blinker extends EnemyShip {
 	protected int maxDist;
 	protected float blending;
 	protected float blendStep;
-
 	protected int bulletCount;
 	protected int bulletCountTarget;
-
 	protected Color targetColor;
 	protected Color prevColor;
-
 	protected GOval charger;
-
 	private boolean BlinkerGOvalAdded = false;
-	
+
 	public Blinker(PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression, int exp) {
 		super(physObj, sprite, current_health, stats, aggression, EnemyType.BLINKER, exp);
-
 		this.blinkRate = getBlinkRate();
 		this.count = 0;
 		this.minDist = (int) (getInteractionDistance() / 4);
@@ -33,7 +28,6 @@ public class Blinker extends EnemyShip {
 		Vector2 pos = Camera.backendToFrontend(this.physObj.getPosition());
 		this.charger.setLocation(pos.getX() - (this.charger.getWidth() / 2),
 				pos.getY() - (this.charger.getHeight() / 2));
-
 		this.targetColor = Color.WHITE;
 		this.prevColor = Color.WHITE;
 		this.BlinkerGOvalAdded = false;
@@ -89,18 +83,15 @@ public class Blinker extends EnemyShip {
 
 	@Override
 	public void AIUpdate(Vector2 playerPos) {
-
 		if (!BlinkerGOvalAdded) {
 			this.gameConsoleSubscriber.programRequest_drawGOval(this.getPhysObj(), this.charger);
 			BlinkerGOvalAdded = true;
 		}
-
 		int chargeTime = 2;
 
 		// Current position
 		// Is the player within range?
 		if (PhysXLibrary.distance(this.physObj.getPosition(), playerPos) > getInteractionDistance()) {
-			// gameConsoleSubscriber.UIRequest_addThreat(physObj.getPosition());
 			return;
 		}
 
@@ -108,7 +99,6 @@ public class Blinker extends EnemyShip {
 
 		if (count >= blinkRate) {
 			if (mangementSubscriber != null) {
-
 				// Test and make sure it's safe
 				Vector2 randomOffset = new Vector2(LavaLamp.randomSignedInt(minDist, maxDist),
 						LavaLamp.randomSignedInt(minDist, maxDist));
@@ -125,7 +115,6 @@ public class Blinker extends EnemyShip {
 				}
 				this.getPhysObj().setPosition(currentTarget);
 			} else {
-
 				// We gotta wing it!
 				Vector2 randomOffset = new Vector2(LavaLamp.randomSignedInt(minDist, maxDist),
 						LavaLamp.randomSignedInt(minDist, maxDist));
@@ -140,32 +129,24 @@ public class Blinker extends EnemyShip {
 			Vector2 pos = Camera.backendToFrontend(this.physObj.getPosition());
 			this.charger.setLocation(pos.getX() - (this.charger.getWidth() / 2),
 					pos.getY() - (this.charger.getHeight() / 2));
-
 			this.gameConsoleSubscriber.programRequest_removeObject(this);
-
 			this.createSprite("BlinkerGifRev.gif");
 			count = 0;
 		} else if (count < blinkRate - (float) (blinkRate / chargeTime)) {
-
 			int numShots = 2;
 			if (count % ((blinkRate - (float) (blinkRate / chargeTime)) / numShots) == 0) {
-
 				// Shoot
 				PhysXObject obj = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(4));
 				BulletFireEventData bfe = new BulletFireEventData(1, 3, BulletType.STRAIGHT, CollisionType.enemy_bullet,
 						5, obj, "Bullet Large.png", playerPos, FXManager.colorParticle(PaintToolbox.RED));
 				shoot(bfe);
-
 				AudioPlayer myAudio = AudioPlayer.getInstance();
 				myAudio.playSound("sounds", "BlinkerShoot.wav", SoundType.SFX);
 			} else {
-
 				this.targetColor = new Color(205, 58, 42);
 				this.prevColor = Color.WHITE;
-
 				bulletCount = (count % ((int) (blinkRate - (float) (blinkRate / chargeTime)) / numShots));
 				bulletCountTarget = ((int) (blinkRate - (float) (blinkRate / chargeTime)) / numShots);
-
 				updateCharger(bulletCount, bulletCountTarget);
 			}
 		} else {

@@ -38,15 +38,11 @@ public class EnemyShipTest extends GraphicsApplication implements ActionListener
 		// Detect target
 		Move();
 		TargetMovementSimulate();
-		//BulletManager.shoot(1, 15, BulletType.ENEMY_BULLET, 4, new PhysXObject(), target);
-		
 	}
 	
 	public void Move() {
 		if(enemy.getCurrentHealth()>0) {
-			//enemy.AIUpdate(enemy.getTarget());
 			enemy.AIUpdate(target1.getPhysObj().getPosition());
-			//enemy.getSprite().setLocationRespectSize(enemy.getPhysObj().getPosition().getX(),enemy.getPhysObj().getPosition().getY());
 		}
 	}
 	

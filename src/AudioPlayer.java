@@ -8,16 +8,13 @@
  * AudioPlayer supports mp3 files and is based on the javafx MediaPlayer class
  * Questions can be sent to ojimenez@pacific.edu
  */
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
 public class AudioPlayer {
 	private HashMap<String, MediaPlayer> players;

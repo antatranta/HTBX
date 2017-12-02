@@ -206,7 +206,6 @@ public class Bullet extends Entity {
 		return oval;
 	}
 
-
 	@Override
 	public void onCollisionEvent(CollisionData data, Vector2 pos) {
 		handleCollision(data);

@@ -8,17 +8,14 @@ public class GamePolygon extends GPolygon {
 
 	public GamePolygon() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public GamePolygon(double arg0, double arg1) {
 		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
 	}
 
 	public GamePolygon(GPoint[] arg0) {
 		super(arg0);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Polygon getPolygon() {

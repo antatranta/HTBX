@@ -105,7 +105,6 @@ public class FileInput {
 					String readLine = section.replace("$LEVEL", "");
 					level = Integer.parseInt(readLine);
 				} else {
-					//					System.out.println("String not formated correctly");
 				}
 			}
 

@@ -14,7 +14,6 @@ public class PaintToolbox {
 	public static Color blend(Color b, Color a, float blending) {
 
 		if(0 >= blending || .9999999999999f <= blending) {
-			//			System.out.println("0-1");
 			return Color.MAGENTA;
 		}
 
@@ -31,7 +30,6 @@ public class PaintToolbox {
 	public static Color blendAlpha(Color b, Color a, float blending) {
 
 		if(0 >= blending || .9999999999999f <= blending) {
-			//			System.out.println("0-1");
 			return Color.MAGENTA;
 		}
 

@@ -75,7 +75,6 @@ public class LaserManager implements LaserManagerEvents {
 			if(obj != null) {
 				laser.updateBeam(laser.getOrigin(),obj.getPosition());
 			}
-			//			laser.updateBeam(laser.getPhysXOrigin().getPosition(),console.physXRequest_getPlayer().getPosition());
 		}
 	}
 

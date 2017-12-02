@@ -104,7 +104,6 @@ public class FXParticle {
 			System.out.println("[WARN] You need to assign values.");
 			return;
 		}
-		// TODO Auto-generated method stub
 		float blending = (float)this.life/(float)this.max;
 		this.sprite.setFillColor(PaintToolbox.blendAlpha(startValue, endValue, blending));
 	}

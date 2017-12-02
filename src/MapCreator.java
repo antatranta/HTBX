@@ -88,13 +88,11 @@ public class MapCreator {
 		int numberOfEnemies = LavaLamp.randomNumber(0, MAX_ENEMIES_IN_QUAD);
 		int numberOfAsteroids = LavaLamp.randomNumber(0, MAX_ASTEROIDS_IN_QUAD);
 		int numberOfBlinkers = LavaLamp.randomNumber(0, MAX_BLINKERS_IN_QUAD);
-		//		int numberOfFencers = LavaLamp.randomNumber(0, MAX_FENCERS_IN_QUAD);
 		int numberOfBanshes = LavaLamp.randomNumber(0, MAX_BANSHES_IN_QUAD);
 
 		ArrayList<EnemyShip> EnemyShips =  placeGenericEnemies(quad.getQUID(), numberOfEnemies);
 		ArrayList<Asteroid> Asteroids =  placeAsteroids(quad.getQUID(), numberOfAsteroids);
 		ArrayList<Blinker> Blinkers = placeBlinkers(quad.getQUID(), numberOfBlinkers);
-		//		ArrayList<Fencer> Fencers = placeFencers(quad.getQUID(), numberOfFencers);
 		ArrayList<Banshe> Banshes = placeBanshes(quad.getQUID(), numberOfBanshes);
 
 		//objects verification
@@ -174,7 +172,6 @@ public class MapCreator {
 			}
 
 			int check_both = checkBothObjects(Asteroids,EnemyShips);//comparing asteroids with enemies.
-			//			int checkRuns = -1;
 			while(check_both != -404) {
 
 				Asteroids.remove(check_both);
@@ -182,11 +179,9 @@ public class MapCreator {
 				//these two codes take some times:-wenrui
 				Asteroids.add(placeAsteroid(quad.getQUID()));
 
-				//				asteroidIndex = checkObjects(Asteroids);
 				check_both = checkBothObjects(Asteroids,EnemyShips);
 			}
 
-			//			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && check_asteroid_and_fencer == -404) {
 			if(asteroidIndex == -404 && shipIndex == -404 && check_both == -404 && check_asteroid_and_blink == -404 && bansheIndex == -404) {
 				check=false;
 			}
@@ -194,7 +189,6 @@ public class MapCreator {
 		quad.setAsteroids(Asteroids);
 		quad.setShips(EnemyShips);
 		quad.setBlinkers(Blinkers);
-		//		quad.setFencers(Fencers);
 		quad.setBanshes(Banshes);
 	}
 
@@ -384,8 +378,6 @@ public class MapCreator {
 		presetPhysObj.setPosition(physObj.getPosition());
 		presetPhysObj.setQUID(physObj.getQUID());
 
-		//System.out.println("[" + file.getBlinkSprite(preset) + "]");
-		//		PhysXObject physObj, String sprite, int current_health, ShipStats stats, int aggression
 		return new Blinker(presetPhysObj, file.getBlinkSprite(preset), ShipStats.EnemyStats_Blinker().getHealthMax(), ShipStats.EnemyStats_01(), file.getBlinkLevel(preset), 15);
 	}
 
@@ -411,7 +403,6 @@ public class MapCreator {
 		presetPhysObj.setPosition(physObj.getPosition());
 		presetPhysObj.setQUID(physObj.getQUID());
 
-		//System.out.println("[" + file.getFencerSprite(preset) + "]");
 		return new Fencer(presetPhysObj, file.getFencerSprite(preset), ShipStats.EnemyStats_01().getHealthMax(), ShipStats.EnemyStats_01(), file.getFencerLevel(preset), 20);
 	}
 
