@@ -197,6 +197,10 @@ public class Boss extends EnemyShip {
 		
 		
 	}
+	
+	public void setStage(int s) {
+		this.currentStage = s;
+	}
 
 	public void updateLaser(Vector2 pos) {
 		// Remove old laser
@@ -229,7 +233,16 @@ public class Boss extends EnemyShip {
 		
 		updateFace();
 		updateEyes();
-
+		switch (currentStage) {
+		case 1:
+			PhysXObject po = new PhysXObject(physObj.getQUID(), physObj.getPosition(), new CircleCollider(1));
+			BulletFireEventData bfe = new BulletFireEventData(1, 4, BulletType.STRAIGHT, CollisionType.enemy_bullet,
+					(float) 5, po, "RedCircle.png", playerPos, FXManager.colorParticle(PaintToolbox.RED));
+			shootSpread(bfe, 5, 90);
+			break;
+		default:
+			break;
+		}
 		count++;
 	}
 

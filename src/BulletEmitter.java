@@ -7,7 +7,7 @@ public class BulletEmitter extends EnemyShip {
 	
 	private int bullet_spd = 3;
 	private float bullet_time = 10;
-	private static final int WEAPON_CAP = 20;
+	private int weapon_cap = 20;
 	private String bullet_sprite = "RedCircle.png";
 	
 	private BulletType bullet_style;
@@ -31,10 +31,12 @@ public class BulletEmitter extends EnemyShip {
 	}
 
 	protected void destroy() {
-		this.physObj = null;
+		this.damageable = true;
+		this.current_health = 0;
+		this.physObj.setPosition(new Vector2(-1000, -1000));
 	}
 	
-	public void setBulletData(int spd, float time, String sprite) {
+	public void setBulletEmitterData(int spd, float time, String sprite) {
 		this.bullet_spd = spd;
 		this.bullet_time = time;
 		this.bullet_sprite = sprite;
@@ -44,6 +46,10 @@ public class BulletEmitter extends EnemyShip {
 		this.damageable = tf;
 	}
 	
+	public void setWeaponCooldown(int cd) {
+		this.weapon_cap = cd;
+	}
+	
 	public void takeDamage(int damage) {
 		if (!damageable) {
 			return;
@@ -51,6 +57,7 @@ public class BulletEmitter extends EnemyShip {
 		this.current_health -= damage;
 		if (current_health < 0) {
 			current_health = 0;
+			destroy();
 		}
 	}
 	
@@ -75,7 +82,7 @@ public class BulletEmitter extends EnemyShip {
 			return;
 		}
 		else {
-			weapon_cd = WEAPON_CAP;
+			weapon_cd = weapon_cap;
 			int current_index = BulletEmitterData.TOTAL_TYPES;
 	
 			// CHECK IF THE PRIORITIZED BULLETS ARE USED UP
