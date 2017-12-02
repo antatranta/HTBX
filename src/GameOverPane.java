@@ -98,11 +98,9 @@ public class GameOverPane extends GraphicsPane {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		obj = program.getElementAt(e.getX(), e.getY());
-		if(obj == null || obj == whiteBG()) {
-			return;
+		if(obj == retryGame || obj == exitToMenu) {
+			obj.setColor(Color.gray);
 		}
-
-		obj.setColor(Color.gray);
 	}
 
 	@Override
