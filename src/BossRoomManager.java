@@ -53,12 +53,13 @@ public class BossRoomManager {
 	private int bossStage_0_emitter_reverse_cap = 600;
 	private int bossStage_0_emitter_time = 0;
 	private BulletEmitter bossStage_0_bullet_emitter = null;
+	private ArrayList<BossBarrier> stage_0_barriers;
 	
 	private int barriersAtStart = 0;
 	
 	
 	// STAGE 1
-	private ArrayList<BossBarrier> barriers;
+	private ArrayList<BossBarrier> stage_1_barriers;
 	private ArrayList<BulletEmitter> stage_1_emitters;
 	
 	// STAGE 2
@@ -67,8 +68,10 @@ public class BossRoomManager {
 	public BossRoomManager() {
 		currentStage = 0;
 		count = 0;
-		bulletEmitters = new ArrayList<BulletEmitter>();	
-		this.barriers = new ArrayList<BossBarrier>();
+		bulletEmitters = new ArrayList<BulletEmitter>();
+		this.stage_0_barriers = new ArrayList<BossBarrier>();
+		this.stage_1_barriers = new ArrayList<BossBarrier>();
+
 	}
 	
 	/* * * * * * * * * * * * * * * 
@@ -146,7 +149,7 @@ public class BossRoomManager {
 				this.bossStage_0_bullet_emitter.reverseDirection();
 			}
 			this.bossStage_0_emitter_time -= 1;
-			if (bossStage_0_barriers_left != this.barriersAtStart) {
+			if (bossStage_0_barriers_left == 0) {
 				currentStage = 1;
 				this.bossStage_0_bullet_emitter.takeDamage(TONS_OF_DAMAGE);
 			}
@@ -174,7 +177,7 @@ public class BossRoomManager {
 			shield.addGameConsole(gameConsole_ref);
 			shield.setOrbitSpeed(BARRIER_SHIELD_SPEED);
 			shield.setManagerRef(this);
-			this.barriers.add(shield);
+			this.stage_0_barriers.add(shield);
 			gameConsole_ref.programRequest_makeEnemy(shield);
 			// Create shields
 			ang = delta * i;
@@ -190,7 +193,7 @@ public class BossRoomManager {
 			init_stage_1();
 		}
 		else if (started_1 && !finished_setting_1) {
-			finished_setting_1 = barriers.get(0).reachedDestination();
+			finished_setting_1 = stage_1_barriers.get(0).reachedDestination();
 		}
 		else {
 			
@@ -198,7 +201,11 @@ public class BossRoomManager {
 	}
 	
 	private void init_stage_1() {
-		for (BossBarrier b: barriers) {
+		for (int i = 0; i < 8; i++) {
+			BulletEmitter bb = makeBulletEmitter(bossShip.getPhysObj().getPosition());
+			
+		}
+		for (BossBarrier b: stage_1_barriers) {
 			b.moveToDistance(600);
 			b.setOrbitSpeed(0);
 		}
