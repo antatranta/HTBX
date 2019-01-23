@@ -440,6 +440,19 @@ public class DisplayableHUD implements Displayable {
 		scaleStatsBar(shield_stat, player.getBonusStats().getShieldMax());
 		sp_label.setLabel("" + program.getGameConsole().getSP());
 	}
+	
+	/* Pseudocode for updating game HUD for Out-Of-Bounds Warning;
+	 * This is to correlate the time pass with what seconds to display
+	 * on the HUD of the game when the player is out of bounds. Only updated
+	 * with each passing second and only when the player is out of bounds. 
+	 */
+	// If the player is out of bounds
+		// Get how many seconds passed and minus from 10
+		// Decrement the number
+		// Show "Warning! Out of Bounds!" and the number on the screen
+	// If the player got back in bounds
+		// Reset counter back to 10
+		// Remove warning and number from screen
 
 	public Vector2 getBossTelePos() {
 		return this.boss_tele_pos;

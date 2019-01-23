@@ -374,6 +374,25 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		BulletFireEventData bfe = new BulletFireEventData(player.getStats().getDamage() + player.getBonusStats().getDamage(), 20, BulletType.STRAIGHT, CollisionType.player_bullet, 1, new PhysXObject(player.getPhysObj().getQUID(), player.getPhysObj().getPosition(), new CircleCollider(5)), "Player Bullet.png", Camera.frontendToBackend(last_mouse_loc), FXManager.colorParticle(PaintToolbox.BLUE));
 		player.shoot(bfe);
 	}
+	
+	/* Beginning of Pseudocode of Out-Of-Bounds detection;
+	 * This method is to detect when the player goes out of the play area
+	 * of the game's map/design. It gives a warning and a countdown when
+	 * the player is out of the play area telling the player to come back
+	 * into the play area or be met with a "game over". 
+	 */
+	// Set default status of out-of-bounds to "false"
+	// Set a countdown timer to 10 seconds
+	// If the player's position in the game is less than 0 or greater than the map's dimensions (x and y) and out-of-bounds status is "false"
+		// Set status of out-of-bounds to "true"
+		// Give warning that the player is out of bounds by displaying it on the HUD
+		// Start the 10 second countdown/timer and show timer on HUD
+	// If the player gets back in bounds into the play area
+		// Set status of out-of-bounds to "false"
+		// Remove warning of being out-of-bounds
+		// Reset timer
+	// If 10 seconds has passed
+		// Set player's health to 0 to give an instant game over
 
 	// Every tick of the global game clock calls all visual drawing necessary
 	@Override
