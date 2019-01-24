@@ -6,7 +6,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.lang.System;
-import java.lang.Object;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
@@ -30,7 +29,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	
 	// used for out of bounds detection
 	private boolean isOutOfBounds = false;
-	private long startTimeOutOfBounds;
+	private long startTime;
 
 	private boolean REQUEST_DEBUG_END = false;
 	private GLabel CURRENT_QUID_LABEL;
@@ -344,6 +343,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		tele_flash.setColor(PaintToolbox.WHITE);
 		
 		drawGridLines((int)PhysXLibrary.QUADRANT_WIDTH, (int)PhysXLibrary.BOSS_QUADRANT_HEIGHT, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT, PhysXLibrary.getMapWidth(), PhysXLibrary.getMapHeight());
+	
+		startTime = System.nanoTime();
 	}
 
 	public void centerPlayer() {
@@ -391,17 +392,18 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// If the player's position in the game is less than 0 or greater than the map's dimensions (x and y) and out-of-bounds status is "false"
 		float playerXCoord = player.getPhysObj().getPosition().getX();
 		float playerYCoord = player.getPhysObj().getPosition().getY();
-		if (playerXCoord < 0 || playerXCoord > PhysXLibrary.getMapWidth() || playerYCoord < 0 || playerYCoord > PhysXLibrary.getMapHeight()) {
+		if ((playerXCoord < 0 && !isOutOfBounds) || (playerXCoord > PhysXLibrary.getMapWidth() && !isOutOfBounds) || 
+			(playerYCoord < 0 && !isOutOfBounds) || (playerYCoord > PhysXLibrary.getMapHeight() && !isOutOfBounds)) {
 			// Set status of out-of-bounds to "true"
 			isOutOfBounds = true;
 			// Start the 10 second countdown/timer and show timer on HUD
-			startTimeOutOfBounds = System.nanoTime();
+			startTime = System.nanoTime();
 			// Give warning that the player is out of bounds by displaying it on the HUD
 			// HUD.setOutOfBounds(isOutOfBounds);
 		}
 		// If the player gets back in bounds into the play area
-
-		if (playerXCoord > 0 && playerXCoord < PhysXLibrary.getMapWidth() && isOutOfBounds || playerYCoord > 0 && playerYCoord < PhysXLibrary.getMapHeight() && isOutOfBounds) {
+		if ((playerXCoord > 0 && playerXCoord < PhysXLibrary.getMapWidth() && isOutOfBounds) && 
+			(playerYCoord > 0 && playerYCoord < PhysXLibrary.getMapHeight() && isOutOfBounds)) {
 			// Set status of out-of-bounds to "false"
 			isOutOfBounds = false;
 			// Remove warning of being out-of-bounds
@@ -410,9 +412,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		
 		// If 10 seconds has passed that the player has been out of bounds
 		long endTimeOutOfBounds = System.nanoTime();
-		long elapsedTime = endTimeOutOfBounds - startTimeOutOfBounds;
+		long elapsedTime = endTimeOutOfBounds - startTime;
 		double secondsElapsed = (double)elapsedTime / 1000000000;
-		if (secondsElapsed > 10 ) {
+		if (secondsElapsed > 10 && isOutOfBounds) {
 			// Set player's health to 0 to give an instant game over
 			player.setCurrentHealth(0);
 		}
