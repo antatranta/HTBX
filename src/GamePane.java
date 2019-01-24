@@ -5,6 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.lang.System;
+import java.lang.Object;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
@@ -25,7 +27,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	private PlayerShip player;
 	private Vector2 last_mouse_loc;
 	private GOval playerCollider;
-
+	
+	// used for out of bounds detection
+	private boolean isOutOfBounds = false;
+	private long startTimeOutOfBounds;
 
 	private boolean REQUEST_DEBUG_END = false;
 	private GLabel CURRENT_QUID_LABEL;
@@ -381,19 +386,38 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 	 * the player is out of the play area telling the player to come back
 	 * into the play area or be met with a "game over". 
 	 */
-	// Set default status of out-of-bounds to "false"
-	// Set a countdown timer to 10 seconds
-	// If the player's position in the game is less than 0 or greater than the map's dimensions (x and y) and out-of-bounds status is "false"
-		// Set status of out-of-bounds to "true"
-		// Give warning that the player is out of bounds by displaying it on the HUD
-		// Start the 10 second countdown/timer and show timer on HUD
-	// If the player gets back in bounds into the play area
-		// Set status of out-of-bounds to "false"
-		// Remove warning of being out-of-bounds
-		// Reset timer
-	// If 10 seconds has passed
-		// Set player's health to 0 to give an instant game over
+	private void OutOfBounds() {
+		// Set default status of out-of-bounds to "false" (done in the class variable)
+		// If the player's position in the game is less than 0 or greater than the map's dimensions (x and y) and out-of-bounds status is "false"
+		float playerXCoord = player.getPhysObj().getPosition().getX();
+		float playerYCoord = player.getPhysObj().getPosition().getY();
+		if (playerXCoord < 0 || playerXCoord > PhysXLibrary.getMapWidth() || playerYCoord < 0 || playerYCoord > PhysXLibrary.getMapHeight()) {
+			// Set status of out-of-bounds to "true"
+			isOutOfBounds = true;
+			// Start the 10 second countdown/timer and show timer on HUD
+			startTimeOutOfBounds = System.nanoTime();
+			// Give warning that the player is out of bounds by displaying it on the HUD
+			// HUD.setOutOfBounds(isOutOfBounds);
+		}
+		// If the player gets back in bounds into the play area
 
+		if (playerXCoord > 0 && playerXCoord < PhysXLibrary.getMapWidth() && isOutOfBounds || playerYCoord > 0 && playerYCoord < PhysXLibrary.getMapHeight() && isOutOfBounds) {
+			// Set status of out-of-bounds to "false"
+			isOutOfBounds = false;
+			// Remove warning of being out-of-bounds
+			// HUD.setOutOfBounds(isOutOfBounds);
+		}
+		
+		// If 10 seconds has passed that the player has been out of bounds
+		long endTimeOutOfBounds = System.nanoTime();
+		long elapsedTime = endTimeOutOfBounds - startTimeOutOfBounds;
+		double secondsElapsed = (double)elapsedTime / 1000000000;
+		if (secondsElapsed > 10 ) {
+			// Set player's health to 0 to give an instant game over
+			player.setCurrentHealth(0);
+		}
+	}
+	
 	// Every tick of the global game clock calls all visual drawing necessary
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -401,6 +425,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Audio
 		AudioPlayer myAudio = AudioPlayer.getInstance();
 		myAudio.updatePlayer();
+		
+		// test
+		//System.out.print("Player's x position: " + player.getPhysObj().getPosition().getX() + "\n");
+		//System.out.print("Player's y position: " + player.getPhysObj().getPosition().getY() + "\n");
+		//System.out.print("Map Height: " + PhysXLibrary.getMapHeight() + "\n");
 		
 		// Game over screen
 		if(player.getCurrentHealth() <= 0) {
@@ -502,6 +531,8 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			}
 			break;
 		}
+		
+		OutOfBounds();
 	}
 	
 	public void trackingUpdate() {
