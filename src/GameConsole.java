@@ -35,6 +35,9 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 	private GamePaneEvents gamePane_ref;
 	private TeleportWaypoint bossRoomTrigger;
 	private boolean sfxToggle;
+	// out of bounds
+	private boolean isOutOfBounds = false;
+	private long startTimeOutOfBounds;
 	//Score
 	private int score=0;
 	private int enemiesKilled=0;
@@ -100,7 +103,8 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		
 		System.out.println("Player Pos before GamePane: " + player.getPhysObj().getPosition().getX() + ", " + player.getPhysObj().getPosition().getY());
 		System.out.println("Made a new game console");
-
+		
+		startTimeOutOfBounds = System.nanoTime();
 	}
 	
 	public void progressStory() {
@@ -448,6 +452,54 @@ public class GameConsole extends GraphicsProgram implements GameConsoleEvents{
 		this.ships = ships;
 	}
 
+	/* Beginning of Pseudocode of Out-Of-Bounds detection;
+	 * This method is to detect when the player goes out of the play area
+	 * of the game's map/design. It gives a warning and a countdown when
+	 * the player is out of the play area telling the player to come back
+	 * into the play area or be met with a "game over". 
+	 */
+	public boolean OutOfBounds() {
+		// Set default status of out-of-bounds to "false" (done in the class variable)
+		// If the player's position in the game is less than 0 or greater than the map's dimensions (x and y) and out-of-bounds status is "false"
+		float playerXCoord = player.getPhysObj().getPosition().getX();
+		float playerYCoord = player.getPhysObj().getPosition().getY();
+		if ((playerXCoord < 0 && !isOutOfBounds) || (playerXCoord > PhysXLibrary.getMapWidth() && !isOutOfBounds) || 
+			(playerYCoord < 0 && !isOutOfBounds) || (playerYCoord > PhysXLibrary.getMapHeight() && !isOutOfBounds)) {
+			// Set status of out-of-bounds to "true"
+			isOutOfBounds = true;
+			// Start the 10 second countdown/timer and show timer on HUD
+			startTimeOutOfBounds = System.nanoTime();
+		}
+		// If the player gets back in bounds into the play area
+		if ((playerXCoord > 0 && playerXCoord < PhysXLibrary.getMapWidth() && isOutOfBounds) && 
+			(playerYCoord > 0 && playerYCoord < PhysXLibrary.getMapHeight() && isOutOfBounds)) {
+			// Set status of out-of-bounds to "false"
+			isOutOfBounds = false;
+		}
+		
+		return isOutOfBounds;
+	}
+	
+	// Figure out the elapsed time that has passed since the player has been out of bounds
+	public double ElapsedTimeOutOfBounds() {
+		if (isOutOfBounds) {
+			long endTimeOutOfBounds = System.nanoTime();
+			long elapsedTime = endTimeOutOfBounds - startTimeOutOfBounds;
+			// Nanosecond to second conversion
+			double secondsElapsed = (double)elapsedTime / 1000000000;
+			
+			return secondsElapsed;
+		}
+		
+		return 0;
+	}
+	
+	// Kill the player if the player has been out of bounds for longer than 10 seconds
+	public void KillPlayerOutOfBounds() {
+		if (ElapsedTimeOutOfBounds() > 10 && isOutOfBounds) {
+			player.setCurrentHealth(0);
+		}
+	}
 }
 
 

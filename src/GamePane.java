@@ -343,8 +343,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		tele_flash.setColor(PaintToolbox.WHITE);
 		
 		drawGridLines((int)PhysXLibrary.QUADRANT_WIDTH, (int)PhysXLibrary.BOSS_QUADRANT_HEIGHT, PhysXLibrary.MAP_WIDTH, PhysXLibrary.MAP_HEIGHT, PhysXLibrary.getMapWidth(), PhysXLibrary.getMapHeight());
-	
-		startTime = System.nanoTime();
 	}
 
 	public void centerPlayer() {
@@ -381,45 +379,6 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		player.shoot(bfe);
 	}
 	
-	/* Beginning of Pseudocode of Out-Of-Bounds detection;
-	 * This method is to detect when the player goes out of the play area
-	 * of the game's map/design. It gives a warning and a countdown when
-	 * the player is out of the play area telling the player to come back
-	 * into the play area or be met with a "game over". 
-	 */
-	private void OutOfBounds() {
-		// Set default status of out-of-bounds to "false" (done in the class variable)
-		// If the player's position in the game is less than 0 or greater than the map's dimensions (x and y) and out-of-bounds status is "false"
-		float playerXCoord = player.getPhysObj().getPosition().getX();
-		float playerYCoord = player.getPhysObj().getPosition().getY();
-		if ((playerXCoord < 0 && !isOutOfBounds) || (playerXCoord > PhysXLibrary.getMapWidth() && !isOutOfBounds) || 
-			(playerYCoord < 0 && !isOutOfBounds) || (playerYCoord > PhysXLibrary.getMapHeight() && !isOutOfBounds)) {
-			// Set status of out-of-bounds to "true"
-			isOutOfBounds = true;
-			// Start the 10 second countdown/timer and show timer on HUD
-			startTime = System.nanoTime();
-		}
-		// If the player gets back in bounds into the play area
-		if ((playerXCoord > 0 && playerXCoord < PhysXLibrary.getMapWidth() && isOutOfBounds) && 
-			(playerYCoord > 0 && playerYCoord < PhysXLibrary.getMapHeight() && isOutOfBounds)) {
-			// Set status of out-of-bounds to "false"
-			isOutOfBounds = false;
-		}
-		
-		// If 10 seconds has passed that the player has been out of bounds
-		long endTimeOutOfBounds = System.nanoTime();
-		long elapsedTime = endTimeOutOfBounds - startTime;
-		double secondsElapsed = (double)elapsedTime / 1000000000;
-		// Give warning that the player is out of bounds by displaying it on the HUD (if they are)
-		HUD.setOutOfBoundStatus(isOutOfBounds);
-		// Pass time elapsed to do a countdown
-		HUD.setOutOfBoundsTime(secondsElapsed);
-		if (secondsElapsed > 10 && isOutOfBounds) {
-			// Set player's health to 0 to give an instant game over
-			player.setCurrentHealth(0);
-		}
-	}
-	
 	// Every tick of the global game clock calls all visual drawing necessary
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -427,6 +386,9 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		// Audio
 		AudioPlayer myAudio = AudioPlayer.getInstance();
 		myAudio.updatePlayer();
+		
+		// Kill the player if out of bounds
+		console.KillPlayerOutOfBounds();
 		
 		// Game over screen
 		if(player.getCurrentHealth() <= 0) {
@@ -480,7 +442,11 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		}
 		
 		// Update the debug screen
-		debugUpdate();		
+		debugUpdate();
+		
+		// out of bounds detection
+		HUD.setOutOfBoundStatus(console.OutOfBounds());
+		HUD.setOutOfBoundsTime(console.ElapsedTimeOutOfBounds());
 		
 		// Update the HUD
 		HUD.updateHUD();
@@ -529,7 +495,7 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 			break;
 		}
 		
-		OutOfBounds();
+		//OutOfBounds();
 	}
 	
 	public void trackingUpdate() {
