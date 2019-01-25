@@ -43,6 +43,10 @@ public class DisplayableHUD implements Displayable {
 	private GRect overlay;
 
 	private Color oldColor;
+	
+	// out of bounds warning
+	private GLabel outOfBoundsWarning;
+	private GLabel outOfBoundsCountdown;
 
 	private ArrayList<Direction> threats;
 	private float[] threatLevels;
@@ -77,7 +81,6 @@ public class DisplayableHUD implements Displayable {
 	private boolean last_boss_setting;
 	private double boss_diff;
 	
-
 	double startx = 0;
 	double starty = 0;
 	double unity = 0;
@@ -196,9 +199,19 @@ public class DisplayableHUD implements Displayable {
 		
 		boss_tele_pos = console.getBossRoomTrigger().getPhysObj().getPosition();
 		
+		// out of bounds labels
+		outOfBoundsWarning = new GLabel("Warning! Out of Bounds!", MainApplication.WINDOW_WIDTH / 2, MainApplication.WINDOW_HEIGHT / 2);
+		outOfBoundsWarning.setFont(GraphicsPane.font);
+		outOfBoundsWarning.setColor(Color.RED);
+		outOfBoundsWarning.setVisible(false);
+		outOfBoundsCountdown = new GLabel("Get back inside in: 10", MainApplication.WINDOW_WIDTH / 2, (MainApplication.WINDOW_HEIGHT / 2) + 50);
+		outOfBoundsCountdown.setFont(GraphicsPane.font);
+		outOfBoundsCountdown.setColor(Color.RED);
+		outOfBoundsCountdown.setVisible(false);
+		
 		overlay = null;
 	}
-
+	
 	private void scaleStatusBar(GRect bar, double percent) {
 		bar.setSize(bar_max_x * percent, bar.getHeight());
 	}
@@ -346,7 +359,6 @@ public class DisplayableHUD implements Displayable {
 			program.remove(overlay);
 			overlay = null;
 		}
-		
 	}
 	
 	public void drawBossHPBar(int hp, int max) {
@@ -446,13 +458,25 @@ public class DisplayableHUD implements Displayable {
 	 * on the HUD of the game when the player is out of bounds. Only updated
 	 * with each passing second and only when the player is out of bounds. 
 	 */
-	// If the player is out of bounds
-		// Get how many seconds passed and minus from 10
-		// Decrement the number
-		// Show "Warning! Out of Bounds!" and the number on the screen
-	// If the player got back in bounds
-		// Reset counter back to 10
-		// Remove warning and number from screen
+	public void updateOutOfBounds(boolean isOutOfBounds, double time) {
+		// If the player is out of bounds
+		if (isOutOfBounds) {
+			// Get how many seconds passed and minus from 10
+			int countdown = 10 - (int)time;
+			String counter = Integer.toString(countdown);
+			// Show counter on screen
+			outOfBoundsCountdown.setLabel("Get back inside in: " + counter);
+			// Show "Warning! Out of Bounds!" and the number on the screen
+			outOfBoundsWarning.setVisible(true);
+			outOfBoundsCountdown.setVisible(true);
+		}
+		// If the player got back in bounds	
+		else {
+			// Remove warning and number from screen
+			outOfBoundsWarning.setVisible(false);
+			outOfBoundsCountdown.setVisible(false);
+		}
+	}
 
 	public Vector2 getBossTelePos() {
 		return this.boss_tele_pos;
@@ -489,6 +513,10 @@ public class DisplayableHUD implements Displayable {
 		boss_display.sendToBack();
 		boss_bar.sendToBack();
 		boss_back.sendToBack();
+		
+		// out of bounds
+		outOfBoundsWarning.sendToBack();
+		outOfBoundsCountdown.sendToBack();
 	}
 
 	@Override
@@ -518,6 +546,8 @@ public class DisplayableHUD implements Displayable {
 		program.add(boss_display);
 		program.add(boss_bar);
 		program.add(boss_back);
+		program.add(outOfBoundsWarning);
+		program.add(outOfBoundsCountdown);
 	}
 
 	@Override
@@ -543,5 +573,7 @@ public class DisplayableHUD implements Displayable {
 		program.remove(boss_display);
 		program.remove(boss_bar);
 		program.remove(boss_back);
+		program.remove(outOfBoundsWarning);
+		program.remove(outOfBoundsCountdown);
 	}
 }
