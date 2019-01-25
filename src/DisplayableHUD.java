@@ -47,6 +47,8 @@ public class DisplayableHUD implements Displayable {
 	// out of bounds warning
 	private GLabel outOfBoundsWarning;
 	private GLabel outOfBoundsCountdown;
+	private boolean outOfBoundStatus = false;
+	private double outOfBoundsTime = 0;
 
 	private ArrayList<Direction> threats;
 	private float[] threatLevels;
@@ -200,11 +202,11 @@ public class DisplayableHUD implements Displayable {
 		boss_tele_pos = console.getBossRoomTrigger().getPhysObj().getPosition();
 		
 		// out of bounds labels
-		outOfBoundsWarning = new GLabel("Warning! Out of Bounds!", MainApplication.WINDOW_WIDTH / 2, MainApplication.WINDOW_HEIGHT / 2);
+		outOfBoundsWarning = new GLabel("Warning! You will die!", (MainApplication.WINDOW_WIDTH / 2) - 95, (MainApplication.WINDOW_HEIGHT) / 2);
 		outOfBoundsWarning.setFont(GraphicsPane.font);
 		outOfBoundsWarning.setColor(Color.RED);
 		outOfBoundsWarning.setVisible(false);
-		outOfBoundsCountdown = new GLabel("Get back inside in: 10", MainApplication.WINDOW_WIDTH / 2, (MainApplication.WINDOW_HEIGHT / 2) + 50);
+		outOfBoundsCountdown = new GLabel("Get back inside in: 10", (MainApplication.WINDOW_WIDTH / 2) - 92, (MainApplication.WINDOW_HEIGHT / 2) + 35);
 		outOfBoundsCountdown.setFont(GraphicsPane.font);
 		outOfBoundsCountdown.setColor(Color.RED);
 		outOfBoundsCountdown.setVisible(false);
@@ -359,6 +361,9 @@ public class DisplayableHUD implements Displayable {
 			program.remove(overlay);
 			overlay = null;
 		}
+		
+		// update out of bound status
+		updateOutOfBounds();
 	}
 	
 	public void drawBossHPBar(int hp, int max) {
@@ -458,11 +463,19 @@ public class DisplayableHUD implements Displayable {
 	 * on the HUD of the game when the player is out of bounds. Only updated
 	 * with each passing second and only when the player is out of bounds. 
 	 */
-	public void updateOutOfBounds(boolean isOutOfBounds, double time) {
+	public void setOutOfBoundStatus(boolean isOutOfBounds) {
+		outOfBoundStatus = isOutOfBounds;
+	}
+	
+	public void setOutOfBoundsTime(double time) {
+		outOfBoundsTime = time;
+	}
+	
+	public void updateOutOfBounds() {
 		// If the player is out of bounds
-		if (isOutOfBounds) {
+		if (outOfBoundStatus) {
 			// Get how many seconds passed and minus from 10
-			int countdown = 10 - (int)time;
+			int countdown = 10 - (int)outOfBoundsTime;
 			String counter = Integer.toString(countdown);
 			// Show counter on screen
 			outOfBoundsCountdown.setLabel("Get back inside in: " + counter);

@@ -410,8 +410,10 @@ public class GamePane extends GraphicsPane implements ActionListener, KeyListene
 		long endTimeOutOfBounds = System.nanoTime();
 		long elapsedTime = endTimeOutOfBounds - startTime;
 		double secondsElapsed = (double)elapsedTime / 1000000000;
-		// Give warning that the player is out of bounds by displaying it on the HUD or remove out of bounds
-		HUD.updateOutOfBounds(isOutOfBounds, secondsElapsed);
+		// Give warning that the player is out of bounds by displaying it on the HUD (if they are)
+		HUD.setOutOfBoundStatus(isOutOfBounds);
+		// Pass time elapsed to do a countdown
+		HUD.setOutOfBoundsTime(secondsElapsed);
 		if (secondsElapsed > 10 && isOutOfBounds) {
 			// Set player's health to 0 to give an instant game over
 			player.setCurrentHealth(0);
